@@ -1,0 +1,1080 @@
+Max 1000 tris per block
+
+VertexDataSize 8byte structure:
+x, y, z, nx, ny, nz, u, v
+
+VertexDataSize 9byte structure:
+x, y, z, nx, ny, nz, u, v, illumination
+
+VertexDataSize 16byte structure:
+x, y, z, nx, ny, nz, u, v, BoneIndex1(1byte), BoneIndex2(1byte), BoneIndex3(1byte), BoneIndex4(1byte), BoneWeights(one byte per bone)
+
+VertexDataSize 13byte (Without face data=billboards) structure:
+
+VertexDataSize 17byte (Ghost model?) structure:
+
+icewaste_animals.gsf 21.06.2009
+[code]
+0x00000000		GSF_PACK_HEADER
+47 53 46 00		"GSF 00"
+00 00 00 00		FormatVersion = 0
+00 00 01 00		Offset to CONTENTS_TABLE = 0x00010000
+
+
+0x0000000C		TREE_NODES
+From 0x0000000C to unknown (it needs to be parsed)
+
+11 00 00 00												CharsCount
+69 63 65 77 61 73 74 65 5F 61 6E 69 6D 61 6C 73 00		icewaste_animals 00
+05 00 00 00												AllModelsCount
+
+0D 00 00 00												CharsCount
+62 6F 74 68 72 69 6F 6C 65 70 69 73 00					bothriolepis 00
+00 00 00 00												ModelIndex
+
+03 00 00 00												ModelAnimCount
+05 00 00 00												CharsCount
+73 77 69 6D 00											swim 00
+00 00 00 00												AnimIndex
+00 00 00 00												SomeEntriesCount
+
+00 00 00 00
+0A 00 00 00												CharsCount
+73 74 61 6E 64 61 6E 69 6D 00							standanim 00
+01 00 00 00												AnimIndex
+00 00 00 00												SomeEntriesCount
+
+00 00 00 00
+06 00 00 00												CharsCount
+64 79 69 6E 67 00										dying 00
+02 00 00 00												AnimIndex
+00 00 00 00												SomeEntriesCount
+
+00 00 00 00
+01 00 00 00		WalkSet count
+
+02 08 0B 00		walk_1					walk_2					walk_3					walk_4
+31 00 00 2D		walk_1_end_s			walk_1_end_m			walk_1_end_l			walk_2_end_s
+2C 2B 30 2F		walk_2_end_m 			walk_2_end_l 			walk_3_end_s 			walk_3_end_m
+2E 00 00 00		walk_3_end_l			walk_4_end_s			walk_4_end_m			walk_4_end_l
+
+0F 0E 00 06		standing_turn_right		standing_turn_left		unk_byte				accel_1_2
+
+09 00 00 0A		accel_2_3				accel_3_4				brake_4_3				brake_3_2
+07 04 05 00		brake_2_1				walk_left				walk_right				unk_byte2
+01 1C 00 00		walk_transition_index	growup					sail_up 				sail_down
+
+00 00 00 00		standanim				walk_to_swim_2
+00 00 00 00
+00 00
+64 65 66 00		WalkSetName (e.g. def,hump,swim)
+
+0D 00 00 00												CharsCount
+64 75 6E 6B 6C 65 6F 73 74 65 75 73 00					dunkleosteus 00
+01 00 00 00												ModelIndex
+
+08 00 00 00												ModelAnimCount
+0D 00 00 00												CharsCount
+61 74 74 61 63 6B 5F 66 72 6F 6E 74 00					attack_front 00
+00 00 00 00												AnimIndex
+07 00 00 00												SoundIndicesCount
+
+00 00 00 00												SoundIndex1 (in SOUNDS_TABLE)
+02 00 00 00												SoundIndex2
+03 00 00 00												SoundIndex3
+04 00 00 00												SoundIndex4
+05 00 00 00												SoundIndex5
+01 00 00 00												SoundIndex6
+06 00 00 00												SoundIndex7
+
+00 00 00 00												00
+07 00 00 00												CharsCount
+73 77 69 6D 5F 31 00									swim_1 00
+01 00 00 00												AnimIndex
+06 00 00 00												SoundIndicesCount
+
+07 00 00 00												SoundIndex1
+0A 00 00 00												SoundIndex2
+08 00 00 00												SoundIndex3
+0B 00 00 00												SoundIndex4
+09 00 00 00												SoundIndex5
+0C 00 00 00												SoundIndex6
+
+00 00 00 00												00
+07 00 00 00												CharsCount
+73 77 69 6D 5F 32 00									swim_2 00
+02 00 00 00												AnimIndex
+06 00 00 00												SoundIndicesCount
+
+07 00 00 00												SoundIndex1
+0E 00 00 00												SoundIndex2
+0A 00 00 00												SoundIndex3
+0D 00 00 00												SoundIndex4
+0F 00 00 00												SoundIndex5
+10 00 00 00												SoundIndex6
+
+00 00 00 00												00
+07 00 00 00												CharsCount
+73 77 69 6D 5F 33 00									swim_3 00
+03 00 00 00												AnimIndex
+06 00 00 00												SoundIndicesCount
+
+11 00 00 00												SoundIndex1
+13 00 00 00												SoundIndex2
+14 00 00 00												SoundIndex3
+12 00 00 00												SoundIndex4
+15 00 00 00												SoundIndex5
+16 00 00 00												SoundIndex6
+
+00 00 00 00												00
+0A 00 00 00												CharsCount
+73 77 69 6D 5F 6C 65 66 74 00							swim_left 00
+04 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00												00
+0B 00 00 00												CharsCount
+73 77 69 6D 5F 72 69 67 68 74 00						swim_right 00
+05 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00												00
+0A 00 00 00												CharsCount
+73 74 61 6E 64 61 6E 69 6D 00							standanim 00
+06 00 00 00												AnimIndex
+1D 00 00 00												SoundIndicesCount
+
+17 00 00 00												SoundIndex1
+19 00 00 00												SoundIndex2
+1A 00 00 00												SoundIndex3
+1B 00 00 00												SoundIndex4
+1C 00 00 00												SoundIndex5
+1D 00 00 00												SoundIndex6
+1E 00 00 00												SoundIndex7
+1F 00 00 00												SoundIndex8
+20 00 00 00												SoundIndex9
+20 00 00 00												SoundIndex10
+20 00 00 00												SoundIndex11
+20 00 00 00												SoundIndex12
+20 00 00 00												SoundIndex13
+20 00 00 00												SoundIndex14
+20 00 00 00												SoundIndex15
+20 00 00 00												SoundIndex16
+20 00 00 00												SoundIndex17
+20 00 00 00												SoundIndex18
+18 00 00 00												SoundIndex19
+21 00 00 00												SoundIndex20
+21 00 00 00												SoundIndex21
+21 00 00 00												SoundIndex22
+21 00 00 00												SoundIndex23
+21 00 00 00												SoundIndex24
+21 00 00 00												SoundIndex25
+21 00 00 00												SoundIndex26
+21 00 00 00												SoundIndex27
+21 00 00 00												SoundIndex28
+21 00 00 00												SoundIndex29
+
+00 00 00 00												00
+06 00 00 00												CharsCount
+64 79 69 6E 67 00										dying 00
+07 00 00 00												AnimIndex
+03 00 00 00												SoundIndicesCount
+
+22 00 00 00												SoundIndex1
+23 00 00 00												SoundIndex2
+24 00 00 00												SoundIndex3
+
+00 00 00 00
+01 00 00 00		WalkSet count
+
+02 03 04 00		byte1=AnimIndex for speed1. byte2=AnimIndex for speed2. byte3=AnimIndex for speed3. byte4=AnimIndex for speed4
+00 00 00 00
+00 00 00 00
+00 00 00 00
+06 05 00 02		AnimID
+02 00 00 02		AnimID
+02 05 06 00
+02 07 00 00		byte1=WalkTransitionId in WALK_TRANSITIONS_TABLE
+00 00 00 00
+00 00 00 00
+00 00
+00 00 00 00		WalkSetName (e.g. def,hump,swim)
+
+08 00 00 00												CharsCount
+68 65 6E 6F 64 75 73 00									henodus
+02 00 00 00												ModelIndex
+
+04 00 00 00												ModelAnimCount
+05 00 00 00												CharsCount
+73 77 69 6D 00											swim 00
+00 00 00 00												AnimIndex
+02 00 00 00												SoundIndicesCount
+
+25 00 00 00												SoundIndex1
+26 00 00 00												SoundIndex2
+
+00 00 00 00												00
+07 00 00 00												CharsCount
+67 72 6F 77 75 70 00									growup 00
+01 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00												00
+0A 00 00 00												CharsCount
+73 74 61 6E 64 61 6E 69 6D 00							standanim 00
+02 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00												00
+06 00 00 00												CharsCount
+64 79 69 6E 67 00										dying 00
+03 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00
+01 00 00 00		WalkSet count
+
+01 00 00 00		byte1=AnimIndex for speed1. byte2=AnimIndex for speed2. byte3=AnimIndex for speed3. byte4=AnimIndex for speed4
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+01 02 00 00		byte1=WalkTransitionId in WALK_TRANSITIONS_TABLE
+00 00 00 00
+00 00 00 00
+00 00
+00 00 00 00		WalkSetName (e.g. def,hump,swim,defn)
+
+0F 00 00 00												CharsCount
+71 75 65 74 7A 61 6C 63 6F 61 74 6C 75 73 00			quetzalcoatlus
+03 00 00 00												ModelIndex
+
+02 00 00 00												ModelAnimCount
+0A 00 00 00												CharsCount
+73 74 61 6E 64 61 6E 69 6D 00							standanim 00
+00 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00												00
+06 00 00 00												CharsCount
+64 79 69 6E 67 00										dying 00
+01 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00
+00 00 00 00		WalkSet count
+
+15 00 00 00															CharsCount
+71 75 65 74 7A 61 6C 63 6F 61 74 6C 75 73 5F 62 6F 64 65 6E 00		quetzalcoatlus_boden
+04 00 00 00															ModelIndex
+
+02 00 00 00												ModelAnimCount
+0A 00 00 00												CharsCount
+73 74 61 6E 64 61 6E 69 6D 00							standanim 00
+00 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00												00
+06 00 00 00												CharsCount
+64 79 69 6E 67 00										dying 00
+01 00 00 00												AnimIndex
+00 00 00 00												SoundIndicesCount
+
+00 00 00 00
+00 00 00 00		WalkSet count
+
+
+0x000003F9		SOUNDS_TABLE
+After models and anims list to unknown	
+27 00 00 00		All sounds count
+
+25 00 00 00		MaxCharsCount in sound name.
+30 30 5F 6E 70 63 2F 6E 70 63 5F 64 69 6E 6F 5F 68 75 67 65 31 5F 77 61 74 65 72 5F 61 74 74 31 2E 77 61 76 00    00_npc/npc_dino_huge1_water_att1.wav
+01 00 00 00		The frame on which the sound starts
+63 00 00 00		Volume
+66 66 66 3F		pitch
+00 00 00 00		flags
+00 00 00 41		panning	
+00 00 96 42		minfadedistance
+00 00 98 42		maxfadedistance
+01 00 00 00		maxhearingdistance
+00				Splitter (Used to split blocks if the sound is used more than once in the animation)
+and 36 more empty entries, 74 bytes each(except 04_step/step_dino_swim5.wav because there the sound should play 3 times per animation) upto 0x00000E1A
+
+
+0x00000E1B		WALK_TRANSITIONS_TABLE
+00 00 00 00
+00 00 00 00
+02 00 00 00		walktransitions count
+09 00 00 00		CharsCount
+41 6E 69 6D 61 6C 73 31 00		Animals1
+09 00 00 00		CharsCount
+41 6E 69 6D 61 6C 73 33 00		Animals3
+
+
+0x00000E41		PADDING
+From unknown to 0x0000FFFF		#Except when the TREE_NODES is larger 0x00010000 (all_characters.gsf,all_animals.gsf ...)
+
+
+0x00010000		CONTENTS_TABLE
+00 00 00 00		0=const
+05 00 00 00		ObjectsCount = 5 #AllModelsCount
+0B 00 00 00		SubObjectsCount = 11 #AllAnimsCount
+00 00 00 00		0=const
+1C 00 00 00		Offset to OBJECTS_TABLE = 0x1002C
+05 00 00 00		ObjectsCount = 5 #Models classes count										
+B8 01 00 00		Offset to ANIMATIONS_CLASSES_TABLE = 0x101D0
+0B 00 00 00		SubObjectsCount = 11 #Anim classes count
+
+
+0x00010020		MATERIALS_HEADER
+06 00 00 00		MaterialsCount = 6
+4C A0 00 00		Offset to USED_MATERIALS_TABLE = 0x1A070
+E8 03 00 00		TotalEntries = 1000
+
+
+0x0001002C		OBJECTS_TABLE
+43 68 61 72		"Char"
+38 FE 00 00		Offset to OBJECT_NAME = 0x1FE68
+2C FE 00 00		Offset to USED_CHUNKS_TABLE = 0x1FE60
+02 00 00 00		USED_CHUNKS_TABLE offsets count = 2
+1C A0 00 00		Offset to CONTENTS_TABLE and OBJECTS_TABLE offsets list = 0x1A058
+01 00 00 00		00=skip data. 01=read data
+00 00 00 00		2 shorts #Unk. Short and Additional effects count
+FF FF 00 00		2 shorts #num chunks before links and links count
+00 01 00 00		4 bytes
+FF 00 00 00		4 bytes
+00 00 00 80		Offset
+00 00 00 80		Offset to PATHFINDER_TABLE
+00 00 00 00		4 bytes. 1b=PF planes count. 2b=01=render all volumes 02=render all volumes + nm sphere? 3b=PF unknown. 4=unknown
+48 AF 10 BF		BoundingBoxMinX = -0.565175
+FB 41 7E BF		BoundingBoxMinY = -0.993194
+64 B8 37 BE		BoundingBoxMinZ = -0.179414
+4A AF 90 3F		BoundingBoxMaxX = 1.13035
+DA B5 FD 3F		BoundingBoxMaxY = 1.98211
+57 E6 E1 3E		BoundingBoxMaxZ = 0.44121
+10 FE 00 00		Offset to ANIM_ATTRIBUTES_TABLE = 0x1FE88
+03 00 00 00		Animations count
+
+From 0x0001002C to 0x0001007F (0x54 = 84 bytes) Char (bothriolepis)
+From 0x00010080 to 0x000100D3 (0x54 = 84 bytes) Char (dunkleosteus)
+From 0x000100D4 to 0x00010127 (0x54 = 84 bytes) Anim (henodus)
+From 0x00010128 to 0x0001017B (0x54 = 84 bytes) Anim (quetzalcoatlus)
+From 0x0001017C to 0x000101CF (0x54 = 84 bytes) Char (quetzalcoatlus_boden)
+
+
+0x000101D0		ANIMATIONS_CLASSES_TABLE
+43 68 61 72		"Char"
+30 01 00 00		Offset to ANIMATION_HEADER = 0x10304
+74 04 00 00		Offset to table with ANIM_START_OFFSET and/or STAND_POS_ANIM_DATA and/or byte before USED_CHUNKS_TABLE
+01 00 00 00		SomeCount = 1
+00 00 00 80		Offset to STAND_POS_OBJECTS_TABLE
+01 00 00 00		SomeCount = 1
+0A 00 00 00		Anim frames count = 10
+
+From 0x000101D0 to 0x000101EB (0x1C = 28 bytes) Char 
+From 0x000101EC to 0x00010207 (0x1C = 28 bytes) 00 00 00 00 (Yes, this is the class name)
+From 0x00010208 to 0x00010223 (0x1C = 28 bytes) Char 
+From 0x00010224 to 0x0001023F (0x1C = 28 bytes) Char 
+From 0x00010240 to 0x0001025B (0x1C = 28 bytes) Char 
+From 0x0001025C to 0x00010277 (0x1C = 28 bytes) Char 
+From 0x00010278 to 0x00010293 (0x1C = 28 bytes) Anim 
+From 0x00010294 to 0x000102AF (0x1C = 28 bytes) 00 00 00 00 (And this is too)
+From 0x000102B0 to 0x000102CB (0x1C = 28 bytes) Anim 
+From 0x000102CC to 0x000102E7 (0x1C = 28 bytes) Char 
+From 0x000102E8 to 0x00010303 (0x1C = 28 bytes) Anim 
+
+ANIMATION
+0x00010304		ANIMATION_HEADER (Anim can support scaling, or may not)
+01 00 00 00		StringsCount = 1
+14 00 00 00		MaxCharsCount in anim name. If the name is more or equal 14 characters, then 24 00 00 00   (14=20)
+08 00 00 00		CharsCount = 8
+48 65 6C 70 65 72 30 31		"Helper01"
+00 00 00 00 00 00 00 00 00 00 00 00 #Padding (MaxCharsCount)
+
+0x00010324		ANIMATION_START
+05 00 00 40		ChunkType = 0x40000005
+00 00 00 00		Attributes
+5B F9 F4 16		Guid = 0x16F4F95B
+00 00 00 80		ChunkType2
+FF FF FF FF		short2 - short1 = How many frames from the first should be played to loop walk anim (eg if 0A 00 32 00 then 32 - A = 28 = 40 frames)
+00 00 80 BF		-1
+00 00 01 00		65536
+1C 00 00 00		AnimData1 = 0x00010340 + 0x001C = 0x0001035C
+A8 01 00 00		Offset to ANIMATION_SPLITTER_TABLE1 = 0x00010344 + 0x01A8 = 0x000104EC
+01 00 00 00		Splitter count in ANIMATION_SPLITTER_TABLE1 = 1
+0A 00 00 00		TransformationsCount = 10
+00 00 00 00		float. For walk anim. Distance between first and second path points
+00 00 00 00		float. For walk anim.
+00 00 00 00		float. For walk anim. Distance between penultimate and last path points
+
+
+0x0001035C		ANIMATION_DATA	(Helper01)
+From 0x0001035C to 0x000104EB
+40 bytes * 10 transformations = 400 bytes = 0x0190 up to 0x000104EB #model position in the world
+
+00 00 60 A8		QuaternionX = -1.24345e-14
+00 00 E0 27		QuaternionY = 6.21725e-15
+77 CC F9 B2		QuaternionZ = -2.90804e-08
+00 00 80 3F		QuaternionW = 1
+00 00 00 00		PosX = 0
+00 00 00 00		PosY = 0
+00 00 00 00		PosZ = 0
+00 00 00 00		ScaleX = 0
+00 00 00 00		ScaleY = 0
+00 00 00 00		ScaleZ = 0
+
+00 00 E0 A8
+00 00 E0 A7
+7F 38 1F B4
+00 00 80 3F
+C4 A2 E2 3A		PosX
+00 00 00 00		PosY
+00 00 00 00		PosZ
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+00 00 E0 A8
+00 00 E0 A7
+7F 38 1F B4
+00 00 80 3F
+CD C4 BF 3B
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+00 00 E0 A8
+00 00 E0 A7
+7F 38 1F B4
+00 00 80 3F
+B2 83 30 3C
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+00 00 E0 A8
+00 00 E0 A7
+7F 38 1F B4
+00 00 80 3F
+C0 11 74 3C
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+00 00 E0 A8
+00 00 E0 A7
+7F 38 1F B4
+00 00 80 3F
+0C 33 88 3C
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+E5 FD 7F B3
+80 1E 04 B0
+A3 F5 FE B3
+01 00 80 3F
+25 D6 65 3C
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+E5 FD FF B3
+B8 1E 84 B0
+B7 9B 8F B4
+00 00 80 3F
+0C 33 08 3C
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+60 ED 7D B3
+2B 07 81 B3
+80 38 1F 34
+00 00 80 BF
+CF 3F 2A 3B
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+60 ED 7D B3
+2B 07 81 B3
+80 38 1F 34
+00 00 80 BF
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 00 00
+
+0x000104EC		ANIMATION_SPLITTER_TABLE1
+01 02 01 00		Attributes
+0C 00 00 00		Offset to AnimData2
+A8 00 00 00		Offset to next ANIMATION_SPLITTER_TABLE
+01 00 00 00		Splitter count in ANIMATION_SPLITTER_TABLE2 = 1
+
+
+From 0x000104FC to 0x0001059B Mesh1 transformations
+
+
+0x0001059C		ANIMATION_SPLITTER_TABLE2
+02 02 00 00		Attributes
+0C 00 00 00		Offset to AnimData3
+00 00 00 80		Offset to next ANIMATION_SPLITTER_TABLE3(null)
+00 00 00 00		Splitter count in ANIMATION_SPLITTER_TABLE3 = 0
+
+
+From 0x000105AC to 0x0001064B Mesh2 transformations
+
+
+0x0001064C		ANIM_START_OFFSET
+D8 FC FF FF		0x0001064C - 808d = 0x00010324 Offset to animation start
+
+
+next ANIMATION (Helper01)
+From 0x00010650 to 0x00011F73
+
+next ANIMATION (Dunkleosteus_helper)
+From 0x00011F74 to 0x000130A7
+
+next ANIMATION (Dunkleosteus_helper)
+From 0x00011F74 to 0x00013C8B
+
+next ANIMATION (Dunkleosteus_helper)
+From 0x00013C8C to 0x000145C7
+
+next ANIMATION (Dunkleosteus_helper)
+From 0x000145C8 to 0x0001470B
+
+next ANIMATION (Dunkleosteus_helper)
+From 0x0001470C to 0x000147E7
+
+next ANIMATION (Helper01)
+From 0x000147E8 to 0x00015B1B
+
+next ANIMATION (Dunkleosteus_helper)
+From 0x00015B1C to 0x0001719F
+
+next ANIMATION (Helper01)
+From 0x000171A0 to 0x000190D3
+
+next ANIMATION (Henodus_Helper)
+From 0x000190D4 to 0x000195A7
+
+
+MODEL
+BOTHRIOLEPIS_MODEL
+0x000195A8		BONES_TABLE
+05 00 00 00		ChunkType		ERROR:internal, unsupported skeletton format!
+1F 00 00 00		Attributes
+5B F9 F4 16		Guid	Crc32b 16F4F95B = "root"
+
+00 00 00 00		Skeleton index
+5B F9 F4 16		Guid
+00 00 00 00		Flags
+8C 74 96 B2		AnimPosX
+14 DE 7E 3F		AnimPosY
+A4 A5 61 3C		AnimPosZ
+00 00 80 3F		ScaleX
+00 00 80 3F		ScaleY
+00 00 80 3F		ScaleZ
+9F EA FC BE		Quaternion
+FF 85 01 3F		Quaternion
+9D EA FC 3E		Quaternion
+FF 85 01 3F		Quaternion
+01 00 00 00		Childs count
+18 00 00 00		Offset to next bone
+
+01 00 00 00		Parent bone сhilds count?
+88 00 00 00		Offset to BIND_POSE?
+03 00 00 00		Bones count?
+03 00 00 00		Bones count?
+
+00 00 00 00		Parent bone id?
+E3 38 C9 F9		Guid
+00 00 00 00		Flags
+8F 22 0A 3F		AnimPosX
+4D 77 E8 35		AnimPosY
+53 12 8F B1		AnimPosZ
+00 00 80 3F		ScaleX
+00 00 80 3F		ScaleY
+00 00 80 3F		ScaleZ
+E2 23 40 A5		Quaternion
+24 73 E5 30		Quaternion
+34 70 1C 3D		Quaternion
+30 D0 7F 3F		Quaternion
+01 00 00 00		Childs count
+08 00 00 00		Offset to next bone
+
+01 00 00 00		Parent bone id?
+48 B4 8B B9		Guid
+00 00 00 00		Flags
+25 4F 26 3F		AnimPosX
+20 B9 67 34		AnimPosY
+0A 12 14 33		AnimPosZ
+00 00 80 3F		ScaleX
+00 00 80 3F		ScaleY
+00 00 80 3F		ScaleZ
+3E 87 3B 26		Quaternion
+DA C1 50 B0		Quaternion
+8B 54 8E BC		Quaternion
+1C F6 7F 3F		Quaternion
+00 00 00 00		Childs count
+00 00 00 80		Offset to next bone(null)
+
+00 00 00 00
+
+0x00019678		BIND_POSE? — это поза в которой была заскинена модель, внутри файла это выглядит как массив обратных матриц на каждую кость и одна матрица для всей модели. 
+A2 8A 7D 33		5.90322e-08
+F8 F2 68 B3		-5.42377e-08
+00 00 80 BF		-1
+00 00 00 00		0
+
+34 ED 7F BF		-0.999713
+5D 28 C4 3C		0.023945
+12 6B 95 B3		-6.95783e-08
+00 00 00 00		0
+
+62 28 C4 3C		0.023945
+34 ED 7F 3F		0.999713
+A2 F6 7B B3		-5.86648e-08
+00 00 00 80		-0
+
+C0 B5 7E 3F		0.994961
+60 0A 1A BD		-0.0376076
+CA C1 61 33		5.25631e-08
+00 00 80 3F		1
+
+59 20 80 33		5.96635e-08
+DD 76 55 B3		-4.9701e-08
+FE FF 7F BF		-1
+00 00 00 80		-0
+
+D7 A5 7F BF		-0.998624
+12 C4 56 BD		-0.0524331
+A8 3F 8E B3		-6.62397e-08
+00 00 00 00		0
+
+0F C4 56 BD
+D7 A5 7F 3F
+4C C2 7B B3
+00 00 00 80		-0
+
+87 F0 E9 3E
+C7 A2 33 BB
+43 18 6D 33
+00 00 80 3F		1
+
+48 34 7F 33
+12 5A 5E B3
+FE FF 7F BF
+00 00 00 80		-0
+
+B6 F5 7F BF
+E8 0B 91 BC
+2C 82 91 B3
+00 00 00 00		0
+
+E2 0B 91 BC
+B6 F5 7F 3F
+E0 FC 7B B3
+00 00 00 80		-0
+
+FF 55 45 BE
+18 A6 81 3B
+A4 88 AF 32
+00 00 80 3F		1
+
+
+0x0001973C		MESH_TRANSFORMATIONS (аффинные преобразования)
+00 00 00 80		ChunkType
+1F 00 00 00		FlagId
+B7 19 10 42		Guid
+
+00 00 80 3F		ScaleX
+00 00 00 00		StretchY
+00 00 00 00		StretchZ(x)
+00 00 00 00		0
+
+00 00 00 00		StretchX
+00 00 80 3F		ScaleY
+00 00 00 00		StretchZ(y)
+00 00 00 00		0
+
+00 00 00 00		ShearX
+00 00 00 00		ShearY
+00 00 80 3F		ScaleZ
+00 00 00 00		0
+
+00 00 00 00		PosX
+00 00 00 00		PosY
+00 00 00 00		PosZ
+00 00 80 3F		1
+
+
+0x00019788		!MESH_BOUNDING_BOX!
+02 00 00 00		ChunkType
+00 00 00 00		Attributes					(05 FF FF FF   FF 00 00 00)
+08 00 00 00		Offset to BBox1
+00 00 00 00		Guid
+48 AF 10 BF		GlobalBBMinX = -0.565
+FB 41 7E BF		GlobalBBMinY = -0.993
+64 B8 37 BE		GlobalBBMinZ = -0.179
+4C AF 10 3F		GlobalBBMaxX = 1.130
+BA 29 7D 3F		GlobalBBMaxY = 1.982
+25 0A 86 3E		GlobalBBMaxZ = 0.441
+01 00 00 00		Mesh count and/or MeshLocalBBox count
+10 00 00 00		Offset to BBox2
+01 00 00 00		Mesh count and/or MeshLocalBBox count
+9A 08 00 00		Offset to next MESH_TRANSFORMATIONS or to USED_CHUNKS_TABLE if this is the last mesh in the model
+01 00 00 00		Mesh count and/or MeshLocalBBox count
+
+48 AF 10 BF		Mesh1LocalBBMinX = -0.565
+FB 41 7E BF		Mesh1LocalBBMinY = -0.993
+64 B8 37 BE		Mesh1LocalBBMinZ = -0.179
+4C AF 10 3F		Mesh1LocalBBMaxX = 1.130
+BA 29 7D 3F		Mesh1LocalBBMaxY = 1.982
+25 0A 86 3E		Mesh1LocalBBMaxZ = 0.441
+5F 00 00 00		Vertices = 95
+67 00 00 00		Triangles = 103
+18 00 00 00		Offset to vertices = 0x197FC
+04 06 00 00		Offset to faces = 0x19DEC
+67 00 00 00		Triangles = 103
+10 00 00 00		VertexDataSize = 16
+00 00 00 80		Offset to SomeLightData(null)
+00 00 00 00		SomeLightDataCount = Vertices * 2
+
+
+From 0x000197FC to 0x00019DEB Vertices data (0x5F0 = 1520 bytes / VertexDataSize(16) = 95 vertices)
+
+
+From 0x00019DEC to 0x0001A055 Triangles data (0x26A = 618 bytes / 6 = 103 faces)
+
+
+From 0x0001A056 to 0x0001A057 Material index
+
+
+0x0001A058		CONTENTS_TABLE and OBJECTS_TABLE offsets list
+A8 5F FF FF		Offset to CONTENTS_TABLE
+C4 5F FF FF		Offset to OBJECTS_TABLE
+
+
+0x0001A060		USED_MATERIALS_TABLE_HEADER
+0C 00 00 00
+01 00 00 00		UsedMaterialIndexCount
+01 00 00 00
+
+00 00 00 00		UsedMaterialIndex1
+
+0x0001A070		USED_MATERIALS_TABLE
+00 00 00 00		MaterialAttributes1
+0F 00 00 00		MaterialAttributes2
+B8 5D 00 00		Offset to TEXTURE_NAME = 0x1FE30
+00 00 00 80		Offset to NM_TEXTURE_NAME(null)
+00 00 00 80		Offset to ENV_TEXTURE_NAME(null)
+00 00 00 00
+
+10 40 00 00		MaterialAttributes1
+42 00 00 00		MaterialAttributes2
+B6 F8 00 00		Offset to TEXTURE_NAME
+E2 F8 00 00		Offset to NM_TEXTURE_NAME
+00 00 00 80		Offset to ENV_TEXTURE_NAME
+00 00 00 00
+
+01 00 00 00		MaterialAttributes1
+00 00 00 00		MaterialAttributes2
+FE F8 00 00		Offset to TEXTURE_NAME
+00 00 00 80		Offset to NM_TEXTURE_NAME
+00 00 00 80		Offset to ENV_TEXTURE_NAME
+00 00 00 00
+
+
+0x0001FE60		USED_CHUNKS_TABLE
+48 97 FF FF		Offset to BONES_TABLE or to animation if there is no skeleton
+D8 98 FF FF		Offset to MESH_TRANSFORMATIONS
+
+
+0x0001FE68		OBJECT_NAME
+01 00 00 00		StringsCount = 1
+14 00 00 00		MaxCharsCount in model name. If the name is more or equal 14 characters, then 24 00 00 00
+0C 00 00 00		CharsCount = 12
+62 6F 74 68 72 69 6F 6C 65 70 69 73		"bothriolepis"
+00 00 00 00 00 00 00 00					Padding
+
+
+0x0001FE88		ANIM_ATTRIBUTES_TABLE
+A4 01 FF FF		Offset to OBJECTS_TABLE 0x0001FE88 - 65116d = 0x0001002C
+20 00 00 00		Offset to anim1	in ANIM_ATTRIBUTES_TABLE2
+01 00 00 00		00=skip data. 01=read data
+
+98 01 FF FF		Offset to OBJECTS_TABLE = 0x0001002C
+00 00 00 80		Offset to anim2	in ANIM_ATTRIBUTES_TABLE2(null)
+00 00 00 00		00=skip data. 01=read data
+
+8C 01 FF FF		Offset to OBJECTS_TABLE = 0x0001002C
+00 00 00 80		Offset to anim3	in ANIM_ATTRIBUTES_TABLE2(null)
+00 00 00 00		00=skip data. 01=read data
+
+
+0x0001FEAC		ANIM_ATTRIBUTES_TABLE2
+78 04 FF FF		Offset to anim1 chunk start 0x0001FEAC - 64392d = 0x00010324 (Decimal from signed 2's complement)
+0A 00 00 00		Anim1 frames count
+
+
+Parts that are not included in the icewaste_animals.gsf
+
+0x0211CB95		LINKS
+0B 00 00 80		ChunkType
+1F 00 00 00		Attributes
+B8 7C B7 FE		Guid
+76 74 37 BF		-0.7166208	PosX
+1C C3 1C 3F		0.61235213	PosY
+7C 7C 01 40		2.023223	PosZ
+B7 2A 17 3F		0.5904955	QuaternionX
+16 DC D8 BD		-0.10588853	QuaternionY
+FF 1C 20 BE		-0.15636061	QuaternionZ
+EB DD 48 3F		0.7846362	QuaternionW
+48 6E 64 52		"HndR" Link name
+00 00 00 00
+26 FF FF FF		Bone id
+FF 00 00 00		Bone weight
+
+
+0x0211CE6D		LINKSv2
+0B 00 00 00		ChunkType
+1F 00 00 00		Attributes
+BC 6A 99 D6		Guid
+0D D0 24 34		PosX
+E0 BC 60 40		PosY
+9C 1A D3 BA		PosZ
+00 00 00 00		Quaternion
+00 00 00 00		Quaternion
+00 00 80 3F		Quaternion
+69 21 A2 B3		Quaternion
+46 6D 30 31		"Fm01"
+
+E0231			PF_BLOCKER
+01 00 00 00		Blocker type 00=sphere(hit collision) 01=planes(path blocker)
+5A D5 80 C0		PosX
+5A D5 80 C0		PosY
+C0 C4 0A BE		PosZ
+5A D5 00 41		ScaleX
+5A D5 00 41		ScaleY
+BD 9B 03 41		ScaleZ
+1F 00 00 00
+
+				PF_BLOCKERv2 (Collision sphere)
+00 00 00 00		Blocker type 00=sphere(hit collision) 01=planes(path blocker)
+89 A9 41 3E		PosX
+C3 84 DA C0		PosY
+74 9A 36 40		PosZ
+F9 BB C0 40		Scale
+80 1A 11 42		guid maybe
+00 00 00 00		Always 00 00 00 00 (padding)
+1F 00 00 00	
+
+
+1D2E6D4			!STAND_POS_OBJECTS_TABLE!
+2C 19 68 FE		Offset to CONTENTS_TABLE
+48 19 68 FE		Offset to MATERIALS_HEADER
+66 50 01 00		Offset to ANIM_TEXTURE_TABLE
+03 00 00 00		
+01 00 00 00
+03 00 00 40		ChunkType
+03 00 00 00		Attributes
+CD 6C 3E 88		Guid
+A9 43 C4 BE		BBMinX
+ED A6 95 BD		BBMinY
+87 55 0C C0		BBMinZ
+5D 9E C4 3E		BBMaxX
+DE 9F 94 3D		BBMaxY
+D6 BC 9D 40		BBMaxZ
+				
+				BILLBOARD_BOUNDING_BOX (VertexDataSize 13byte)
+00 00 00 00
+01 14 03 02		Attributes
+60 50 FF 64		RGB
+00 00 80 40		LeavesSize = 4
+5A 7F 7F 02		Attributes
+00 00 00 00
+FF 00 01 00		Attributes
+00 00 00 00
+45 7C 39 C0		BBMinX
+2A CE 99 C0		BBMinY
+74 11 1C C0		BBMinZ
+B8 0F B1 40		BBMaxX
+F8 EA 37 40		BBMaxY
+84 5E 04 40		BBMaxZ
+87 00 00 00		Vertices = 135
+08 00 00 00		Offset to vertices
+0D 00 00 00		VertexDataSize = 13
+
+
+02 00 00 00		ChunkType
+1F 00 00 00		Attributes
+41 5D DB 27		Guid
+03 00 00 00
+00 00 00 00
+00 00 00 80
+E1 A6 53 3E
+7F 91 B6 BD
+00 00 00 00
+00 00 00 00
+15 FB 7E 3F
+FE 9E 5B 3F
+DC 9E 5B 3F
+53 23 2C 3F		Spread of particles
+AA 00 00 00
+87 16 C9 3F
+14 00 00 00
+30 00 00 00
+01 00 00 00
+31 00 00 00
+1C 00 00 00
+
+01 00 00 00
+14 00 00 00
+FF FF FF FF
+50 61 72 74 69 63 6C 65 31 32 00 00 00 00 00 00 00 00 00 00
+00 03 03 20
+0F 00 00 7F
+7F CF CC 0C
+41 00 00 80
+3F 00 00 00
+00 9A 99 99
+3E 00 00 00
+3F 00 00 00
+00 02 40 0A
+00 CD CC 4C
+3E 00 00 00
+3F 00 00 80
+3F 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF 00 00 00 FF 00 00 00 FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 3F 00 00 00 00 FF 00 00 00 00 00 20 41 6B 42 EB FF 87 42 EB FF 0C 00 00 00 01 00 00 00 01 00 00 00 0C 00 00 00 FB FE FF FF 01 00 00 00 14 00 00 00 0A 00 00 00 66 78 5F 77 61 6B 65 5F 30 33
+
+
+MaterialAttributes1:
+01 00 00 00 = use hard alpha
+02 00 00 00 = use soft alpha
+03 00 00 00 = black water shader + hard alpha
+05 00 00 00 = black water shader + hard alpha
+06 00 00 00 = black water shader + soft alpha
+07 00 00 00 = black water shader + soft alpha
+08 00 00 00 = no shaders
+09 00 00 00 = delete texture using env alpha mask
+0A 00 00 00 = actual water shader + soft alpha
+0B 00 00 00 = actual water shader + hard alpha
+0C 00 00 00 = green water shader
+0D 00 00 00 = water shader + hard alpha
+0E 00 00 00 = water shader + soft alpha 
+0F 00 00 00 = water shader + hard alpha
+
+10 00 00 00 = use nm
+20 00 00 00 = no receive light
+30 00 00 00 = no receive light
+40 00 00 00 = no receive light
+50 00 00 00 = no receive light
+
+00 10 00 00 = use playercol
+00 40 00 00 = use shininess
+00 50 00 00 = use playercol+shininess
+00 70 00 00 = use playercol
+00 80 00 00 = max shadow (black)
+00 90 00 00 = max shadow + playercol
+00 A0 00 00 = max shadow (black)
+
+00 01 00 00 = render the texture using objects as a mask
+00 02 00 00 = max light
+00 03 00 00 = render the texture using objects as a mask + max light
+00 04 00 00 = min light
+00 05 00 00 = render the texture using objects as a mask + min light
+00 06 00 00 = max light
+00 07 00 00 = render the texture using objects as a mask + max light
+00 08 00 00 = render the texture using objects with same material as a mask
+
+MaterialAttributes2:
+00 00 10 00 = water shader
+
+
+Some findings about effects (яяяяglow_01)
+01 isnt effect name, its the index of this effect on the model
+
+01 00 00 00
+14 00 00 00
+FF FF FF FF
+50 61 72 74 69 63 6C 65 30 31 00 00 00 00 00 00	00 00 00 00		Particle01
+00
+03 03 10 07		Atlas stuff 0F-anim
+FF 00 7F 7F
+00 00 70 41		15		Particle size
+CE CC 4C 3F		0.8		Particle speed
+00 00 00 00
+00 00 00 00
+00 00 00 40
+00 00 00 00
+00 40 08 00
+CD CC CC 3D		0.1		Particle update speed
+34 33 33 3F		0.7
+00 00 80 3F		1
+00 00 00 00
+00 00 A0 40		5
+00 00 00 00		RedRandomMul
+00 00 00 00		GreenRandomMul
+00 00 00 00		BlueRandomMul
+00 00 00 00		RedMul
+00 00 00 00		GreenMul
+00 00 00 00		BlueMul
+3C 00 00 00		Red strength
+3C 00 00 00		Green strength
+3C 00 00 00		Blue strength
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 80 3F
+
+
+00
+03 03 00 0F		Atlas stuff 0F-anim
+00 00 7F 7F
+00 00 80 3F		Particle size
+00 00 80 3F		Particle speed
+00 00 00 00
+00 00 00 00
+00 00 00 3F
+00 00 00 00
+17 01 00 00
+00 00 00 00		ColorFadeOut speed
+00 00 00 00		ColorFadeIn speed
+00 00 00 40		Anim speed
+00 00 00 00		Scale
+00 00 00 00		Particle scale
+B4 00 00 00		RedRandomMul
+B4 00 00 00		GreenRandomMul
+B4 00 00 00		BlueRandomMul
+00 00 00 00		RedMul				(FinalRed = Red * RedMul)
+00 00 00 00		GreenMul
+00 00 00 00		BlueMul
+FF 00 00 00		Red
+FF 00 00 00		Green
+FF 00 00 00		Blue
+00 00 00 00
+00 00 00 00
+00 00 00 00
+00 00 80 3F
