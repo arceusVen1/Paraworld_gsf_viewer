@@ -1,15 +1,58 @@
-import 'package:equatable/equatable.dart';
+import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/test.dart';
 import 'package:vector_math/vector_math_64.dart';
 
-class Vertex extends Equatable {
-  const Vertex({
-    required this.positions,
-  });
+const _k13BytesRatioValue = 1 / 8191;
 
-  final Vector3 positions;
+class Vertex {
+  Vertex(
+    this.positions, {
+    required this.box,
+    this.vertexNormal,
+  }) {
+    positions.x = positions.x * (box.x.max - box.x.min) + box.x.min;
+    positions.y = positions.y * (box.y.max - box.y.min) + box.y.min;
+    positions.z = positions.z * (box.z.max - box.z.min) + box.z.min;
+  }
+
+  late Vector3 positions;
+  late BoundingBox box;
+  Vertex? vertexNormal;
+  int? _normalSphereIndice;
+
+  Vertex.fromModelBytes(int sequence, BoundingBox bb) {
+    box = bb;
+    positions = Vector3(
+      (_k13BytesRatioValue * (sequence & 0x1FFF)) * (box.x.max - box.x.min) +
+          box.x.min,
+      (_k13BytesRatioValue * ((sequence >> 13) & 0x1FFF)) *
+              (box.y.max - box.y.min) +
+          box.y.min,
+      (_k13BytesRatioValue * ((sequence >> 26) & 0x1FFF)) *
+              (box.z.max - box.z.min) +
+          box.z.min,
+    );
+
+    _normalSphereIndice = (sequence >> 39) & 0x1FF;
+    vertexNormal = Vertex(readFromSphere(_normalSphereIndice!, false),
+        box: BoundingBox.zero());
+    vertexNormal!.positions += positions;
+  }
+
+  Vector3 transform({
+    double xRotation = 0,
+    double yRotation = 0,
+    double zRotation = 0,
+  }) {
+    final copy = Vector3.copy(positions);
+    copy.applyMatrix3(Matrix3.rotationX(xRotation) *
+        Matrix3.rotationY(yRotation) *
+        Matrix3.rotationZ(zRotation));
+    return copy;
+  }
 
   // flutter projection is going top down so we need to invert y axis to match direct3D
-  Vector2 project({
+  ({Vector2 pointProjection, Vector2? normalProjection}) project({
     required double widthOffset,
     required double heightOffset,
     required double maxWidth,
@@ -18,16 +61,46 @@ class Vertex extends Equatable {
     double yRotation = 0,
     double zRotation = 0,
   }) {
-    final T = Matrix4.rotationX(xRotation)
-      ..rotateY(yRotation)
-      ..rotateZ(zRotation);
-    final rotated = T.transform3(Vector3.copy(positions));
-    return Vector2(
-      rotated.x * maxWidth + widthOffset,
-      -rotated.y * maxHeight + heightOffset,
+    final transformedPoint = transform(
+      xRotation: xRotation,
+      yRotation: yRotation,
+      zRotation: zRotation,
+    );
+
+    return (
+      pointProjection: Vector2(
+        transformedPoint.x * maxWidth + widthOffset,
+        -transformedPoint.y * maxHeight + heightOffset,
+      ),
+      normalProjection: vertexNormal != null
+          ? vertexNormal!
+              .project(
+                  widthOffset: widthOffset,
+                  heightOffset: heightOffset,
+                  maxWidth: maxWidth,
+                  maxHeight: maxHeight,
+                  xRotation: xRotation,
+                  yRotation: yRotation,
+                  zRotation: zRotation)
+              .pointProjection
+          : null,
     );
   }
 
   @override
-  List<Object> get props => [positions.x, positions.y, positions.z];
+  String toString() {
+    String string = "Pos: ${positions.toString()}";
+    if (_normalSphereIndice != null) {
+      string += ", normal: $_normalSphereIndice";
+    }
+    return string;
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is Vertex &&
+      (positions == other.positions && other.vertexNormal == vertexNormal);
+
+  @override
+  int get hashCode => positions.hashCode; // todo
 }
