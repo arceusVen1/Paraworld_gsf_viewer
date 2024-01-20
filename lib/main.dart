@@ -3,10 +3,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:paraworld_gsf_viewer/test.dart';
 import 'package:paraworld_gsf_viewer/widgets/mouse_movement_notifier.dart';
 import 'dart:math' as math;
+
+import 'package:vector_math/vector_math_64.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +37,7 @@ class Viewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Vertex> vertices = [];
-    final byteArray = convertToByteArray(verticesTest);
+    final byteArray = convertToByteArray(cubeTest, true);
     for (int i = 0; i < byteArray.length; i += 16) {
       final vertexValue = int.parse(
           byteArray[i + 5] +
@@ -46,39 +49,44 @@ class Viewer extends StatelessWidget {
           radix: 16);
       final vert = Vertex.fromModelBytes(
         vertexValue,
-        BoundingBox(
-          x: (min: -0.565, max: 1.130),
-          y: (min: -0.993, max: 1.982),
-          z: (min: -0.179, max: 0.441),
-        ),
+        BoundingBox.zero(),
+        // BoundingBox(
+        //   x: (min: -0.565, max: 1.130),
+        //   y: (min: -0.993, max: 1.982),
+        //   z: (min: -0.179, max: 0.441),
+        // ),
       );
       vertices.add(vert);
       //print("vert ${i / 16} ${vert.toString()}");
     }
 
-    final List<int> indices = [];
-    final triangleByteArray = convertToByteArray(trianglesTest);
-    //print("triangles $triangleByteArray");
+    final List<ModelTriangle> triangles = [];
+    final triangleByteArray = convertToByteArray(cubeTriangles);
     for (int i = 0; i < triangleByteArray.length; i += 6) {
+      final List<int> indices = [];
+
       indices.add(int.parse(triangleByteArray[i + 1] + triangleByteArray[i],
           radix: 16));
       indices.add(int.parse(triangleByteArray[i + 3] + triangleByteArray[i + 2],
           radix: 16));
       indices.add(int.parse(triangleByteArray[i + 5] + triangleByteArray[i + 4],
           radix: 16));
+      triangles.add(ModelTriangle(indices: indices, points: [
+        vertices[indices[0]],
+        vertices[indices[1]],
+        vertices[indices[2]],
+      ]));
     }
-    final mousePosNotifier = ValueNotifier<MousePositionDrag>(
-        (pos: const Offset(0, 0), lastX: 0, lastY: 0, zoom: 1));
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(50),
         child: MouseMovementNotifier(
-          mousePosNotifier: mousePosNotifier,
-          child: CustomPaint(
+          mouseListener: (mouseNotifier) => CustomPaint(
             painter: Drawer(
-              mousePosition: mousePosNotifier,
+              mousePosition: mouseNotifier,
               vertices: vertices,
-              indices: indices,
+              triangles: triangles,
             ),
             child: const SizedBox.expand(),
           ),
@@ -92,12 +100,12 @@ class Drawer extends CustomPainter {
   Drawer({
     required this.mousePosition,
     required this.vertices,
-    required this.indices,
+    required this.triangles,
   }) : super(repaint: mousePosition);
 
   final ValueNotifier<MousePositionDrag> mousePosition;
   final List<Vertex> vertices;
-  final List<int> indices;
+  final List<ModelTriangle> triangles;
 
   final Paint _paint = Paint()
     ..color = const Color.fromRGBO(0, 0, 0, 1)
@@ -107,6 +115,11 @@ class Drawer extends CustomPainter {
   final Paint _paintTest = Paint()
     ..color = Color.fromARGB(255, 255, 0, 0)
     ..strokeWidth = 3
+    ..strokeCap = StrokeCap.round;
+
+  final Paint _paintHighlight = Paint()
+    ..color = Color.fromARGB(255, 30, 255, 0)
+    ..strokeWidth = 8
     ..strokeCap = StrokeCap.round;
 
   final List<Color> colorSet = List.filled(12, Color.fromARGB(0, 0, 0, 0))
@@ -148,26 +161,6 @@ class Drawer extends CustomPainter {
     );
   }
 
-  // final List<Vertex> points = [
-  //   Vertex(positions: Vector3(-1, 1, -1)), // front top left 0
-  //   Vertex(positions: Vector3(-1, -1, -1)), // front bottom left 1
-  //   Vertex(positions: Vector3(1, 1, -1)), // front top right 2
-  //   Vertex(positions: Vector3(1, -1, -1)), // front bottom right 3
-  //   Vertex(positions: Vector3(-1, 1, 1)), // back top left 4
-  //   Vertex(positions: Vector3(-1, -1, 1)), // back bottom left 5
-  //   Vertex(positions: Vector3(1, 1, 1)), // back top right 6
-  //   Vertex(positions: Vector3(1, -1, 1)), // back bottom right 7
-  // ];
-
-  // final triangleIndices = Uint16List.fromList([
-  //   0, 1, 2, 1, 2, 3, //front face
-  //   4, 5, 6, 5, 6, 7, // back face
-  //   0, 2, 4, 4, 6, 2, // top face
-  //   3, 1, 5, 5, 7, 3, // bottom face
-  //   3, 2, 7, 7, 6, 2, // right face
-  //   0, 1, 5, 5, 4, 0 // left face
-  // ]);
-
   void drawTrianglesOutside(
       Canvas canvas, Uint16List indices, Float32List positions,
       [Paint? customPaint]) {
@@ -185,70 +178,103 @@ class Drawer extends CustomPainter {
     }
   }
 
-  ({
-    Vertex centerPoint,
-    Float32List testPosition,
-  }) getTestPoints({
-    required int testIndice,
-    required Float32List verticesPositions,
-  }) {
-    final testPoint = Float32List.sublistView(
-        verticesPositions, testIndice * 2, testIndice * 2 + 2);
-    return (
-      centerPoint: vertices[testIndice],
-      testPosition: testPoint,
-    );
-  }
-
   @override
   void paint(Canvas canvas, Size size) {
     final widthOffset = size.width / 2;
     final heightOffset = size.height / 2;
+    final maxHeight = math.min(size.width, size.height) / 6,
+        maxWidth = math.min(size.width, size.height) / 6;
     final yRotationAngle =
         (mousePosition.value.pos.dx + mousePosition.value.lastX) *
+            2 *
             math.pi /
             size.width;
 
     final zRotationAngle =
         (mousePosition.value.pos.dy + mousePosition.value.lastY) *
+            2 *
             math.pi /
             size.height;
 
-    final positions = pointsToCanvasPosition(
-      vertices,
-      widthOffset,
-      heightOffset,
-      math.min(size.width, size.height) / 6,
-      math.min(size.width, size.height) / 6,
-      yRotationAngle,
-      zRotationAngle,
-    );
+    final Float32List positions =
+        Float32List.fromList(List<double>.filled(vertices.length * 2, 0));
+    final List<double> normals = [];
+    final List<int> indices = [];
+    for (final triangle in triangles) {
+      final shouldShow = triangle.shouldShowTriangle(
+        yRotation: yRotationAngle,
+        zRotation: zRotationAngle,
+      );
+
+      for (int j = 0; j < triangle.points.length; j++) {
+        final vertexIndice = triangle.indices[j];
+        if (shouldShow) indices.add(vertexIndice);
+
+        if (positions[vertexIndice * 2] != 0) continue;
+
+        if (shouldShow) {
+          final projected = triangle.points[j].project(
+            widthOffset: widthOffset,
+            heightOffset: heightOffset,
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+            yRotation: yRotationAngle,
+            zRotation: zRotationAngle,
+          );
+          normals.addAll([
+            projected.pointProjection.x,
+            projected.pointProjection.y,
+            projected.normalProjection!.x,
+            projected.normalProjection!.y,
+          ]);
+
+          positions[vertexIndice * 2] = projected.pointProjection.x;
+          positions[vertexIndice * 2 + 1] = projected.pointProjection.y;
+        } else {
+          positions[vertexIndice * 2] = 0;
+          positions[vertexIndice * 2 + 1] = 0;
+        }
+      }
+    }
 
     final colors = Int32List.fromList(List.filled(
-        (positions.$1.length / 2).round(),
+        (positions.length / 2).round(),
         const Color.fromRGBO(0, 0, 0, 0.3).value));
 
     final triangleIndices = Uint16List.fromList(indices);
 
-    canvas.drawRawPoints(PointMode.points, positions.$1, _paint);
-    for (int i = 0; i < vertices.length; i++) {
-      final List<double> normal = [
-        ...positions.$1.sublist(i * 2, (i + 1) * 2),
-        ...positions.$2.sublist(i * 2, (i + 1) * 2)
-      ];
-      canvas.drawRawPoints(
-          PointMode.lines, Float32List.fromList(normal), _paintTest);
-    }
-    drawTrianglesOutside(canvas, triangleIndices, positions.$1);
+    //canvas.drawRawPoints(PointMode.points, positions.lenght, _paint);
+    canvas.drawRawPoints(
+      PointMode.lines,
+      Float32List.fromList(normals),
+      _paintTest,
+    );
+
+    drawTrianglesOutside(canvas, triangleIndices, positions);
     canvas.drawVertices(
         Vertices.raw(
           VertexMode.triangles,
-          positions.$1,
+          positions,
           colors: colors,
           indices: triangleIndices,
         ),
         BlendMode.dst,
         _paint);
+    final viewPoint = Vertex(Vector3.all(0), box: BoundingBox.zero()).project(
+      widthOffset: widthOffset,
+      heightOffset: heightOffset,
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      xRotation: yRotationAngle,
+      zRotation: zRotationAngle,
+    );
+
+    // a center point for reference
+    canvas.drawRawPoints(
+        PointMode.points,
+        Float32List.fromList(
+            [viewPoint.pointProjection.x, viewPoint.pointProjection.y]),
+        _paintHighlight);
   }
 
   @override

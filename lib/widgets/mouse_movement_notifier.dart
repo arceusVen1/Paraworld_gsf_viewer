@@ -8,19 +8,24 @@ typedef MousePositionDrag = ({
   double zoom
 });
 
-class MouseMovementNotifier extends StatelessWidget {
-  const MouseMovementNotifier({super.key, required this.child, required this.mousePosNotifier});
+typedef MouseListener = Widget Function(
+    ValueNotifier<MousePositionDrag> notifier);
 
-  final Widget child;
-  final ValueNotifier<MousePositionDrag> mousePosNotifier;
+class MouseMovementNotifier extends StatelessWidget {
+  const MouseMovementNotifier(
+      {super.key, required this.mouseListener});
+
+  final MouseListener mouseListener;
 
   @override
   Widget build(BuildContext context) {
-    
     double lastX = 0;
     double lastY = 0;
     double refX = 0;
     double refY = 0;
+
+    final mousePosNotifier = ValueNotifier<MousePositionDrag>(
+        (pos: const Offset(0, 0), lastX: 0, lastY: 0, zoom: 1));
 
     return Listener(
       onPointerUp: (event) {
@@ -66,7 +71,7 @@ class MouseMovementNotifier extends StatelessWidget {
           );
         }
       },
-      child: child,
+      child: mouseListener(mousePosNotifier),
     );
   }
 }

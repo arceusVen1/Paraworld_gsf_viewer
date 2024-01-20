@@ -24,17 +24,19 @@ class Vertex {
     box = bb;
     positions = Vector3(
       (_k13BytesRatioValue * (sequence & 0x1FFF)) * (box.x.max - box.x.min) +
-          box.x.min,
+          box.x.min -
+          0.5,
       (_k13BytesRatioValue * ((sequence >> 13) & 0x1FFF)) *
               (box.y.max - box.y.min) +
-          box.y.min,
+          box.y.min -
+          0.5,
       (_k13BytesRatioValue * ((sequence >> 26) & 0x1FFF)) *
               (box.z.max - box.z.min) +
           box.z.min,
     );
 
     _normalSphereIndice = (sequence >> 39) & 0x1FF;
-    vertexNormal = Vertex(readFromSphere(_normalSphereIndice!, false),
+    vertexNormal = Vertex(readFromSphere(_normalSphereIndice!, true),
         box: BoundingBox.zero());
     vertexNormal!.positions += positions;
   }
@@ -45,9 +47,11 @@ class Vertex {
     double zRotation = 0,
   }) {
     final copy = Vector3.copy(positions);
-    copy.applyMatrix3(Matrix3.rotationX(xRotation) *
-        Matrix3.rotationY(yRotation) *
-        Matrix3.rotationZ(zRotation));
+    copy.applyMatrix3(
+      Matrix3.rotationX(xRotation) *
+          Matrix3.rotationY(yRotation) *
+          Matrix3.rotationZ(zRotation),
+    );
     return copy;
   }
 
@@ -66,22 +70,24 @@ class Vertex {
       yRotation: yRotation,
       zRotation: zRotation,
     );
+    double perpectiveFactor = 1.0;
 
     return (
       pointProjection: Vector2(
-        transformedPoint.x * maxWidth + widthOffset,
-        -transformedPoint.y * maxHeight + heightOffset,
+        transformedPoint.x * maxWidth * perpectiveFactor + widthOffset,
+        -transformedPoint.y * maxHeight * perpectiveFactor + heightOffset,
       ),
       normalProjection: vertexNormal != null
           ? vertexNormal!
               .project(
-                  widthOffset: widthOffset,
-                  heightOffset: heightOffset,
-                  maxWidth: maxWidth,
-                  maxHeight: maxHeight,
-                  xRotation: xRotation,
-                  yRotation: yRotation,
-                  zRotation: zRotation)
+                widthOffset: widthOffset,
+                heightOffset: heightOffset,
+                maxWidth: maxWidth,
+                maxHeight: maxHeight,
+                xRotation: xRotation,
+                yRotation: yRotation,
+                zRotation: zRotation,
+              )
               .pointProjection
           : null,
     );
