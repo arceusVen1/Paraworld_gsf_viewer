@@ -40,9 +40,10 @@ class Vertex {
     final sphereCoef = (sequence >> 39) & 0x1;
 
     normal = Vertex(
-        readFromSphere(256 * sphereCoef + _normalSphereIndice!),
-        box: BoundingBox.zero());
-   
+      readFromSphere(256 * sphereCoef + _normalSphereIndice!),
+      box: BoundingBox.zero(),
+    );
+
     normal!.positions += positions;
 
     textureCoordinates = Vector2(
