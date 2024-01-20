@@ -37,21 +37,21 @@ class ConvertToObjCta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final messenger = ScaffoldMessenger.of(context);
     return ElevatedButton(
-      child: Text(
-        "Convert to obj",
-        style: TextStyle(color: Colors.white),
-      ),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color.fromARGB(255, 252, 0, 92),
+        backgroundColor: const Color.fromARGB(255, 252, 0, 92),
         elevation: 0,
       ),
       onPressed: () async {
         final filePath = await writeAsObj();
         Clipboard.setData(ClipboardData(text: filePath));
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(filePath)));
+        messenger.showSnackBar(SnackBar(content: Text(filePath)));
       },
+      child: const Text(
+        "Convert to obj",
+        style: TextStyle(color: Colors.white),
+      ),
     );
   }
 }

@@ -80,7 +80,7 @@ class Viewer extends StatelessWidget {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(50),
+        padding: const EdgeInsets.all(50),
         child: Column(
           children: [
             SizedBox(
@@ -125,19 +125,14 @@ class Drawer extends CustomPainter {
     ..strokeCap = StrokeCap.round;
 
   final Paint _paintTest = Paint()
-    ..color = Color.fromARGB(255, 255, 0, 0)
+    ..color = const Color.fromARGB(255, 255, 0, 0)
     ..strokeWidth = 3
     ..strokeCap = StrokeCap.round;
 
   final Paint _paintHighlight = Paint()
-    ..color = Color.fromARGB(255, 30, 255, 0)
+    ..color = const Color.fromARGB(255, 30, 255, 0)
     ..strokeWidth = 8
     ..strokeCap = StrokeCap.round;
-
-  final List<Color> colorSet = List.filled(12, Color.fromARGB(0, 0, 0, 0))
-      .map((_) => Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-          .withOpacity(1.0))
-      .toList();
 
   (Float32List, Float32List) pointsToCanvasPosition(
     List<Vertex> points,
@@ -293,7 +288,6 @@ class Drawer extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     // TODO: implement shouldRepaint
-    print("shouldRepaint");
     return true;
   }
 }
