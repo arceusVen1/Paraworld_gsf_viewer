@@ -29,6 +29,10 @@ class ModelTriangle {
     return normal.dot(p0 - Vector3(0, 0, -100)) <= 0;
   }
 
+  String toObj() {
+    return "f ${indices[0] + 1}/${indices[0] + 1}/${indices[0] + 1} ${indices[1] + 1}/${indices[1] + 1}/${indices[1] + 1} ${indices[2] + 1}/${indices[2] + 1}/${indices[2] + 1}\n";
+  }
+
   @override
   String toString() {
     return indices.toString();
