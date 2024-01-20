@@ -6,10 +6,11 @@ import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:paraworld_gsf_viewer/test.dart';
+import 'package:paraworld_gsf_viewer/widgets/convert_to_obj_cta.dart';
 import 'package:paraworld_gsf_viewer/widgets/mouse_movement_notifier.dart';
 import 'dart:math' as math;
 
-import 'package:vector_math/vector_math_64.dart';
+import 'package:vector_math/vector_math_64.dart' as vector;
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,7 @@ class Viewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Vertex> vertices = [];
-    final byteArray = convertToByteArray(cubeTest, true);
+    final byteArray = convertToByteArray(verticesTest);
     for (int i = 0; i < byteArray.length; i += 16) {
       final vertexValue = int.parse(
           byteArray[i + 5] +
@@ -49,19 +50,18 @@ class Viewer extends StatelessWidget {
           radix: 16);
       final vert = Vertex.fromModelBytes(
         vertexValue,
-        BoundingBox.zero(),
-        // BoundingBox(
-        //   x: (min: -0.565, max: 1.130),
-        //   y: (min: -0.993, max: 1.982),
-        //   z: (min: -0.179, max: 0.441),
-        // ),
+        //BoundingBox.zero(),
+        BoundingBox(
+          x: (min: -0.565, max: 1.130),
+          y: (min: -0.993, max: 1.982),
+          z: (min: -0.179, max: 0.441),
+        ),
       );
       vertices.add(vert);
-      //print("vert ${i / 16} ${vert.toString()}");
     }
 
     final List<ModelTriangle> triangles = [];
-    final triangleByteArray = convertToByteArray(cubeTriangles);
+    final triangleByteArray = convertToByteArray(trianglesTest);
     for (int i = 0; i < triangleByteArray.length; i += 6) {
       final List<int> indices = [];
 
@@ -81,15 +81,27 @@ class Viewer extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(50),
-        child: MouseMovementNotifier(
-          mouseListener: (mouseNotifier) => CustomPaint(
-            painter: Drawer(
-              mousePosition: mouseNotifier,
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 5 / 6,
+              width: MediaQuery.of(context).size.width,
+              child: MouseMovementNotifier(
+                mouseListener: (mouseNotifier) => CustomPaint(
+                  painter: Drawer(
+                    mousePosition: mouseNotifier,
+                    vertices: vertices,
+                    triangles: triangles,
+                  ),
+                  child: const SizedBox.expand(),
+                ),
+              ),
+            ),
+            ConvertToObjCta(
               vertices: vertices,
               triangles: triangles,
             ),
-            child: const SizedBox.expand(),
-          ),
+          ],
         ),
       ),
     );
@@ -260,7 +272,8 @@ class Drawer extends CustomPainter {
         ),
         BlendMode.dst,
         _paint);
-    final viewPoint = Vertex(Vector3.all(0), box: BoundingBox.zero()).project(
+    final viewPoint =
+        Vertex(vector.Vector3.all(0), box: BoundingBox.zero()).project(
       widthOffset: widthOffset,
       heightOffset: heightOffset,
       maxWidth: maxWidth,

@@ -1,4 +1,5 @@
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/sphere.dart';
 import 'package:paraworld_gsf_viewer/test.dart';
 import 'package:vector_math/vector_math_64.dart';
 
@@ -8,7 +9,8 @@ class Vertex {
   Vertex(
     this.positions, {
     required this.box,
-    this.vertexNormal,
+    this.normal,
+    this.textureCoordinates,
   }) {
     positions.x = positions.x * (box.x.max - box.x.min) + box.x.min;
     positions.y = positions.y * (box.y.max - box.y.min) + box.y.min;
@@ -17,28 +19,34 @@ class Vertex {
 
   late Vector3 positions;
   late BoundingBox box;
-  Vertex? vertexNormal;
+  Vector2? textureCoordinates;
+  Vertex? normal;
   int? _normalSphereIndice;
 
   Vertex.fromModelBytes(int sequence, BoundingBox bb) {
     box = bb;
     positions = Vector3(
-      (_k13BytesRatioValue * (sequence & 0x1FFF)) * (box.x.max - box.x.min) +
-          box.x.min -
-          0.5,
+      ((_k13BytesRatioValue * (sequence & 0x1FFF)) * (box.x.max - box.x.min) +
+          box.x.min),
       (_k13BytesRatioValue * ((sequence >> 13) & 0x1FFF)) *
               (box.y.max - box.y.min) +
-          box.y.min -
-          0.5,
+          box.y.min,
       (_k13BytesRatioValue * ((sequence >> 26) & 0x1FFF)) *
               (box.z.max - box.z.min) +
           box.z.min,
     );
 
-    _normalSphereIndice = (sequence >> 39) & 0x1FF;
-    vertexNormal = Vertex(readFromSphere(_normalSphereIndice!, true),
+    _normalSphereIndice = (sequence >> 40) & 0xFF;
+    final sphereCoef = (sequence >> 39) & 0x1;
+
+    normal = Vertex(
+        readFromSphere(256 * sphereCoef + _normalSphereIndice!),
         box: BoundingBox.zero());
-    vertexNormal!.positions += positions;
+   
+    normal!.positions += positions;
+
+    textureCoordinates = Vector2(
+        ((sequence >> 48) & 0xFF) / 256, ((sequence >> 56) & 0xFF) / 256);
   }
 
   Vector3 transform({
@@ -48,7 +56,7 @@ class Vertex {
   }) {
     final copy = Vector3.copy(positions);
     copy.applyMatrix3(
-      Matrix3.rotationX(xRotation) *
+      Matrix3.rotationZ(xRotation) *
           Matrix3.rotationY(yRotation) *
           Matrix3.rotationZ(zRotation),
     );
@@ -77,8 +85,8 @@ class Vertex {
         transformedPoint.x * maxWidth * perpectiveFactor + widthOffset,
         -transformedPoint.y * maxHeight * perpectiveFactor + heightOffset,
       ),
-      normalProjection: vertexNormal != null
-          ? vertexNormal!
+      normalProjection: normal != null
+          ? normal!
               .project(
                 widthOffset: widthOffset,
                 heightOffset: heightOffset,
@@ -90,6 +98,14 @@ class Vertex {
               )
               .pointProjection
           : null,
+    );
+  }
+
+  (String, String, String) toObj() {
+    return (
+      "v ${-positions.x} ${positions.y} ${-positions.z} 1.0",
+      "vn ${(-(normal?.positions.x ?? 0)).toStringAsFixed(3)} ${(normal?.positions.y ?? 0).toStringAsFixed(3)} ${(-(normal?.positions.z ?? 0)).toStringAsFixed(3)}",
+      "vt ${textureCoordinates?.x ?? 0} ${(textureCoordinates?.y ?? 0)}"
     );
   }
 
@@ -105,7 +121,7 @@ class Vertex {
   @override
   bool operator ==(Object other) =>
       other is Vertex &&
-      (positions == other.positions && other.vertexNormal == vertexNormal);
+      (positions == other.positions && other.normal == normal);
 
   @override
   int get hashCode => positions.hashCode; // todo
