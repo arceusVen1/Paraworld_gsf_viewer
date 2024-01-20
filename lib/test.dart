@@ -250,3 +250,23 @@ Vector3 readFromSphere(int vertIndice, [reversed = false]) {
   );
   return vertData;
 }
+
+  // final List<Vertex> points = [
+  //   Vertex(positions: Vector3(-1, 1, -1)), // front top left 0
+  //   Vertex(positions: Vector3(-1, -1, -1)), // front bottom left 1
+  //   Vertex(positions: Vector3(1, 1, -1)), // front top right 2
+  //   Vertex(positions: Vector3(1, -1, -1)), // front bottom right 3
+  //   Vertex(positions: Vector3(-1, 1, 1)), // back top left 4
+  //   Vertex(positions: Vector3(-1, -1, 1)), // back bottom left 5
+  //   Vertex(positions: Vector3(1, 1, 1)), // back top right 6
+  //   Vertex(positions: Vector3(1, -1, 1)), // back bottom right 7
+  // ];
+
+  // final triangleIndices = Uint16List.fromList([
+  //   0, 1, 2, 1, 2, 3, //front face
+  //   4, 5, 6, 5, 6, 7, // back face
+  //   0, 2, 4, 4, 6, 2, // top face
+  //   3, 1, 5, 5, 7, 3, // bottom face
+  //   3, 2, 7, 7, 6, 2, // right face
+  //   0, 1, 5, 5, 4, 0 // left face
+  // ]);
