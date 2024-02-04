@@ -27,8 +27,9 @@ or use the vsCode IDE with flutter and dart extension for an easy UI integration
 | --------------------------------------------- | ---------------------- |
 |![show1](./docs/screenshots/soft_capture1.png) | ![show2](./docs/screenshots/soft_capture2.png)
 
-| Load Texture |
- |  ![show3](./docs/screenshots/soft_capture3.png) |
+| Load Texture                                    |
+|------------------------------------------------ |
+|  ![show3](./docs/screenshots/soft_capture3.png) |
 
 
 ### TO DO
