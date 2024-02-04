@@ -22,7 +22,7 @@ class Vertex {
   Vertex? normal;
   int? _normalSphereIndice;
 
-  Vertex.fromModelBytes(int sequence, BoundingBox bb) {
+  Vertex.fromModelBytes(int sequence, int textureSequence, BoundingBox bb) {
     box = bb;
     positions = Vector3(
       ((_k13BytesRatioValue * (sequence & 0x1FFF)) * (box.x.max - box.x.min) +
@@ -46,7 +46,8 @@ class Vertex {
     normal!.positions += positions;
 
     textureCoordinates = Vector2(
-        ((sequence >> 48) & 0xFF) / 256, ((sequence >> 56) & 0xFF) / 256);
+        ((textureSequence >> 0) & 0xFF).toDouble() / 256,
+        ((textureSequence >> 8) & 0xFF).toDouble() / 256);
   }
 
   Vector3 transform({

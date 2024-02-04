@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
+import 'package:paraworld_gsf_viewer/widgets/utils/buttons.dart';
+import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ConvertToObjCta extends StatelessWidget {
@@ -16,9 +19,17 @@ class ConvertToObjCta extends StatelessWidget {
   final List<Vertex> vertices;
   final List<ModelTriangle> triangles;
 
-  Future<String> writeAsObj() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final objFile = File('${directory.path}/model.obj');
+  Future<String?> writeAsObj() async {
+    String? outputFile = await FilePicker.platform.saveFile(
+      dialogTitle: 'Please select an output file:',
+      fileName: 'model.obj',
+    );
+
+    if (outputFile == null) {
+      return null;
+      // User canceled the picker
+    }
+    final objFile = File(outputFile);
     String vertexPart = "", normalPart = "", texturePart = "";
     for (final vertex in vertices) {
       final newContent = vertex.toObj();
@@ -38,19 +49,17 @@ class ConvertToObjCta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final messenger = ScaffoldMessenger.of(context);
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 252, 0, 92),
-        elevation: 0,
-      ),
+    return Button.primary(
       onPressed: () async {
         final filePath = await writeAsObj();
-        Clipboard.setData(ClipboardData(text: filePath));
-        messenger.showSnackBar(SnackBar(content: Text(filePath)));
+        if (filePath != null) {
+          Clipboard.setData(ClipboardData(text: filePath));
+          messenger.showSnackBar(SnackBar(content: Text(filePath)));
+        }
       },
-      child: const Text(
+      child: Label.medium(
         "Convert to obj",
-        style: TextStyle(color: Colors.white),
+        color: Colors.white,
       ),
     );
   }
