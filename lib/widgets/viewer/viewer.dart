@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:paraworld_gsf_viewer/providers/normals.dart';
@@ -57,6 +58,12 @@ class Viewer extends StatelessWidget {
       ]));
     }
 
+    final model = Model(
+      name: 'test',
+      vertices: vertices,
+      triangles: triangles,
+    );
+
     return Column(
       children: [
         SizedBox(
@@ -69,8 +76,7 @@ class Viewer extends StatelessWidget {
                   builder: (showNormals) => CustomPaint(
                     painter: ModelDrawer(
                       mousePosition: mouseNotifier,
-                      vertices: vertices,
-                      triangles: triangles,
+                      model: model,
                       texture: texture,
                       showNormals: showNormals,
                     ),
