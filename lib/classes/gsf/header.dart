@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:paraworld_gsf_viewer/classes/gsf/dust_trail_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/model_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/sound_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/walk_transition_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class Header extends GsfPart {
@@ -10,12 +12,18 @@ class Header extends GsfPart {
     required this.modelCount,
     required this.soundTable,
     required this.modelInfos,
+    required this.dustTrailTable,
+    required this.walkTransitionTable1,
+    required this.walkTransitionTable2,
   }) : super(offset: 0);
 
   late final String name;
   late final int modelCount;
   late final List<ModelInfo> modelInfos;
   late final SoundTable soundTable;
+  late final DustTrailTable dustTrailTable;
+  late final WalkTransitionTable walkTransitionTable1;
+  late final WalkTransitionTable walkTransitionTable2; // there seems to be 2 transitions tables
 
   static const Standard4BytesData contentTableOffsetData =
       Standard4BytesData(pos: 8);
@@ -46,11 +54,26 @@ class Header extends GsfPart {
       );
       print(modelInfos.last);
     }
-    SoundTable.fromBytes(
+    soundTable = SoundTable.fromBytes(
       bytes,
       modelInfos.isNotEmpty
           ? modelInfos.last.getEndOffset()
           : modelCountData.offsettedLength(offset),
+    );
+
+    dustTrailTable = DustTrailTable.fromBytes(
+      bytes,
+      soundTable.getEndOffset(),
+    );
+
+    walkTransitionTable1 = WalkTransitionTable.fromBytes(
+      bytes,
+      dustTrailTable.getEndOffset(),
+    );
+
+    walkTransitionTable2 = WalkTransitionTable.fromBytes(
+      bytes,
+      walkTransitionTable1.getEndOffset(),
     );
   }
 

@@ -39,7 +39,10 @@ class GSFLoader extends ConsumerWidget {
         return builder(data.value);
       },
       loading: (loading) => const CircularProgressIndicator(),
-      error: (_) => builder(null),
+      error: (err) {
+        print(err.error);
+        return builder(null);
+      },
     );
   }
 }
