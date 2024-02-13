@@ -1,17 +1,21 @@
 import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf/model_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/sound_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class Header extends GsfPart {
   Header({
     required this.name,
     required this.modelCount,
+    required this.soundTable,
+    required this.modelInfos,
   }) : super(offset: 0);
 
   late final String name;
   late final int modelCount;
-  final List<ModelInfo> modelInfos = [];
+  late final List<ModelInfo> modelInfos;
+  late final SoundTable soundTable;
 
   static const Standard4BytesData contentTableOffsetData =
       Standard4BytesData(pos: 8);
@@ -30,7 +34,7 @@ class Header extends GsfPart {
     final modelCountData = Standard4BytesData(pos: namePos + nameLength);
     modelCount = modelCountData.getAsUint(bytes, offset);
     print("modelCount: $modelCount");
-
+    modelInfos = [];
     for (var i = 0; i < modelCount; i++) {
       modelInfos.add(
         ModelInfo.fromBytes(
@@ -42,6 +46,12 @@ class Header extends GsfPart {
       );
       print(modelInfos.last);
     }
+    SoundTable.fromBytes(
+      bytes,
+      modelInfos.isNotEmpty
+          ? modelInfos.last.getEndOffset()
+          : modelCountData.offsettedLength(offset),
+    );
   }
 
   @override
