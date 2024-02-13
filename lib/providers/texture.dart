@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final textureFutureProvider = FutureProvider<ui.Image?>(
   (ref) async {
-    final path = ref.watch(texturePathProvider);
+    final path = ref.watch(texturePathStateProvider);
     if (path == null) {
       return null;
     }
@@ -17,4 +17,4 @@ final textureFutureProvider = FutureProvider<ui.Image?>(
   },
 );
 
-final texturePathProvider = StateProvider<String?>((ref) => null);
+final texturePathStateProvider = StateProvider<String?>((ref) => null);

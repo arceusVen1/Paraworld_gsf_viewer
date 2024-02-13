@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:paraworld_gsf_viewer/providers/normals.dart';
 import 'package:paraworld_gsf_viewer/test.dart';
 import 'package:paraworld_gsf_viewer/widgets/convert_to_obj_cta.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/mouse_movement_notifier.dart';
-import 'package:paraworld_gsf_viewer/widgets/utils/texture_loader.dart';
+import 'package:paraworld_gsf_viewer/widgets/utils/file_loaders.dart';
 import 'package:paraworld_gsf_viewer/widgets/viewer/model_drawer.dart';
 
 class Viewer extends StatelessWidget {
@@ -57,27 +58,34 @@ class Viewer extends StatelessWidget {
       ]));
     }
 
+    final model = Model(
+      name: 'test',
+      vertices: vertices,
+      triangles: triangles,
+    );
+
     return Column(
       children: [
         SizedBox(
           height: MediaQuery.of(context).size.height * 4.5 / 6,
           width: MediaQuery.of(context).size.width,
           child: MouseMovementNotifier(
-            mouseListener: (mouseNotifier) => ImageTextureLoader(
-              textureBuilder: (texture) {
-                return ShowNormalWrapper(
-                  builder: (showNormals) => CustomPaint(
-                    painter: ModelDrawer(
-                      mousePosition: mouseNotifier,
-                      vertices: vertices,
-                      triangles: triangles,
-                      texture: texture,
-                      showNormals: showNormals,
+            mouseListener: (mouseNotifier) => GSFLoader(
+              builder: (gsf) => ImageTextureLoader(
+                textureBuilder: (texture) {
+                  return ShowNormalWrapper(
+                    builder: (showNormals) => CustomPaint(
+                      painter: ModelDrawer(
+                        mousePosition: mouseNotifier,
+                        model: model,
+                        texture: texture,
+                        showNormals: showNormals,
+                      ),
+                      child: const SizedBox.expand(),
                     ),
-                    child: const SizedBox.expand(),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ),

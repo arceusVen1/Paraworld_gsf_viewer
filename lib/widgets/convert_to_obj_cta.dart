@@ -7,7 +7,6 @@ import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/buttons.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ConvertToObjCta extends StatelessWidget {
   const ConvertToObjCta({
@@ -57,7 +56,7 @@ class ConvertToObjCta extends StatelessWidget {
           messenger.showSnackBar(SnackBar(content: Text(filePath)));
         }
       },
-      child: Label.medium(
+      child: const Label.medium(
         "Convert to obj",
         color: Colors.white,
       ),
