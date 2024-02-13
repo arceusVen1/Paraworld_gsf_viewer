@@ -91,8 +91,6 @@ class Header extends GsfPart {
 
   @override
   int getEndOffset() {
-    return modelInfos.isNotEmpty
-        ? modelInfos.last.getEndOffset()
-        : namePos + nameLengthData.getAsUint(Uint8List(4), 0) + 4;
+    return walkTransitionTable2.getEndOffset();
   }
 }
