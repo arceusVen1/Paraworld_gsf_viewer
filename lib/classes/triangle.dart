@@ -1,5 +1,5 @@
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
-import 'package:vector_math/vector_math_64.dart';
+import 'package:vector_math/vector_math.dart';
 
 class ModelTriangle {
   ModelTriangle({

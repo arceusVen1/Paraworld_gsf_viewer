@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:paraworld_gsf_viewer/sphere.dart';
-import 'package:vector_math/vector_math_64.dart';
+import 'package:vector_math/vector_math.dart';
 
 const String cubeTest = '''
 00 E0 FF 03 00 DF FE 00
