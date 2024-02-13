@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/providers/normals.dart';
 import 'package:paraworld_gsf_viewer/providers/texture.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/buttons.dart';
@@ -11,7 +12,6 @@ class Menu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final texturePath = ref.watch(texturePathProvider);
     final showNormals = ref.watch(showNormalsProvider);
     return Drawer(
       child: ListView(
@@ -24,38 +24,15 @@ class Menu extends ConsumerWidget {
             ),
             child: Label.extraLarge("Options"),
           ),
-          ListTile(
-            title: Button.secondary(
-              onPressed: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ["jpg", "jpeg", "png"]);
-
-                if (result != null) {
-                  ref.read(texturePathProvider.notifier).state =
-                      result.files.single.path;
-                }
-              },
-              child: Label.small(
-                texturePath != null
-                    ? texturePath.split('/').last
-                    : "Select a texture",
-              ),
-            ),
-            trailing: texturePath != null
-                ? IconButton(
-                    onPressed: () {
-                      ref.read(texturePathProvider.notifier).state = null;
-                    },
-                    icon: const Icon(
-                      Icons.delete_forever,
-                      color: Colors.red,
-                    ))
-                : null,
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
+          _FileLoaderTile(
+            title: "Select a .gsf",
+            allowedExtensions: const ["gsf"],
+            filePathStateProvider: gsfPathStateProvider,
+          ),
+          _FileLoaderTile(
+            title: "Select a texture",
+            allowedExtensions: const ["jpg", "jpeg", "png"],
+            filePathStateProvider: texturePathStateProvider,
           ),
           ListTile(
             title: Label.medium(
@@ -73,6 +50,55 @@ class Menu extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _FileLoaderTile extends ConsumerWidget {
+  const _FileLoaderTile({
+    required this.title,
+    required this.allowedExtensions,
+    required this.filePathStateProvider,
+  });
+
+  final String title;
+  final List<String> allowedExtensions;
+  final StateProvider<String?> filePathStateProvider;
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final path = ref.watch(filePathStateProvider);
+    return ListTile(
+      title: Button.secondary(
+        onPressed: () async {
+          FilePickerResult? result = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: allowedExtensions,
+          );
+
+          if (result != null) {
+            ref.read(filePathStateProvider.notifier).state =
+                result.files.single.path;
+          }
+        },
+        child: Label.small(
+          path != null ? path.split('/').last : title,
+        ),
+      ),
+      trailing: path != null
+          ? IconButton(
+              onPressed: () {
+                ref.read(filePathStateProvider.notifier).state = null;
+              },
+              icon: const Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ))
+          : null,
+      onTap: () {
+        // Update the state of the app.
+        // ...
+      },
     );
   }
 }
