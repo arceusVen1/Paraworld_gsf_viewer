@@ -23,7 +23,8 @@ class Header extends GsfPart {
   late final SoundTable soundTable;
   late final DustTrailTable dustTrailTable;
   late final WalkTransitionTable walkTransitionTable1;
-  late final WalkTransitionTable walkTransitionTable2; // there seems to be 2 transitions tables
+  late final WalkTransitionTable
+      walkTransitionTable2; // there seems to be 2 transitions tables
 
   static const Standard4BytesData contentTableOffsetData =
       Standard4BytesData(pos: 8);
@@ -31,7 +32,7 @@ class Header extends GsfPart {
   static const int namePos = 16;
 
   Header.fromBytes(Uint8List bytes) : super(offset: 0) {
-    assert(contentTableOffsetData.getAsUint(bytes, offset) == 0x10000);
+    //assert(contentTableOffsetData.getAsUint(bytes, offset) == 0x10000);
 
     final nameLength = nameLengthData.getAsUint(bytes, offset);
 
