@@ -5,17 +5,27 @@ A project with aim to deliver a portable app capable of loading and viewing
 
 This would not have been possible without the help of an incredible member of the game community, Zidell, who deciphered a great part of the .GSF binary arhcitecture.
 
+You can use the app hosted on github pages here https://arceusven1.github.io/Paraworld_gsf_viewer/[https://arceusven1.github.io/Paraworld_gsf_viewer/]
+
 ## Getting Started
 
 This app should be able to run on any platform where the Flutter framework can compile (althought it would be unusable on iOS or Android)
 
 To run the app simply use 
 ```
-    flutter run -D <device>
+    flutter run -d <device eg. chrome, macOS>
 ```
 
 or use the vsCode IDE with flutter and dart extension for an easy UI integration.
 
+## Build
+
+You can easily build for web with the included script
+```sh
+./build_web.sh
+```
+
+Now simply push the new version on github for auto deploy
 ### Features
 
 - single static bothriolepis model viewing

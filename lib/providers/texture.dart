@@ -7,11 +7,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final textureFutureProvider = FutureProvider<ui.Image?>(
   (ref) async {
     final file = ref.watch(texturePathStateProvider);
-    if (file == null || file.bytes == null) {
+    if (file == null) {
       return null;
     }
     final completer = Completer<ui.Image>();
-    ui.decodeImageFromList(file.bytes!, completer.complete);
+    if (file.bytes != null) {
+      ui.decodeImageFromList(file.bytes!, completer.complete);
+    } else if (file.path != null) {
+      final data = File(file.path!);
+      final bytes = await data.readAsBytes();
+      ui.decodeImageFromList(bytes, completer.complete);
+    }
     return completer.future;
   },
 );
