@@ -5,7 +5,7 @@ A project with aim to deliver a portable app capable of loading and viewing
 
 This would not have been possible without the help of an incredible member of the game community, Zidell, who deciphered a great part of the .GSF binary arhcitecture.
 
-You can use the app hosted on github pages here https://arceusven1.github.io/Paraworld_gsf_viewer/[https://arceusven1.github.io/Paraworld_gsf_viewer/]
+You can use the app hosted on github pages here https://arceusven1.github.io/Paraworld_gsf_viewer/
 
 ## Getting Started
 
