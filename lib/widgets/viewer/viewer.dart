@@ -19,7 +19,7 @@ class Viewer extends StatelessWidget {
     final List<Vertex> vertices = [];
     final byteArray = convertToByteArray(verticesTest);
     for (int i = 0; i < byteArray.length; i += 16) {
-      final vertexValue = int.parse(
+      final vertexValue = BigInt.parse(
           byteArray[i + 5] +
               byteArray[i + 4] +
               byteArray[i + 3] +

@@ -63,11 +63,11 @@ class _FileLoaderTile extends ConsumerWidget {
 
   final String title;
   final List<String> allowedExtensions;
-  final StateProvider<String?> filePathStateProvider;
+  final StateProvider<PlatformFile?> filePathStateProvider;
 
   @override
   Widget build(BuildContext context, ref) {
-    final path = ref.watch(filePathStateProvider);
+    final file = ref.watch(filePathStateProvider);
     return ListTile(
       title: Button.secondary(
         onPressed: () async {
@@ -78,14 +78,14 @@ class _FileLoaderTile extends ConsumerWidget {
 
           if (result != null) {
             ref.read(filePathStateProvider.notifier).state =
-                result.files.single.path;
+                result.files.single;
           }
         },
         child: Label.small(
-          path != null ? path.split('/').last : title,
+          file != null ? file.name : title,
         ),
       ),
-      trailing: path != null
+      trailing: file != null
           ? IconButton(
               onPressed: () {
                 ref.read(filePathStateProvider.notifier).state = null;

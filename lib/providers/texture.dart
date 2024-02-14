@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final textureFutureProvider = FutureProvider<ui.Image?>(
   (ref) async {
-    final path = ref.watch(texturePathStateProvider);
-    if (path == null) {
+    final file = ref.watch(texturePathStateProvider);
+    if (file == null || file.bytes == null) {
       return null;
     }
-    final data = File(path);
-    final bytes = await data.readAsBytes();
     final completer = Completer<ui.Image>();
-    ui.decodeImageFromList(bytes, completer.complete);
+    ui.decodeImageFromList(file.bytes!, completer.complete);
     return completer.future;
   },
 );
 
-final texturePathStateProvider = StateProvider<String?>((ref) => null);
+final texturePathStateProvider = StateProvider<PlatformFile?>((ref) => null);

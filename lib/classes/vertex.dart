@@ -22,21 +22,23 @@ class Vertex {
   Vertex? normal;
   int? _normalSphereIndice;
 
-  Vertex.fromModelBytes(int sequence, int textureSequence, BoundingBox bb) {
+  // Because web compiles int as int32 we need to force big int for 64bit integers even in web
+  Vertex.fromModelBytes(BigInt sequence, int textureSequence, BoundingBox bb) {
     box = bb;
     positions = Vector3(
-      ((_k13BytesRatioValue * (sequence & 0x1FFF)) * (box.x.max - box.x.min) +
+      ((_k13BytesRatioValue * (sequence.toInt() & 0x1FFF)) *
+              (box.x.max - box.x.min) +
           box.x.min),
-      (_k13BytesRatioValue * ((sequence >> 13) & 0x1FFF)) *
+      (_k13BytesRatioValue * ((sequence >> 13).toInt() & 0x1FFF)) *
               (box.y.max - box.y.min) +
           box.y.min,
-      (_k13BytesRatioValue * ((sequence >> 26) & 0x1FFF)) *
+      (_k13BytesRatioValue * ((sequence >> 26).toInt() & 0x1FFF)) *
               (box.z.max - box.z.min) +
           box.z.min,
     );
 
-    _normalSphereIndice = (sequence >> 40) & 0xFF;
-    final sphereCoef = (sequence >> 39) & 0x1;
+    _normalSphereIndice = (sequence >> 40).toInt() & 0xFF;
+    final sphereCoef = (sequence >> 39).toInt() & 0x1;
 
     normal = Vertex(
       readFromSphere(256 * sphereCoef + _normalSphereIndice!),
