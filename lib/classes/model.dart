@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/texture.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
@@ -12,11 +13,13 @@ class Model {
     required this.name,
     required this.vertices,
     required this.triangles,
+    required this.boundingBox,
   });
 
   final String name;
   final List<Vertex> vertices;
   final List<ModelTriangle> triangles;
+  final BoundingBox boundingBox;
 
   ({
     Float32List positions,
@@ -32,8 +35,10 @@ class Model {
   }) {
     final widthOffset = size.width / 2;
     final heightOffset = size.height / 2;
-    final maxHeight = math.min(size.width, size.height) / 6,
-        maxWidth = math.min(size.width, size.height) / 6;
+    final maxCoord = boundingBox.getMaxOfCoordinates();
+
+    final maxFactor =
+        math.min(widthOffset * 1 / maxCoord, heightOffset * 1 / maxCoord);
 
     final Float32List positions =
         Float32List.fromList(List<double>.filled(vertices.length * 2, 0));
@@ -66,8 +71,8 @@ class Model {
           final projected = triangle.points[j].project(
             widthOffset: widthOffset,
             heightOffset: heightOffset,
-            maxWidth: maxWidth,
-            maxHeight: maxHeight,
+            maxWidth: maxFactor,
+            maxHeight: maxFactor,
             yRotation: yRotationAngle,
             zRotation: zRotationAngle,
           );

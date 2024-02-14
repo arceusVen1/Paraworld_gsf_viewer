@@ -11,10 +11,11 @@ abstract class GsfPart {
 }
 
 class GsfData {
-  const GsfData({required this.pos, required this.length});
+  const GsfData({required this.pos, required this.length, this.maskToUse});
 
   final int pos;
   final int length;
+  final int? maskToUse;
 
   int relativeEnd() => pos + length;
   int offsettedPos(int offset) => pos + offset;
@@ -35,16 +36,21 @@ class GsfData {
 
   int getAsUint(Uint8List bytes, int offset) {
     final data = getBytesData(bytes, offset);
+    int value;
     switch (length) {
       case >= 8:
-        return data.getUint64(0, Endian.little);
+        value = data.getUint64(0, Endian.little);
       case >= 4:
-        return data.getUint32(0, Endian.little);
+        value = data.getUint32(0, Endian.little);
       case >= 2:
-        return data.getUint16(0, Endian.little);
+        value = data.getUint16(0, Endian.little);
       default:
-        return data.getUint8(0);
+        value = data.getUint8(0);
     }
+    if (maskToUse != null) {
+      value &= maskToUse!;
+    }
+    return value;
   }
 
   double getAsFloat(Uint8List bytes, int offset) {
@@ -76,8 +82,9 @@ class Standard4BytesData extends GsfData {
 
   @override
   String getAsAsciiString(Uint8List bytes, int offset) {
-    return const AsciiDecoder()
-        .convert(bytes.sublist(offsettedPos(offset), offsettedLength(offset)));
+    final stringBytes =
+        bytes.sublist(offsettedPos(offset), offsettedLength(offset));
+    return const AsciiDecoder().convert(stringBytes);
   }
 }
 

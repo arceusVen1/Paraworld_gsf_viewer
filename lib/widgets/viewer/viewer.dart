@@ -18,6 +18,11 @@ class Viewer extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Vertex> vertices = [];
     final byteArray = convertToByteArray(verticesTest);
+    final boundingBox = BoundingBox(
+      x: (min: -0.565, max: 1.130),
+      y: (min: -0.993, max: 1.982),
+      z: (min: -0.179, max: 0.441),
+    );
     for (int i = 0; i < byteArray.length; i += 16) {
       final vertexValue = BigInt.parse(
           byteArray[i + 5] +
@@ -31,11 +36,7 @@ class Viewer extends StatelessWidget {
         vertexValue,
         int.parse(byteArray[i + 7] + byteArray[i + 6], radix: 16),
         //BoundingBox.zero(),
-        BoundingBox(
-          x: (min: -0.565, max: 1.130),
-          y: (min: -0.993, max: 1.982),
-          z: (min: -0.179, max: 0.441),
-        ),
+        boundingBox,
       );
       vertices.add(vert);
     }
@@ -62,13 +63,12 @@ class Viewer extends StatelessWidget {
       name: 'test',
       vertices: vertices,
       triangles: triangles,
+      boundingBox: boundingBox
     );
 
     return Column(
       children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 4.5 / 6,
-          width: MediaQuery.of(context).size.width,
+        Expanded(
           child: MouseMovementNotifier(
             mouseListener: (mouseNotifier) => GSFLoader(
               builder: (gsf) => ImageTextureLoader(
