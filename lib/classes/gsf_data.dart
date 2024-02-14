@@ -21,8 +21,11 @@ class GsfData {
   int offsettedLength(int offset) => offsettedPos(offset) + length;
 
   String getAsAsciiString(Uint8List bytes, int offset) {
+    final stringBytes =
+        bytes.sublist(offsettedPos(offset), offsettedLength(offset));
+    assert(stringBytes.last == 0); // all names should have a 0 name terminator
     return const AsciiDecoder()
-        .convert(bytes.sublist(offsettedPos(offset), offsettedLength(offset)));
+        .convert(stringBytes.sublist(0, stringBytes.length - 1));
   }
 
   ByteData getBytesData(Uint8List bytes, int offset) {
@@ -70,6 +73,12 @@ class Standard4BytesData extends GsfData {
   double getAsFloat(Uint8List bytes, int offset) {
     return super.getBytesData(bytes, offset).getFloat32(0, Endian.little);
   }
+
+  @override
+  String getAsAsciiString(Uint8List bytes, int offset) {
+    return const AsciiDecoder()
+        .convert(bytes.sublist(offsettedPos(offset), offsettedLength(offset)));
+  }
 }
 
 class DoubleByteData extends GsfData {
@@ -83,6 +92,12 @@ class DoubleByteData extends GsfData {
   @override
   double getAsFloat(Uint8List bytes, int offset) {
     throw Exception('Double byte data cannot be converted to float');
+  }
+
+  @override
+  String getAsAsciiString(Uint8List bytes, int offset) {
+    return const AsciiDecoder()
+        .convert(bytes.sublist(offsettedPos(offset), offsettedLength(offset)));
   }
 }
 
@@ -98,5 +113,10 @@ class SingleByteData extends GsfData {
   @override
   double getAsFloat(Uint8List bytes, int offset) {
     throw Exception('Single byte data cannot be converted to float');
+  }
+
+  @override
+  String getAsAsciiString(Uint8List bytes, int offset) {
+    throw Exception('Single byte data cannot be converted to string');
   }
 }
