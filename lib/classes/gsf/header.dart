@@ -53,7 +53,6 @@ class Header extends GsfPart {
               : modelCountData.offsettedLength(offset),
         ),
       );
-      print(modelInfos.last);
     }
     soundTable = SoundTable.fromBytes(
       bytes,

@@ -93,7 +93,6 @@ class WalkSet extends GsfPart {
   late final String name;
 
   GsfData getGsfDataFormat(int relativePosition, Uint8List bytes) {
-    print(bytes[offset + relativePosition] & 0x80 > 0);
     if (bytes[offset + relativePosition] & 0x80 > 0) {
       return GsfData(pos: relativePosition, length: 2, maskToUse: 0x7FFF);
     } else {
