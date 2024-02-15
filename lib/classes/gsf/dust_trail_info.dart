@@ -3,38 +3,57 @@ import 'dart:typed_data';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class DustTrailInfo extends GsfPart {
-  static const GsfData nameLengthData = Standard4BytesData(pos: 6);
-  late GsfData _nameData;
-
   // 6 unknown bytes
-  late final int nameLength;
-  late final String name;
-  ComposedDustrail? composedDustrail;
-  SimpleDustrail? simpleDustrail;
+  late final GsfData<UnknowData> unknownData;
+  late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
+  late final Standard4BytesData<int>
+      boneIndex; // we are not sure if this is a bone index
+  late final Standard4BytesData<int> entryCount;
+  late final List<DustTrailEntry> entries = [];
 
   DustTrailInfo.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    nameLength = nameLengthData.getAsUint(bytes, offset);
-    _nameData = GsfData(pos: nameLengthData.relativeEnd(), length: nameLength);
-    name = _nameData.getAsAsciiString(bytes, offset);
+    unknownData =
+        GsfData.fromPosition(pos: 0, length: 6, bytes: bytes, offset: offset);
+    nameLength = Standard4BytesData(
+        position: unknownData.relativeEnd, bytes: bytes, offset: offset);
+    name = GsfData.fromPosition(
+      pos: nameLength.relativeEnd,
+      length: nameLength.value,
+      bytes: bytes,
+      offset: offset,
+    );
     print("dust trail info name: $name");
-    if (name == ComposedDustrail.name) {
-      composedDustrail = ComposedDustrail.fromBytes(
-        bytes,
-        _nameData.offsettedLength(offset) + 8,
-      );
-    } else {
-      simpleDustrail = SimpleDustrail.fromBytes(
-        bytes,
-        _nameData.offsettedLength(offset),
-      );
+
+    boneIndex = Standard4BytesData(
+      position: name.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+
+    entryCount = Standard4BytesData(
+      position: boneIndex.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+
+    if (entryCount.value > 0) {
+      for (var i = 0; i < entryCount.value; i++) {
+        entries.add(DustTrailEntry.fromBytes(
+          bytes,
+          entries.isNotEmpty
+              ? entries.last.getEndOffset()
+              : entryCount.offsettedLength(offset),
+        ));
+      }
     }
   }
 
   @override
   int getEndOffset() {
-    return composedDustrail != null
-        ? composedDustrail!.getEndOffset()
-        : simpleDustrail!.getEndOffset();
+    return entries.isNotEmpty
+        ? entries.last.getEndOffset()
+        : entryCount.offsettedLength(offset);
   }
 
   @override
@@ -45,132 +64,54 @@ class DustTrailInfo extends GsfPart {
 
 class SimpleDustrail extends GsfPart {
   // 4 unknown bytes
-  static const GsfData settingsCountData = Standard4BytesData(pos: 4);
-  late final int settingsCount;
+  late final Standard4BytesData<UnknowData> unknownData;
+  late final Standard4BytesData<int> settingsCount;
 
   SimpleDustrail.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset) {
-    settingsCount = settingsCountData.getAsUint(bytes, offset);
-  }
-
-  @override
-  int getEndOffset() {
-    return settingsCountData.offsettedLength(offset);
-  }
-}
-
-class ComposedDustrail extends GsfPart {
-  static const String name = "_dusttrail";
-
-  late final ComposedDustrailCount count;
-  late final ComposedDustrailForce force;
-  late final ComposedDustrailOffsetZ offsetZ;
-  late final ComposedDustrailOffsety offsetY;
-
-  ComposedDustrail.fromBytes(Uint8List bytes, int offset)
-      : super(offset: offset) {
-    count = ComposedDustrailCount.fromBytes(bytes, offset);
-    force = ComposedDustrailForce.fromBytes(
-      bytes,
-      count.getEndOffset(),
-    );
-    offsetZ = ComposedDustrailOffsetZ.fromBytes(
-      bytes,
-      force.getEndOffset(),
-    );
-    offsetY = ComposedDustrailOffsety.fromBytes(
-      bytes,
-      offsetZ.getEndOffset(),
+    unknownData = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
+    settingsCount = Standard4BytesData(
+      position: unknownData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
     );
   }
 
   @override
   int getEndOffset() {
-    return offsetY.getEndOffset();
+    return settingsCount.offsettedLength(offset);
   }
 }
 
-class ComposedDustrailCount extends GsfPart {
-  static const GsfData _nameLengthData = Standard4BytesData(pos: 0);
-  late final GsfData _nameData;
-  late final GsfData unknownData;
+class DustTrailEntry extends GsfPart {
+  late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
+  late final Standard4BytesData<int> valueCharsLength;
+  late final GsfData<String> valueChars;
 
-  late final String name;
-  ComposedDustrailCount.fromBytes(Uint8List bytes, int offset)
+  DustTrailEntry.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset) {
-    final nameLength = _nameLengthData.getAsUint(bytes, offset);
-    _nameData = GsfData(pos: _nameLengthData.length, length: nameLength);
-    name = _nameData.getAsAsciiString(bytes, offset);
-    print("composed dustrail count name: $name");
+    nameLength = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
+    name = GsfData.fromPosition(
+      pos: nameLength.relativeEnd,
+      length: nameLength.value,
+      bytes: bytes,
+      offset: offset,
+    );
+    print("dust trail entry name: $name");
 
-    unknownData = GsfData(pos: _nameData.relativeEnd(), length: 7);
+    valueCharsLength = Standard4BytesData(
+        position: name.relativeEnd, bytes: bytes, offset: offset);
+    valueChars = GsfData.fromPosition(
+      pos: valueCharsLength.relativeEnd,
+      length: valueCharsLength.value,
+      bytes: bytes,
+      offset: offset,
+    );
   }
 
   @override
   int getEndOffset() {
-    return unknownData.offsettedLength(offset);
-  }
-}
-
-class ComposedDustrailForce extends GsfPart {
-  static const String name = "force";
-  static const GsfData _nameLengthData = Standard4BytesData(pos: 0);
-  late final GsfData _nameData;
-  late final GsfData unknownData;
-
-  ComposedDustrailForce.fromBytes(Uint8List bytes, int offset)
-      : super(offset: offset) {
-    final nameLength = _nameLengthData.getAsUint(bytes, offset);
-    _nameData = GsfData(pos: _nameLengthData.length, length: nameLength);
-    assert(name == _nameData.getAsAsciiString(bytes, offset));
-
-    unknownData = GsfData(pos: _nameData.relativeEnd(), length: 8);
-  }
-
-  @override
-  int getEndOffset() {
-    return unknownData.offsettedLength(offset);
-  }
-}
-
-class ComposedDustrailOffsetZ extends GsfPart {
-  static const String name = "offset_z";
-  static const GsfData _nameLengthData = Standard4BytesData(pos: 0);
-  late final GsfData _nameData;
-  late final GsfData unknownData;
-
-  ComposedDustrailOffsetZ.fromBytes(Uint8List bytes, int offset)
-      : super(offset: offset) {
-    final nameLength = _nameLengthData.getAsUint(bytes, offset);
-    _nameData = GsfData(pos: _nameLengthData.length, length: nameLength);
-    assert(name == _nameData.getAsAsciiString(bytes, offset));
-
-    unknownData = GsfData(pos: _nameData.relativeEnd(), length: 8);
-  }
-
-  @override
-  int getEndOffset() {
-    return unknownData.offsettedLength(offset);
-  }
-}
-
-class ComposedDustrailOffsety extends GsfPart {
-  static const String name = "offset_y";
-  static const GsfData _nameLengthData = Standard4BytesData(pos: 0);
-  late final GsfData _nameData;
-  late final GsfData unknownData;
-
-  ComposedDustrailOffsety.fromBytes(Uint8List bytes, int offset)
-      : super(offset: offset) {
-    final nameLength = _nameLengthData.getAsUint(bytes, offset);
-    _nameData = GsfData(pos: _nameLengthData.length, length: nameLength);
-    assert(name == _nameData.getAsAsciiString(bytes, offset));
-
-    unknownData = GsfData(pos: _nameData.relativeEnd(), length: 8);
-  }
-
-  @override
-  int getEndOffset() {
-    return unknownData.offsettedLength(offset);
+    return valueChars.offsettedLength(offset);
   }
 }

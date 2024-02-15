@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: Scaffold(
-        appBar: AppBar(title: Text("Paraworld Gsf viewer")),
+        appBar: AppBar(title: const Text("Paraworld Gsf viewer")),
         body: const Padding(
           padding: EdgeInsets.all(50),
           child: Viewer(),

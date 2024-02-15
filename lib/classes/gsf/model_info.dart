@@ -11,62 +11,59 @@ class ModelInfo extends GsfPart {
     required this.index,
     required this.animCount,
     required this.modelAnims,
-    this.walkSetTable,
+    required this.walkSetTable,
   }) : super(offset: offset);
 
-  late final String name;
-  late final int index;
-  late final int animCount;
+  late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
+  late final Standard4BytesData<int> index;
+  late final Standard4BytesData<int> animCount;
   late final List<ModelAnim>
       modelAnims; // watch out for 4 zero bytes between each anim
-  WalkSetTable? walkSetTable;
-
-  static const GsfData nameLengthData = Standard4BytesData(pos: 0);
-  late GsfData _nameData;
-  late Standard4BytesData _indexData;
-  late Standard4BytesData _animCountData;
+  late final WalkSetTable walkSetTable;
 
   ModelInfo.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    final nameLength = nameLengthData.getAsUint(bytes, offset);
+    nameLength =
+        Standard4BytesData<int>(position: 0, bytes: bytes, offset: offset);
 
-    _nameData = GsfData(pos: nameLengthData.length, length: nameLength);
-    name = _nameData.getAsAsciiString(bytes, offset);
+    name = GsfData.fromPosition(
+      pos: nameLength.relativeEnd,
+      length: nameLength.value,
+      bytes: bytes,
+      offset: offset,
+    );
     print("model info name: $name");
 
-    _indexData =
-        Standard4BytesData(pos: nameLengthData.length + _nameData.length);
-    index = _indexData.getAsUint(bytes, offset);
+    index = Standard4BytesData(
+        position: name.relativeEnd, bytes: bytes, offset: offset);
 
-    _animCountData = Standard4BytesData(pos: _indexData.relativeEnd());
-    animCount = _animCountData.getAsUint(bytes, offset);
-
+    animCount = Standard4BytesData(
+        position: index.relativeEnd, bytes: bytes, offset: offset);
     print("model info anim count: $animCount");
 
     modelAnims = [];
-    if (animCount > 0) {
-      modelAnims.add(ModelAnim.fromBytes(
-        bytes,
-        _animCountData.offsettedLength(offset),
-      ));
-      for (var i = 1; i < animCount; i++) {
+    if (animCount.value > 0) {
+      for (var i = 0; i < animCount.value; i++) {
         modelAnims.add(ModelAnim.fromBytes(
           bytes,
-          modelAnims.last.getEndOffset() + 4, // 4 zero bytes between each anim
+          modelAnims.isNotEmpty
+              ? modelAnims.last.getEndOffset()
+              : animCount.offsettedLength(offset),
         ));
       }
-      walkSetTable = WalkSetTable.fromBytes(
-        bytes,
-        modelAnims.last.getEndOffset(), // walkset zero bytes
-      );
     }
+
+    walkSetTable = WalkSetTable.fromBytes(
+      bytes,
+      modelAnims.isNotEmpty
+          ? modelAnims.last.getEndOffset()
+          : animCount.offsettedLength(offset),
+    );
   }
 
   @override
   int getEndOffset() {
-    return walkSetTable != null
-        ? walkSetTable!.getEndOffset()
-        : _animCountData.offsettedLength(offset) +
-            4; // 4 walkset zero bytes at the end
+    return walkSetTable.getEndOffset();
   }
 
   @override

@@ -3,55 +3,52 @@ import 'dart:typed_data';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class SoundInfo extends GsfPart {
-  static const GsfData nameLengthData = Standard4BytesData(pos: 0);
-
-  late final int nameLength;
-  late final String name;
-  late final int startFrame;
-  late final int volume;
-  late final int speed;
-  // 16 unknown bytes
-  late final int soundGroupNameLength;
-  late final String soundGroupName;
+  late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
+  late final Standard4BytesData<int> startFrame;
+  late final Standard4BytesData<int> volume;
+  late final Standard4BytesData<int> speed;
+  late final GsfData<UnknowData> unknownData; // 16 unknown bytes
+  late final Standard4BytesData<int> soundGroupNameLength;
+  late final GsfData<String> soundGroupName;
 
   SoundInfo.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    nameLength = nameLengthData.getAsUint(bytes, offset);
-    final nameData =
-        GsfData(pos: nameLengthData.relativeEnd(), length: nameLength);
-    name = nameData.getAsAsciiString(bytes, offset);
+    nameLength = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
+    name = GsfData.fromPosition(
+      pos: nameLength.relativeEnd,
+      length: nameLength.value,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    final startFrameData =
-        Standard4BytesData(pos: nameData.relativeEnd()); // 4 unknown bytes
-    startFrame = startFrameData.getAsUint(bytes, offset);
+    startFrame = Standard4BytesData(
+        position: name.relativeEnd, bytes: bytes, offset: offset);
 
-    final volumeData = Standard4BytesData(pos: startFrameData.relativeEnd());
-    volume = volumeData.getAsUint(bytes, offset);
+    volume = Standard4BytesData(
+        position: startFrame.relativeEnd, bytes: bytes, offset: offset);
 
-    final speedData = Standard4BytesData(pos: volumeData.relativeEnd());
+    speed = Standard4BytesData(
+        position: volume.relativeEnd, bytes: bytes, offset: offset);
+    unknownData = GsfData.fromPosition(
+      pos: speed.relativeEnd,
+      length: 16,
+      bytes: bytes,
+      offset: offset,
+    );
+    soundGroupNameLength = Standard4BytesData(
+        position: unknownData.relativeEnd, bytes: bytes, offset: offset);
 
-    speed = speedData.getAsUint(bytes, offset);
-
-    final soundGroupNameLengthData = Standard4BytesData(
-        pos: speedData.relativeEnd() + 16); // 16 unknown bytes
-    soundGroupNameLength = soundGroupNameLengthData.getAsUint(bytes, offset);
-
-    soundGroupName = GsfData(
-            pos: soundGroupNameLengthData.relativeEnd(),
-            length: soundGroupNameLength)
-        .getAsAsciiString(bytes, offset);
+    soundGroupName = GsfData.fromPosition(
+      pos: soundGroupNameLength.relativeEnd,
+      length: soundGroupNameLength.value,
+      bytes: bytes,
+      offset: offset,
+    );
   }
 
   @override
   int getEndOffset() {
-    return offset +
-        nameLengthData.length +
-        nameLength +
-        4 + // startFrame
-        4 + // volume
-        4 + // speed
-        16 + // unknown bytes
-        4 + // soundGroupNameLength
-        soundGroupNameLength;
+    return soundGroupName.offsettedLength(offset);
   }
 
   @override

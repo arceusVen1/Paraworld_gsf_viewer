@@ -9,23 +9,22 @@ class DustTrailTable extends GsfPart {
     required this.dustTrailCount,
   }) : super(offset: offset);
 
-  late final int dustTrailCount;
+  late final Standard4BytesData<int> dustTrailCount;
   late final List<DustTrailInfo> dustTrailInfos;
-
-  static const GsfData dustTrailCountData = Standard4BytesData(pos: 0);
 
   DustTrailTable.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset) {
-    dustTrailCount = dustTrailCountData.getAsUint(bytes, offset);
+    dustTrailCount =
+        Standard4BytesData(position: 0, bytes: bytes, offset: offset);
     print("dust trail table count: $dustTrailCount");
     dustTrailInfos = [];
-    for (var i = 0; i < dustTrailCount; i++) {
+    for (var i = 0; i < dustTrailCount.value; i++) {
       dustTrailInfos.add(
         DustTrailInfo.fromBytes(
           bytes,
           dustTrailInfos.isNotEmpty
               ? dustTrailInfos.last.getEndOffset()
-              : dustTrailCountData.offsettedLength(offset),
+              : dustTrailCount.offsettedLength(offset),
         ),
       );
       print(dustTrailInfos.last);
@@ -36,7 +35,7 @@ class DustTrailTable extends GsfPart {
   int getEndOffset() {
     return dustTrailInfos.isNotEmpty
         ? dustTrailInfos.last.getEndOffset()
-        : dustTrailCountData.offsettedLength(offset);
+        : dustTrailCount.offsettedLength(offset);
   }
 
   @override

@@ -6,30 +6,37 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 class ModelAnim extends GsfPart {
   ModelAnim({required super.offset});
 
-  static const GsfData nameLengthData = Standard4BytesData(pos: 0);
-
-  late final String name;
-  late final int index;
+  late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
+  late final Standard4BytesData<int> index;
   late final SoundIndices soundIndices;
+  late final Standard4BytesData<UnknowData> unknownData;
 
   ModelAnim.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    final nameLength = nameLengthData.getAsUint(bytes, offset);
+    nameLength = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
 
-    final nameData =
-        GsfData(pos: nameLengthData.relativeEnd(), length: nameLength);
-    name = nameData.getAsAsciiString(bytes, offset);
+    name = GsfData<String>.fromPosition(
+      pos: nameLength.relativeEnd,
+      length: nameLength.value,
+      bytes: bytes,
+      offset: offset,
+    );
     print("model anim name: $name");
 
-    final indexData = Standard4BytesData(pos: nameData.relativeEnd());
-    index = indexData.getAsUint(bytes, offset);
+    index = Standard4BytesData(
+        position: name.relativeEnd, bytes: bytes, offset: offset);
 
-    soundIndices =
-        SoundIndices.fromBytes(bytes, indexData.offsettedLength(offset));
+    soundIndices = SoundIndices.fromBytes(bytes, index.offsettedLength(offset));
+    unknownData = Standard4BytesData(
+      position: soundIndices.getEndOffset() - offset,
+      bytes: bytes,
+      offset: offset,
+    );
   }
 
   @override
   int getEndOffset() {
-    return soundIndices.getEndOffset();
+    return unknownData.offsettedLength(offset);
   }
 
   @override

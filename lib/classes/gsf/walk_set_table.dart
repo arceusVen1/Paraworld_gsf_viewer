@@ -5,20 +5,19 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class WalkSetTable extends GsfPart {
   // 4 unused zero bytes
-  static const GsfData countData = Standard4BytesData(pos: 4);
 
-  late final int count;
+  late final Standard4BytesData<int> count;
   final List<WalkSet> walkSets = [];
 
   WalkSetTable.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    count = countData.getAsUint(bytes, offset);
+    count = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
     print("walk set table count: $count");
-    for (var i = 0; i < count; i++) {
+    for (var i = 0; i < count.value; i++) {
       walkSets.add(WalkSet.fromBytes(
         bytes,
         walkSets.isNotEmpty
             ? walkSets.last.getEndOffset()
-            : countData.offsettedLength(offset),
+            : count.offsettedLength(offset),
       ));
     }
   }
@@ -26,7 +25,7 @@ class WalkSetTable extends GsfPart {
   @override
   int getEndOffset() => walkSets.isNotEmpty
       ? walkSets.last.getEndOffset()
-      : countData.offsettedLength(offset);
+      : count.offsettedLength(offset);
 
   @override
   String toString() {

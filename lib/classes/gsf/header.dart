@@ -17,8 +17,13 @@ class Header extends GsfPart {
     required this.walkTransitionTable2,
   }) : super(offset: 0);
 
-  late final String name;
-  late final int modelCount;
+  late final GsfData<int> _magic;
+  late final Standard4BytesData<int> _version;
+
+  late final Standard4BytesData<int> contentTableOffset;
+  late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
+  late final Standard4BytesData<int> modelCount;
   late final List<ModelInfo> modelInfos;
   late final SoundTable soundTable;
   late final DustTrailTable dustTrailTable;
@@ -26,31 +31,36 @@ class Header extends GsfPart {
   late final WalkTransitionTable
       walkTransitionTable2; // there seems to be 2 transitions tables
 
-  static const Standard4BytesData contentTableOffsetData =
-      Standard4BytesData(pos: 8);
-  static const Standard4BytesData nameLengthData = Standard4BytesData(pos: 12);
-  static const int namePos = 16;
-
   Header.fromBytes(Uint8List bytes) : super(offset: 0) {
-    //assert(contentTableOffsetData.getAsUint(bytes, offset) == 0x10000);
+    _magic =
+        GsfData.fromPosition(pos: 0, length: 4, bytes: bytes, offset: offset);
+    print("magic: $_magic");
+    _version = Standard4BytesData(
+        position: _magic.relativeEnd, bytes: bytes, offset: offset);
+    print("version: $_version");
+    contentTableOffset = Standard4BytesData<int>(
+        position: _version.relativeEnd, bytes: bytes, offset: offset);
+    nameLength = Standard4BytesData<int>(
+        position: contentTableOffset.relativeEnd, bytes: bytes, offset: offset);
 
-    final nameLength = nameLengthData.getAsUint(bytes, offset);
+    name = GsfData<String>.fromPosition(
+      pos: nameLength.relativeEnd,
+      length: nameLength.value,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    name = GsfData(pos: namePos, length: nameLength)
-        .getAsAsciiString(bytes, offset);
-    print("name: $name");
-
-    final modelCountData = Standard4BytesData(pos: namePos + nameLength);
-    modelCount = modelCountData.getAsUint(bytes, offset);
+    modelCount = Standard4BytesData<int>(
+        position: name.relativeEnd, bytes: bytes, offset: offset);
     print("modelCount: $modelCount");
     modelInfos = [];
-    for (var i = 0; i < modelCount; i++) {
+    for (var i = 0; i < modelCount.value; i++) {
       modelInfos.add(
         ModelInfo.fromBytes(
           bytes,
           modelInfos.isNotEmpty
               ? modelInfos.last.getEndOffset()
-              : modelCountData.offsettedLength(offset),
+              : modelCount.offsettedLength(offset),
         ),
       );
     }
@@ -58,7 +68,7 @@ class Header extends GsfPart {
       bytes,
       modelInfos.isNotEmpty
           ? modelInfos.last.getEndOffset()
-          : modelCountData.offsettedLength(offset),
+          : modelCount.offsettedLength(offset),
     );
 
     dustTrailTable = DustTrailTable.fromBytes(

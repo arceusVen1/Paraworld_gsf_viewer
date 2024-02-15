@@ -7,223 +7,279 @@ class WalkSet extends GsfPart {
     required offset,
   }) : super(offset: offset);
 
-  late final GsfData walk1PosData;
-  late final GsfData walk2PosData;
-  late final GsfData walk3PosData;
-  late final GsfData walk4PosData;
-  late final GsfData walk1endSData;
-  late final GsfData walk1endMData;
-  late final GsfData walk1endLData;
-  late final GsfData walk2endSData;
-  late final GsfData walk2endMData;
-  late final GsfData walk2endLData;
-  late final GsfData walk3endSData;
-  late final GsfData walk3endMData;
-  late final GsfData walk3endLData;
-  late final GsfData walk4endSData;
-  late final GsfData walk4endMData;
-  late final GsfData walk4endLData;
-  late final GsfData standingTurnRightData;
-  late final GsfData standingTurnLeftData;
+  late final VariableTwoBytesData<int> walk1PosData;
+  late final VariableTwoBytesData<int> walk2PosData;
+  late final VariableTwoBytesData<int> walk3PosData;
+  late final VariableTwoBytesData<int> walk4PosData;
+  late final VariableTwoBytesData<int> walk1endSData;
+  late final VariableTwoBytesData<int> walk1endMData;
+  late final VariableTwoBytesData<int> walk1endLData;
+  late final VariableTwoBytesData<int> walk2endSData;
+  late final VariableTwoBytesData<int> walk2endMData;
+  late final VariableTwoBytesData<int> walk2endLData;
+  late final VariableTwoBytesData<int> walk3endSData;
+  late final VariableTwoBytesData<int> walk3endMData;
+  late final VariableTwoBytesData<int> walk3endLData;
+  late final VariableTwoBytesData<int> walk4endSData;
+  late final VariableTwoBytesData<int> walk4endMData;
+  late final VariableTwoBytesData<int> walk4endLData;
+  late final VariableTwoBytesData<int> standingTurnRightData;
+  late final VariableTwoBytesData<int> standingTurnLeftData;
   // one unknpw byte
-  late final GsfData unknownData;
-  late final GsfData accel1To2Data;
-  late final GsfData accel2To3Data;
-  late final GsfData accel3To4Data;
-  late final GsfData brake4To3Data;
-  late final GsfData brake3To2Data;
-  late final GsfData brake2To1Data;
-  late final GsfData walkLeftData;
-  late final GsfData walkRightData;
+  late final VariableTwoBytesData<int> unknownData;
+  late final VariableTwoBytesData<int> accel1To2Data;
+  late final VariableTwoBytesData<int> accel2To3Data;
+  late final VariableTwoBytesData<int> accel3To4Data;
+  late final VariableTwoBytesData<int> brake4To3Data;
+  late final VariableTwoBytesData<int> brake3To2Data;
+  late final VariableTwoBytesData<int> brake2To1Data;
+  late final VariableTwoBytesData<int> walkLeftData;
+  late final VariableTwoBytesData<int> walkRightData;
 
   // one unknown byte
-  late final GsfData unknownData2;
-  late final GsfData walkTransitionIndexData;
-  late final GsfData growUpData;
-  late final GsfData sailUpData;
-  late final GsfData sailDownData;
-  late final GsfData standAnimData;
-  late final GsfData walkToSwimData;
+  late final VariableTwoBytesData<int> unknownData2;
+  late final VariableTwoBytesData<int> walkTransitionIndexData;
+  late final VariableTwoBytesData<int> growUpData;
+  late final VariableTwoBytesData<int> sailUpData;
+  late final VariableTwoBytesData<int> sailDownData;
+  late final VariableTwoBytesData<int> standAnimData;
+  late final VariableTwoBytesData<int> walkToSwimData;
   // 8 unused bytes
-  late final GsfData unknownData3;
-  late final GsfData unknownData4;
-  late final GsfData unknownData5;
-  late final GsfData unknownData6;
+  late final VariableTwoBytesData<int> unknownData3;
+  late final VariableTwoBytesData<int> unknownData4;
+  late final VariableTwoBytesData<int> unknownData5;
+  late final VariableTwoBytesData<int> unknownData6;
 
-  late final GsfData unknownData7;
-  late final GsfData unknownData8;
-  late final GsfData unknownData9;
-  late final GsfData unknownData10;
+  late final VariableTwoBytesData<int> unknownData7;
+  late final VariableTwoBytesData<int> unknownData8;
+  late final VariableTwoBytesData<int> unknownData9;
+  late final VariableTwoBytesData<int> unknownData10;
 
-  late final GsfData _nameData;
-
-  late final int walk1Pos;
-  late final int walk2Pos;
-  late final int walk3Pos;
-  late final int walk4Pos;
-  late final int walk1endS;
-  late final int walk1endM;
-  late final int walk1endL;
-  late final int walk2endS;
-  late final int walk2endM;
-  late final int walk2endL;
-  late final int walk3endS;
-  late final int walk3endM;
-  late final int walk3endL;
-  late final int walk4endS;
-  late final int walk4endM;
-  late final int walk4endL;
-
-  late final int standingTurnRight;
-  late final int standingTurnLeft;
-  late final int accel1To2;
-  late final int accel2To3;
-  late final int accel3To4;
-  late final int brake4To3;
-  late final int brake3To2;
-  late final int brake2To1;
-  late final int walkLeft;
-  late final int walkRight;
-  late final int walkTransitionIndex;
-  late final int growUp;
-  late final int sailUp;
-  late final int sailDown;
-  late final int standAnim;
-  late final int walkToSwim;
-  late final String name;
-
-  GsfData getGsfDataFormat(int relativePosition, Uint8List bytes) {
-    if (bytes[offset + relativePosition] & 0x80 > 0) {
-      return GsfData(pos: relativePosition, length: 2, maskToUse: 0x7FFF);
-    } else {
-      return SingleByteData(pos: relativePosition);
-    }
-  }
+  late final Standard4BytesData<String> nameData;
 
   WalkSet.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    walk1PosData = getGsfDataFormat(0, bytes);
-    walk1Pos = walk1PosData.getAsUint(bytes, offset);
+    walk1PosData =
+        VariableTwoBytesData(relativePosition: 0, bytes: bytes, offset: offset);
+    walk2PosData = VariableTwoBytesData(
+        relativePosition: walk1PosData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk3PosData = VariableTwoBytesData(
+        relativePosition: walk2PosData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk4PosData = VariableTwoBytesData(
+        relativePosition: walk3PosData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk2PosData = getGsfDataFormat(walk1PosData.relativeEnd(), bytes);
-    walk2Pos = walk2PosData.getAsUint(bytes, offset);
+    walk1endSData = VariableTwoBytesData(
+        relativePosition: walk4PosData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk1endMData = VariableTwoBytesData(
+        relativePosition: walk1endSData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk1endLData = VariableTwoBytesData(
+        relativePosition: walk1endMData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk3PosData = getGsfDataFormat(walk2PosData.relativeEnd(), bytes);
-    walk3Pos = walk3PosData.getAsUint(bytes, offset);
+    walk2endSData = VariableTwoBytesData(
+        relativePosition: walk1endLData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk2endMData = VariableTwoBytesData(
+        relativePosition: walk2endSData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk2endLData = VariableTwoBytesData(
+        relativePosition: walk2endMData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk4PosData = getGsfDataFormat(walk3PosData.relativeEnd(), bytes);
-    walk4Pos = walk4PosData.getAsUint(bytes, offset);
+    walk3endSData = VariableTwoBytesData(
+        relativePosition: walk2endLData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk3endMData = VariableTwoBytesData(
+        relativePosition: walk3endSData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk3endLData = VariableTwoBytesData(
+        relativePosition: walk3endMData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk1endSData = getGsfDataFormat(walk4PosData.relativeEnd(), bytes);
-    walk1endS = walk1endSData.getAsUint(bytes, offset);
+    walk4endSData = VariableTwoBytesData(
+        relativePosition: walk3endLData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk4endMData = VariableTwoBytesData(
+        relativePosition: walk4endSData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
+    walk4endLData = VariableTwoBytesData(
+        relativePosition: walk4endMData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk1endMData = getGsfDataFormat(walk1endSData.relativeEnd(), bytes);
-    walk1endM = walk1endMData.getAsUint(bytes, offset);
+    standingTurnRightData = VariableTwoBytesData(
+        relativePosition: walk4endLData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk1endLData = getGsfDataFormat(walk1endMData.relativeEnd(), bytes);
-    walk1endL = walk1endLData.getAsUint(bytes, offset);
+    standingTurnLeftData = VariableTwoBytesData(
+        relativePosition: standingTurnRightData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk2endSData = getGsfDataFormat(walk1endLData.relativeEnd(), bytes);
-    walk2endS = walk2endSData.getAsUint(bytes, offset);
+    unknownData = VariableTwoBytesData(
+        relativePosition: standingTurnLeftData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk2endMData = getGsfDataFormat(walk2endSData.relativeEnd(), bytes);
-    walk2endM = walk2endMData.getAsUint(bytes, offset);
+    accel1To2Data = VariableTwoBytesData(
+        relativePosition: unknownData.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk2endLData = getGsfDataFormat(walk2endMData.relativeEnd(), bytes);
-    walk2endL = walk2endLData.getAsUint(bytes, offset);
+    accel2To3Data = VariableTwoBytesData(
+        relativePosition: accel1To2Data.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk3endSData = getGsfDataFormat(walk2endLData.relativeEnd(), bytes);
-    walk3endS = walk3endSData.getAsUint(bytes, offset);
+    accel3To4Data = VariableTwoBytesData(
+        relativePosition: accel2To3Data.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk3endMData = getGsfDataFormat(walk3endSData.relativeEnd(), bytes);
-    walk3endM = walk3endMData.getAsUint(bytes, offset);
+    brake4To3Data = VariableTwoBytesData(
+        relativePosition: accel3To4Data.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk3endLData = getGsfDataFormat(walk3endMData.relativeEnd(), bytes);
-    walk3endL = walk3endLData.getAsUint(bytes, offset);
+    brake3To2Data = VariableTwoBytesData(
+        relativePosition: brake4To3Data.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk4endSData = getGsfDataFormat(walk3endLData.relativeEnd(), bytes);
-    walk4endS = walk4endSData.getAsUint(bytes, offset);
+    brake2To1Data = VariableTwoBytesData(
+        relativePosition: brake3To2Data.relativeEnd,
+        bytes: bytes,
+        offset: offset);
 
-    walk4endMData = getGsfDataFormat(walk4endSData.relativeEnd(), bytes);
-    walk4endM = walk4endMData.getAsUint(bytes, offset);
+    walkLeftData = VariableTwoBytesData(
+      relativePosition: brake2To1Data.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    walk4endLData = getGsfDataFormat(walk4endMData.relativeEnd(), bytes);
-    walk4endL = walk4endLData.getAsUint(bytes, offset);
+    walkRightData = VariableTwoBytesData(
+      relativePosition: walkLeftData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    standingTurnRightData =
-        getGsfDataFormat(walk4endLData.relativeEnd(), bytes);
-    standingTurnRight = standingTurnRightData.getAsUint(bytes, offset);
+    unknownData2 = VariableTwoBytesData(
+      relativePosition: walkRightData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    standingTurnLeftData =
-        getGsfDataFormat(standingTurnRightData.relativeEnd(), bytes);
-    standingTurnLeft = standingTurnLeftData.getAsUint(bytes, offset);
+    walkTransitionIndexData = VariableTwoBytesData(
+      relativePosition: unknownData2.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    unknownData = getGsfDataFormat(standingTurnLeftData.relativeEnd(), bytes);
+    growUpData = VariableTwoBytesData(
+      relativePosition: walkTransitionIndexData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    accel1To2Data = getGsfDataFormat(unknownData.relativeEnd(), bytes);
-    accel1To2 = accel1To2Data.getAsUint(bytes, offset);
+    sailUpData = VariableTwoBytesData(
+      relativePosition: growUpData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    accel2To3Data = getGsfDataFormat(accel1To2Data.relativeEnd(), bytes);
-    accel2To3 = accel2To3Data.getAsUint(bytes, offset);
+    sailDownData = VariableTwoBytesData(
+      relativePosition: sailUpData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    accel3To4Data = getGsfDataFormat(accel2To3Data.relativeEnd(), bytes);
-    accel3To4 = accel3To4Data.getAsUint(bytes, offset);
+    standAnimData = VariableTwoBytesData(
+      relativePosition: sailDownData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    brake4To3Data = getGsfDataFormat(accel3To4Data.relativeEnd(), bytes);
-    brake4To3 = brake4To3Data.getAsUint(bytes, offset);
+    walkToSwimData = VariableTwoBytesData(
+      relativePosition: standAnimData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    brake3To2Data = getGsfDataFormat(brake4To3Data.relativeEnd(), bytes);
-    brake3To2 = brake3To2Data.getAsUint(bytes, offset);
+    unknownData3 = VariableTwoBytesData(
+      relativePosition: walkToSwimData.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    unknownData4 = VariableTwoBytesData(
+      relativePosition: unknownData3.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    unknownData5 = VariableTwoBytesData(
+      relativePosition: unknownData4.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    unknownData6 = VariableTwoBytesData(
+      relativePosition: unknownData5.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    unknownData7 = VariableTwoBytesData(
+      relativePosition: unknownData6.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    unknownData8 = VariableTwoBytesData(
+      relativePosition: unknownData7.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    unknownData9 = VariableTwoBytesData(
+      relativePosition: unknownData8.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    unknownData10 = VariableTwoBytesData(
+      relativePosition: unknownData9.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    brake2To1Data = getGsfDataFormat(brake3To2Data.relativeEnd(), bytes);
-    brake2To1 = brake2To1Data.getAsUint(bytes, offset);
-
-    walkLeftData = getGsfDataFormat(brake2To1Data.relativeEnd(), bytes);
-    walkLeft = walkLeftData.getAsUint(bytes, offset);
-
-    walkRightData = getGsfDataFormat(walkLeftData.relativeEnd(), bytes);
-    walkRight = walkRightData.getAsUint(bytes, offset);
-
-    unknownData2 = getGsfDataFormat(walkRightData.relativeEnd(), bytes);
-
-    walkTransitionIndexData =
-        getGsfDataFormat(unknownData2.relativeEnd(), bytes);
-    walkTransitionIndex = walkTransitionIndexData.getAsUint(bytes, offset);
-
-    growUpData = getGsfDataFormat(walkTransitionIndexData.relativeEnd(), bytes);
-    growUp = growUpData.getAsUint(bytes, offset);
-
-    sailUpData = getGsfDataFormat(growUpData.relativeEnd(), bytes);
-    sailUp = sailUpData.getAsUint(bytes, offset);
-
-    sailDownData = getGsfDataFormat(sailUpData.relativeEnd(), bytes);
-    sailDown = sailDownData.getAsUint(bytes, offset);
-
-    standAnimData = getGsfDataFormat(sailDownData.relativeEnd(), bytes);
-    standAnim = standAnimData.getAsUint(bytes, offset);
-
-    walkToSwimData = getGsfDataFormat(standAnimData.relativeEnd(), bytes);
-    walkToSwim = walkToSwimData.getAsUint(bytes, offset);
-    // search for 8 bytes zero structure
-    unknownData3 = getGsfDataFormat(walkToSwimData.relativeEnd(), bytes);
-    unknownData4 = getGsfDataFormat(unknownData3.relativeEnd(), bytes);
-    unknownData5 = getGsfDataFormat(unknownData4.relativeEnd(), bytes);
-    unknownData6 = getGsfDataFormat(unknownData5.relativeEnd(), bytes);
-    unknownData7 = getGsfDataFormat(unknownData6.relativeEnd(), bytes);
-    unknownData8 = getGsfDataFormat(unknownData7.relativeEnd(), bytes);
-    unknownData9 = getGsfDataFormat(unknownData8.relativeEnd(), bytes);
-    unknownData10 = getGsfDataFormat(unknownData9.relativeEnd(), bytes);
-    _nameData = Standard4BytesData(pos: unknownData10.relativeEnd());
-    name = _nameData.getAsAsciiString(bytes, offset);
-    print("walk set name: $name");
+    nameData = Standard4BytesData(
+      position: unknownData10.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    print("walk set name: $nameData");
   }
 
   @override
   String toString() {
-    return 'WalkSet: $name';
+    return 'WalkSet: $nameData';
   }
 
   @override
   int getEndOffset() {
-    return _nameData.offsettedLength(offset);
+    return nameData.offsettedLength(offset);
   }
 }

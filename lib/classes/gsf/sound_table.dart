@@ -9,22 +9,20 @@ class SoundTable extends GsfPart {
     required this.soundCount,
   }) : super(offset: offset);
 
-  late final int soundCount;
+  late final Standard4BytesData<int> soundCount;
   late final List<SoundInfo> soundInfos;
 
-  static const GsfData soundCountData = Standard4BytesData(pos: 0);
-
   SoundTable.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    soundCount = soundCountData.getAsUint(bytes, offset);
+    soundCount = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
     print("sound table sound count: $soundCount");
     soundInfos = [];
-    for (var i = 0; i < soundCount; i++) {
+    for (var i = 0; i < soundCount.value; i++) {
       soundInfos.add(
         SoundInfo.fromBytes(
           bytes,
           soundInfos.isNotEmpty
               ? soundInfos.last.getEndOffset()
-              : soundCountData.offsettedLength(offset),
+              : soundCount.offsettedLength(offset),
         ),
       );
       print(soundInfos.last);
@@ -35,7 +33,7 @@ class SoundTable extends GsfPart {
   int getEndOffset() {
     return soundInfos.isNotEmpty
         ? soundInfos.last.getEndOffset()
-        : soundCountData.offsettedLength(offset);
+        : soundCount.offsettedLength(offset);
   }
 
   @override
