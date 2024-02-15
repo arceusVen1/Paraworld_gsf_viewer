@@ -10,16 +10,57 @@ abstract class GsfPart {
   int getEndOffset();
 }
 
-class GsfData {
-  const GsfData({required this.pos, required this.length, this.maskToUse});
+typedef UnknowData = Uint8List;
 
-  final int pos;
-  final int length;
-  final int? maskToUse;
+class GsfData<T> {
+  GsfData();
 
-  int relativeEnd() => pos + length;
+  _init({required int pos, required int length}) {
+    this.pos = pos;
+    this.length = length;
+  }
+
+  late final int pos;
+  late final int length;
+  late final T value;
+
+  GsfData.fromPosition(
+      {required this.pos,
+      required this.length,
+      required Uint8List bytes,
+      required int offset}) {
+    parseValue(bytes, offset);
+  }
+
+  GsfData.fromValue({required this.value, required this.pos, int? length}) {
+    if (T is String) {
+      length = (value as String).length + 1; // +1 for trailing 0
+    } else if (length != null) {
+      this.length = length;
+    } else {
+      throw Exception('Length must be provided for non-string values');
+    }
+  }
+
+  int get relativeEnd => pos + length;
   int offsettedPos(int offset) => pos + offset;
   int offsettedLength(int offset) => offsettedPos(offset) + length;
+
+  parseValue(Uint8List bytes, int offset) {
+    switch (T) {
+      case int:
+        value = getAsUint(bytes, offset) as T;
+      case double:
+        value = getAsFloat(bytes, offset) as T;
+      case String:
+        value = getAsAsciiString(bytes, offset) as T;
+      case UnknowData:
+        value =
+            bytes.sublist(offsettedPos(offset), offsettedLength(offset)) as T;
+      default:
+        throw Exception('Invalid type');
+    }
+  }
 
   String getAsAsciiString(Uint8List bytes, int offset) {
     final stringBytes =
@@ -47,9 +88,6 @@ class GsfData {
       default:
         value = data.getUint8(0);
     }
-    if (maskToUse != null) {
-      value &= maskToUse!;
-    }
     return value;
   }
 
@@ -64,11 +102,21 @@ class GsfData {
         throw Exception('Invalid length');
     }
   }
+
+  @override
+  String toString() {
+    return value.toString();
+  }
 }
 
 /// A [GsfData] that is 4 bytes long.
-class Standard4BytesData extends GsfData {
-  const Standard4BytesData({required int pos}) : super(pos: pos, length: 4);
+class Standard4BytesData<T> extends GsfData<T> {
+  Standard4BytesData(
+      {required int position, required Uint8List bytes, required int offset})
+      : super() {
+    super._init(pos: position, length: 4);
+    super.parseValue(bytes, offset);
+  }
 
   @override
   int getAsUint(Uint8List bytes, int offset) {
@@ -88,8 +136,12 @@ class Standard4BytesData extends GsfData {
   }
 }
 
-class DoubleByteData extends GsfData {
-  const DoubleByteData({required int pos}) : super(pos: pos, length: 2);
+class DoubleByteData<T> extends GsfData<T> {
+  DoubleByteData(
+      {required int pos, required Uint8List bytes, required int offset}) {
+    super._init(pos: pos, length: 2);
+    super.parseValue(bytes, offset);
+  }
 
   @override
   int getAsUint(Uint8List bytes, int offset) {
@@ -108,9 +160,36 @@ class DoubleByteData extends GsfData {
   }
 }
 
+class VariableTwoBytesData<T> extends GsfData<T> {
+  VariableTwoBytesData(
+      {required int relativePosition,
+      required Uint8List bytes,
+      required int offset}) {
+    pos = relativePosition;
+    if (T != int) {
+      throw Exception('Invalid type, variable two bytes data can only be int');
+    }
+
+    if (bytes[offset + pos] & 0x80 > 0) {
+      length = 2;
+    } else {
+      length = 1;
+    }
+    //super._init(pos: pos, length: length);
+    value = (getAsUint(bytes, offset) & 0x7FFF) as T;
+  }
+}
+
 /// A [GsfData] that is 1 byte long.
-class SingleByteData extends GsfData {
-  const SingleByteData({required int pos}) : super(pos: pos, length: 1);
+class SingleByteData<T> extends GsfData {
+  SingleByteData(
+      {required int pos, required Uint8List bytes, required int offset}) {
+    if (T is! int) {
+      throw Exception('Invalid type, single byte data can only be int');
+    }
+    super._init(pos: pos, length: 1);
+    value = getAsUint(bytes, offset);
+  }
 
   @override
   int getAsUint(Uint8List bytes, int offset) {
