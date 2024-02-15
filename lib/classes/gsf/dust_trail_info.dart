@@ -13,7 +13,6 @@ class DustTrailInfo extends GsfPart {
   SimpleDustrail? simpleDustrail;
 
   DustTrailInfo.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    print("dust trail info offset: $offset");
     nameLength = nameLengthData.getAsUint(bytes, offset);
     _nameData = GsfData(pos: nameLengthData.relativeEnd(), length: nameLength);
     name = _nameData.getAsAsciiString(bytes, offset);
