@@ -46,18 +46,16 @@ types:
         type: u4
       - id: structs
         type: model_anim
-        if: num_model_anim != 0
-      - id: structs2
-        type: model_anim_next
         repeat: expr
-        repeat-expr: num_model_anim - 1
+        repeat-expr: num_model_anim
         if: num_model_anim != 0
-      - id: structs3
-        type: walkset_table
-        if: num_model_anim != 0
-      - id: walkset_zero
-        contents: [0x00, 0x00, 0x00, 0x00]
-        if: num_model_anim == 0
+      - id: num_walksets
+        type: u4
+      - id: structs2
+        type: walkset
+        repeat: expr
+        repeat-expr: num_walksets
+        if: num_walksets != 0
   #Merge model_anim & model_anim_next
   model_anim:
     seq:
@@ -71,22 +69,8 @@ types:
         type: u4
       - id: structs
         type: sound_indices_table
-  model_anim_next:
-    seq:
-      - id: zero
-        # [0x00, 0x00, 0x00, 0x00]
-        # sl_heiligestadt.gsf, all_animals.gsf
+      - id: unk_bytes
         type: u4
-      - id: num_chars
-        type: u4
-      - id: model_anim_name
-        type: str
-        size: num_chars
-        encoding: ASCII
-      - id: anim_index
-        type: u4
-      - id: structs
-        type: sound_indices_table
   sound_indices_table:
     seq:
       - id: num_sound_indices
@@ -95,18 +79,6 @@ types:
         type: u4
         repeat: expr
         repeat-expr: num_sound_indices
-  walkset_table:
-    seq:
-      - id: zero
-        # [0x00, 0x00, 0x00, 0x00]
-        # sl_heiligestadt.gsf
-        type: u4
-      - id: num_walksets
-        type: u4
-      - id: struct
-        type: walkset
-        repeat: expr
-        repeat-expr: num_walksets
   walkset:
     seq:
       - id: walk_1
@@ -146,7 +118,9 @@ types:
       - id: standing_turn_left
         type: u1
       - id: unk_byte
-        contents: [0x00]
+        # contents: [0x00]
+        # all_characters.gsf
+        type: u1
       - id: accel_1_2
         type: u1
       - id: accel_2_3
@@ -164,7 +138,9 @@ types:
       - id: walk_right
         type: u1
       - id: unk_byte2
-        contents: [0x00]
+        # contents: [0x00]
+        # all_characters.gsf
+        type: u1
       - id: walk_transition_index
         type: u1
       - id: growup
@@ -177,10 +153,14 @@ types:
         type: u1
       - id: walk_to_swim_2
         type: u1
-      - id: zero
-        contents: [0x00, 0x00, 0x00, 0x00]
-      - id: zero2
-        contents: [0x00, 0x00, 0x00, 0x00]
+      - id: unk_bytes
+        # contents: [0x00, 0x00, 0x00, 0x00]
+        # all_characters.gsf
+        type: u4
+      - id: unk_bytes2
+        # contents: [0x00, 0x00, 0x00, 0x00]
+        # all_characters.gsf
+        type: u4
       - id: walkset_name
         type: str
         size: 4
@@ -217,26 +197,46 @@ types:
         encoding: ASCII
   dusttrail_table:
     seq:
-      - id: num_dusttrail
-        type: u4
-      - id: structs
-        type: dusttrail
-        repeat: expr
-        repeat-expr: num_dusttrail
+    - id: num_dusttrail
+      type: u4
+    - id: structs
+      type: dusttrail
+      repeat: expr
+      repeat-expr: num_dusttrail
   dusttrail:
     seq:
       - id: unk_bytes
-        size: 6
-      - id: num_chars
+        type: u4
+      - id: unk_bytes2
+        type: u2
+      - id: dusttrail_name_num_chars
         type: u4
       - id: dusttrail_name
         type: str
-        size: num_chars
+        size: dusttrail_name_num_chars
         encoding: ASCII
-      - id: unk_bytes2
-        size: 4
-      - id: num_settings
+      - id: unk_bytes_bone_index
         type: u4
+      - id: num_entries
+        type: u4
+      - id: structs
+        type: dusttrail_entry
+        repeat: expr
+        repeat-expr: num_entries
+  dusttrail_entry:
+    seq:
+      - id: entry_name_num_chars
+        type: u4
+      - id: entry_name
+        type: str
+        size: entry_name_num_chars
+        encoding: ASCII
+      - id: value_num_chars
+        type: u4
+      - id: value
+        type: str
+        size: value_num_chars
+        encoding: ASCII
   walk_transition_table:
     seq:
       - id: num_walk_transitions
