@@ -28,7 +28,7 @@ class ModelAnim extends GsfPart {
 
     soundIndices = SoundIndices.fromBytes(bytes, index.offsettedLength(offset));
     unknownData = Standard4BytesData(
-      position: soundIndices.getEndOffset() - offset,
+      position: index.relativeEnd + soundIndices.length,
       bytes: bytes,
       offset: offset,
     );

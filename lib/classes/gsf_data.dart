@@ -8,6 +8,9 @@ abstract class GsfPart {
 
   // the offset at the end of the part
   int getEndOffset();
+
+  // the end position
+  int get length => getEndOffset() - offset;
 }
 
 typedef UnknowData = Uint8List;
