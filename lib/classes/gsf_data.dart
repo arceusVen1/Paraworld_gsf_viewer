@@ -12,6 +12,16 @@ abstract class GsfPart {
 
   // the end position
   int get length => getEndOffset() - offset;
+
+  @override
+  bool operator ==(Object other) =>
+      other is GsfPart &&
+      other.offset == offset &&
+      other.name == name &&
+      other.length == length;
+
+  @override
+  int get hashCode => offset.hashCode ^ name.hashCode;
 }
 
 typedef UnknowData = Uint8List;

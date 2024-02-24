@@ -81,6 +81,8 @@ class ValueSelector extends StatelessWidget {
           ),
           children: [
             ...parts.map((part) => ListTile(
+                  selected: part == value,
+                  selectedTileColor: Colors.grey.shade400,
                   title: Label.regular(
                       "${part.name} (offset 0x${part.offset.toRadixString(16)})"),
                   onTap: () {
