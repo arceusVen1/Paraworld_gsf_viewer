@@ -68,43 +68,40 @@ class ValueSelector extends StatelessWidget {
   final void Function(GsfPart?) onSelected;
   final GsfPart? value;
 
-  Future<void> _showSelector(BuildContext context) async {
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return SimpleDialog(
-          title: Label.regular(
-            value != null
-                ? "selected: ${value!.name} (0x${value!.offset.toRadixString(16)})"
-                : label,
-            fontWeight: FontWeight.bold,
-          ),
-          children: [
-            ...parts.map((part) => ListTile(
-                  selected: part == value,
-                  selectedTileColor: Colors.grey.shade400,
-                  title: Label.regular(
-                      "${part.name} (offset 0x${part.offset.toRadixString(16)})"),
-                  onTap: () {
-                    onSelected(part);
-                    Navigator.pop(context);
-                  },
-                ))
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0),
-      child: Button.secondary(
-        onPressed: () => _showSelector(context),
-        child: Label.small(value != null
-            ? "${value!.name} (0x${value!.offset.toRadixString(16)})"
-            : label),
+      padding: const EdgeInsets.only(top: 3.0, bottom: 3.0, right: 40.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        clipBehavior: Clip.hardEdge,
+        constraints: const BoxConstraints(maxHeight: 300),
+        // necessary to fix list view overflow https://github.com/flutter/flutter/issues/143269
+        child: Material(
+          type: MaterialType.transparency,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: parts.length,
+            addAutomaticKeepAlives: false,
+            cacheExtent: 50,
+            itemBuilder: (context, index) {
+              final part = parts[index];
+              return ListTile(
+                contentPadding: const EdgeInsets.only(left: 5, right: 5),
+                selected: part == value,
+                selectedTileColor: Colors.grey.shade400,
+                title: Label.regular(
+                    "${part.name} (0x${part.offset.toRadixString(16)})"),
+                onTap: () {
+                  onSelected(part);
+                },
+              );
+            },
+          ),
+        ),
       ),
     );
   }
