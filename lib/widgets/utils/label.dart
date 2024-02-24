@@ -94,14 +94,18 @@ class Label extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      label,
-      maxLines: maxLines,
-      style: TextStyle(
-        color: color ?? Colors.black,
-        fontSize: getFontSize(size),
-        fontWeight: fontWeight,
-        overflow: TextOverflow.ellipsis,
+    return FittedBox(
+      fit: BoxFit.scaleDown, // this will force the text to be resized to fit
+      alignment: Alignment.centerLeft,
+      child: Text(
+        label,
+        maxLines: maxLines,
+        style: TextStyle(
+          color: color ?? Colors.black,
+          fontSize: getFontSize(size),
+          fontWeight: fontWeight,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }
