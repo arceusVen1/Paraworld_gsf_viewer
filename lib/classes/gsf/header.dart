@@ -32,8 +32,8 @@ class Header extends GsfPart {
       walkTransitionTable2; // there seems to be 2 transitions tables
 
   Header.fromBytes(Uint8List bytes) : super(offset: 0) {
-    _magic =
-        GsfData.fromPosition(pos: 0, length: 4, bytes: bytes, offset: offset);
+    _magic = GsfData.fromPosition(
+        relativePos: 0, length: 4, bytes: bytes, offset: offset);
     print("magic: $_magic");
     _version = Standard4BytesData(
         position: _magic.relativeEnd, bytes: bytes, offset: offset);
@@ -44,7 +44,7 @@ class Header extends GsfPart {
         position: contentTableOffset.relativeEnd, bytes: bytes, offset: offset);
 
     name = GsfData<String>.fromPosition(
-      pos: nameLength.relativeEnd,
+      relativePos: nameLength.relativeEnd,
       length: nameLength.value,
       bytes: bytes,
       offset: offset,

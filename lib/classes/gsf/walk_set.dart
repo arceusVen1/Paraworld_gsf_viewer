@@ -55,8 +55,6 @@ class WalkSet extends GsfPart {
   late final VariableTwoBytesData<int> unknownData9;
   late final VariableTwoBytesData<int> unknownData10;
 
-  late final Standard4BytesData<String> nameData;
-
   WalkSet.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     walk1PosData =
         VariableTwoBytesData(relativePosition: 0, bytes: bytes, offset: offset);
@@ -265,21 +263,20 @@ class WalkSet extends GsfPart {
       offset: offset,
     );
 
-    nameData = Standard4BytesData(
+    name = Standard4BytesData(
       position: unknownData10.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    print("walk set name: $nameData");
   }
 
   @override
   String toString() {
-    return 'WalkSet: $nameData';
+    return 'WalkSet: $name';
   }
 
   @override
   int getEndOffset() {
-    return nameData.offsettedLength(offset);
+    return name.offsettedLength(offset);
   }
 }

@@ -11,7 +11,6 @@ class WalkSetTable extends GsfPart {
 
   WalkSetTable.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     count = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
-    print("walk set table count: $count");
     for (var i = 0; i < count.value; i++) {
       walkSets.add(WalkSet.fromBytes(
         bytes,

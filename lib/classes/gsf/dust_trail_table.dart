@@ -16,7 +16,6 @@ class DustTrailTable extends GsfPart {
       : super(offset: offset) {
     dustTrailCount =
         Standard4BytesData(position: 0, bytes: bytes, offset: offset);
-    print("dust trail table count: $dustTrailCount");
     dustTrailInfos = [];
     for (var i = 0; i < dustTrailCount.value; i++) {
       dustTrailInfos.add(
@@ -27,7 +26,6 @@ class DustTrailTable extends GsfPart {
               : dustTrailCount.offsettedLength(offset),
         ),
       );
-      print(dustTrailInfos.last);
     }
   }
 
