@@ -74,8 +74,9 @@ class ModelAnimDisplay extends StatelessWidget {
         GsfDataTile(label: 'Name', data: modelAnim.name),
         GsfDataTile(label: 'index', data: modelAnim.index),
         GsfDataTile(label: 'Sound count', data: modelAnim.soundIndices.count),
-        ...modelAnim.soundIndices.indices
-            .map((e) => Label.regular('Sound index: $e')),
+        ...modelAnim.soundIndices.indices.map(
+          (e) => GsfDataTile(label: 'sound index', data: e),
+        ),
         GsfDataTile(label: "unknown", data: modelAnim.unknownData),
       ],
     );
