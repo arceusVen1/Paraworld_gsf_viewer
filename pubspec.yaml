@@ -40,6 +40,7 @@ dependencies:
   path_provider: ^2.1.2
   file_picker: ^6.1.1
   flutter_riverpod: ^2.4.10
+  freezed_annotation: ^2.4.1
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   riverpod_generator: ^2.3.10
+  build_runner: ^2.4.8
+  freezed: ^2.4.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
