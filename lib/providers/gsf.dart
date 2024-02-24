@@ -4,8 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
 
+/// Provider that holds the path of the gsf file
 final gsfPathStateProvider = StateProvider<PlatformFile?>((ref) => null);
 
+/// Provider that reads a gsf model file and returns the GSF object
 final gsfProvider = FutureProvider<GSF?>(
   (ref) async {
     final file = ref.watch(gsfPathStateProvider);
