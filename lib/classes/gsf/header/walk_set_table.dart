@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_set.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/walk_set.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class WalkSetTable extends GsfPart {
@@ -16,7 +16,7 @@ class WalkSetTable extends GsfPart {
         bytes,
         walkSets.isNotEmpty
             ? walkSets.last.getEndOffset()
-            : count.offsettedLength(offset),
+            : count.offsettedLength,
       ));
     }
   }
@@ -24,7 +24,7 @@ class WalkSetTable extends GsfPart {
   @override
   int getEndOffset() => walkSets.isNotEmpty
       ? walkSets.last.getEndOffset()
-      : count.offsettedLength(offset);
+      : count.offsettedLength;
 
   @override
   String toString() {

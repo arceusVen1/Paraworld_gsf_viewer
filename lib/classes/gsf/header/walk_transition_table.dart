@@ -2,10 +2,10 @@ import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
-class WalkTransitionInfo extends GsfPart {
+class WalkTransitionTable extends GsfPart {
   late final Standard4BytesData<int> nameLength;
 
-  WalkTransitionInfo.fromBytes(Uint8List bytes, int offset)
+  WalkTransitionTable.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset) {
     nameLength = Standard4BytesData(
       position: 0,
@@ -23,7 +23,7 @@ class WalkTransitionInfo extends GsfPart {
 
   @override
   int getEndOffset() {
-    return name.offsettedLength(offset);
+    return name.offsettedLength;
   }
 
   @override

@@ -46,7 +46,7 @@ class GsfData<T> {
     required Uint8List bytes,
     required this.offset,
   }) {
-    parseValue(bytes, offset);
+    parseValue(bytes);
   }
 
   GsfData.fromValue(
@@ -65,36 +65,36 @@ class GsfData<T> {
 
   int get relativeEnd => relativePos + length;
   int get offsettedPos => relativePos + offset;
-  int offsettedLength(int offset) => offsettedPos + length;
+  int get offsettedLength => offsettedPos + length;
 
-  parseValue(Uint8List bytes, int offset) {
+  parseValue(Uint8List bytes) {
     switch (T) {
       case int:
-        value = getAsUint(bytes, offset) as T;
+        value = getAsUint(bytes) as T;
       case double:
-        value = getAsFloat(bytes, offset) as T;
+        value = getAsFloat(bytes) as T;
       case String:
-        value = getAsAsciiString(bytes, offset) as T;
+        value = getAsAsciiString(bytes) as T;
       case UnknowData:
-        value = bytes.sublist(offsettedPos, offsettedLength(offset)) as T;
+        value = bytes.sublist(offsettedPos, offsettedLength) as T;
       default:
         throw Exception('Invalid type');
     }
   }
 
-  String getAsAsciiString(Uint8List bytes, int offset) {
-    final stringBytes = bytes.sublist(offsettedPos, offsettedLength(offset));
+  String getAsAsciiString(Uint8List bytes) {
+    final stringBytes = bytes.sublist(offsettedPos, offsettedLength);
     assert(stringBytes.last == 0); // all names should have a 0 name terminator
     return const AsciiDecoder()
         .convert(stringBytes.sublist(0, stringBytes.length - 1));
   }
 
-  ByteData getBytesData(Uint8List bytes, int offset) {
-    return ByteData.sublistView(bytes, offsettedPos, offsettedLength(offset));
+  ByteData getBytesData(Uint8List bytes) {
+    return ByteData.sublistView(bytes, offsettedPos, offsettedLength);
   }
 
-  int getAsUint(Uint8List bytes, int offset) {
-    final data = getBytesData(bytes, offset);
+  int getAsUint(Uint8List bytes) {
+    final data = getBytesData(bytes);
     int value;
     switch (length) {
       case >= 8:
@@ -109,8 +109,8 @@ class GsfData<T> {
     return value;
   }
 
-  double getAsFloat(Uint8List bytes, int offset) {
-    final data = getBytesData(bytes, offset);
+  double getAsFloat(Uint8List bytes) {
+    final data = getBytesData(bytes);
     switch (length) {
       case >= 8:
         return data.getFloat64(0, Endian.little);
@@ -123,9 +123,12 @@ class GsfData<T> {
 
   @override
   String toString() {
-    return T == int
-        ? '$value (0x${(value as int).toRadixString(16)})'
-        : value.toString();
+    switch (T) {
+      case int:
+        return '$value (0x${(value as int).toRadixString(16)})';
+      default:
+        return value.toString();
+    }
   }
 }
 
@@ -135,22 +138,22 @@ class Standard4BytesData<T> extends GsfData<T> {
       {required int position, required Uint8List bytes, required int offset})
       : super() {
     super._init(relativePos: position, length: 4, offset: offset);
-    super.parseValue(bytes, offset);
+    super.parseValue(bytes);
   }
 
   @override
-  int getAsUint(Uint8List bytes, int offset) {
-    return super.getBytesData(bytes, offset).getUint32(0, Endian.little);
+  int getAsUint(Uint8List bytes) {
+    return super.getBytesData(bytes).getUint32(0, Endian.little);
   }
 
   @override
-  double getAsFloat(Uint8List bytes, int offset) {
-    return super.getBytesData(bytes, offset).getFloat32(0, Endian.little);
+  double getAsFloat(Uint8List bytes) {
+    return super.getBytesData(bytes).getFloat32(0, Endian.little);
   }
 
   @override
-  String getAsAsciiString(Uint8List bytes, int offset) {
-    final stringBytes = bytes.sublist(offsettedPos, offsettedLength(offset));
+  String getAsAsciiString(Uint8List bytes) {
+    final stringBytes = bytes.sublist(offsettedPos, offsettedLength);
     return const AsciiDecoder().convert(stringBytes);
   }
 }
@@ -159,23 +162,23 @@ class DoubleByteData<T> extends GsfData<T> {
   DoubleByteData(
       {required int pos, required Uint8List bytes, required int offset}) {
     super._init(relativePos: pos, length: 2, offset: offset);
-    super.parseValue(bytes, offset);
+    super.parseValue(bytes);
   }
 
   @override
-  int getAsUint(Uint8List bytes, int offset) {
-    return super.getBytesData(bytes, offset).getUint16(0, Endian.little);
+  int getAsUint(Uint8List bytes) {
+    return super.getBytesData(bytes).getUint16(0, Endian.little);
   }
 
   @override
-  double getAsFloat(Uint8List bytes, int offset) {
+  double getAsFloat(Uint8List bytes) {
     throw Exception('Double byte data cannot be converted to float');
   }
 
   @override
-  String getAsAsciiString(Uint8List bytes, int offset) {
+  String getAsAsciiString(Uint8List bytes) {
     return const AsciiDecoder()
-        .convert(bytes.sublist(offsettedPos, offsettedLength(offset)));
+        .convert(bytes.sublist(offsettedPos, offsettedLength));
   }
 }
 
@@ -195,12 +198,12 @@ class VariableTwoBytesData<T> extends GsfData<T> {
     } else {
       length = 1;
     }
-    value = (getAsUint(bytes, offset) & 0x7FFF) as T;
+    value = (getAsUint(bytes) & 0x7FFF) as T;
   }
 
   @override
-  int getAsUint(Uint8List bytes, int offset) {
-    final bytesData = super.getBytesData(bytes, offset);
+  int getAsUint(Uint8List bytes) {
+    final bytesData = super.getBytesData(bytes);
     switch (length) {
       case 2:
         return bytesData.getUint16(
@@ -219,21 +222,21 @@ class SingleByteData<T> extends GsfData {
       throw Exception('Invalid type, single byte data can only be int');
     }
     super._init(relativePos: pos, length: 1, offset: offset);
-    value = getAsUint(bytes, offset);
+    value = getAsUint(bytes);
   }
 
   @override
-  int getAsUint(Uint8List bytes, int offset) {
-    return super.getBytesData(bytes, offset).getUint8(0);
+  int getAsUint(Uint8List bytes) {
+    return super.getBytesData(bytes).getUint8(0);
   }
 
   @override
-  double getAsFloat(Uint8List bytes, int offset) {
+  double getAsFloat(Uint8List bytes) {
     throw Exception('Single byte data cannot be converted to float');
   }
 
   @override
-  String getAsAsciiString(Uint8List bytes, int offset) {
+  String getAsAsciiString(Uint8List bytes) {
     throw Exception('Single byte data cannot be converted to string');
   }
 }

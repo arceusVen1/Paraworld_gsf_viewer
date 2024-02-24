@@ -1,20 +1,18 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/dust_trail_table.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/model_info.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/sound_table.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_transition_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/anim_flags_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/model_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/sound_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/walk_transition_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class Header extends GsfPart {
   Header({
-    required this.name,
     required this.modelCount,
     required this.soundTable,
     required this.modelInfos,
     required this.dustTrailTable,
-    required this.walkTransitionTable1,
-    required this.walkTransitionTable2,
   }) : super(offset: 0);
 
   late final GsfData<int> _magic;
@@ -22,14 +20,14 @@ class Header extends GsfPart {
 
   late final Standard4BytesData<int> contentTableOffset;
   late final Standard4BytesData<int> nameLength;
-  late final GsfData<String> name;
   late final Standard4BytesData<int> modelCount;
   late final List<ModelInfo> modelInfos;
   late final SoundTable soundTable;
   late final DustTrailTable dustTrailTable;
-  late final WalkTransitionTable walkTransitionTable1;
-  late final WalkTransitionTable
-      walkTransitionTable2; // there seems to be 2 transitions tables
+  late final Standard4BytesData<int> animFlagsCount;
+  late final List<AnimFlagTable> animFlagsTables = [];
+  late final Standard4BytesData<int> walkTransitionsCount;
+  late final List<WalkTransitionTable> walkTransitionTables = [];
 
   Header.fromBytes(Uint8List bytes) : super(offset: 0) {
     _magic = GsfData.fromPosition(
@@ -51,7 +49,10 @@ class Header extends GsfPart {
     );
 
     modelCount = Standard4BytesData<int>(
-        position: name.relativeEnd, bytes: bytes, offset: offset);
+      position: name.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
     print("modelCount: $modelCount");
     modelInfos = [];
     for (var i = 0; i < modelCount.value; i++) {
@@ -60,7 +61,7 @@ class Header extends GsfPart {
           bytes,
           modelInfos.isNotEmpty
               ? modelInfos.last.getEndOffset()
-              : modelCount.offsettedLength(offset),
+              : modelCount.offsettedLength,
         ),
       );
     }
@@ -68,7 +69,7 @@ class Header extends GsfPart {
       bytes,
       modelInfos.isNotEmpty
           ? modelInfos.last.getEndOffset()
-          : modelCount.offsettedLength(offset),
+          : modelCount.offsettedLength,
     );
 
     dustTrailTable = DustTrailTable.fromBytes(
@@ -76,15 +77,41 @@ class Header extends GsfPart {
       soundTable.getEndOffset(),
     );
 
-    walkTransitionTable1 = WalkTransitionTable.fromBytes(
-      bytes,
-      dustTrailTable.getEndOffset(),
+    animFlagsCount = Standard4BytesData(
+      position: dustTrailTable.getEndOffset() - offset,
+      bytes: bytes,
+      offset: offset,
     );
 
-    walkTransitionTable2 = WalkTransitionTable.fromBytes(
-      bytes,
-      walkTransitionTable1.getEndOffset(),
+    for (var i = 0; i < animFlagsCount.value; i++) {
+      animFlagsTables.add(
+        AnimFlagTable.fromBytes(
+          bytes,
+          animFlagsTables.isNotEmpty
+              ? animFlagsTables.last.getEndOffset()
+              : animFlagsCount.offsettedLength,
+        ),
+      );
+    }
+
+    walkTransitionsCount = Standard4BytesData(
+      position: animFlagsTables.isNotEmpty
+          ? animFlagsTables.last.getEndOffset() - offset
+          : animFlagsCount.offsettedLength,
+      bytes: bytes,
+      offset: offset,
     );
+
+    for (var i = 0; i < walkTransitionsCount.value; i++) {
+      walkTransitionTables.add(
+        WalkTransitionTable.fromBytes(
+          bytes,
+          walkTransitionTables.isNotEmpty
+              ? walkTransitionTables.last.getEndOffset()
+              : walkTransitionsCount.offsettedLength,
+        ),
+      );
+    }
   }
 
   @override
@@ -101,6 +128,8 @@ class Header extends GsfPart {
 
   @override
   int getEndOffset() {
-    return walkTransitionTable2.getEndOffset();
+    return walkTransitionTables.isNotEmpty
+        ? walkTransitionTables.last.getEndOffset()
+        : walkTransitionsCount.offsettedLength;
   }
 }

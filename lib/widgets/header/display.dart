@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/dust_trail_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/model_info.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/sound_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/model_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/sound_info.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/widgets/dust_trail.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/widgets/model_infos.dart';
@@ -129,21 +129,21 @@ class _Data extends ConsumerWidget {
                       .setDustTrailInfo(part as DustTrailInfo),
                 ),
               GsfDataTile(
-                label: 'Walk Transition Count',
-                data: header.walkTransitionTable1.transitionCount,
+                label: 'anim flags count ',
+                data: header.animFlagsCount,
                 bold: true,
               ),
-              ...header.walkTransitionTable1.transitionInfos
+              ...header.animFlagsTables
                   .map((part) => Label.regular(
                         'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
                       ))
                   .toList(),
               GsfDataTile(
-                label: 'Walk Transition 2 Count',
-                data: header.walkTransitionTable2.transitionCount,
+                label: 'Walk Transitions conunt',
+                data: header.walkTransitionsCount,
                 bold: true,
               ),
-              ...header.walkTransitionTable2.transitionInfos
+              ...header.walkTransitionTables
                   .map((part) => Label.regular(
                         'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
                       ))

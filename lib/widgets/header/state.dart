@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/dust_trail_info.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/model_anim.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/model_info.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/sound_info.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_set.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/model_anim.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/model_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/sound_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/walk_set.dart';
 part 'state.freezed.dart';
 
 @freezed

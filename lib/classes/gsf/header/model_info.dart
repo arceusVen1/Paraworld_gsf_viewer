@@ -1,13 +1,12 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/model_anim.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_set_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/model_anim.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/walk_set_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class ModelInfo extends GsfPart {
   ModelInfo({
     required offset,
-    required this.name,
     required this.index,
     required this.animCount,
     required this.modelAnims,
@@ -15,7 +14,6 @@ class ModelInfo extends GsfPart {
   }) : super(offset: offset);
 
   late final Standard4BytesData<int> nameLength;
-  late final GsfData<String> name;
   late final Standard4BytesData<int> index;
   late final Standard4BytesData<int> animCount;
   late final List<ModelAnim>
@@ -46,7 +44,7 @@ class ModelInfo extends GsfPart {
           bytes,
           modelAnims.isNotEmpty
               ? modelAnims.last.getEndOffset()
-              : animCount.offsettedLength(offset),
+              : animCount.offsettedLength,
         ));
       }
     }
@@ -55,7 +53,7 @@ class ModelInfo extends GsfPart {
       bytes,
       modelAnims.isNotEmpty
           ? modelAnims.last.getEndOffset()
-          : animCount.offsettedLength(offset),
+          : animCount.offsettedLength,
     );
   }
 

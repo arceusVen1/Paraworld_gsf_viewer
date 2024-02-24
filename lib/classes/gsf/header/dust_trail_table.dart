@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/dust_trail_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class DustTrailTable extends GsfPart {
@@ -23,7 +23,7 @@ class DustTrailTable extends GsfPart {
           bytes,
           dustTrailInfos.isNotEmpty
               ? dustTrailInfos.last.getEndOffset()
-              : dustTrailCount.offsettedLength(offset),
+              : dustTrailCount.offsettedLength,
         ),
       );
     }
@@ -33,7 +33,7 @@ class DustTrailTable extends GsfPart {
   int getEndOffset() {
     return dustTrailInfos.isNotEmpty
         ? dustTrailInfos.last.getEndOffset()
-        : dustTrailCount.offsettedLength(offset);
+        : dustTrailCount.offsettedLength;
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/sound_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/sound_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class SoundTable extends GsfPart {
@@ -21,7 +21,7 @@ class SoundTable extends GsfPart {
           bytes,
           soundInfos.isNotEmpty
               ? soundInfos.last.getEndOffset()
-              : soundCount.offsettedLength(offset),
+              : soundCount.offsettedLength,
         ),
       );
     }
@@ -31,7 +31,7 @@ class SoundTable extends GsfPart {
   int getEndOffset() {
     return soundInfos.isNotEmpty
         ? soundInfos.last.getEndOffset()
-        : soundCount.offsettedLength(offset);
+        : soundCount.offsettedLength;
   }
 
   @override
