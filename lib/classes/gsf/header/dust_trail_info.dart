@@ -41,7 +41,7 @@ class DustTrailInfo extends GsfPart {
           bytes,
           entries.isNotEmpty
               ? entries.last.getEndOffset()
-              : entryCount.offsettedLength(offset),
+              : entryCount.offsettedLength,
         ));
       }
     }
@@ -51,7 +51,7 @@ class DustTrailInfo extends GsfPart {
   int getEndOffset() {
     return entries.isNotEmpty
         ? entries.last.getEndOffset()
-        : entryCount.offsettedLength(offset);
+        : entryCount.offsettedLength;
   }
 
   @override
@@ -87,6 +87,6 @@ class DustTrailEntry extends GsfPart {
 
   @override
   int getEndOffset() {
-    return valueChars.offsettedLength(offset);
+    return valueChars.offsettedLength;
   }
 }

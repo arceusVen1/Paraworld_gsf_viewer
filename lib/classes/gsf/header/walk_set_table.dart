@@ -16,7 +16,7 @@ class WalkSetTable extends GsfPart {
         bytes,
         walkSets.isNotEmpty
             ? walkSets.last.getEndOffset()
-            : count.offsettedLength(offset),
+            : count.offsettedLength,
       ));
     }
   }
@@ -24,7 +24,7 @@ class WalkSetTable extends GsfPart {
   @override
   int getEndOffset() => walkSets.isNotEmpty
       ? walkSets.last.getEndOffset()
-      : count.offsettedLength(offset);
+      : count.offsettedLength;
 
   @override
   String toString() {

@@ -21,7 +21,7 @@ class SoundTable extends GsfPart {
           bytes,
           soundInfos.isNotEmpty
               ? soundInfos.last.getEndOffset()
-              : soundCount.offsettedLength(offset),
+              : soundCount.offsettedLength,
         ),
       );
     }
@@ -31,7 +31,7 @@ class SoundTable extends GsfPart {
   int getEndOffset() {
     return soundInfos.isNotEmpty
         ? soundInfos.last.getEndOffset()
-        : soundCount.offsettedLength(offset);
+        : soundCount.offsettedLength;
   }
 
   @override

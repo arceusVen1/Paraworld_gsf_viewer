@@ -4,10 +4,9 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class SoundInfo extends GsfPart {
   late final Standard4BytesData<int> nameLength;
-  late final GsfData<String> name;
   late final Standard4BytesData<int> startFrame;
   late final Standard4BytesData<int> volume;
-  late final Standard4BytesData<int> speed;
+  late final Standard4BytesData<double> speed;
   late final GsfData<UnknowData> unknownData; // 16 unknown bytes
   late final Standard4BytesData<int> soundGroupNameLength;
   late final GsfData<String> soundGroupName;
@@ -48,7 +47,7 @@ class SoundInfo extends GsfPart {
 
   @override
   int getEndOffset() {
-    return soundGroupName.offsettedLength(offset);
+    return soundGroupName.offsettedLength;
   }
 
   @override

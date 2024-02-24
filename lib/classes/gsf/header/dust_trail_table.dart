@@ -23,7 +23,7 @@ class DustTrailTable extends GsfPart {
           bytes,
           dustTrailInfos.isNotEmpty
               ? dustTrailInfos.last.getEndOffset()
-              : dustTrailCount.offsettedLength(offset),
+              : dustTrailCount.offsettedLength,
         ),
       );
     }
@@ -33,7 +33,7 @@ class DustTrailTable extends GsfPart {
   int getEndOffset() {
     return dustTrailInfos.isNotEmpty
         ? dustTrailInfos.last.getEndOffset()
-        : dustTrailCount.offsettedLength(offset);
+        : dustTrailCount.offsettedLength;
   }
 
   @override

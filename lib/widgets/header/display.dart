@@ -129,21 +129,21 @@ class _Data extends ConsumerWidget {
                       .setDustTrailInfo(part as DustTrailInfo),
                 ),
               GsfDataTile(
-                label: 'Walk Transition Count',
-                data: header.walkTransitionTable1.transitionCount,
+                label: 'anim flags count ',
+                data: header.animFlagsCount,
                 bold: true,
               ),
-              ...header.walkTransitionTable1.transitionInfos
+              ...header.animFlagsTables
                   .map((part) => Label.regular(
                         'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
                       ))
                   .toList(),
               GsfDataTile(
-                label: 'Walk Transition 2 Count',
-                data: header.walkTransitionTable2.transitionCount,
+                label: 'Walk Transitions conunt',
+                data: header.walkTransitionsCount,
                 bold: true,
               ),
-              ...header.walkTransitionTable2.transitionInfos
+              ...header.walkTransitionTables
                   .map((part) => Label.regular(
                         'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
                       ))

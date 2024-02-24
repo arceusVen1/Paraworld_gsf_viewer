@@ -277,6 +277,6 @@ class WalkSet extends GsfPart {
 
   @override
   int getEndOffset() {
-    return name.offsettedLength(offset);
+    return name.offsettedLength;
   }
 }

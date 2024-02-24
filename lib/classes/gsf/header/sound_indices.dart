@@ -23,6 +23,6 @@ class SoundIndices extends GsfPart {
 
   @override
   int getEndOffset() {
-    return count.offsettedLength(offset) + indices.length * 4;
+    return indices.isNotEmpty ? indices.last.offsettedLength : count.offsettedLength ;
   }
 }
