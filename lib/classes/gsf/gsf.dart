@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/header.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/header.dart';
 
 class GSF {
   const GSF({

@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/model_anim.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_set_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/model_anim.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/walk_set_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class ModelInfo extends GsfPart {

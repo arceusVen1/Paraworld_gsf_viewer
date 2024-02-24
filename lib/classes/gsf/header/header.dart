@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/dust_trail_table.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/model_info.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/sound_table.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_transition_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/model_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/sound_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/walk_transition_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class Header extends GsfPart {

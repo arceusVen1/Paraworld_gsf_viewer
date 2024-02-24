@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/dust_trail_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_info.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 

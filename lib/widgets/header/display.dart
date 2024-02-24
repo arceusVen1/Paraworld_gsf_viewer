@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/dust_trail_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/model_info.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/sound_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/model_info.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/sound_info.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/widgets/dust_trail.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/widgets/model_infos.dart';

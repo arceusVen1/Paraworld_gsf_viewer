@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_set.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/walk_set.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class WalkSetTable extends GsfPart {
