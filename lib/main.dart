@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paraworld_gsf_viewer/widgets/header/display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/drawer_menu.dart';
 import 'package:paraworld_gsf_viewer/widgets/viewer/viewer.dart';
 
@@ -18,13 +19,31 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: Scaffold(
-        appBar: AppBar(title: const Text("Paraworld Gsf viewer")),
-        body: const Padding(
-          padding: EdgeInsets.all(50),
-          child: Viewer(),
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+              bottom: const TabBar(
+                tabs: [
+                  Tab(text: "model", icon: Icon(Icons.hub)),
+                  Tab(text: "header", icon: Icon(Icons.info)),
+                ],
+              ),
+              title: const Text(
+                "Paraworld Gsf viewer",
+              )),
+          body: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 25),
+            child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                Viewer(),
+                HeaderDisplay(),
+              ],
+            ),
+          ),
+          drawer: const Menu(),
         ),
-        drawer: const Menu(),
       ),
     );
   }

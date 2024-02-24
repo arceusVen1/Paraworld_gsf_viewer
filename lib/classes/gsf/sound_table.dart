@@ -14,7 +14,6 @@ class SoundTable extends GsfPart {
 
   SoundTable.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     soundCount = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
-    print("sound table sound count: $soundCount");
     soundInfos = [];
     for (var i = 0; i < soundCount.value; i++) {
       soundInfos.add(
@@ -25,7 +24,6 @@ class SoundTable extends GsfPart {
               : soundCount.offsettedLength(offset),
         ),
       );
-      print(soundInfos.last);
     }
   }
 

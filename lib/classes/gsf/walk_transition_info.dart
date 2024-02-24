@@ -3,20 +3,19 @@ import 'dart:typed_data';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class WalkTransitionInfo extends GsfPart {
-  late final Standard4BytesData<int> transitionNameLength;
-  late final GsfData<String> transitionName;
+  late final Standard4BytesData<int> nameLength;
 
   WalkTransitionInfo.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset) {
-    transitionNameLength = Standard4BytesData(
+    nameLength = Standard4BytesData(
       position: 0,
       bytes: bytes,
       offset: offset,
     );
 
-    transitionName = GsfData.fromPosition(
-      pos: transitionNameLength.relativeEnd,
-      length: transitionNameLength.value,
+    name = GsfData.fromPosition(
+      relativePos: nameLength.relativeEnd,
+      length: nameLength.value,
       bytes: bytes,
       offset: offset,
     );
@@ -24,11 +23,11 @@ class WalkTransitionInfo extends GsfPart {
 
   @override
   int getEndOffset() {
-    return transitionName.offsettedLength(offset);
+    return name.offsettedLength(offset);
   }
 
   @override
   String toString() {
-    return 'WalkTransitionInfo: $transitionName';
+    return 'WalkTransitionInfo: $name';
   }
 }

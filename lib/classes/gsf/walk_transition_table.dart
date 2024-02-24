@@ -16,7 +16,6 @@ class WalkTransitionTable extends GsfPart {
       : super(offset: offset) {
     transitionCount =
         Standard4BytesData(position: 0, bytes: bytes, offset: offset);
-    print("walk transition table count: $transitionCount");
     transitionInfos = [];
     for (var i = 0; i < transitionCount.value; i++) {
       transitionInfos.add(
@@ -27,7 +26,6 @@ class WalkTransitionTable extends GsfPart {
               : transitionCount.offsettedLength(offset),
         ),
       );
-      print(transitionInfos.last);
     }
   }
 

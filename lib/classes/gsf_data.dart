@@ -5,6 +5,7 @@ abstract class GsfPart {
   GsfPart({required this.offset});
 
   final int offset;
+  late final GsfData<String> name;
 
   // the offset at the end of the part
   int getEndOffset();
@@ -18,24 +19,31 @@ typedef UnknowData = Uint8List;
 class GsfData<T> {
   GsfData();
 
-  _init({required int pos, required int length}) {
-    this.pos = pos;
+  _init({required int relativePos, required int length, required int offset}) {
+    this.relativePos = relativePos;
     this.length = length;
+    this.offset = offset;
   }
 
-  late final int pos;
+  late final int relativePos;
   late final int length;
   late final T value;
+  late final int offset;
 
-  GsfData.fromPosition(
-      {required this.pos,
-      required this.length,
-      required Uint8List bytes,
-      required int offset}) {
+  GsfData.fromPosition({
+    required this.relativePos,
+    required this.length,
+    required Uint8List bytes,
+    required this.offset,
+  }) {
     parseValue(bytes, offset);
   }
 
-  GsfData.fromValue({required this.value, required this.pos, int? length}) {
+  GsfData.fromValue(
+      {required this.value,
+      required this.offset,
+      required this.relativePos,
+      int? length}) {
     if (T is String) {
       length = (value as String).length + 1; // +1 for trailing 0
     } else if (length != null) {
@@ -45,9 +53,9 @@ class GsfData<T> {
     }
   }
 
-  int get relativeEnd => pos + length;
-  int offsettedPos(int offset) => pos + offset;
-  int offsettedLength(int offset) => offsettedPos(offset) + length;
+  int get relativeEnd => relativePos + length;
+  int get offsettedPos => relativePos + offset;
+  int offsettedLength(int offset) => offsettedPos + length;
 
   parseValue(Uint8List bytes, int offset) {
     switch (T) {
@@ -58,24 +66,21 @@ class GsfData<T> {
       case String:
         value = getAsAsciiString(bytes, offset) as T;
       case UnknowData:
-        value =
-            bytes.sublist(offsettedPos(offset), offsettedLength(offset)) as T;
+        value = bytes.sublist(offsettedPos, offsettedLength(offset)) as T;
       default:
         throw Exception('Invalid type');
     }
   }
 
   String getAsAsciiString(Uint8List bytes, int offset) {
-    final stringBytes =
-        bytes.sublist(offsettedPos(offset), offsettedLength(offset));
+    final stringBytes = bytes.sublist(offsettedPos, offsettedLength(offset));
     assert(stringBytes.last == 0); // all names should have a 0 name terminator
     return const AsciiDecoder()
         .convert(stringBytes.sublist(0, stringBytes.length - 1));
   }
 
   ByteData getBytesData(Uint8List bytes, int offset) {
-    return ByteData.sublistView(
-        bytes, offsettedPos(offset), offsettedLength(offset));
+    return ByteData.sublistView(bytes, offsettedPos, offsettedLength(offset));
   }
 
   int getAsUint(Uint8List bytes, int offset) {
@@ -108,7 +113,9 @@ class GsfData<T> {
 
   @override
   String toString() {
-    return value.toString();
+    return T == int
+        ? '$value (0x${(value as int).toRadixString(16)})'
+        : value.toString();
   }
 }
 
@@ -117,7 +124,7 @@ class Standard4BytesData<T> extends GsfData<T> {
   Standard4BytesData(
       {required int position, required Uint8List bytes, required int offset})
       : super() {
-    super._init(pos: position, length: 4);
+    super._init(relativePos: position, length: 4, offset: offset);
     super.parseValue(bytes, offset);
   }
 
@@ -133,8 +140,7 @@ class Standard4BytesData<T> extends GsfData<T> {
 
   @override
   String getAsAsciiString(Uint8List bytes, int offset) {
-    final stringBytes =
-        bytes.sublist(offsettedPos(offset), offsettedLength(offset));
+    final stringBytes = bytes.sublist(offsettedPos, offsettedLength(offset));
     return const AsciiDecoder().convert(stringBytes);
   }
 }
@@ -142,7 +148,7 @@ class Standard4BytesData<T> extends GsfData<T> {
 class DoubleByteData<T> extends GsfData<T> {
   DoubleByteData(
       {required int pos, required Uint8List bytes, required int offset}) {
-    super._init(pos: pos, length: 2);
+    super._init(relativePos: pos, length: 2, offset: offset);
     super.parseValue(bytes, offset);
   }
 
@@ -159,7 +165,7 @@ class DoubleByteData<T> extends GsfData<T> {
   @override
   String getAsAsciiString(Uint8List bytes, int offset) {
     return const AsciiDecoder()
-        .convert(bytes.sublist(offsettedPos(offset), offsettedLength(offset)));
+        .convert(bytes.sublist(offsettedPos, offsettedLength(offset)));
   }
 }
 
@@ -168,18 +174,30 @@ class VariableTwoBytesData<T> extends GsfData<T> {
       {required int relativePosition,
       required Uint8List bytes,
       required int offset}) {
-    pos = relativePosition;
+    this.offset = offset;
+    relativePos = relativePosition;
     if (T != int) {
       throw Exception('Invalid type, variable two bytes data can only be int');
     }
 
-    if (bytes[offset + pos] & 0x80 > 0) {
+    if (bytes[offset + relativePos] & 0x80 > 0) {
       length = 2;
     } else {
       length = 1;
     }
-    //super._init(pos: pos, length: length);
     value = (getAsUint(bytes, offset) & 0x7FFF) as T;
+  }
+
+  @override
+  int getAsUint(Uint8List bytes, int offset) {
+    final bytesData = super.getBytesData(bytes, offset);
+    switch (length) {
+      case 2:
+        return bytesData.getUint16(
+            0, Endian.big); // special case for the variables values
+      default:
+        return bytesData.getUint8(0);
+    }
   }
 }
 
@@ -190,7 +208,7 @@ class SingleByteData<T> extends GsfData {
     if (T != int) {
       throw Exception('Invalid type, single byte data can only be int');
     }
-    super._init(pos: pos, length: 1);
+    super._init(relativePos: pos, length: 1, offset: offset);
     value = getAsUint(bytes, offset);
   }
 

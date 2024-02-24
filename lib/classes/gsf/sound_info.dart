@@ -15,7 +15,7 @@ class SoundInfo extends GsfPart {
   SoundInfo.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     nameLength = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
     name = GsfData.fromPosition(
-      pos: nameLength.relativeEnd,
+      relativePos: nameLength.relativeEnd,
       length: nameLength.value,
       bytes: bytes,
       offset: offset,
@@ -30,7 +30,7 @@ class SoundInfo extends GsfPart {
     speed = Standard4BytesData(
         position: volume.relativeEnd, bytes: bytes, offset: offset);
     unknownData = GsfData.fromPosition(
-      pos: speed.relativeEnd,
+      relativePos: speed.relativeEnd,
       length: 16,
       bytes: bytes,
       offset: offset,
@@ -39,7 +39,7 @@ class SoundInfo extends GsfPart {
         position: unknownData.relativeEnd, bytes: bytes, offset: offset);
 
     soundGroupName = GsfData.fromPosition(
-      pos: soundGroupNameLength.relativeEnd,
+      relativePos: soundGroupNameLength.relativeEnd,
       length: soundGroupNameLength.value,
       bytes: bytes,
       offset: offset,

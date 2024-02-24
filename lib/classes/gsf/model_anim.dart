@@ -16,12 +16,11 @@ class ModelAnim extends GsfPart {
     nameLength = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
 
     name = GsfData<String>.fromPosition(
-      pos: nameLength.relativeEnd,
+      relativePos: nameLength.relativeEnd,
       length: nameLength.value,
       bytes: bytes,
       offset: offset,
     );
-    print("model anim name: $name");
 
     index = Standard4BytesData(
         position: name.relativeEnd, bytes: bytes, offset: offset);

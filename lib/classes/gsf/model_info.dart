@@ -27,19 +27,17 @@ class ModelInfo extends GsfPart {
         Standard4BytesData<int>(position: 0, bytes: bytes, offset: offset);
 
     name = GsfData.fromPosition(
-      pos: nameLength.relativeEnd,
+      relativePos: nameLength.relativeEnd,
       length: nameLength.value,
       bytes: bytes,
       offset: offset,
     );
-    print("model info name: $name");
 
     index = Standard4BytesData(
         position: name.relativeEnd, bytes: bytes, offset: offset);
 
     animCount = Standard4BytesData(
         position: index.relativeEnd, bytes: bytes, offset: offset);
-    print("model info anim count: $animCount");
 
     modelAnims = [];
     if (animCount.value > 0) {

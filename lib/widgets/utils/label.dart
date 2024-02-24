@@ -8,18 +8,21 @@ class Label extends StatelessWidget {
     required this.size,
     this.color,
     this.maxLines,
+    this.fontWeight,
   });
 
   final ThemeSize size;
   final String label;
   final Color? color;
   final int? maxLines;
+  final FontWeight? fontWeight;
 
   const Label.extraTiny(
     this.label, {
     super.key,
     this.color,
     this.maxLines,
+    this.fontWeight,
   }) : size = ThemeSize.extraTiny;
 
   const Label.tiny(
@@ -27,6 +30,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
+    this.fontWeight,
   }) : size = ThemeSize.extraTiny;
 
   const Label.small(
@@ -34,13 +38,23 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
+    this.fontWeight,
   }) : size = ThemeSize.small;
+
+  const Label.regular(
+    this.label, {
+    super.key,
+    this.color,
+    this.maxLines,
+    this.fontWeight,
+  }) : size = ThemeSize.regular;
 
   const Label.medium(
     this.label, {
     super.key,
     this.color,
     this.maxLines,
+    this.fontWeight,
   }) : size = ThemeSize.medium;
 
   const Label.large(
@@ -48,6 +62,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
+    this.fontWeight,
   }) : size = ThemeSize.large;
 
   const Label.extraLarge(
@@ -55,6 +70,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
+    this.fontWeight,
   }) : size = ThemeSize.extraLarge;
 
   double getFontSize(ThemeSize size) {
@@ -65,6 +81,8 @@ class Label extends StatelessWidget {
         return 10;
       case ThemeSize.small:
         return 12;
+      case ThemeSize.regular:
+        return 13;
       case ThemeSize.medium:
         return 14;
       case ThemeSize.large:
@@ -82,6 +100,8 @@ class Label extends StatelessWidget {
       style: TextStyle(
         color: color ?? Colors.black,
         fontSize: getFontSize(size),
+        fontWeight: fontWeight,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

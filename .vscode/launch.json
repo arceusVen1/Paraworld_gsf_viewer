@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "paraworld_gsf_viewer (macOS)",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--enable-impeller",
+            ]
+        },
+        {
+            "name": "paraworld_gsf_viewer (web)",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--web-renderer canvaskit",
+            ]
+        },
+        {
+            "name": "paraworld_gsf_viewer (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "paraworld_gsf_viewer (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
