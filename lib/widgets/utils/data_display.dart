@@ -73,19 +73,21 @@ class _ValueSelectorState extends State<ValueSelector> {
   GsfPart? _selected;
 
   Future<void> _showSelector(BuildContext context) async {
+    final currentValue = widget.value ?? _selected;
     await showDialog(
       context: context,
       builder: (context) {
         return SimpleDialog(
           title: Label.regular(
-            widget.value != null || _selected != null
-                ? 'selected: ${widget.value?.name ?? _selected?.name}'
+            currentValue != null
+                ? "selected: ${currentValue.name} (0x${currentValue.offset.toRadixString(16)})"
                 : widget.label,
             fontWeight: FontWeight.bold,
           ),
           children: [
             ...widget.parts.map((part) => ListTile(
-                  title: Label.regular(part.name.value),
+                  title: Label.regular(
+                      "${part.name} (offset 0x${part.offset.toRadixString(16)})"),
                   onTap: () {
                     setState(() {
                       _selected = part;
@@ -102,13 +104,14 @@ class _ValueSelectorState extends State<ValueSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final currentValue = widget.value ?? _selected;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3.0),
       child: Button.secondary(
         onPressed: () => _showSelector(context),
-        child: Label.small(widget.value?.name.toString() ??
-            _selected?.name.toString() ??
-            widget.label),
+        child: Label.small(currentValue != null
+            ? "${currentValue.name} (0x${currentValue.offset.toRadixString(16)})"
+            : widget.label),
       ),
     );
   }

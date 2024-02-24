@@ -5,10 +5,6 @@ import 'package:paraworld_gsf_viewer/classes/gsf/model_anim.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/model_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/sound_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/walk_set.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_set_table.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/walk_transition_info.dart';
-import 'package:paraworld_gsf_viewer/classes/model.dart';
-
 part 'state.freezed.dart';
 
 @freezed
