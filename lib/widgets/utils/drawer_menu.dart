@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/providers/normals.dart';
 import 'package:paraworld_gsf_viewer/providers/texture.dart';
+import 'package:paraworld_gsf_viewer/widgets/header/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/buttons.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
@@ -28,6 +29,8 @@ class Menu extends ConsumerWidget {
             title: "Select a .gsf",
             allowedExtensions: const ["gsf"],
             filePathStateProvider: gsfPathStateProvider,
+            onDelete: () =>
+                ref.read(headerStateNotifierProvider.notifier).reset(),
           ),
           _FileLoaderTile(
             title: "Select a texture",
@@ -59,11 +62,15 @@ class _FileLoaderTile extends ConsumerWidget {
     required this.title,
     required this.allowedExtensions,
     required this.filePathStateProvider,
+    this.onFileSelected,
+    this.onDelete,
   });
 
   final String title;
   final List<String> allowedExtensions;
   final StateProvider<PlatformFile?> filePathStateProvider;
+  final void Function(PlatformFile)? onFileSelected;
+  final void Function()? onDelete;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -79,6 +86,7 @@ class _FileLoaderTile extends ConsumerWidget {
           if (result != null) {
             ref.read(filePathStateProvider.notifier).state =
                 result.files.single;
+            onFileSelected?.call(result.files.single);
           }
         },
         child: Label.small(
@@ -89,6 +97,7 @@ class _FileLoaderTile extends ConsumerWidget {
           ? IconButton(
               onPressed: () {
                 ref.read(filePathStateProvider.notifier).state = null;
+                onDelete?.call();
               },
               icon: const Icon(
                 Icons.delete_forever,
