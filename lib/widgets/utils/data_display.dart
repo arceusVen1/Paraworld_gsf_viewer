@@ -33,10 +33,12 @@ class GsfDataTile extends StatelessWidget {
     super.key,
     required this.label,
     required this.data,
+    this.bold = false,
   });
 
   final String label;
   final GsfData data;
+  final bool bold;
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +47,14 @@ class GsfDataTile extends StatelessWidget {
       child: Tooltip(
         message:
             "position ${data.offsettedPos} (0x${data.offsettedPos.toRadixString(16)}), length: ${data.length}",
-        child: Label.regular('$label:  $data'),
+        child: Label.regular('$label:  $data',
+            fontWeight: bold ? FontWeight.bold : null),
       ),
     );
   }
 }
 
-class ValueSelector extends StatefulWidget {
+class ValueSelector extends StatelessWidget {
   const ValueSelector({
     super.key,
     required this.label,
@@ -65,34 +68,23 @@ class ValueSelector extends StatefulWidget {
   final void Function(GsfPart?) onSelected;
   final GsfPart? value;
 
-  @override
-  State<ValueSelector> createState() => _ValueSelectorState();
-}
-
-class _ValueSelectorState extends State<ValueSelector> {
-  GsfPart? _selected;
-
   Future<void> _showSelector(BuildContext context) async {
-    final currentValue = widget.value ?? _selected;
     await showDialog(
       context: context,
       builder: (context) {
         return SimpleDialog(
           title: Label.regular(
-            currentValue != null
-                ? "selected: ${currentValue.name} (0x${currentValue.offset.toRadixString(16)})"
-                : widget.label,
+            value != null
+                ? "selected: ${value!.name} (0x${value!.offset.toRadixString(16)})"
+                : label,
             fontWeight: FontWeight.bold,
           ),
           children: [
-            ...widget.parts.map((part) => ListTile(
+            ...parts.map((part) => ListTile(
                   title: Label.regular(
                       "${part.name} (offset 0x${part.offset.toRadixString(16)})"),
                   onTap: () {
-                    setState(() {
-                      _selected = part;
-                    });
-                    widget.onSelected(part);
+                    onSelected(part);
                     Navigator.pop(context);
                   },
                 ))
@@ -104,14 +96,13 @@ class _ValueSelectorState extends State<ValueSelector> {
 
   @override
   Widget build(BuildContext context) {
-    final currentValue = widget.value ?? _selected;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3.0),
       child: Button.secondary(
         onPressed: () => _showSelector(context),
-        child: Label.small(currentValue != null
-            ? "${currentValue.name} (0x${currentValue.offset.toRadixString(16)})"
-            : widget.label),
+        child: Label.small(value != null
+            ? "${value!.name} (0x${value!.offset.toRadixString(16)})"
+            : label),
       ),
     );
   }

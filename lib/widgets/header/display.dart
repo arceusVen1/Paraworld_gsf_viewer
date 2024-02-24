@@ -75,14 +75,21 @@ class _Data extends ConsumerWidget {
         children: [
           DataDecorator(
             children: [
-              Label.large('Header', fontWeight: FontWeight.bold),
+              const Label.large('Header', fontWeight: FontWeight.bold),
               GsfDataTile(
                   label: 'Content Table Offset',
                   data: header.contentTableOffset),
               GsfDataTile(label: 'Name Length', data: header.nameLength),
               GsfDataTile(label: 'Name', data: header.name),
-              GsfDataTile(label: 'Model Count', data: header.modelCount),
+              GsfDataTile(
+                label: 'Model Count',
+                data: header.modelCount,
+                bold: true,
+              ),
               ValueSelector(
+                value: state.mapOrNull(
+                  withModelInfo: (data) => data.modelInfo,
+                ),
                 label: 'select Model Infos',
                 parts: header.modelInfos,
                 onSelected: (part) => ref
@@ -90,9 +97,15 @@ class _Data extends ConsumerWidget {
                     .setModelInfo(part as ModelInfo),
               ),
               GsfDataTile(
-                  label: 'Sound Count', data: header.soundTable.soundCount),
+                label: 'Sound Count',
+                data: header.soundTable.soundCount,
+                bold: true,
+              ),
               if (header.soundTable.soundInfos.isNotEmpty)
                 ValueSelector(
+                  value: state.mapOrNull(
+                    withSound: (data) => data.sound,
+                  ),
                   label: 'select Sounds',
                   parts: header.soundTable.soundInfos,
                   onSelected: (part) => ref
@@ -100,10 +113,15 @@ class _Data extends ConsumerWidget {
                       .setSoundInfo(part as SoundInfo),
                 ),
               GsfDataTile(
-                  label: 'Dust Trail Count',
-                  data: header.dustTrailTable.dustTrailCount),
+                label: 'Dust Trail Count',
+                data: header.dustTrailTable.dustTrailCount,
+                bold: true,
+              ),
               if (header.dustTrailTable.dustTrailInfos.isNotEmpty)
                 ValueSelector(
+                  value: state.mapOrNull(
+                    withDustTrail: (data) => data.dustTrailInfo,
+                  ),
                   label: 'select Dust Trails',
                   parts: header.dustTrailTable.dustTrailInfos,
                   onSelected: (part) => ref
@@ -113,23 +131,23 @@ class _Data extends ConsumerWidget {
               GsfDataTile(
                 label: 'Walk Transition Count',
                 data: header.walkTransitionTable1.transitionCount,
+                bold: true,
               ),
-              if (header.walkTransitionTable1.transitionInfos.isNotEmpty)
-                ValueSelector(
-                  label: 'select Walk Transitions',
-                  parts: header.walkTransitionTable1.transitionInfos,
-                  onSelected: (part) {},
-                ),
+              ...header.walkTransitionTable1.transitionInfos
+                  .map((part) => Label.regular(
+                        'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
+                      ))
+                  .toList(),
               GsfDataTile(
-                label: 'Walk Transition Count',
+                label: 'Walk Transition 2 Count',
                 data: header.walkTransitionTable2.transitionCount,
+                bold: true,
               ),
-              if (header.walkTransitionTable2.transitionInfos.isNotEmpty)
-                ValueSelector(
-                  label: 'select Walk Transitions',
-                  parts: header.walkTransitionTable2.transitionInfos,
-                  onSelected: (part) {},
-                ),
+              ...header.walkTransitionTable2.transitionInfos
+                  .map((part) => Label.regular(
+                        'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
+                      ))
+                  .toList(),
             ],
           ),
           Flexible(flex: 3, child: Row(children: variablePart)),
@@ -147,10 +165,10 @@ List<Widget> withModelInfo(HeaderStateWithModelInfo state) {
         walkSet: state.walkSet),
     state.modelAnim != null
         ? ModelAnimDisplay(modelAnim: state.modelAnim!)
-        : DataDecorator(children: []),
+        : const DataDecorator(children: []),
     state.walkSet != null
         ? WalkSetDisplay(walkSet: state.walkSet!)
-        : DataDecorator(children: []),
+        : const DataDecorator(children: []),
   ];
 }
 
