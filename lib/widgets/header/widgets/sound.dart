@@ -16,7 +16,10 @@ class SoundDisplay extends StatelessWidget {
       GsfDataTile(label: 'start frame', data: soundInfo.startFrame),
       GsfDataTile(label: 'volume', data: soundInfo.volume),
       GsfDataTile(label: 'speed', data: soundInfo.speed),
-      GsfDataTile(label: 'unknown data', data: soundInfo.unknownData),
+      GsfDataTile(label: 'unknown data 1', data: soundInfo.unknownData1),
+      GsfDataTile(label: 'unknown data 2', data: soundInfo.unknownData2),
+      GsfDataTile(label: 'unknown data 3', data: soundInfo.unknownData3),
+      GsfDataTile(label: 'unknown data 4', data: soundInfo.unknownData4),
       GsfDataTile(label: 'sound group name', data: soundInfo.soundGroupName),
     ]);
   }

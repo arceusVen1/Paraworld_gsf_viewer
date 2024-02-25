@@ -1,16 +1,29 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/model_anim.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/model_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/sound_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/walk_set.dart';
+import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/state.dart';
 
 class HeaderStateNotifier extends Notifier<HeaderState> {
   @override
-  HeaderState build() => const HeaderState.empty();
+  HeaderState build() {
+    print("rebuild");
+    gsfFile = ref.watch(gsfProvider).mapOrNull(data: (data) => data.value);
+    return const HeaderState.empty();
+  }
 
-  void reset () {
+  GSF? gsfFile;
+
+  void reset() {
+    state = const HeaderState.empty();
+  }
+
+  void setGsfFile(GSF gsf) {
+    gsfFile = gsf;
     state = const HeaderState.empty();
   }
 
@@ -37,7 +50,10 @@ class HeaderStateNotifier extends Notifier<HeaderState> {
   }
 
   void setSoundInfo(SoundInfo soundInfo) {
-    state = HeaderState.withSound(sound: soundInfo);
+    state = state.maybeMap(
+      withModelInfo: (value) => value.copyWith(selectedSoundInfo: soundInfo),
+      orElse: () => HeaderState.withSound(sound: soundInfo),
+    );
   }
 
   void setDustTrailInfo(DustTrailInfo dustTrailInfo) {
