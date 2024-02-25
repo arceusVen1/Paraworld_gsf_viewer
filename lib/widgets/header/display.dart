@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header/header.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/model_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/sound_info.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
@@ -65,7 +66,7 @@ class _Data extends ConsumerWidget {
       empty: (_) => [
         const SizedBox.shrink(),
       ],
-      withModelInfo: (data) => withModelInfo(data),
+      withModelInfo: (data) => withModelInfo(data, gsf.header),
       withSound: (data) => withSoundInfo(data),
       withDustTrail: (data) => withDustTrail(data),
     );
@@ -135,7 +136,7 @@ class _Data extends ConsumerWidget {
               ),
               ...header.animFlagsTables
                   .map((part) => Label.regular(
-                        'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
+                        'anim flag: ${part.name} (0x${part.offset.toRadixString(16)})',
                       ))
                   .toList(),
               GsfDataTile(
@@ -157,19 +158,46 @@ class _Data extends ConsumerWidget {
   }
 }
 
-List<Widget> withModelInfo(HeaderStateWithModelInfo state) {
+List<Widget> withModelInfo(HeaderStateWithModelInfo state, Header header) {
   return [
     ModelInfoDisplay(
-        modelInfo: state.modelInfo,
-        modelAnim: state.modelAnim,
-        walkSet: state.walkSet),
-    state.modelAnim != null
-        ? ModelAnimDisplay(modelAnim: state.modelAnim!)
-        : const DataDecorator(children: []),
+      modelInfo: state.modelInfo,
+      modelAnim: state.modelAnim,
+      walkSet: state.walkSet,
+    ),
+    Flexible(
+      child: Column(
+        children: [
+          state.modelAnim != null
+              ? ModelAnimDisplay(
+                  selectedModelAnim: state.modelAnim!,
+                  soundTable: header.soundTable,
+                )
+              : const DataDecorator(children: []),
+          _SelectedData(selectedSounInfo: state.selectedSoundInfo)
+        ],
+      ),
+    ),
     state.walkSet != null
-        ? WalkSetDisplay(walkSet: state.walkSet!)
+        ? WalkSetDisplay(
+            selectedWalkSet: state.walkSet!,
+            modelAnims: state.modelInfo.modelAnims,
+            walkTransitions: header.walkTransitionTables,
+          )
         : const DataDecorator(children: []),
   ];
+}
+
+class _SelectedData extends StatelessWidget {
+  const _SelectedData({super.key, required this.selectedSounInfo});
+
+  final SoundInfo? selectedSounInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    
+      return selectedSounInfo != null ? SoundDisplay(soundInfo: selectedSounInfo!) : const DataDecorator(children: []);
+  }
 }
 
 List<Widget> withSoundInfo(HeaderStateWithSound state) {

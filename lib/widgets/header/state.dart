@@ -15,6 +15,7 @@ class HeaderState with _$HeaderState {
     required ModelInfo modelInfo,
     WalkSet? walkSet,
     ModelAnim? modelAnim,
+    SoundInfo? selectedSoundInfo,
   }) = HeaderStateWithModelInfo;
 
   const factory HeaderState.withSound({

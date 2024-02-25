@@ -19,8 +19,8 @@ mixin _$HeaderState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
-    required TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)
+    required TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)
         withModelInfo,
     required TResult Function(SoundInfo sound) withSound,
     required TResult Function(DustTrailInfo dustTrailInfo) withDustTrail,
@@ -29,8 +29,8 @@ mixin _$HeaderState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
-    TResult? Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult? Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult? Function(SoundInfo sound)? withSound,
     TResult? Function(DustTrailInfo dustTrailInfo)? withDustTrail,
@@ -39,8 +39,8 @@ mixin _$HeaderState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult Function(SoundInfo sound)? withSound,
     TResult Function(DustTrailInfo dustTrailInfo)? withDustTrail,
@@ -137,8 +137,8 @@ class _$EmptyImpl with DiagnosticableTreeMixin implements _Empty {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
-    required TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)
+    required TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)
         withModelInfo,
     required TResult Function(SoundInfo sound) withSound,
     required TResult Function(DustTrailInfo dustTrailInfo) withDustTrail,
@@ -150,8 +150,8 @@ class _$EmptyImpl with DiagnosticableTreeMixin implements _Empty {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
-    TResult? Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult? Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult? Function(SoundInfo sound)? withSound,
     TResult? Function(DustTrailInfo dustTrailInfo)? withDustTrail,
@@ -163,8 +163,8 @@ class _$EmptyImpl with DiagnosticableTreeMixin implements _Empty {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult Function(SoundInfo sound)? withSound,
     TResult Function(DustTrailInfo dustTrailInfo)? withDustTrail,
@@ -225,7 +225,11 @@ abstract class _$$HeaderStateWithModelInfoImplCopyWith<$Res> {
           $Res Function(_$HeaderStateWithModelInfoImpl) then) =
       __$$HeaderStateWithModelInfoImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim});
+  $Res call(
+      {ModelInfo modelInfo,
+      WalkSet? walkSet,
+      ModelAnim? modelAnim,
+      SoundInfo? selectedSoundInfo});
 }
 
 /// @nodoc
@@ -243,6 +247,7 @@ class __$$HeaderStateWithModelInfoImplCopyWithImpl<$Res>
     Object? modelInfo = null,
     Object? walkSet = freezed,
     Object? modelAnim = freezed,
+    Object? selectedSoundInfo = freezed,
   }) {
     return _then(_$HeaderStateWithModelInfoImpl(
       modelInfo: null == modelInfo
@@ -257,6 +262,10 @@ class __$$HeaderStateWithModelInfoImplCopyWithImpl<$Res>
           ? _value.modelAnim
           : modelAnim // ignore: cast_nullable_to_non_nullable
               as ModelAnim?,
+      selectedSoundInfo: freezed == selectedSoundInfo
+          ? _value.selectedSoundInfo
+          : selectedSoundInfo // ignore: cast_nullable_to_non_nullable
+              as SoundInfo?,
     ));
   }
 }
@@ -267,7 +276,10 @@ class _$HeaderStateWithModelInfoImpl
     with DiagnosticableTreeMixin
     implements HeaderStateWithModelInfo {
   const _$HeaderStateWithModelInfoImpl(
-      {required this.modelInfo, this.walkSet, this.modelAnim});
+      {required this.modelInfo,
+      this.walkSet,
+      this.modelAnim,
+      this.selectedSoundInfo});
 
   @override
   final ModelInfo modelInfo;
@@ -275,10 +287,12 @@ class _$HeaderStateWithModelInfoImpl
   final WalkSet? walkSet;
   @override
   final ModelAnim? modelAnim;
+  @override
+  final SoundInfo? selectedSoundInfo;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HeaderState.withModelInfo(modelInfo: $modelInfo, walkSet: $walkSet, modelAnim: $modelAnim)';
+    return 'HeaderState.withModelInfo(modelInfo: $modelInfo, walkSet: $walkSet, modelAnim: $modelAnim, selectedSoundInfo: $selectedSoundInfo)';
   }
 
   @override
@@ -288,7 +302,8 @@ class _$HeaderStateWithModelInfoImpl
       ..add(DiagnosticsProperty('type', 'HeaderState.withModelInfo'))
       ..add(DiagnosticsProperty('modelInfo', modelInfo))
       ..add(DiagnosticsProperty('walkSet', walkSet))
-      ..add(DiagnosticsProperty('modelAnim', modelAnim));
+      ..add(DiagnosticsProperty('modelAnim', modelAnim))
+      ..add(DiagnosticsProperty('selectedSoundInfo', selectedSoundInfo));
   }
 
   @override
@@ -300,11 +315,14 @@ class _$HeaderStateWithModelInfoImpl
                 other.modelInfo == modelInfo) &&
             (identical(other.walkSet, walkSet) || other.walkSet == walkSet) &&
             (identical(other.modelAnim, modelAnim) ||
-                other.modelAnim == modelAnim));
+                other.modelAnim == modelAnim) &&
+            (identical(other.selectedSoundInfo, selectedSoundInfo) ||
+                other.selectedSoundInfo == selectedSoundInfo));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, modelInfo, walkSet, modelAnim);
+  int get hashCode => Object.hash(
+      runtimeType, modelInfo, walkSet, modelAnim, selectedSoundInfo);
 
   @JsonKey(ignore: true)
   @override
@@ -317,41 +335,42 @@ class _$HeaderStateWithModelInfoImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
-    required TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)
+    required TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)
         withModelInfo,
     required TResult Function(SoundInfo sound) withSound,
     required TResult Function(DustTrailInfo dustTrailInfo) withDustTrail,
   }) {
-    return withModelInfo(modelInfo, walkSet, modelAnim);
+    return withModelInfo(modelInfo, walkSet, modelAnim, selectedSoundInfo);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
-    TResult? Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult? Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult? Function(SoundInfo sound)? withSound,
     TResult? Function(DustTrailInfo dustTrailInfo)? withDustTrail,
   }) {
-    return withModelInfo?.call(modelInfo, walkSet, modelAnim);
+    return withModelInfo?.call(
+        modelInfo, walkSet, modelAnim, selectedSoundInfo);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult Function(SoundInfo sound)? withSound,
     TResult Function(DustTrailInfo dustTrailInfo)? withDustTrail,
     required TResult orElse(),
   }) {
     if (withModelInfo != null) {
-      return withModelInfo(modelInfo, walkSet, modelAnim);
+      return withModelInfo(modelInfo, walkSet, modelAnim, selectedSoundInfo);
     }
     return orElse();
   }
@@ -398,11 +417,13 @@ abstract class HeaderStateWithModelInfo implements HeaderState {
   const factory HeaderStateWithModelInfo(
       {required final ModelInfo modelInfo,
       final WalkSet? walkSet,
-      final ModelAnim? modelAnim}) = _$HeaderStateWithModelInfoImpl;
+      final ModelAnim? modelAnim,
+      final SoundInfo? selectedSoundInfo}) = _$HeaderStateWithModelInfoImpl;
 
   ModelInfo get modelInfo;
   WalkSet? get walkSet;
   ModelAnim? get modelAnim;
+  SoundInfo? get selectedSoundInfo;
   @JsonKey(ignore: true)
   _$$HeaderStateWithModelInfoImplCopyWith<_$HeaderStateWithModelInfoImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -485,8 +506,8 @@ class _$HeaderStateWithSoundImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
-    required TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)
+    required TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)
         withModelInfo,
     required TResult Function(SoundInfo sound) withSound,
     required TResult Function(DustTrailInfo dustTrailInfo) withDustTrail,
@@ -498,8 +519,8 @@ class _$HeaderStateWithSoundImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
-    TResult? Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult? Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult? Function(SoundInfo sound)? withSound,
     TResult? Function(DustTrailInfo dustTrailInfo)? withDustTrail,
@@ -511,8 +532,8 @@ class _$HeaderStateWithSoundImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult Function(SoundInfo sound)? withSound,
     TResult Function(DustTrailInfo dustTrailInfo)? withDustTrail,
@@ -651,8 +672,8 @@ class _$HeaderStateWithDustTrailImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
-    required TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)
+    required TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)
         withModelInfo,
     required TResult Function(SoundInfo sound) withSound,
     required TResult Function(DustTrailInfo dustTrailInfo) withDustTrail,
@@ -664,8 +685,8 @@ class _$HeaderStateWithDustTrailImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
-    TResult? Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult? Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult? Function(SoundInfo sound)? withSound,
     TResult? Function(DustTrailInfo dustTrailInfo)? withDustTrail,
@@ -677,8 +698,8 @@ class _$HeaderStateWithDustTrailImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            ModelInfo modelInfo, WalkSet? walkSet, ModelAnim? modelAnim)?
+    TResult Function(ModelInfo modelInfo, WalkSet? walkSet,
+            ModelAnim? modelAnim, SoundInfo? selectedSoundInfo)?
         withModelInfo,
     TResult Function(SoundInfo sound)? withSound,
     TResult Function(DustTrailInfo dustTrailInfo)? withDustTrail,

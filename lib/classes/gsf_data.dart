@@ -125,11 +125,22 @@ class GsfData<T> {
   String toString() {
     switch (T) {
       case int:
-        return '$value (0x${(value as int).toRadixString(16)})';
+        return '$value';
       default:
         return value.toString();
     }
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is GsfData &&
+      other.offset == offset &&
+      other.relativePos == relativePos &&
+      other.length == length &&
+      other.value == value;
+
+  @override
+  int get hashCode => offset.hashCode ^ relativePos.hashCode ^ length.hashCode;
 }
 
 /// A [GsfData] that is 4 bytes long.
