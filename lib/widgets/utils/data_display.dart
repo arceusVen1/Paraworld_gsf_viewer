@@ -119,21 +119,13 @@ class PartSelector extends StatelessWidget {
         cacheExtent: 50,
         itemBuilder: (context, index) {
           final part = parts[index];
-          return ListTile(
-            dense: true,
-            visualDensity: const VisualDensity(
-              horizontal: 0,
-              vertical: VisualDensity.minimumDensity,
-            ),
-            contentPadding: const EdgeInsets.only(left: 5, right: 5),
-            selected: part == value,
-            selectedTileColor: Colors.grey.shade400,
-            title: Label.regular(
-                "$index. ${part.name} (0x${part.offset.toRadixString(16)})"),
-            onTap: () {
-              onSelected(part);
-            },
-          );
+          return ListTileWrapper(
+              isSelected: part == value,
+              label:
+                  "$index. ${part.name} (0x${part.offset.toRadixString(16)})",
+              onTap: () {
+                onSelected(part);
+              });
         },
       ),
     );
@@ -169,6 +161,35 @@ class ListViewWrapper extends StatelessWidget {
           child: child,
         ),
       ),
+    );
+  }
+}
+
+class ListTileWrapper extends StatelessWidget {
+  const ListTileWrapper({
+    super.key,
+    required this.isSelected,
+    required this.label,
+    this.onTap,
+  });
+
+  final bool isSelected;
+  final String label;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      dense: true,
+      visualDensity: const VisualDensity(
+        horizontal: 0,
+        vertical: VisualDensity.minimumDensity,
+      ),
+      contentPadding: const EdgeInsets.only(left: 5, right: 5),
+      selected: isSelected,
+      selectedTileColor: Colors.grey.shade400,
+      title: Label.regular(label),
+      onTap: onTap,
     );
   }
 }

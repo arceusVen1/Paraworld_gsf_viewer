@@ -121,17 +121,10 @@ class __SoundIndicesDisplayState extends ConsumerState<_SoundIndicesDisplay> {
           itemBuilder: (context, index) {
             final soundIndex = widget.soundIndices[index];
             final relatedSoundInfo = widget.soundInfos[soundIndex.value];
-            return ListTile(
-              dense: true,
-              visualDensity: const VisualDensity(
-                horizontal: 0,
-                vertical: VisualDensity.minimumDensity,
-              ),
-              contentPadding: const EdgeInsets.only(left: 5, right: 5),
-              selected: soundIndex == _selectedSoundIndex,
-              selectedTileColor: Colors.grey.shade400,
-              title: Label.regular(
-                  "${soundIndex.value}: ${relatedSoundInfo.name}"),
+
+            return ListTileWrapper(
+              isSelected: soundIndex == _selectedSoundIndex,
+              label: "${soundIndex.value}: ${relatedSoundInfo.name}",
               onTap: () {
                 setState(() {
                   _selectedSoundIndex = soundIndex;
