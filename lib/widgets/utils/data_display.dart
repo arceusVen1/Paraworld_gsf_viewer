@@ -93,8 +93,8 @@ class _GsfDataTileState extends State<GsfDataTile> {
   }
 }
 
-class ValueSelector extends StatelessWidget {
-  const ValueSelector({
+class PartSelector extends StatelessWidget {
+  const PartSelector({
     super.key,
     required this.label,
     required this.parts,
@@ -109,42 +109,64 @@ class ValueSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ListViewWrapper(
+      rightPadding: 40,
+      maxHeight: 300,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: parts.length,
+        addAutomaticKeepAlives: false,
+        cacheExtent: 50,
+        itemBuilder: (context, index) {
+          final part = parts[index];
+          return ListTile(
+            dense: true,
+            visualDensity: const VisualDensity(
+              horizontal: 0,
+              vertical: VisualDensity.minimumDensity,
+            ),
+            contentPadding: const EdgeInsets.only(left: 5, right: 5),
+            selected: part == value,
+            selectedTileColor: Colors.grey.shade400,
+            title: Label.regular(
+                "$index. ${part.name} (0x${part.offset.toRadixString(16)})"),
+            onTap: () {
+              onSelected(part);
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class ListViewWrapper extends StatelessWidget {
+  const ListViewWrapper({
+    super.key,
+    required this.child,
+    required this.rightPadding,
+    required this.maxHeight,
+  });
+
+  final Widget child;
+  final double rightPadding;
+  final double maxHeight;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 3.0, bottom: 3.0, right: 40.0),
+      padding: EdgeInsets.only(top: 3.0, bottom: 3.0, right: rightPadding),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(8.0),
         ),
         clipBehavior: Clip.hardEdge,
-        constraints: const BoxConstraints(maxHeight: 300),
+        constraints: BoxConstraints(maxHeight: maxHeight),
         // necessary to fix list view overflow https://github.com/flutter/flutter/issues/143269
         child: Material(
           type: MaterialType.transparency,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: parts.length,
-            addAutomaticKeepAlives: false,
-            cacheExtent: 50,
-            itemBuilder: (context, index) {
-              final part = parts[index];
-              return ListTile(
-                dense: true,
-                visualDensity: const VisualDensity(
-                  horizontal: 0,
-                  vertical: VisualDensity.minimumDensity,
-                ),
-                contentPadding: const EdgeInsets.only(left: 5, right: 5),
-                selected: part == value,
-                selectedTileColor: Colors.grey.shade400,
-                title: Label.regular(
-                    "$index. ${part.name} (0x${part.offset.toRadixString(16)})"),
-                onTap: () {
-                  onSelected(part);
-                },
-              );
-            },
-          ),
+          child: child,
         ),
       ),
     );

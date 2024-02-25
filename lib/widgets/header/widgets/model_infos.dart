@@ -38,7 +38,7 @@ class ModelInfoDisplay extends ConsumerWidget {
         GsfDataTile(label: 'Index', data: modelInfo.index),
         GsfDataTile(label: 'Anim Count', data: modelInfo.animCount),
         if (modelInfo.modelAnims.isNotEmpty)
-          ValueSelector(
+          PartSelector(
             value: state.modelAnim,
             label: 'select Model Anims',
             parts: modelInfo.modelAnims,
@@ -49,7 +49,7 @@ class ModelInfoDisplay extends ConsumerWidget {
         GsfDataTile(
             label: 'Walk Set count', data: modelInfo.walkSetTable.count),
         if (modelInfo.walkSetTable.walkSets.isNotEmpty)
-          ValueSelector(
+          PartSelector(
             value: state.walkSet,
             label: 'select Walk Sets',
             parts: modelInfo.walkSetTable.walkSets,
@@ -81,18 +81,67 @@ class ModelAnimDisplay extends ConsumerWidget {
         GsfDataTile(label: 'index', data: selectedModelAnim.index),
         GsfDataTile(
             label: 'Sound count', data: selectedModelAnim.soundIndices.count),
-        ...selectedModelAnim.soundIndices.indices.map(
-          (e) => GsfDataTile(
-            label: 'sound index',
-            data: e,
-            relatedPart: soundTable.soundInfos[e.value],
-            onSelected: (info) => ref
-                .read(headerStateNotifierProvider.notifier)
-                .setSoundInfo(info as SoundInfo),
-          ),
-        ),
+        _SoundIndicesDisplay(
+            soundIndices: selectedModelAnim.soundIndices.indices,
+            soundInfos: soundTable.soundInfos),
         GsfDataTile(label: "unknown", data: selectedModelAnim.unknownData),
       ],
+    );
+  }
+}
+
+class _SoundIndicesDisplay extends ConsumerStatefulWidget {
+  const _SoundIndicesDisplay(
+      {super.key, required this.soundIndices, required this.soundInfos});
+
+  final List<Standard4BytesData<int>> soundIndices;
+  final List<SoundInfo> soundInfos;
+
+  @override
+  ConsumerState<_SoundIndicesDisplay> createState() =>
+      __SoundIndicesDisplayState();
+}
+
+class __SoundIndicesDisplayState extends ConsumerState<_SoundIndicesDisplay> {
+  Standard4BytesData<int>? _selectedSoundIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.soundIndices.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return ListViewWrapper(
+      rightPadding: 10,
+      maxHeight: 200,
+      child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: widget.soundIndices.length,
+          addAutomaticKeepAlives: false,
+          cacheExtent: 50,
+          itemBuilder: (context, index) {
+            final soundIndex = widget.soundIndices[index];
+            final relatedSoundInfo = widget.soundInfos[soundIndex.value];
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(
+                horizontal: 0,
+                vertical: VisualDensity.minimumDensity,
+              ),
+              contentPadding: const EdgeInsets.only(left: 5, right: 5),
+              selected: soundIndex == _selectedSoundIndex,
+              selectedTileColor: Colors.grey.shade400,
+              title: Label.regular(
+                  "${soundIndex.value}: ${relatedSoundInfo.name}"),
+              onTap: () {
+                setState(() {
+                  _selectedSoundIndex = soundIndex;
+                });
+                ref
+                    .read(headerStateNotifierProvider.notifier)
+                    .setSoundInfo(relatedSoundInfo);
+              },
+            );
+          }),
     );
   }
 }
@@ -431,76 +480,80 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.walkToSwimData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'unknown anim index 3',
-          data: selectedWalkSet.unknownData3,
-          relatedPart: selectedWalkSet.unknownData3.value > 0
-              ? modelAnims[selectedWalkSet.unknownData3.value - 1]
+          label: 'hit reaction front',
+          data: selectedWalkSet.hitReactionFront,
+          relatedPart: selectedWalkSet.hitReactionFront.value > 0
+              ? modelAnims[selectedWalkSet.hitReactionFront.value - 1]
               : null,
           onSelected:
-              selectedWalkSet.unknownData3.value > 0 ? setModelAnim : null,
+              selectedWalkSet.hitReactionFront.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'unknown anim index 4',
-          data: selectedWalkSet.unknownData4,
-          relatedPart: selectedWalkSet.unknownData4.value > 0
-              ? modelAnims[selectedWalkSet.unknownData4.value - 1]
+          label: 'hit reaction left',
+          data: selectedWalkSet.hitReactionLeft,
+          relatedPart: selectedWalkSet.hitReactionLeft.value > 0
+              ? modelAnims[selectedWalkSet.hitReactionLeft.value - 1]
               : null,
           onSelected:
-              selectedWalkSet.unknownData4.value > 0 ? setModelAnim : null,
+              selectedWalkSet.hitReactionLeft.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'unknown anim index 5',
-          data: selectedWalkSet.unknownData5,
-          relatedPart: selectedWalkSet.unknownData5.value > 0
-              ? modelAnims[selectedWalkSet.unknownData5.value - 1]
+          label: 'hit reaction right',
+          data: selectedWalkSet.hitReactionRight,
+          relatedPart: selectedWalkSet.hitReactionRight.value > 0
+              ? modelAnims[selectedWalkSet.hitReactionRight.value - 1]
               : null,
           onSelected:
-              selectedWalkSet.unknownData5.value > 0 ? setModelAnim : null,
+              selectedWalkSet.hitReactionRight.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'unknown anim index 6',
-          data: selectedWalkSet.unknownData6,
-          relatedPart: selectedWalkSet.unknownData6.value > 0
-              ? modelAnims[selectedWalkSet.unknownData6.value - 1]
+          label: 'hit reaction back',
+          data: selectedWalkSet.hitReactionBack,
+          relatedPart: selectedWalkSet.hitReactionBack.value > 0
+              ? modelAnims[selectedWalkSet.hitReactionBack.value - 1]
               : null,
           onSelected:
-              selectedWalkSet.unknownData6.value > 0 ? setModelAnim : null,
+              selectedWalkSet.hitReactionBack.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'unknown anim index 7',
-          data: selectedWalkSet.unknownData7,
-          relatedPart: selectedWalkSet.unknownData7.value > 0
-              ? modelAnims[selectedWalkSet.unknownData7.value - 1]
+          label: 'hit reaction front variant',
+          data: selectedWalkSet.hitReactionFrontVariant,
+          relatedPart: selectedWalkSet.hitReactionFrontVariant.value > 0
+              ? modelAnims[selectedWalkSet.hitReactionFrontVariant.value - 1]
               : null,
-          onSelected:
-              selectedWalkSet.unknownData7.value > 0 ? setModelAnim : null,
+          onSelected: selectedWalkSet.hitReactionFrontVariant.value > 0
+              ? setModelAnim
+              : null,
         ),
         GsfDataTile(
-          label: 'unknown anim index 8',
-          data: selectedWalkSet.unknownData8,
-          relatedPart: selectedWalkSet.unknownData8.value > 0
-              ? modelAnims[selectedWalkSet.unknownData8.value - 1]
+          label: 'hit reaction left variant',
+          data: selectedWalkSet.hitReactionLeftVariant,
+          relatedPart: selectedWalkSet.hitReactionLeftVariant.value > 0
+              ? modelAnims[selectedWalkSet.hitReactionLeftVariant.value - 1]
               : null,
-          onSelected:
-              selectedWalkSet.unknownData8.value > 0 ? setModelAnim : null,
+          onSelected: selectedWalkSet.hitReactionLeftVariant.value > 0
+              ? setModelAnim
+              : null,
         ),
         GsfDataTile(
-          label: 'unknown anim index 9',
-          data: selectedWalkSet.unknownData9,
-          relatedPart: selectedWalkSet.unknownData9.value > 0
-              ? modelAnims[selectedWalkSet.unknownData9.value - 1]
+          label: 'hit reaction right variant',
+          data: selectedWalkSet.hitReactionRightVariant,
+          relatedPart: selectedWalkSet.hitReactionRightVariant.value > 0
+              ? modelAnims[selectedWalkSet.hitReactionRightVariant.value - 1]
               : null,
-          onSelected:
-              selectedWalkSet.unknownData9.value > 0 ? setModelAnim : null,
+          onSelected: selectedWalkSet.hitReactionRightVariant.value > 0
+              ? setModelAnim
+              : null,
         ),
         GsfDataTile(
-          label: 'unknown anim index 10',
-          data: selectedWalkSet.unknownData10,
-          relatedPart: selectedWalkSet.unknownData10.value > 0
-              ? modelAnims[selectedWalkSet.unknownData10.value - 1]
+          label: 'hit reaction back variant',
+          data: selectedWalkSet.hitReactionBackVariant,
+          relatedPart: selectedWalkSet.hitReactionBackVariant.value > 0
+              ? modelAnims[selectedWalkSet.hitReactionBackVariant.value - 1]
               : null,
-          onSelected:
-              selectedWalkSet.unknownData10.value > 0 ? setModelAnim : null,
+          onSelected: selectedWalkSet.hitReactionBackVariant.value > 0
+              ? setModelAnim
+              : null,
         ),
       ],
     );

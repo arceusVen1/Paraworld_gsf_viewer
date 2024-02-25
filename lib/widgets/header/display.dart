@@ -81,13 +81,13 @@ class _Data extends ConsumerWidget {
                   label: 'Content Table Offset',
                   data: header.contentTableOffset),
               GsfDataTile(label: 'Name Length', data: header.nameLength),
-              GsfDataTile(label: 'Name', data: header.name),
+              GsfDataTile(label: 'Name', data: header.name, bold: true),
               GsfDataTile(
                 label: 'Model Count',
                 data: header.modelCount,
                 bold: true,
               ),
-              ValueSelector(
+              PartSelector(
                 value: state.mapOrNull(
                   withModelInfo: (data) => data.modelInfo,
                 ),
@@ -103,9 +103,10 @@ class _Data extends ConsumerWidget {
                 bold: true,
               ),
               if (header.soundTable.soundInfos.isNotEmpty)
-                ValueSelector(
+                PartSelector(
                   value: state.mapOrNull(
                     withSound: (data) => data.sound,
+                    withModelInfo: (value) => value.selectedSoundInfo,
                   ),
                   label: 'select Sounds',
                   parts: header.soundTable.soundInfos,
@@ -119,7 +120,7 @@ class _Data extends ConsumerWidget {
                 bold: true,
               ),
               if (header.dustTrailTable.dustTrailInfos.isNotEmpty)
-                ValueSelector(
+                PartSelector(
                   value: state.mapOrNull(
                     withDustTrail: (data) => data.dustTrailInfo,
                   ),
@@ -195,8 +196,9 @@ class _SelectedData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-      return selectedSounInfo != null ? SoundDisplay(soundInfo: selectedSounInfo!) : const DataDecorator(children: []);
+    return selectedSounInfo != null
+        ? SoundDisplay(soundInfo: selectedSounInfo!)
+        : const DataDecorator(children: []);
   }
 }
 
