@@ -17,7 +17,7 @@ class Viewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Vertex> vertices = [];
-    final byteArray = convertToByteArray(verticesTest);
+    final byteArray = convertToByteArray(cubeTest, true);
     final boundingBox = BoundingBox(
       x: (min: -0.565, max: 1.130),
       y: (min: -0.993, max: 1.982),
@@ -35,14 +35,14 @@ class Viewer extends StatelessWidget {
       final vert = Vertex.fromModelBytes(
         vertexValue,
         int.parse(byteArray[i + 7] + byteArray[i + 6], radix: 16),
-        //BoundingBox.zero(),
-        boundingBox,
+        BoundingBox.zero(),
+        //boundingBox,
       );
       vertices.add(vert);
     }
 
     final List<ModelTriangle> triangles = [];
-    final triangleByteArray = convertToByteArray(trianglesTest);
+    final triangleByteArray = convertToByteArray(cubeTriangles);
     for (int i = 0; i < triangleByteArray.length; i += 6) {
       final List<int> indices = [];
 
@@ -63,7 +63,7 @@ class Viewer extends StatelessWidget {
       name: 'test',
       vertices: vertices,
       triangles: triangles,
-      boundingBox: boundingBox
+      boundingBox: boundingBox,
     );
 
     return Column(

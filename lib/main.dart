@@ -20,13 +20,14 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
               bottom: const TabBar(
                 tabs: [
+                  Tab(text: "header 1", icon: Icon(Icons.info)),
+                  Tab(text: "header 2", icon: Icon(Icons.info)),
                   Tab(text: "model", icon: Icon(Icons.hub)),
-                  Tab(text: "header", icon: Icon(Icons.info)),
                 ],
               ),
               title: const Text(
@@ -37,8 +38,9 @@ class MyApp extends StatelessWidget {
             child: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-                Viewer(),
                 HeaderDisplay(),
+                SizedBox.expand(),
+                Viewer(),
               ],
             ),
           ),

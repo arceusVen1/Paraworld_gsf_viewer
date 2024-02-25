@@ -11,7 +11,6 @@ import 'package:paraworld_gsf_viewer/widgets/header/state.dart';
 class HeaderStateNotifier extends Notifier<HeaderState> {
   @override
   HeaderState build() {
-    print("rebuild");
     gsfFile = ref.watch(gsfProvider).mapOrNull(data: (data) => data.value);
     return const HeaderState.empty();
   }

@@ -35,7 +35,6 @@ class GSFLoader extends ConsumerWidget {
     final gsfState = ref.watch(gsfProvider);
     return gsfState.map(
       data: (data) {
-        print(data.value);
         return builder(data.value);
       },
       loading: (loading) => const CircularProgressIndicator(),
