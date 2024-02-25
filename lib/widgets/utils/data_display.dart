@@ -130,7 +130,10 @@ class ValueSelector extends StatelessWidget {
               final part = parts[index];
               return ListTile(
                 dense: true,
-                visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                visualDensity: const VisualDensity(
+                  horizontal: 0,
+                  vertical: VisualDensity.minimumDensity,
+                ),
                 contentPadding: const EdgeInsets.only(left: 5, right: 5),
                 selected: part == value,
                 selectedTileColor: Colors.grey.shade400,
