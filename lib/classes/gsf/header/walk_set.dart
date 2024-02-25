@@ -45,15 +45,15 @@ class WalkSet extends GsfPart {
   late final VariableTwoBytesData<int> standAnimData;
   late final VariableTwoBytesData<int> walkToSwimData;
   // 8 unused bytes
-  late final VariableTwoBytesData<int> unknownData3;
-  late final VariableTwoBytesData<int> unknownData4;
-  late final VariableTwoBytesData<int> unknownData5;
-  late final VariableTwoBytesData<int> unknownData6;
+  late final VariableTwoBytesData<int> hitReactionFront;
+  late final VariableTwoBytesData<int> hitReactionLeft;
+  late final VariableTwoBytesData<int> hitReactionRight;
+  late final VariableTwoBytesData<int> hitReactionBack;
 
-  late final VariableTwoBytesData<int> unknownData7;
-  late final VariableTwoBytesData<int> unknownData8;
-  late final VariableTwoBytesData<int> unknownData9;
-  late final VariableTwoBytesData<int> unknownData10;
+  late final VariableTwoBytesData<int> hitReactionFrontVariant;
+  late final VariableTwoBytesData<int> hitReactionLeftVariant;
+  late final VariableTwoBytesData<int> hitReactionRightVariant;
+  late final VariableTwoBytesData<int> hitReactionBackVariant;
 
   WalkSet.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     walk1PosData =
@@ -222,49 +222,49 @@ class WalkSet extends GsfPart {
       offset: offset,
     );
 
-    unknownData3 = VariableTwoBytesData(
+    hitReactionFront = VariableTwoBytesData(
       relativePosition: walkToSwimData.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData4 = VariableTwoBytesData(
-      relativePosition: unknownData3.relativeEnd,
+    hitReactionLeft = VariableTwoBytesData(
+      relativePosition: hitReactionFront.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData5 = VariableTwoBytesData(
-      relativePosition: unknownData4.relativeEnd,
+    hitReactionRight = VariableTwoBytesData(
+      relativePosition: hitReactionLeft.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData6 = VariableTwoBytesData(
-      relativePosition: unknownData5.relativeEnd,
+    hitReactionBack = VariableTwoBytesData(
+      relativePosition: hitReactionRight.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData7 = VariableTwoBytesData(
-      relativePosition: unknownData6.relativeEnd,
+    hitReactionFrontVariant = VariableTwoBytesData(
+      relativePosition: hitReactionBack.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData8 = VariableTwoBytesData(
-      relativePosition: unknownData7.relativeEnd,
+    hitReactionLeftVariant = VariableTwoBytesData(
+      relativePosition: hitReactionFrontVariant.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData9 = VariableTwoBytesData(
-      relativePosition: unknownData8.relativeEnd,
+    hitReactionRightVariant = VariableTwoBytesData(
+      relativePosition: hitReactionLeftVariant.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData10 = VariableTwoBytesData(
-      relativePosition: unknownData9.relativeEnd,
+    hitReactionBackVariant = VariableTwoBytesData(
+      relativePosition: hitReactionRightVariant.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
 
     name = Standard4BytesData(
-      position: unknownData10.relativeEnd,
+      position: hitReactionBackVariant.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
