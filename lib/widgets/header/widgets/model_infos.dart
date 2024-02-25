@@ -448,6 +448,60 @@ class WalkSetDisplay extends ConsumerWidget {
           onSelected:
               selectedWalkSet.unknownData4.value > 0 ? setModelAnim : null,
         ),
+        GsfDataTile(
+          label: 'unknown anim index 5',
+          data: selectedWalkSet.unknownData5,
+          relatedPart: selectedWalkSet.unknownData5.value > 0
+              ? modelAnims[selectedWalkSet.unknownData5.value - 1]
+              : null,
+          onSelected:
+              selectedWalkSet.unknownData5.value > 0 ? setModelAnim : null,
+        ),
+        GsfDataTile(
+          label: 'unknown anim index 6',
+          data: selectedWalkSet.unknownData6,
+          relatedPart: selectedWalkSet.unknownData6.value > 0
+              ? modelAnims[selectedWalkSet.unknownData6.value - 1]
+              : null,
+          onSelected:
+              selectedWalkSet.unknownData6.value > 0 ? setModelAnim : null,
+        ),
+        GsfDataTile(
+          label: 'unknown anim index 7',
+          data: selectedWalkSet.unknownData7,
+          relatedPart: selectedWalkSet.unknownData7.value > 0
+              ? modelAnims[selectedWalkSet.unknownData7.value - 1]
+              : null,
+          onSelected:
+              selectedWalkSet.unknownData7.value > 0 ? setModelAnim : null,
+        ),
+        GsfDataTile(
+          label: 'unknown anim index 8',
+          data: selectedWalkSet.unknownData8,
+          relatedPart: selectedWalkSet.unknownData8.value > 0
+              ? modelAnims[selectedWalkSet.unknownData8.value - 1]
+              : null,
+          onSelected:
+              selectedWalkSet.unknownData8.value > 0 ? setModelAnim : null,
+        ),
+        GsfDataTile(
+          label: 'unknown anim index 9',
+          data: selectedWalkSet.unknownData9,
+          relatedPart: selectedWalkSet.unknownData9.value > 0
+              ? modelAnims[selectedWalkSet.unknownData9.value - 1]
+              : null,
+          onSelected:
+              selectedWalkSet.unknownData9.value > 0 ? setModelAnim : null,
+        ),
+        GsfDataTile(
+          label: 'unknown anim index 10',
+          data: selectedWalkSet.unknownData10,
+          relatedPart: selectedWalkSet.unknownData10.value > 0
+              ? modelAnims[selectedWalkSet.unknownData10.value - 1]
+              : null,
+          onSelected:
+              selectedWalkSet.unknownData10.value > 0 ? setModelAnim : null,
+        ),
       ],
     );
   }
