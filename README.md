@@ -45,7 +45,7 @@ Now simply push the new version on github for auto deploy
 
 ### Gsf format
 
-![gsfFormat](./docs/gsf/gsf_full.jpg)
+![gsfFormat](./docs/gsf/gsf_full.jpeg)
 
 ### TO DO
 
