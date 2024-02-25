@@ -28,25 +28,29 @@ You can easily build for web with the included script
 Now simply push the new version on github for auto deploy
 ### Features
 
-- single static bothriolepis model viewing
+- single static bothriolepis and test model viewing
 - normals display control
 - texture loading
 - .obj conversion
+- gsf Header 1 parsing and viewver
 
 | View Model                                         | Toggle Normals          |
 | --------------------------------------------- | ---------------------- |
-|![show1](./docs/screenshots/soft_capture1.png) | ![show2](./docs/screenshots/soft_capture2.png)
+|![show3](./docs/screenshots/soft_capture3.png) | ![show2](./docs/screenshots/soft_capture2.png)
 
-| Load Texture                                    |
-|------------------------------------------------ |
-|  ![show3](./docs/screenshots/soft_capture3.png) |
+| View Model information                           |
+|------------------------------------------------- |
+| ![show4](./docs/screenshots/soft_capture_4.png)  |
 
+
+### Gsf format
+
+![gsfFormat](./docs/gsf/gsf_full.jpg)
 
 ### TO DO
 
 - load model from .GSF file
-- parse .GSF and display basic information
-- switch between models
+- parse .GSF and display basic information (header 1 done)
 - animation (might never be possible)
 - convert .obj to .gsf (if we are allowed to dream)
 
