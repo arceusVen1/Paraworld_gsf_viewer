@@ -57,7 +57,8 @@ class Vertex {
     double yRotation = 0,
     double zRotation = 0,
   }) {
-    final copy = Vector3.copy(positions);
+    Vector3 copy = Vector3.copy(positions);
+    copy -= box.center;
     copy.applyMatrix3(
       Matrix3.rotationZ(xRotation) *
           Matrix3.rotationY(yRotation) *

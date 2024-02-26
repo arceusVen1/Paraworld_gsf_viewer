@@ -35,7 +35,7 @@ class Model {
   }) {
     final widthOffset = size.width / 2;
     final heightOffset = size.height / 2;
-    final maxCoord = boundingBox.getMaxOfCoordinates();
+    final maxCoord = boundingBox.maxOfCoordinates;
 
     final maxFactor =
         math.min(widthOffset * 1 / maxCoord, heightOffset * 1 / maxCoord);

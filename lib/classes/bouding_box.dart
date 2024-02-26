@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:vector_math/vector_math.dart';
+
 typedef BoxCoordinate = ({double min, double max});
 
 class BoundingBox {
@@ -19,10 +21,18 @@ class BoundingBox {
     z = (min: 0, max: 1);
   }
 
-  getMaxOfCoordinates() {
+  double get maxOfCoordinates {
     final xMax = math.max(x.max.abs(), x.min.abs());
     final yMax = math.max(y.max.abs(), y.min.abs());
     final zMax = math.max(z.max.abs(), z.min.abs());
     return math.max(xMax, math.max(yMax, zMax));
+  }
+
+  Vector3 get center {
+    return Vector3(
+      (x.max + x.min) / 2,
+      (y.max + y.min) / 2,
+      (z.max + z.min) / 2,
+    );
   }
 }
