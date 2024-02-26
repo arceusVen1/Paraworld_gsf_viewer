@@ -131,7 +131,12 @@ class GsfData<T> {
 
   @override
   String toString() {
-    return value.toString();
+    switch (T) {
+      case int:
+        return '$value (0x${(value as int).toRadixString(16)})';
+      default:
+        return value.toString();
+    }
   }
 
   @override
@@ -174,7 +179,9 @@ class Standard4BytesData<T> extends GsfData<T> {
 
 class DoubleByteData<T> extends GsfData<T> {
   DoubleByteData(
-      {required int relativePos, required Uint8List bytes, required int offset}) {
+      {required int relativePos,
+      required Uint8List bytes,
+      required int offset}) {
     super._init(relativePos: relativePos, length: 2, offset: offset);
     super.parseValue(bytes);
   }

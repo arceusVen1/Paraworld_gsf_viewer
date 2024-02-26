@@ -3,11 +3,12 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
 class DisplayWrapper extends StatelessWidget {
-  const DisplayWrapper({super.key,
+  const DisplayWrapper({
+    super.key,
     required this.mainArea,
     required this.sideArea,
     required this.flexFactorSideArea,
-    });
+  });
 
   final Widget mainArea;
   final List<Widget> sideArea;
@@ -93,7 +94,7 @@ class GsfDataTile extends StatelessWidget {
   Widget build(BuildContext context) {
     String title = '$label: ';
     if (relatedPart != null) {
-      title += '${relatedPart!.name} ($data)';
+      title += '${relatedPart!.name} (${data.value})';
     } else {
       title += data.toString();
     }

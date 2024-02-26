@@ -29,6 +29,10 @@ class ModelSettingsDisplay extends StatelessWidget {
       GsfDataTile(
           label: 'Chunks count before links',
           data: modelSettings.chunksCountBeforeLinks),
+      GsfDataTile(
+        label: 'links count',
+        data: modelSettings.linksCount,
+      ),
       GsfDataTile(label: 'Unknown data', data: modelSettings.unknownData),
       GsfDataTile(label: 'Unknown data 2', data: modelSettings.unknownData2),
       GsfDataTile(label: 'Unused offset', data: modelSettings.unusedOffset),
