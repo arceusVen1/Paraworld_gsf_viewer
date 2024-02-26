@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/display.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/drawer_menu.dart';
 import 'package:paraworld_gsf_viewer/widgets/viewer/viewer.dart';
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               children: [
                 HeaderDisplay(),
-                SizedBox.expand(),
+                Header2Display(),
                 Viewer(),
               ],
             ),

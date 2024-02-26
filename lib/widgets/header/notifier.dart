@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/dust_trail_info.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/model_anim.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header/model_info.dart';
@@ -11,18 +10,11 @@ import 'package:paraworld_gsf_viewer/widgets/header/state.dart';
 class HeaderStateNotifier extends Notifier<HeaderState> {
   @override
   HeaderState build() {
-    gsfFile = ref.watch(gsfProvider).mapOrNull(data: (data) => data.value);
+    ref.watch(gsfProvider).mapOrNull(data: (data) => data.value);
     return const HeaderState.empty();
   }
 
-  GSF? gsfFile;
-
   void reset() {
-    state = const HeaderState.empty();
-  }
-
-  void setGsfFile(GSF gsf) {
-    gsfFile = gsf;
     state = const HeaderState.empty();
   }
 

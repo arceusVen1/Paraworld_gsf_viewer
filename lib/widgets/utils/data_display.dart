@@ -2,6 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
+class DisplayWrapper extends StatelessWidget {
+  const DisplayWrapper({super.key,
+    required this.mainArea,
+    required this.sideArea,
+    required this.flexFactorSideArea,
+    });
+
+  final Widget mainArea;
+  final List<Widget> sideArea;
+  final int flexFactorSideArea;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          mainArea,
+          Flexible(
+            flex: flexFactorSideArea,
+            child: Row(children: sideArea),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Empty extends StatelessWidget {
+  const Empty({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Label.large('Please select a .gsf file.'));
+  }
+}
+
+class Loading extends StatelessWidget {
+  const Loading({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
+  }
+}
+
 class DataDecorator extends StatelessWidget {
   const DataDecorator({
     super.key,

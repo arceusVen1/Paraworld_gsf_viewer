@@ -21,35 +21,17 @@ class HeaderDisplay extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final gsfState = ref.watch(gsfProvider);
     return gsfState.map(
-      loading: (_) => const _Loading(),
+      loading: (_) => const Loading(),
       error: (error) => Label.large('Error: $error',
           color: Colors.red, fontWeight: FontWeight.bold),
       data: (state) {
         if (state.value == null) {
-          return const _Empty();
+          return const Empty();
         }
         final gsf = state.value!;
         return _Data(gsf: gsf);
       },
     );
-  }
-}
-
-class _Empty extends StatelessWidget {
-  const _Empty({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Label.large('Please select a .gsf file.'));
-  }
-}
-
-class _Loading extends StatelessWidget {
-  const _Loading({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator());
   }
 }
 
@@ -70,89 +52,84 @@ class _Data extends ConsumerWidget {
       withSound: (data) => withSoundInfo(data),
       withDustTrail: (data) => withDustTrail(data),
     );
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
+    return DisplayWrapper(
+      flexFactorSideArea: 3,
+      sideArea: variablePart,
+      mainArea: DataDecorator(
         children: [
-          DataDecorator(
-            children: [
-              const Label.large('Header', fontWeight: FontWeight.bold),
-              GsfDataTile(
-                  label: 'Content Table Offset',
-                  data: header.contentTableOffset),
-              GsfDataTile(label: 'Name Length', data: header.nameLength),
-              GsfDataTile(label: 'Name', data: header.name, bold: true),
-              GsfDataTile(
-                label: 'Model Count',
-                data: header.modelCount,
-                bold: true,
-              ),
-              PartSelector(
-                value: state.mapOrNull(
-                  withModelInfo: (data) => data.modelInfo,
-                ),
-                label: 'select Model Infos',
-                parts: header.modelInfos,
-                onSelected: (part) => ref
-                    .read(headerStateNotifierProvider.notifier)
-                    .setModelInfo(part as ModelInfo),
-              ),
-              GsfDataTile(
-                label: 'Sound Count',
-                data: header.soundTable.soundCount,
-                bold: true,
-              ),
-              if (header.soundTable.soundInfos.isNotEmpty)
-                PartSelector(
-                  value: state.mapOrNull(
-                    withSound: (data) => data.sound,
-                    withModelInfo: (value) => value.selectedSoundInfo,
-                  ),
-                  label: 'select Sounds',
-                  parts: header.soundTable.soundInfos,
-                  onSelected: (part) => ref
-                      .read(headerStateNotifierProvider.notifier)
-                      .setSoundInfo(part as SoundInfo),
-                ),
-              GsfDataTile(
-                label: 'Dust Trail Count',
-                data: header.dustTrailTable.dustTrailCount,
-                bold: true,
-              ),
-              if (header.dustTrailTable.dustTrailInfos.isNotEmpty)
-                PartSelector(
-                  value: state.mapOrNull(
-                    withDustTrail: (data) => data.dustTrailInfo,
-                  ),
-                  label: 'select Dust Trails',
-                  parts: header.dustTrailTable.dustTrailInfos,
-                  onSelected: (part) => ref
-                      .read(headerStateNotifierProvider.notifier)
-                      .setDustTrailInfo(part as DustTrailInfo),
-                ),
-              GsfDataTile(
-                label: 'anim flags count ',
-                data: header.animFlagsCount,
-                bold: true,
-              ),
-              ...header.animFlagsTables
-                  .map((part) => Label.regular(
-                        'anim flag: ${part.name} (0x${part.offset.toRadixString(16)})',
-                      ))
-                  .toList(),
-              GsfDataTile(
-                label: 'Walk Transitions conunt',
-                data: header.walkTransitionsCount,
-                bold: true,
-              ),
-              ...header.walkTransitionTables
-                  .map((part) => Label.regular(
-                        'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
-                      ))
-                  .toList(),
-            ],
+          const Label.large('Header', fontWeight: FontWeight.bold),
+          GsfDataTile(
+              label: 'Content Table Offset', data: header.header2Offset),
+          GsfDataTile(label: 'Name Length', data: header.nameLength),
+          GsfDataTile(label: 'Name', data: header.name, bold: true),
+          GsfDataTile(
+            label: 'Model Count',
+            data: header.modelCount,
+            bold: true,
           ),
-          Flexible(flex: 3, child: Row(children: variablePart)),
+          PartSelector(
+            value: state.mapOrNull(
+              withModelInfo: (data) => data.modelInfo,
+            ),
+            label: 'select Model Infos',
+            parts: header.modelInfos,
+            onSelected: (part) => ref
+                .read(headerStateNotifierProvider.notifier)
+                .setModelInfo(part as ModelInfo),
+          ),
+          GsfDataTile(
+            label: 'Sound Count',
+            data: header.soundTable.soundCount,
+            bold: true,
+          ),
+          if (header.soundTable.soundInfos.isNotEmpty)
+            PartSelector(
+              value: state.mapOrNull(
+                withSound: (data) => data.sound,
+                withModelInfo: (value) => value.selectedSoundInfo,
+              ),
+              label: 'select Sounds',
+              parts: header.soundTable.soundInfos,
+              onSelected: (part) => ref
+                  .read(headerStateNotifierProvider.notifier)
+                  .setSoundInfo(part as SoundInfo),
+            ),
+          GsfDataTile(
+            label: 'Dust Trail Count',
+            data: header.dustTrailTable.dustTrailCount,
+            bold: true,
+          ),
+          if (header.dustTrailTable.dustTrailInfos.isNotEmpty)
+            PartSelector(
+              value: state.mapOrNull(
+                withDustTrail: (data) => data.dustTrailInfo,
+              ),
+              label: 'select Dust Trails',
+              parts: header.dustTrailTable.dustTrailInfos,
+              onSelected: (part) => ref
+                  .read(headerStateNotifierProvider.notifier)
+                  .setDustTrailInfo(part as DustTrailInfo),
+            ),
+          GsfDataTile(
+            label: 'anim flags count ',
+            data: header.animFlagsCount,
+            bold: true,
+          ),
+          ...header.animFlagsTables
+              .map((part) => Label.regular(
+                    'anim flag: ${part.name} (0x${part.offset.toRadixString(16)})',
+                  ))
+              .toList(),
+          GsfDataTile(
+            label: 'Walk Transitions conunt',
+            data: header.walkTransitionsCount,
+            bold: true,
+          ),
+          ...header.walkTransitionTables
+              .map((part) => Label.regular(
+                    'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
+                  ))
+              .toList(),
         ],
       ),
     );

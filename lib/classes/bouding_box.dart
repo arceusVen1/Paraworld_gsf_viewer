@@ -35,4 +35,16 @@ class BoundingBox {
       (z.max + z.min) / 2,
     );
   }
+
+  @override
+  String toString() {
+    return "BoundingBox: x: $x, y: $y, z: $z";
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is BoundingBox && other.x == x && other.y == y && other.z == z;
+
+  @override
+  int get hashCode => x.hashCode ^ y.hashCode ^ z.hashCode;
 }
