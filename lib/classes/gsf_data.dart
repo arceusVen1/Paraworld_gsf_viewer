@@ -75,6 +75,8 @@ class GsfData<T> {
         value = getAsFloat(bytes) as T;
       case String:
         value = getAsAsciiString(bytes) as T;
+      case bool:
+        value = getAsBool(bytes) as T;
       case UnknowData:
         value = bytes.sublist(offsettedPos, offsettedLength) as T;
       default:
@@ -121,14 +123,15 @@ class GsfData<T> {
     }
   }
 
+  bool getAsBool(Uint8List bytes) {
+    final intValue = getAsUint(bytes);
+    assert(intValue == 0 || intValue == 1, 'Invalid value for bool $intValue');
+    return intValue > 0;
+  }
+
   @override
   String toString() {
-    switch (T) {
-      case int:
-        return '$value';
-      default:
-        return value.toString();
-    }
+    return value.toString();
   }
 
   @override
@@ -171,8 +174,8 @@ class Standard4BytesData<T> extends GsfData<T> {
 
 class DoubleByteData<T> extends GsfData<T> {
   DoubleByteData(
-      {required int pos, required Uint8List bytes, required int offset}) {
-    super._init(relativePos: pos, length: 2, offset: offset);
+      {required int relativePos, required Uint8List bytes, required int offset}) {
+    super._init(relativePos: relativePos, length: 2, offset: offset);
     super.parseValue(bytes);
   }
 

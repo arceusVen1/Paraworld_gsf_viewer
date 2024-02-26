@@ -18,7 +18,7 @@ class Header extends GsfPart {
   late final GsfData<int> _magic;
   late final Standard4BytesData<int> _version;
 
-  late final Standard4BytesData<int> contentTableOffset;
+  late final Standard4BytesData<int> header2Offset;
   late final Standard4BytesData<int> nameLength;
   late final Standard4BytesData<int> modelCount;
   late final List<ModelInfo> modelInfos;
@@ -36,10 +36,10 @@ class Header extends GsfPart {
     _version = Standard4BytesData(
         position: _magic.relativeEnd, bytes: bytes, offset: offset);
     print("version: $_version");
-    contentTableOffset = Standard4BytesData<int>(
+    header2Offset = Standard4BytesData<int>(
         position: _version.relativeEnd, bytes: bytes, offset: offset);
     nameLength = Standard4BytesData<int>(
-        position: contentTableOffset.relativeEnd, bytes: bytes, offset: offset);
+        position: header2Offset.relativeEnd, bytes: bytes, offset: offset);
 
     name = GsfData<String>.fromPosition(
       relativePos: nameLength.relativeEnd,

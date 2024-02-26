@@ -9,11 +9,12 @@ class GSF {
     required this.header2,
   });
 
-  final Header header;
+  late final Header header;
   late final Header2 header2;
 
-  GSF.fromBytes(Uint8List bytes) : header = Header.fromBytes(bytes) {
-    header2 = Header2.fromBytes(bytes, header.getEndOffset());
+  GSF.fromBytes(Uint8List bytes) {
+    header = Header.fromBytes(bytes);
+    header2 = Header2.fromBytes(bytes, header.header2Offset.value);
   }
 
   @override
