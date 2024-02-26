@@ -27,7 +27,7 @@ class DataDecorator extends StatelessWidget {
   }
 }
 
-class GsfDataTile extends StatefulWidget {
+class GsfDataTile extends StatelessWidget {
   const GsfDataTile({
     super.key,
     required this.label,
@@ -44,26 +44,54 @@ class GsfDataTile extends StatefulWidget {
   final void Function(GsfPart?)? onSelected;
 
   @override
-  State<GsfDataTile> createState() => _GsfDataTileState();
+  Widget build(BuildContext context) {
+    String title = '$label: ';
+    if (relatedPart != null) {
+      title += '${relatedPart!.name} ($data)';
+    } else {
+      title += data.toString();
+    }
+    String toolTip =
+        "position: 0x${data.offsettedPos.toRadixString(16)}, length: ${data.length}";
+    if (data.value is int) {
+      toolTip = 'value: 0x${(data.value as int).toRadixString(16)}, $toolTip';
+    }
+    return Tooltip(
+      message: toolTip,
+      waitDuration: const Duration(milliseconds: 200),
+      child: _SelectableTile(
+        title: title,
+        onSelected: () {
+          if (onSelected != null) {
+            onSelected!(relatedPart);
+          }
+        },
+        bold: bold,
+      ),
+    );
+  }
 }
 
-class _GsfDataTileState extends State<GsfDataTile> {
+class _SelectableTile extends StatefulWidget {
+  const _SelectableTile({
+    required this.title,
+    required this.onSelected,
+    this.bold = false,
+  });
+
+  final String title;
+  final bool bold;
+  final void Function() onSelected;
+
+  @override
+  State<_SelectableTile> createState() => __SelectableTileState();
+}
+
+class __SelectableTileState extends State<_SelectableTile> {
   bool _isHovering = false;
 
   @override
   Widget build(BuildContext context) {
-    String label = '${widget.label}: ';
-    if (widget.relatedPart != null) {
-      label += '${widget.relatedPart!.name} (${widget.data})';
-    } else {
-      label += widget.data.toString();
-    }
-    String toolTip =
-        "position: 0x${widget.data.offsettedPos.toRadixString(16)}, length: ${widget.data.length}";
-    if (widget.data.value is int) {
-      toolTip =
-          'value: 0x${(widget.data.value as int).toRadixString(16)}, $toolTip';
-    }
     return MouseRegion(
       onHover: (event) {
         setState(() {
@@ -74,19 +102,12 @@ class _GsfDataTileState extends State<GsfDataTile> {
         _isHovering = false;
       }),
       child: GestureDetector(
-        onTap: () {
-          if (widget.onSelected != null) {
-            widget.onSelected!(widget.relatedPart);
-          }
-        },
+        onTap: widget.onSelected,
         child: Container(
           color: _isHovering ? Colors.grey.shade300 : null,
           padding: const EdgeInsets.symmetric(vertical: 2.0),
-          child: Tooltip(
-            message: toolTip,
-            child: Label.regular(label,
-                fontWeight: widget.bold ? FontWeight.bold : null),
-          ),
+          child: Label.regular(widget.title,
+              fontWeight: widget.bold ? FontWeight.bold : null),
         ),
       ),
     );

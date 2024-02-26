@@ -91,8 +91,11 @@ class ModelAnimDisplay extends ConsumerWidget {
 }
 
 class _SoundIndicesDisplay extends ConsumerStatefulWidget {
-  const _SoundIndicesDisplay(
-      {super.key, required this.soundIndices, required this.soundInfos});
+  const _SoundIndicesDisplay({
+    super.key,
+    required this.soundIndices,
+    required this.soundInfos,
+  });
 
   final List<Standard4BytesData<int>> soundIndices;
   final List<SoundInfo> soundInfos;
@@ -124,7 +127,7 @@ class __SoundIndicesDisplayState extends ConsumerState<_SoundIndicesDisplay> {
 
             return ListTileWrapper(
               isSelected: soundIndex == _selectedSoundIndex,
-              label: "${soundIndex.value}: ${relatedSoundInfo.name}",
+              label: "$index. ${relatedSoundInfo.name} (${soundIndex.value})",
               onTap: () {
                 setState(() {
                   _selectedSoundIndex = soundIndex;
