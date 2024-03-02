@@ -1,4 +1,5 @@
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/rotation.dart';
 import 'package:paraworld_gsf_viewer/test.dart';
 import 'package:vector_math/vector_math.dart';
 
@@ -8,6 +9,7 @@ class Vertex {
   Vertex(
     this.positions, {
     required this.box,
+    required this.offset,
     this.normal,
     this.textureCoordinates,
   }) {
@@ -17,14 +19,15 @@ class Vertex {
   }
 
   late Vector3 positions;
-  late BoundingBox box;
+  final Vector3 offset;
+  (Vector3, Matrix3)? lastTransformation;
+  BoundingBox box;
   Vector2? textureCoordinates;
   Vertex? normal;
   int? _normalSphereIndice;
 
   // Because web compiles int as int32 we need to force big int for 64bit integers even in web
-  Vertex.fromModelBytes(BigInt sequence, int textureSequence, BoundingBox bb) {
-    box = bb;
+  Vertex.fromModelBytes(BigInt sequence, int textureSequence, this.box) : offset = box.center {
     positions = Vector3(
       ((_k13BytesRatioValue * (sequence.toInt() & 0x1FFF)) *
               (box.x.max - box.x.min) +
@@ -43,6 +46,7 @@ class Vertex {
     normal = Vertex(
       readFromSphere(256 * sphereCoef + _normalSphereIndice!),
       box: BoundingBox.zero(),
+      offset: box.center,
     );
 
     normal!.positions += positions;
@@ -52,18 +56,14 @@ class Vertex {
         ((textureSequence >> 8) & 0xFF).toDouble() / 256);
   }
 
-  Vector3 transform({
-    double xRotation = 0,
-    double yRotation = 0,
-    double zRotation = 0,
-  }) {
+  Vector3 transform(Rotation rotation) {
+    if (lastTransformation != null &&
+        lastTransformation!.$2 == rotation.matrix) {
+      return lastTransformation!.$1;
+    }
     Vector3 copy = Vector3.copy(positions);
-    copy -= box.center;
-    copy.applyMatrix3(
-      Matrix3.rotationZ(xRotation) *
-          Matrix3.rotationY(yRotation) *
-          Matrix3.rotationZ(zRotation),
-    );
+    copy -= offset;
+    copy.applyMatrix3(rotation.matrix);
     return copy;
   }
 
@@ -73,15 +73,11 @@ class Vertex {
     required double heightOffset,
     required double maxWidth,
     required double maxHeight,
-    double xRotation = 0,
-    double yRotation = 0,
-    double zRotation = 0,
+    required Rotation rotation,
   }) {
-    final transformedPoint = transform(
-      xRotation: xRotation,
-      yRotation: yRotation,
-      zRotation: zRotation,
-    );
+    final transformedPoint = transform(rotation);
+    lastTransformation = (transformedPoint, rotation.matrix);
+
     double perpectiveFactor = 1.0;
 
     return (
@@ -89,19 +85,15 @@ class Vertex {
         transformedPoint.x * maxWidth * perpectiveFactor + widthOffset,
         -transformedPoint.y * maxHeight * perpectiveFactor + heightOffset,
       ),
-      normalProjection: normal != null
-          ? normal!
-              .project(
-                widthOffset: widthOffset,
-                heightOffset: heightOffset,
-                maxWidth: maxWidth,
-                maxHeight: maxHeight,
-                xRotation: xRotation,
-                yRotation: yRotation,
-                zRotation: zRotation,
-              )
-              .pointProjection
-          : null,
+      normalProjection: normal
+          ?.project(
+            widthOffset: widthOffset,
+            heightOffset: heightOffset,
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+            rotation: rotation,
+          )
+          .pointProjection
     );
   }
 

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/rotation.dart';
 import 'package:paraworld_gsf_viewer/classes/texture.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
@@ -27,9 +28,8 @@ class Model {
     Uint16List triangleIndices,
     Float32List normals,
   }) getDrawingData(
+    Rotation rotation,
     Size size, {
-    required double yRotationAngle,
-    required double zRotationAngle,
     ModelTexture? texture,
     bool showNormals = false,
   }) {
@@ -47,10 +47,7 @@ class Model {
     final List<double> normals = [];
     final List<int> indices = [];
     for (final triangle in triangles) {
-      final shouldShow = triangle.shouldShowTriangle(
-        yRotation: yRotationAngle,
-        zRotation: zRotationAngle,
-      );
+      final shouldShow = triangle.shouldShowTriangle(rotation);
 
       for (int j = 0; j < triangle.points.length; j++) {
         final vertexIndice = triangle.indices[j];
@@ -73,8 +70,7 @@ class Model {
             heightOffset: heightOffset,
             maxWidth: maxFactor,
             maxHeight: maxFactor,
-            yRotation: yRotationAngle,
-            zRotation: zRotationAngle,
+            rotation: rotation,
           );
           normals.addAll([
             projected.pointProjection.x,

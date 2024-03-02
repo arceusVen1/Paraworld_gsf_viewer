@@ -225,12 +225,14 @@ List<Vertex> readFullSphere() {
   for (int i = 0; i < bytesList.length; i += 12) {
     final vertData = ByteData.sublistView(bytesList, i, i + 12);
     verts.add(Vertex(
-        Vector3(
-          vertData.getFloat32(0, Endian.little),
-          vertData.getFloat32(4, Endian.little),
-          vertData.getFloat32(8, Endian.little),
-        ),
-        box: BoundingBox.zero()));
+      Vector3(
+        vertData.getFloat32(0, Endian.little),
+        vertData.getFloat32(4, Endian.little),
+        vertData.getFloat32(8, Endian.little),
+      ),
+      box: BoundingBox.zero(),
+      offset: Vector3.zero(),
+    ));
   }
   assert(verts.length == 511);
   return verts;

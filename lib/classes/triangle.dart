@@ -1,3 +1,4 @@
+import 'package:paraworld_gsf_viewer/classes/rotation.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:vector_math/vector_math.dart';
 
@@ -12,17 +13,10 @@ class ModelTriangle {
   final List<Vertex> points;
   final List<int> indices;
 
-  bool shouldShowTriangle({
-    double xRotation = 0,
-    double yRotation = 0,
-    double zRotation = 0,
-  }) {
-    final p0 = points[0].transform(
-        xRotation: xRotation, yRotation: yRotation, zRotation: zRotation);
-    final p1 = points[1].transform(
-        xRotation: xRotation, yRotation: yRotation, zRotation: zRotation);
-    final p2 = points[2].transform(
-        xRotation: xRotation, yRotation: yRotation, zRotation: zRotation);
+  bool shouldShowTriangle(Rotation rotation) {
+    final p0 = points[0].transform(rotation);
+    final p1 = points[1].transform(rotation);
+    final p2 = points[2].transform(rotation);
     final normal = (p1 - p0).cross(p2 - p0);
 
     // we place our eye at center far from camera, hence -100 in z

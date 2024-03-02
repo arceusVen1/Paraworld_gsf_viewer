@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
+import 'package:paraworld_gsf_viewer/classes/rotation.dart';
 import 'package:paraworld_gsf_viewer/classes/texture.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/mouse_movement_notifier.dart';
 import 'dart:math' as math;
@@ -19,6 +20,8 @@ class ModelDrawer extends CustomPainter {
   final Model model;
   final ModelTexture? texture;
   final bool showNormals;
+
+  final Rotation rotation = Rotation();
 
   final Paint _paint = Paint()
     ..color = const Color.fromRGBO(0, 0, 0, 1)
@@ -65,11 +68,11 @@ class ModelDrawer extends CustomPainter {
             2 *
             math.pi /
             size.height;
+    rotation.setMatrix(0, yRotationAngle, zRotationAngle);
 
     final data = model.getDrawingData(
+      rotation,
       size,
-      yRotationAngle: yRotationAngle,
-      zRotationAngle: zRotationAngle,
       texture: texture,
       showNormals: showNormals,
     );
