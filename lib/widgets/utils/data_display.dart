@@ -94,7 +94,7 @@ class GsfDataTile extends StatelessWidget {
   Widget build(BuildContext context) {
     String title = '$label: ';
     if (relatedPart != null) {
-      title += '${relatedPart!.name} (${data.value})';
+      title += '${relatedPart!.label} (${data.value})';
     } else {
       title += data.toString();
     }
@@ -190,12 +190,75 @@ class PartSelector extends StatelessWidget {
           return ListTileWrapper(
               isSelected: part == value,
               label:
-                  "$index. ${part.name} (0x${part.offset.toRadixString(16)})",
+                  "$index. ${part.label} (0x${part.offset.toRadixString(16)})",
               onTap: () {
                 onSelected(part);
               });
         },
       ),
+    );
+  }
+}
+
+class DataSelector extends StatefulWidget {
+  const DataSelector({
+    super.key,
+    required this.datas,
+    this.relatedParts,
+    this.onSelected,
+  });
+
+  final List<GsfData> datas;
+  final List<GsfPart>? relatedParts;
+  final Function(GsfData, GsfPart?)? onSelected;
+
+  @override
+  State<DataSelector> createState() => _DataSelectorState();
+}
+
+class _DataSelectorState extends State<DataSelector> {
+  GsfData? _selected;
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.datas.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return ListViewWrapper(
+      rightPadding: 10,
+      maxHeight: 200,
+      child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: widget.datas.length,
+          addAutomaticKeepAlives: false,
+          cacheExtent: 50,
+          itemBuilder: (context, index) {
+            final data = widget.datas[index];
+            final relatedPart = widget.relatedParts != null &&
+                    index < widget.relatedParts!.length
+                ? widget.relatedParts![index]
+                : null;
+            String label = "$index. ";
+
+            if (relatedPart != null) {
+              label += '${relatedPart.label} (${data.value})';
+            } else {
+              label += data.toString();
+            }
+
+            return ListTileWrapper(
+              isSelected: data == _selected,
+              label: label,
+              onTap: () {
+                setState(() {
+                  _selected = data;
+                });
+                if (widget.onSelected != null) {
+                  widget.onSelected!(data, relatedPart);
+                }
+              },
+            );
+          }),
     );
   }
 }
