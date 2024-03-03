@@ -16,7 +16,7 @@ class GsfPart implements GsfPartInterface {
   final int offset;
 
   @override
-  String get label => name?.value?? 'Unknown';
+  String get label => name?.value ?? 'Unknown';
 
   @override
   late final GsfData<String>? name;
@@ -34,7 +34,7 @@ class GsfPart implements GsfPartInterface {
   bool operator ==(Object other) =>
       other is GsfPart &&
       other.offset == offset &&
-      other.name == name &&
+      other.label == other.label &&
       other.length == length;
 
   @override
