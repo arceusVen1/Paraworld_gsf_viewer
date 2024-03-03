@@ -5,11 +5,11 @@ import 'package:vector_math/vector_math.dart';
 
 const _k13BytesRatioValue = 1 / 8191;
 
-class Vertex {
-  Vertex(
+class ModelVertex {
+  ModelVertex(
     this.positions, {
     required this.box,
-    required this.offset,
+    required this.positionOffset,
     this.normal,
     this.textureCoordinates,
   }) {
@@ -19,15 +19,16 @@ class Vertex {
   }
 
   late Vector3 positions;
-  final Vector3 offset;
+  final Vector3 positionOffset;
   (Vector3, Matrix3)? lastTransformation;
   BoundingBox box;
   Vector2? textureCoordinates;
-  Vertex? normal;
+  ModelVertex? normal;
   int? _normalSphereIndice;
 
   // Because web compiles int as int32 we need to force big int for 64bit integers even in web
-  Vertex.fromModelBytes(BigInt sequence, int textureSequence, this.box) : offset = box.center {
+  ModelVertex.fromModelBytes(BigInt sequence, int textureSequence, this.box)
+      : positionOffset = box.center {
     positions = Vector3(
       ((_k13BytesRatioValue * (sequence.toInt() & 0x1FFF)) *
               (box.x.max - box.x.min) +
@@ -43,10 +44,10 @@ class Vertex {
     _normalSphereIndice = (sequence >> 40).toInt() & 0xFF;
     final sphereCoef = (sequence >> 39).toInt() & 0x1;
 
-    normal = Vertex(
+    normal = ModelVertex(
       readFromSphere(256 * sphereCoef + _normalSphereIndice!),
       box: BoundingBox.zero(),
-      offset: box.center,
+      positionOffset: box.center,
     );
 
     normal!.positions += positions;
@@ -62,7 +63,7 @@ class Vertex {
       return lastTransformation!.$1;
     }
     Vector3 copy = Vector3.copy(positions);
-    copy -= offset;
+    copy -= positionOffset;
     copy.applyMatrix3(rotation.matrix);
     return copy;
   }
@@ -116,7 +117,7 @@ class Vertex {
 
   @override
   bool operator ==(Object other) =>
-      other is Vertex &&
+      other is ModelVertex &&
       (positions == other.positions && other.normal == normal);
 
   @override

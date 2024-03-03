@@ -1,12 +1,17 @@
 import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class ModelSettings extends GsfPart {
   late final Standard4BytesData<int> objectNameRelativeOffset;
+  late final ObjectName objectName;
   late final Standard4BytesData<int> chunksTableRelativeOffset;
   late final Standard4BytesData<int> chunksCount;
+  late final ChunksTable? chunksTable;
+
   late final Standard4BytesData<int> fallbackTableRelativeOffset;
   late final Standard4BytesData<bool> readData;
   late final DoubleByteData<int> unknownCount;
@@ -35,20 +40,39 @@ class ModelSettings extends GsfPart {
       offset: offset,
     );
     objectNameRelativeOffset = Standard4BytesData(
-      position: name.relativeEnd,
+      position: name!.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
+    objectName = ObjectName.fromBytes(
+      bytes,
+      offset +
+          objectNameRelativeOffset.relativePos +
+          objectNameRelativeOffset.value,
+    );
+    
     chunksTableRelativeOffset = Standard4BytesData(
       position: objectNameRelativeOffset.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
+
     chunksCount = Standard4BytesData(
       position: chunksTableRelativeOffset.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
+
+    if (chunksCount.value > 0) {
+      chunksTable = ChunksTable.fromBytes(
+        bytes,
+        offset +
+            chunksTableRelativeOffset.relativePos +
+            chunksTableRelativeOffset.value,
+        chunksCount.value,
+      );
+    }
+
     fallbackTableRelativeOffset = Standard4BytesData(
       position: chunksCount.relativeEnd,
       bytes: bytes,

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh_skinned.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/state.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/mesh_skinned.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/model_settings.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
@@ -75,5 +81,23 @@ class _Data extends ConsumerWidget {
 List<Widget> withModelSettings(Header2StateWithModelSettings state) {
   return [
     ModelSettingsDisplay(modelSettings: state.modelSettings),
+    if (state.objectName != null)
+      ObjectNameDisplay(objectName: state.objectName!),
+    if (state.chunk != null) getChunkWidgetByType(state.chunk!),
+    if (state.submesh != null) SubmeshDisplay(submesh: state.submesh!),
   ];
+}
+
+Widget getChunkWidgetByType(Chunk chunk) {
+  final Widget widget = () {
+    switch (chunk.type) {
+      case ChunkType.mesh:
+        return MeshChunkDisplay(mesh: chunk as MeshChunk);
+      case ChunkType.meshSkinned:
+        return MeshSkinnedChunkDisplay(mesh: chunk as MeshSkinnedChunk);
+      default:
+        return const SizedBox.shrink();
+    }
+  }();
+  return widget;
 }

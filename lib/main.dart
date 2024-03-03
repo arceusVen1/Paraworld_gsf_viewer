@@ -41,7 +41,9 @@ class MyApp extends StatelessWidget {
               children: [
                 HeaderDisplay(),
                 Header2Display(),
-                Viewer(),
+                Viewer(
+                  model: null,
+                ),
               ],
             ),
           ),

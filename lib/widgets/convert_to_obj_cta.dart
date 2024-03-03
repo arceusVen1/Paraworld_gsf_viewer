@@ -15,7 +15,7 @@ class ConvertToObjCta extends StatelessWidget {
     required this.triangles,
   });
 
-  final List<Vertex> vertices;
+  final List<ModelVertex> vertices;
   final List<ModelTriangle> triangles;
 
   Future<String?> writeAsObj() async {

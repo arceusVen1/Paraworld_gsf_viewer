@@ -20,21 +20,24 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings)
+    required TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)
         withModelSettings,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings)?
+    TResult? Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings)?
+    TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
     required TResult orElse(),
   }) =>
@@ -165,7 +168,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings)
+    required TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)
         withModelSettings,
   }) {
     return empty(header2);
@@ -175,7 +179,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings)?
+    TResult? Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
   }) {
     return empty?.call(header2);
@@ -185,7 +190,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings)?
+    TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
     required TResult orElse(),
   }) {
@@ -248,7 +254,12 @@ abstract class _$$Header2StateWithModelSettingsImplCopyWith<$Res>
       __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Header2 header2, ModelSettings modelSettings});
+  $Res call(
+      {Header2 header2,
+      ModelSettings modelSettings,
+      ObjectName? objectName,
+      Chunk? chunk,
+      Submesh? submesh});
 }
 
 /// @nodoc
@@ -266,6 +277,9 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
   $Res call({
     Object? header2 = null,
     Object? modelSettings = null,
+    Object? objectName = freezed,
+    Object? chunk = freezed,
+    Object? submesh = freezed,
   }) {
     return _then(_$Header2StateWithModelSettingsImpl(
       header2: null == header2
@@ -276,6 +290,18 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
           ? _value.modelSettings
           : modelSettings // ignore: cast_nullable_to_non_nullable
               as ModelSettings,
+      objectName: freezed == objectName
+          ? _value.objectName
+          : objectName // ignore: cast_nullable_to_non_nullable
+              as ObjectName?,
+      chunk: freezed == chunk
+          ? _value.chunk
+          : chunk // ignore: cast_nullable_to_non_nullable
+              as Chunk?,
+      submesh: freezed == submesh
+          ? _value.submesh
+          : submesh // ignore: cast_nullable_to_non_nullable
+              as Submesh?,
     ));
   }
 }
@@ -285,16 +311,26 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
 class _$Header2StateWithModelSettingsImpl
     implements Header2StateWithModelSettings {
   const _$Header2StateWithModelSettingsImpl(
-      {required this.header2, required this.modelSettings});
+      {required this.header2,
+      required this.modelSettings,
+      this.objectName,
+      this.chunk,
+      this.submesh});
 
   @override
   final Header2 header2;
   @override
   final ModelSettings modelSettings;
+  @override
+  final ObjectName? objectName;
+  @override
+  final Chunk? chunk;
+  @override
+  final Submesh? submesh;
 
   @override
   String toString() {
-    return 'Header2State.withModelSettings(header2: $header2, modelSettings: $modelSettings)';
+    return 'Header2State.withModelSettings(header2: $header2, modelSettings: $modelSettings, objectName: $objectName, chunk: $chunk, submesh: $submesh)';
   }
 
   @override
@@ -304,11 +340,16 @@ class _$Header2StateWithModelSettingsImpl
             other is _$Header2StateWithModelSettingsImpl &&
             (identical(other.header2, header2) || other.header2 == header2) &&
             (identical(other.modelSettings, modelSettings) ||
-                other.modelSettings == modelSettings));
+                other.modelSettings == modelSettings) &&
+            (identical(other.objectName, objectName) ||
+                other.objectName == objectName) &&
+            (identical(other.chunk, chunk) || other.chunk == chunk) &&
+            (identical(other.submesh, submesh) || other.submesh == submesh));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, header2, modelSettings);
+  int get hashCode => Object.hash(
+      runtimeType, header2, modelSettings, objectName, chunk, submesh);
 
   @JsonKey(ignore: true)
   @override
@@ -322,32 +363,38 @@ class _$Header2StateWithModelSettingsImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings)
+    required TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)
         withModelSettings,
   }) {
-    return withModelSettings(header2, modelSettings);
+    return withModelSettings(
+        header2, modelSettings, objectName, chunk, submesh);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings)?
+    TResult? Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
   }) {
-    return withModelSettings?.call(header2, modelSettings);
+    return withModelSettings?.call(
+        header2, modelSettings, objectName, chunk, submesh);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings)?
+    TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
     required TResult orElse(),
   }) {
     if (withModelSettings != null) {
-      return withModelSettings(header2, modelSettings);
+      return withModelSettings(
+          header2, modelSettings, objectName, chunk, submesh);
     }
     return orElse();
   }
@@ -387,13 +434,18 @@ class _$Header2StateWithModelSettingsImpl
 
 abstract class Header2StateWithModelSettings implements Header2State {
   const factory Header2StateWithModelSettings(
-          {required final Header2 header2,
-          required final ModelSettings modelSettings}) =
-      _$Header2StateWithModelSettingsImpl;
+      {required final Header2 header2,
+      required final ModelSettings modelSettings,
+      final ObjectName? objectName,
+      final Chunk? chunk,
+      final Submesh? submesh}) = _$Header2StateWithModelSettingsImpl;
 
   @override
   Header2 get header2;
   ModelSettings get modelSettings;
+  ObjectName? get objectName;
+  Chunk? get chunk;
+  Submesh? get submesh;
   @override
   @JsonKey(ignore: true)
   _$$Header2StateWithModelSettingsImplCopyWith<

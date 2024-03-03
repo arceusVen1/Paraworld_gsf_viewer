@@ -10,7 +10,7 @@ class ModelTriangle {
     assert(points.length == indices.length && points.length == 3);
   }
 
-  final List<Vertex> points;
+  final List<ModelVertex> points;
   final List<int> indices;
 
   bool shouldShowTriangle(Rotation rotation) {

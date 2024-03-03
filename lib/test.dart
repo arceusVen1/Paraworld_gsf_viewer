@@ -219,19 +219,19 @@ double normalize(int value) {
   return (value - minRange) / (maxRange - minRange) * 2 - 1;
 }
 
-List<Vertex> readFullSphere() {
-  List<Vertex> verts = [];
+List<ModelVertex> readFullSphere() {
+  List<ModelVertex> verts = [];
   final bytesList = Uint8List.fromList(spherePositions);
   for (int i = 0; i < bytesList.length; i += 12) {
     final vertData = ByteData.sublistView(bytesList, i, i + 12);
-    verts.add(Vertex(
+    verts.add(ModelVertex(
       Vector3(
         vertData.getFloat32(0, Endian.little),
         vertData.getFloat32(4, Endian.little),
         vertData.getFloat32(8, Endian.little),
       ),
       box: BoundingBox.zero(),
-      offset: Vector3.zero(),
+      positionOffset: Vector3.zero(),
     ));
   }
   assert(verts.length == 511);

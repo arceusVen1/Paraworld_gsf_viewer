@@ -18,9 +18,10 @@ class Model {
   });
 
   final String name;
-  final List<Vertex> vertices;
+  final List<ModelVertex> vertices;
   final List<ModelTriangle> triangles;
   final BoundingBox boundingBox;
+  //final Vector3 scale;
 
   ({
     Float32List positions,
