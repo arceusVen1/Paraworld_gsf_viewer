@@ -99,17 +99,21 @@ class _MaterialsTable extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final selected = ref.watch(header2StateNotifierProvider).maybeMap(
           withMaterial: (data) => data.material,
+          withModelSettings: (data) => data.material,
           orElse: () => null,
         );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GsfDataTile(
-            label: 'Materials count', data: materialsTable.materialCount),
+          label: 'Mseable materials count',
+          data: materialsTable.materialCount,
+          bold: true,
+        ),
         GsfDataTile(
             label: 'Materials offset', data: materialsTable.materialOffset),
         GsfDataTile(
-            label: 'Materials count', data: materialsTable.maxEntriesCount),
+            label: 'Materials length', data: materialsTable.maxEntriesCount),
         PartSelector(
             value: selected,
             label: "materials",
@@ -130,10 +134,10 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
     if (state.objectName != null)
       ObjectNameDisplay(objectName: state.objectName!),
     if (state.chunk != null) ...[
-      getChunkWidgetByType(state.chunk!),
-      state.submesh != null
-          ? SubmeshDisplay(submesh: state.submesh!)
-          : const Flexible(child: SizedBox.shrink()),
+      getChunkWidgetByType(
+          state.chunk!, state.header2.materialsTable.materials),
+      if (state.submesh != null) SubmeshDisplay(submesh: state.submesh!),
+      if (state.material != null) MaterialDisplay(material: state.material!),
     ]
   ];
 }
@@ -144,13 +148,19 @@ List<Widget> withMaterial(Header2StateWithMaterial state) {
   ];
 }
 
-Widget getChunkWidgetByType(Chunk chunk) {
+Widget getChunkWidgetByType(Chunk chunk, List<MaterialData> materials) {
   final Widget widget = () {
     switch (chunk.type) {
       case ChunkType.mesh:
-        return MeshChunkDisplay(mesh: chunk as MeshChunk);
+        return MeshChunkDisplay(
+          mesh: chunk as MeshChunk,
+          materials: materials,
+        );
       case ChunkType.meshSkinned:
-        return MeshSkinnedChunkDisplay(mesh: chunk as MeshSkinnedChunk);
+        return MeshSkinnedChunkDisplay(
+          mesh: chunk as MeshSkinnedChunk,
+          materials: materials,
+        );
       default:
         return const SizedBox.shrink();
     }

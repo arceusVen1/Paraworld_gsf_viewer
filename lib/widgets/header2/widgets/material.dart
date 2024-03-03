@@ -16,17 +16,17 @@ class MaterialDisplay extends StatelessWidget {
       GsfDataTile(label: "bitset attribute 1", data: material.bitsetAttribute1),
       GsfDataTile(label: "bitset attribute 2", data: material.bitsetAttribute2),
       GsfDataTile(
-        label: "texture name offset",
+        label: "texture",
         data: material.textureNameOffset,
         relatedPart: material.textureName,
       ),
       GsfDataTile(
-        label: "nm name offset",
+        label: "nm",
         data: material.nmNameOffset,
         relatedPart: material.nmName,
       ),
       GsfDataTile(
-        label: "env name offset",
+        label: "env",
         data: material.envNameOffset,
         relatedPart: material.envName,
       ),

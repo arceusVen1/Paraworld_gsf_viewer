@@ -39,6 +39,7 @@ class MeshSkinnedChunk extends Chunk {
   late final Standard4BytesData<int> submeshMaterialsOffset;
   late final Standard4BytesData<int> submeshMaterialsCount;
   late final List<Submesh> submeshes;
+  late final List<DoubleByteData<int>> materialIndices;
 
   @override
   String get label => 'mesh skinned 0x${guid.value.toRadixString(16)}';
@@ -210,6 +211,16 @@ class MeshSkinnedChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
+
+    materialIndices = [];
+    for (var i = 0; i < submeshMaterialsCount.value; i++) {
+      final materialIndex = DoubleByteData<int>(
+        relativePos: i * 2,
+        bytes: bytes,
+        offset: submeshMaterialsOffset.offsettedPos + submeshMaterialsOffset.value,
+      );
+      materialIndices.add(materialIndex);
+    }
 
     submeshes = [];
     for (var i = 0; i < submeshInfoCount.value; i++) {

@@ -14,15 +14,16 @@ class Header2State with _$Header2State {
     Header2? header2,
   }) = _Empty;
 
-  const factory Header2State.withModelSettings({
-    required Header2 header2,
-    required ModelSettings modelSettings,
-    ObjectName? objectName,
-    Chunk? chunk,
-    Submesh? submesh,
-  }) = Header2StateWithModelSettings;
-
-  const factory Header2State.withMaterial(
+  const factory Header2State.withModelSettings(
       {required Header2 header2,
-      required MaterialData material}) = Header2StateWithMaterial;
+      required ModelSettings modelSettings,
+      ObjectName? objectName,
+      Chunk? chunk,
+      Submesh? submesh,
+      MaterialData? material}) = Header2StateWithModelSettings;
+
+  const factory Header2State.withMaterial({
+    required Header2 header2,
+    required MaterialData material,
+  }) = Header2StateWithMaterial;
 }

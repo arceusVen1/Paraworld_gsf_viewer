@@ -51,15 +51,18 @@ class Header2StateNotifier extends Notifier<Header2State> {
 
   void setSubmesh(Submesh mesh) {
     state = state.maybeMap(
-      withModelSettings: (s) => s.copyWith(submesh: mesh),
+      withModelSettings: (s) => s.copyWith(submesh: mesh, material: null),
       orElse: () => state,
     );
   }
 
   void setMaterial(MaterialData material) {
-    state = Header2State.withMaterial(
-      header2: gsfFile!.header2,
-      material: material,
+    state = state.maybeMap(
+      withModelSettings: (s) => s.copyWith(material: material, submesh: null),
+      orElse: () => Header2State.withMaterial(
+        header2: gsfFile!.header2,
+        material: material,
+      ),
     );
   }
 }

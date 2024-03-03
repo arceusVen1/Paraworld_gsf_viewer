@@ -20,8 +20,13 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)
+    required TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -30,8 +35,13 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+    TResult? Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) =>
@@ -39,8 +49,13 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+    TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
@@ -175,8 +190,13 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)
+    required TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -188,8 +208,13 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+    TResult? Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
@@ -200,8 +225,13 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+    TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
@@ -273,7 +303,8 @@ abstract class _$$Header2StateWithModelSettingsImplCopyWith<$Res>
       ModelSettings modelSettings,
       ObjectName? objectName,
       Chunk? chunk,
-      Submesh? submesh});
+      Submesh? submesh,
+      MaterialData? material});
 }
 
 /// @nodoc
@@ -294,6 +325,7 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
     Object? objectName = freezed,
     Object? chunk = freezed,
     Object? submesh = freezed,
+    Object? material = freezed,
   }) {
     return _then(_$Header2StateWithModelSettingsImpl(
       header2: null == header2
@@ -316,6 +348,10 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
           ? _value.submesh
           : submesh // ignore: cast_nullable_to_non_nullable
               as Submesh?,
+      material: freezed == material
+          ? _value.material
+          : material // ignore: cast_nullable_to_non_nullable
+              as MaterialData?,
     ));
   }
 }
@@ -329,7 +365,8 @@ class _$Header2StateWithModelSettingsImpl
       required this.modelSettings,
       this.objectName,
       this.chunk,
-      this.submesh});
+      this.submesh,
+      this.material});
 
   @override
   final Header2 header2;
@@ -341,10 +378,12 @@ class _$Header2StateWithModelSettingsImpl
   final Chunk? chunk;
   @override
   final Submesh? submesh;
+  @override
+  final MaterialData? material;
 
   @override
   String toString() {
-    return 'Header2State.withModelSettings(header2: $header2, modelSettings: $modelSettings, objectName: $objectName, chunk: $chunk, submesh: $submesh)';
+    return 'Header2State.withModelSettings(header2: $header2, modelSettings: $modelSettings, objectName: $objectName, chunk: $chunk, submesh: $submesh, material: $material)';
   }
 
   @override
@@ -358,12 +397,14 @@ class _$Header2StateWithModelSettingsImpl
             (identical(other.objectName, objectName) ||
                 other.objectName == objectName) &&
             (identical(other.chunk, chunk) || other.chunk == chunk) &&
-            (identical(other.submesh, submesh) || other.submesh == submesh));
+            (identical(other.submesh, submesh) || other.submesh == submesh) &&
+            (identical(other.material, material) ||
+                other.material == material));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, header2, modelSettings, objectName, chunk, submesh);
+  int get hashCode => Object.hash(runtimeType, header2, modelSettings,
+      objectName, chunk, submesh, material);
 
   @JsonKey(ignore: true)
   @override
@@ -377,42 +418,57 @@ class _$Header2StateWithModelSettingsImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)
+    required TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
   }) {
     return withModelSettings(
-        header2, modelSettings, objectName, chunk, submesh);
+        header2, modelSettings, objectName, chunk, submesh, material);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+    TResult? Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
     return withModelSettings?.call(
-        header2, modelSettings, objectName, chunk, submesh);
+        header2, modelSettings, objectName, chunk, submesh, material);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+    TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
   }) {
     if (withModelSettings != null) {
       return withModelSettings(
-          header2, modelSettings, objectName, chunk, submesh);
+          header2, modelSettings, objectName, chunk, submesh, material);
     }
     return orElse();
   }
@@ -459,7 +515,8 @@ abstract class Header2StateWithModelSettings implements Header2State {
       required final ModelSettings modelSettings,
       final ObjectName? objectName,
       final Chunk? chunk,
-      final Submesh? submesh}) = _$Header2StateWithModelSettingsImpl;
+      final Submesh? submesh,
+      final MaterialData? material}) = _$Header2StateWithModelSettingsImpl;
 
   @override
   Header2 get header2;
@@ -467,6 +524,7 @@ abstract class Header2StateWithModelSettings implements Header2State {
   ObjectName? get objectName;
   Chunk? get chunk;
   Submesh? get submesh;
+  MaterialData? get material;
   @override
   @JsonKey(ignore: true)
   _$$Header2StateWithModelSettingsImplCopyWith<
@@ -554,8 +612,13 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)
+    required TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -567,8 +630,13 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+    TResult? Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
@@ -579,8 +647,13 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+    TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            Chunk? chunk,
+            Submesh? submesh,
+            MaterialData? material)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),

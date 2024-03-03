@@ -19,17 +19,17 @@ class MaterialData extends GsfPart {
     if (textureName == null && nmName == null && envName == null) {
       return "empty material";
     }
-    String label = "";
+    List<String> label = [];
     if (textureName != null) {
-      label += "texture $textureName\n";
+      label.add("texture $textureName");
     }
     if (nmName != null) {
-      label += "nm $nmName\n";
+      label.add("nm $nmName");
     }
     if (envName != null) {
-      label += "env $envName";
+      label.add("env $envName");
     }
-    return label;
+    return label.join("\n");
   }
 
   MaterialData.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
