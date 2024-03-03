@@ -24,7 +24,7 @@ class DustTrailInfo extends GsfPart {
     );
 
     boneIndex = Standard4BytesData(
-      position: name.relativeEnd,
+      position: name!.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
@@ -76,7 +76,10 @@ class DustTrailEntry extends GsfPart {
     );
 
     valueCharsLength = Standard4BytesData(
-        position: name.relativeEnd, bytes: bytes, offset: offset);
+      position: name!.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
     valueChars = GsfData.fromPosition(
       relativePos: valueCharsLength.relativeEnd,
       length: valueCharsLength.value,

@@ -22,7 +22,10 @@ class ModelAnim extends GsfPart {
     );
 
     index = Standard4BytesData(
-        position: name.relativeEnd, bytes: bytes, offset: offset);
+      position: name!.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
     soundIndices = SoundIndices.fromBytes(bytes, index.offsettedLength);
     unknownData = Standard4BytesData(

@@ -1,16 +1,33 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-abstract class GsfPart {
+abstract class GsfPartInterface {
+  int get offset;
+  String get label;
+  GsfData<String>? get name;
+  int get length;
+  int getEndOffset();
+}
+
+class GsfPart implements GsfPartInterface {
   GsfPart({required this.offset});
 
+  @override
   final int offset;
-  late final GsfData<String> name;
 
-  // the offset at the end of the part
-  int getEndOffset();
+  @override
+  String get label => name?.value?? 'Unknown';
+
+  @override
+  late final GsfData<String>? name;
+
+  @override
+  int getEndOffset() {
+    throw UnimplementedError();
+  }
 
   // the end position
+  @override
   int get length => getEndOffset() - offset;
 
   @override
@@ -25,6 +42,41 @@ abstract class GsfPart {
 }
 
 typedef UnknowData = Uint8List;
+
+/// a Class to represent a string that does not end with a 0 in the model
+class StringNoZero {
+  const StringNoZero(this.value);
+
+  final String value;
+
+  @override
+  String toString() => value;
+
+  @override
+  bool operator ==(Object other) =>
+      (other is StringNoZero || other is String) &&
+      other.toString() == toString();
+
+  @override
+  int get hashCode => value.hashCode;
+}
+
+/// a Class to represent a string that does not end with a 0 in the model
+class SignedInt {
+  const SignedInt(this.value);
+
+  final int value;
+
+  @override
+  String toString() => value.toString();
+
+  @override
+  bool operator ==(Object other) => ((other is int && other == value) ||
+      (other is SignedInt && other.value == value));
+
+  @override
+  int get hashCode => value.hashCode;
+}
 
 class GsfData<T> {
   GsfData();
@@ -49,12 +101,13 @@ class GsfData<T> {
     parseValue(bytes);
   }
 
-  GsfData.fromValue(
-      {required this.value,
-      required this.offset,
-      required this.relativePos,
-      int? length}) {
-    if (T is String) {
+  GsfData.fromValue({
+    required this.value,
+    required this.offset,
+    required this.relativePos,
+    int? length,
+  }) {
+    if (T is String && length == null) {
       length = (value as String).length + 1; // +1 for trailing 0
     } else if (length != null) {
       this.length = length;
@@ -71,10 +124,14 @@ class GsfData<T> {
     switch (T) {
       case int:
         value = getAsUint(bytes) as T;
+      case SignedInt:
+        value = SignedInt(getAsSignedInt(bytes)) as T;
       case double:
         value = getAsFloat(bytes) as T;
       case String:
-        value = getAsAsciiString(bytes) as T;
+        value = getAsAsciiString(bytes, true) as T;
+      case StringNoZero:
+        value = StringNoZero(getAsAsciiString(bytes, false)) as T;
       case bool:
         value = getAsBool(bytes) as T;
       case UnknowData:
@@ -84,11 +141,15 @@ class GsfData<T> {
     }
   }
 
-  String getAsAsciiString(Uint8List bytes) {
+  String getAsAsciiString(Uint8List bytes, bool trailingZero) {
     final stringBytes = bytes.sublist(offsettedPos, offsettedLength);
-    assert(stringBytes.last == 0); // all names should have a 0 name terminator
-    return const AsciiDecoder()
-        .convert(stringBytes.sublist(0, stringBytes.length - 1));
+    int strLength = stringBytes.length;
+    if (trailingZero) {
+      assert(
+          stringBytes.last == 0); // all names should have a 0 name terminator
+      strLength -= 1;
+    }
+    return const AsciiDecoder().convert(stringBytes.sublist(0, strLength));
   }
 
   ByteData getBytesData(Uint8List bytes) {
@@ -107,6 +168,22 @@ class GsfData<T> {
         value = data.getUint16(0, Endian.little);
       default:
         value = data.getUint8(0);
+    }
+    return value;
+  }
+
+  int getAsSignedInt(Uint8List bytes) {
+    final data = getBytesData(bytes);
+    int value;
+    switch (length) {
+      case >= 8:
+        value = data.getInt64(0, Endian.little);
+      case >= 4:
+        value = data.getInt32(0, Endian.little);
+      case >= 2:
+        value = data.getInt16(0, Endian.little);
+      default:
+        value = data.getInt8(0);
     }
     return value;
   }
@@ -166,12 +243,17 @@ class Standard4BytesData<T> extends GsfData<T> {
   }
 
   @override
+  int getAsSignedInt(Uint8List bytes) {
+    return super.getBytesData(bytes).getInt32(0, Endian.little);
+  }
+
+  @override
   double getAsFloat(Uint8List bytes) {
     return super.getBytesData(bytes).getFloat32(0, Endian.little);
   }
 
   @override
-  String getAsAsciiString(Uint8List bytes) {
+  String getAsAsciiString(Uint8List bytes, bool trailingZero) {
     final stringBytes = bytes.sublist(offsettedPos, offsettedLength);
     return const AsciiDecoder().convert(stringBytes);
   }
@@ -192,12 +274,17 @@ class DoubleByteData<T> extends GsfData<T> {
   }
 
   @override
+  int getAsSignedInt(Uint8List bytes) {
+    return super.getBytesData(bytes).getInt16(0, Endian.little);
+  }
+
+  @override
   double getAsFloat(Uint8List bytes) {
     throw Exception('Double byte data cannot be converted to float');
   }
 
   @override
-  String getAsAsciiString(Uint8List bytes) {
+  String getAsAsciiString(Uint8List bytes, bool trailingZero) {
     return const AsciiDecoder()
         .convert(bytes.sublist(offsettedPos, offsettedLength));
   }
@@ -252,12 +339,17 @@ class SingleByteData<T> extends GsfData {
   }
 
   @override
+  int getAsSignedInt(Uint8List bytes) {
+    return super.getBytesData(bytes).getInt8(0);
+  }
+
+  @override
   double getAsFloat(Uint8List bytes) {
     throw Exception('Single byte data cannot be converted to float');
   }
 
   @override
-  String getAsAsciiString(Uint8List bytes) {
+  String getAsAsciiString(Uint8List bytes, bool trailingZero) {
     throw Exception('Single byte data cannot be converted to string');
   }
 }

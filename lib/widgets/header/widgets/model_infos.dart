@@ -34,7 +34,7 @@ class ModelInfoDisplay extends ConsumerWidget {
     return DataDecorator(
       children: [
         const Label.large('Model Info', fontWeight: FontWeight.bold),
-        GsfDataTile(label: 'Name', data: modelInfo.name),
+        GsfDataTile(label: 'Name', data: modelInfo.name!),
         GsfDataTile(label: 'Index', data: modelInfo.index),
         GsfDataTile(label: 'Anim Count', data: modelInfo.animCount),
         if (modelInfo.modelAnims.isNotEmpty)
@@ -77,7 +77,7 @@ class ModelAnimDisplay extends ConsumerWidget {
     return DataDecorator(
       children: [
         const Label.large('Model Anim', fontWeight: FontWeight.bold),
-        GsfDataTile(label: 'Name', data: selectedModelAnim.name),
+        GsfDataTile(label: 'Name', data: selectedModelAnim.name!),
         GsfDataTile(label: 'index', data: selectedModelAnim.index),
         GsfDataTile(
             label: 'Sound count', data: selectedModelAnim.soundIndices.count),
@@ -90,7 +90,7 @@ class ModelAnimDisplay extends ConsumerWidget {
   }
 }
 
-class _SoundIndicesDisplay extends ConsumerStatefulWidget {
+class _SoundIndicesDisplay extends ConsumerWidget {
   const _SoundIndicesDisplay({
     super.key,
     required this.soundIndices,
@@ -101,44 +101,15 @@ class _SoundIndicesDisplay extends ConsumerStatefulWidget {
   final List<SoundInfo> soundInfos;
 
   @override
-  ConsumerState<_SoundIndicesDisplay> createState() =>
-      __SoundIndicesDisplayState();
-}
-
-class __SoundIndicesDisplayState extends ConsumerState<_SoundIndicesDisplay> {
-  Standard4BytesData<int>? _selectedSoundIndex;
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.soundIndices.isEmpty) {
-      return const SizedBox.shrink();
-    }
-    return ListViewWrapper(
-      rightPadding: 10,
-      maxHeight: 200,
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: widget.soundIndices.length,
-          addAutomaticKeepAlives: false,
-          cacheExtent: 50,
-          itemBuilder: (context, index) {
-            final soundIndex = widget.soundIndices[index];
-            final relatedSoundInfo = widget.soundInfos[soundIndex.value];
-
-            return ListTileWrapper(
-              isSelected: soundIndex == _selectedSoundIndex,
-              label: "$index. ${relatedSoundInfo.name} (${soundIndex.value})",
-              onTap: () {
-                setState(() {
-                  _selectedSoundIndex = soundIndex;
-                });
-                ref
-                    .read(headerStateNotifierProvider.notifier)
-                    .setSoundInfo(relatedSoundInfo);
-              },
-            );
-          }),
-    );
+  Widget build(BuildContext context, ref) {
+    return DataSelector(
+        datas: soundIndices,
+        relatedParts: soundInfos,
+        onSelected: (_, selectedSound) {
+          ref
+              .read(headerStateNotifierProvider.notifier)
+              .setSoundInfo(selectedSound as SoundInfo);
+        });
   }
 }
 
@@ -167,7 +138,7 @@ class WalkSetDisplay extends ConsumerWidget {
     return DataDecorator(
       children: [
         const Label.large('Walk Set', fontWeight: FontWeight.bold),
-        GsfDataTile(label: 'Name', data: selectedWalkSet.name),
+        GsfDataTile(label: 'Name', data: selectedWalkSet.name!),
         GsfDataTile(
           label: 'walk_1',
           data: selectedWalkSet.walk1PosData,

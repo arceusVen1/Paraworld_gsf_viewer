@@ -32,7 +32,10 @@ class ModelInfo extends GsfPart {
     );
 
     index = Standard4BytesData(
-        position: name.relativeEnd, bytes: bytes, offset: offset);
+      position: name!.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
 
     animCount = Standard4BytesData(
         position: index.relativeEnd, bytes: bytes, offset: offset);

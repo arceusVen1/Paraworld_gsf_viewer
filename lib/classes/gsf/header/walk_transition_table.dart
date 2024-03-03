@@ -23,7 +23,7 @@ class WalkTransitionTable extends GsfPart {
 
   @override
   int getEndOffset() {
-    return name.offsettedLength;
+    return name!.offsettedLength;
   }
 
   @override

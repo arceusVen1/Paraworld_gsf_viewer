@@ -49,7 +49,7 @@ class Header extends GsfPart {
     );
 
     modelCount = Standard4BytesData<int>(
-      position: name.relativeEnd,
+      position: name!.relativeEnd,
       bytes: bytes,
       offset: offset,
     );

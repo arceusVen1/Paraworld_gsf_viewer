@@ -24,7 +24,7 @@ class SoundInfo extends GsfPart {
     );
 
     startFrame = Standard4BytesData(
-        position: name.relativeEnd, bytes: bytes, offset: offset);
+        position: name!.relativeEnd, bytes: bytes, offset: offset);
 
     volume = Standard4BytesData(
         position: startFrame.relativeEnd, bytes: bytes, offset: offset);
