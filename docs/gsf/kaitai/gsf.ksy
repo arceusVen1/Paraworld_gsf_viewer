@@ -507,12 +507,24 @@ types:
           switch-on: chunk_type_enum
           cases:
             mesh_chunk_type::mesh: mesh_chunk(_io.pos)
-            mesh_chunk_type::animated_mesh: animated_mesh_chunk(_io.pos)
-            mesh_chunk_type::particle: particle_chunk
+            mesh_chunk_type::billboard: billboard_chunk(_io.pos)
+            #mesh_chunk_type::particle: particle_chunk
             mesh_chunk_type::skeleton: skeleton_chunk(_io.pos)
+            mesh_chunk_type::cloth: cloth_chunk(_io.pos)
+            mesh_chunk_type::phys_coll: phys_coll_chunk
             mesh_chunk_type::pos_link: pos_link_chunk
-            mesh_chunk_type::bone_link: bone_link_chunk
             mesh_chunk_type::sound_sphere: sound_sphere_chunk
+            mesh_chunk_type::speedline: speedline_chunk
+            #Skinned chunks:
+            mesh_chunk_type::mesh_skinned: mesh_skinned_chunk(_io.pos)
+            mesh_chunk_type::billboard_skinned: billboard_skinned_chunk
+            mesh_chunk_type::particle_skinned: particle_skinned_chunk
+            mesh_chunk_type::skeleton_skinned: skeleton_skinned_chunk
+            mesh_chunk_type::cloth_skinned: cloth_skinned_chunk
+            mesh_chunk_type::phys_coll_skinned: phys_coll_skinned_chunk
+            mesh_chunk_type::bone_link: bone_link_chunk
+            mesh_chunk_type::sound_sphere_skinned: sound_sphere_skinned_chunk
+            mesh_chunk_type::speedline_skinned: speedline_skinned_chunk	
   sound_sphere_chunk:
     seq:
       - id: unk
@@ -581,8 +593,10 @@ types:
         type: str
         size: 4
         encoding: ASCII
-      - id: zero
-        contents: [0x00, 0x00, 0x00, 0x00]
+      - id: unk
+        type: u4
+        #hu_products.gsf
+        #contents: [0x00, 0x00, 0x00, 0x00]
       - id: bone_id
         type: u4
       - id: bone_weight
@@ -756,11 +770,11 @@ types:
         type: f4
       - id: float_4
         type: f4
-      - id: num_unk
+      - id: mesh_chunk_unk
         type: u4
       - id: global_bbox_offset
         type: u4
-      - id: guid_maybe
+      - id: mesh_chunk_unk1
         type: u4
       - id: global_bbox_min_x
         type: f4
@@ -840,7 +854,14 @@ types:
         pos: pos + triangles_offset + 36
         size: num_triangles * 6
         if: triangles_offset != 0x80000000
-  animated_mesh_chunk:
+      light_data:
+        io: _root._io
+        pos: pos + light_data_offset + 48
+        type: u2
+        repeat: expr
+        repeat-expr: num_vertices
+        if: light_data_offset != 0x80000000
+  mesh_skinned_chunk:
     params:
       - id: pos
         type: s4
@@ -881,12 +902,109 @@ types:
         type: f4
       - id: float_4
         type: f4
-      - id: num_unk
+      - id: mesh_chunk_unk
+        type: u4
+      - id: skeleton_index
         type: u4
       - id: global_bbox_offset
         type: u4
-      - id: unk
-        size: 32
+      - id: mesh_chunk_unk1
+        type: u4
+      - id: global_bbox_min_x
+        type: f4
+      - id: global_bbox_min_y
+        type: f4
+      - id: global_bbox_min_z
+        type: f4
+      - id: global_bbox_max_x
+        type: f4
+      - id: global_bbox_max_y
+        type: f4
+      - id: global_bbox_max_z
+        type: f4
+      - id: num_submesh_info
+        type: u4
+      - id: submesh_info_offset
+        type: u4
+      - id: num_submesh_info2
+        type: u4
+      - id: submesh_materials_offset
+        type: u4
+      - id: num_submesh_materials
+        type: u4
+      - id: submesh_info
+        type: submesh_info(_io.pos)
+        repeat: expr
+        repeat-expr: num_submesh_info
+    instances:
+      submesh_materials:
+        io: _root._io
+        pos: pos + submesh_materials_offset + 124
+        type: u2
+        repeat: expr
+        repeat-expr: num_submesh_materials
+        if: submesh_materials_offset != 0x80000000
+  cloth_chunk:
+    params:
+      - id: pos
+        type: s4
+    seq:
+      - id: attributes
+        type: u4
+      - id: guid
+        type: u4
+      - id: scale_x
+        type: f4
+      - id: stretch_y
+        type: f4
+      - id: stretch_z_x
+        type: f4
+      - id: float_1
+        type: f4
+      - id: stretch_x
+        type: f4
+      - id: scale_y
+        type: f4
+      - id: stretch_z_y
+        type: f4
+      - id: float_2
+        type: f4
+      - id: shear_x
+        type: f4
+      - id: shear_y
+        type: f4
+      - id: scale_z
+        type: f4
+      - id: float_3
+        type: f4
+      - id: pos_x
+        type: f4
+      - id: pos_y
+        type: f4
+      - id: pos_z
+        type: f4
+      - id: float_4
+        type: f4
+      - id: mesh_chunk_unk
+        type: u4
+      - id: global_bbox_offset
+        type: u4
+      - id: mesh_chunk_unk1
+        type: u4
+      - id: cloth_unk_offset
+        type: u4
+      - id: cloth_num_unk1
+        type: u4
+      - id: cloth_unk_offset1
+        type: u4
+      - id: cloth_num_unk2
+        type: u4
+      - id: cloth_unk_offset2
+        type: u4
+      - id: cloth_num_unk3
+        type: u4
+      - id: cloth_unk_offset3
+        type: u4
       - id: bbox_min_x
         type: f4
       - id: bbox_min_y
@@ -909,10 +1027,72 @@ types:
         type: u4
       - id: num_submesh_materials
         type: u4
-      - id: submesh_info
-        type: submesh_info(_io.pos)
+      - id: cloth_submesh_info
+        type: cloth_submesh_info(_io.pos)
         repeat: expr
         repeat-expr: num_submesh_info
+    instances:
+      submesh_materials:
+        io: _root._io
+        pos: pos + submesh_materials_offset + 148
+        type: u2
+        repeat: expr
+        repeat-expr: num_submesh_materials
+        if: submesh_materials_offset != 0x80000000
+  cloth_submesh_info:
+    params:
+      - id: pos
+        type: s4
+    seq:
+      - id: local_bbox_min_x
+        type: f4
+      - id: local_bbox_min_y
+        type: f4
+      - id: local_bbox_min_z
+        type: f4
+      - id: local_bbox_max_x
+        type: f4
+      - id: local_bbox_max_y
+        type: f4
+      - id: local_bbox_max_z
+        type: f4
+      - id: num_vertices
+        type: u4
+      - id: num_triangles
+        type: u4
+        #PestGfx.GfxObjRenderer ERROR:Cloth Component 2 in Object: flyingtrader has 0 chunks (should be 1)!
+      - id: cloth_sim_unk
+        type: u4
+      - id: vertices_offset
+        type: u4
+      - id: triangles_offset
+        type: u4
+      - id: num_triangles2
+        type: u4
+      - id: light_data_offset
+        type: u4
+      - id: num_light_data
+        type: u4
+      - id: vertex_type
+        type: u4
+    instances:
+      vertices_data:
+        io: _root._io
+        pos: pos + vertices_offset + 36
+        size: num_vertices * vertex_type
+        if: vertices_offset != 0x80000000
+      triangles_data:
+        io: _root._io
+        pos: pos + triangles_offset + 40
+        size: num_triangles * 6
+        if: triangles_offset != 0x80000000
+      light_data:
+        io: _root._io
+        pos: pos + light_data_offset + 48
+        type: u2
+        repeat: expr
+        repeat-expr: num_vertices
+        if: light_data_offset != 0x80000000
   particle_chunk:
     seq:
       - id: attribs
@@ -1009,6 +1189,99 @@ types:
         type: f4
       - id: unk9
         size: 16
+  billboard_chunk:
+    params:
+      - id: pos
+        type: s4
+    seq:
+      - id: attributes
+        type: u4
+      - id: guid
+        type: u4
+      - id: scale_x
+        type: f4
+      - id: stretch_y
+        type: f4
+      - id: stretch_z_x
+        type: f4
+      - id: float_1
+        type: f4
+      - id: stretch_x
+        type: f4
+      - id: scale_y
+        type: f4
+      - id: stretch_z_y
+        type: f4
+      - id: float_2
+        type: f4
+      - id: shear_x
+        type: f4
+      - id: shear_y
+        type: f4
+      - id: scale_z
+        type: f4
+      - id: float_3
+        type: f4
+      - id: pos_x
+        type: f4
+      - id: pos_y
+        type: f4
+      - id: pos_z
+        type: f4
+      - id: float_4
+        type: f4
+      - id: mesh_chunk_unk
+        type: u4
+      - id: unk
+        size: 48
+      - id: num_vertices
+        type: u4
+      - id: vertices_offset
+        type: u4
+      - id: vertex_type
+        type: u4
+    instances:
+      vertices_data:
+        io: _root._io
+        pos: pos + vertices_offset + 128
+        size: num_vertices * vertex_type
+        if: vertices_offset != 0x80000000
+  phys_coll_chunk:
+    seq:
+      - id: unk
+        type: u4
+  speedline_chunk:
+    seq:
+      - id: unk
+        type: u4
+  billboard_skinned_chunk:
+    seq:
+      - id: unk
+        type: u4
+  particle_skinned_chunk:
+    seq:
+      - id: unk
+        type: u4
+  skeleton_skinned_chunk:
+    seq:
+      - id: unk
+        type: u4	
+  cloth_skinned_chunk:
+    seq:
+      - id: unk
+        type: u4	
+  phys_coll_skinned_chunk:
+    seq:
+      - id: unk
+        type: u4
+  sound_sphere_skinned_chunk:
+    seq:
+      - id: unk
+        type: u4
+  speedline_skinned_chunk:
+    seq:
+      - id: unk
+        type: u4
   fallback_table:
     seq:
       - id: header2_neg_offset
@@ -1204,9 +1477,21 @@ enums:
     0x00000001: path_blocker
   mesh_chunk_type:
     0x00000000: mesh
-    0x00000009: animated_mesh
+    0x00000001: billboard
     0x00000002: particle
     0x00000005: skeleton
+    0x00000009: cloth
+    0x0000000A: phys_coll
     0x0000000B: pos_link
-    0x8000000B: bone_link
     0x0000000D: sound_sphere
+    0x0000000E: speedline
+    #skinned meshes
+    0x80000000: mesh_skinned
+    0x80000001: billboard_skinned
+    0x80000002: particle_skinned
+    0x80000005: skeleton_skinned
+    0x80000009: cloth_skinned
+    0x8000000A: phys_coll_skinned
+    0x8000000B: bone_link
+    0x8000000D: sound_sphere_skinned
+    0x8000000E: speedline_skinned
