@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh_skinned.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
@@ -10,6 +12,7 @@ import 'package:paraworld_gsf_viewer/widgets/header2/state.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/mesh_skinned.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/submesh.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/material.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/model_settings.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
@@ -47,6 +50,7 @@ class _Data extends ConsumerWidget {
     final List<Widget> variablePart = state.map(
       empty: (_) => [],
       withModelSettings: (data) => withModelSettings(data),
+      withMaterial: (data) => withMaterial(data),
     );
     return DisplayWrapper(
       sideArea: variablePart,
@@ -73,7 +77,49 @@ class _Data extends ConsumerWidget {
             label: 'Anim settings offset', data: header2.animSettingsOffset),
         GsfDataTile(
             label: 'Anim settings count', data: header2.animSettingsCount),
+        const Label.large(
+          "Material table",
+          fontWeight: FontWeight.bold,
+        ),
+        _MaterialsTable(materialsTable: header2.materialsTable),
       ]),
+    );
+  }
+}
+
+class _MaterialsTable extends ConsumerWidget {
+  const _MaterialsTable({
+    super.key,
+    required this.materialsTable,
+  });
+
+  final MaterialsTable materialsTable;
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final selected = ref.watch(header2StateNotifierProvider).maybeMap(
+          withMaterial: (data) => data.material,
+          orElse: () => null,
+        );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GsfDataTile(
+            label: 'Materials count', data: materialsTable.materialCount),
+        GsfDataTile(
+            label: 'Materials offset', data: materialsTable.materialOffset),
+        GsfDataTile(
+            label: 'Materials count', data: materialsTable.maxEntriesCount),
+        PartSelector(
+            value: selected,
+            label: "materials",
+            parts: materialsTable.materials,
+            onSelected: (material) {
+              ref
+                  .read(header2StateNotifierProvider.notifier)
+                  .setMaterial(material as MaterialData);
+            })
+      ],
     );
   }
 }
@@ -83,8 +129,18 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
     ModelSettingsDisplay(modelSettings: state.modelSettings),
     if (state.objectName != null)
       ObjectNameDisplay(objectName: state.objectName!),
-    if (state.chunk != null) getChunkWidgetByType(state.chunk!),
-    if (state.submesh != null) SubmeshDisplay(submesh: state.submesh!),
+    if (state.chunk != null) ...[
+      getChunkWidgetByType(state.chunk!),
+      state.submesh != null
+          ? SubmeshDisplay(submesh: state.submesh!)
+          : const Flexible(child: SizedBox.shrink()),
+    ]
+  ];
+}
+
+List<Widget> withMaterial(Header2StateWithMaterial state) {
+  return [
+    MaterialDisplay(material: state.material),
   ];
 }
 

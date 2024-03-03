@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
@@ -52,6 +53,13 @@ class Header2StateNotifier extends Notifier<Header2State> {
     state = state.maybeMap(
       withModelSettings: (s) => s.copyWith(submesh: mesh),
       orElse: () => state,
+    );
+  }
+
+  void setMaterial(MaterialData material) {
+    state = Header2State.withMaterial(
+      header2: gsfFile!.header2,
+      material: material,
     );
   }
 }

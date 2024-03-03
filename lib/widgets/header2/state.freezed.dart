@@ -23,6 +23,8 @@ mixin _$Header2State {
     required TResult Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)
         withModelSettings,
+    required TResult Function(Header2 header2, MaterialData material)
+        withMaterial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -31,6 +33,7 @@ mixin _$Header2State {
     TResult? Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
+    TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -39,6 +42,7 @@ mixin _$Header2State {
     TResult Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
+    TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,18 +51,21 @@ mixin _$Header2State {
     required TResult Function(_Empty value) empty,
     required TResult Function(Header2StateWithModelSettings value)
         withModelSettings,
+    required TResult Function(Header2StateWithMaterial value) withMaterial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Empty value)? empty,
     TResult? Function(Header2StateWithModelSettings value)? withModelSettings,
+    TResult? Function(Header2StateWithMaterial value)? withMaterial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Empty value)? empty,
     TResult Function(Header2StateWithModelSettings value)? withModelSettings,
+    TResult Function(Header2StateWithMaterial value)? withMaterial,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -171,6 +178,8 @@ class _$EmptyImpl implements _Empty {
     required TResult Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)
         withModelSettings,
+    required TResult Function(Header2 header2, MaterialData material)
+        withMaterial,
   }) {
     return empty(header2);
   }
@@ -182,6 +191,7 @@ class _$EmptyImpl implements _Empty {
     TResult? Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
+    TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
     return empty?.call(header2);
   }
@@ -193,6 +203,7 @@ class _$EmptyImpl implements _Empty {
     TResult Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
+    TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
   }) {
     if (empty != null) {
@@ -207,6 +218,7 @@ class _$EmptyImpl implements _Empty {
     required TResult Function(_Empty value) empty,
     required TResult Function(Header2StateWithModelSettings value)
         withModelSettings,
+    required TResult Function(Header2StateWithMaterial value) withMaterial,
   }) {
     return empty(this);
   }
@@ -216,6 +228,7 @@ class _$EmptyImpl implements _Empty {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Empty value)? empty,
     TResult? Function(Header2StateWithModelSettings value)? withModelSettings,
+    TResult? Function(Header2StateWithMaterial value)? withMaterial,
   }) {
     return empty?.call(this);
   }
@@ -225,6 +238,7 @@ class _$EmptyImpl implements _Empty {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Empty value)? empty,
     TResult Function(Header2StateWithModelSettings value)? withModelSettings,
+    TResult Function(Header2StateWithMaterial value)? withMaterial,
     required TResult orElse(),
   }) {
     if (empty != null) {
@@ -366,6 +380,8 @@ class _$Header2StateWithModelSettingsImpl
     required TResult Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)
         withModelSettings,
+    required TResult Function(Header2 header2, MaterialData material)
+        withMaterial,
   }) {
     return withModelSettings(
         header2, modelSettings, objectName, chunk, submesh);
@@ -378,6 +394,7 @@ class _$Header2StateWithModelSettingsImpl
     TResult? Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
+    TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
     return withModelSettings?.call(
         header2, modelSettings, objectName, chunk, submesh);
@@ -390,6 +407,7 @@ class _$Header2StateWithModelSettingsImpl
     TResult Function(Header2 header2, ModelSettings modelSettings,
             ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
         withModelSettings,
+    TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
   }) {
     if (withModelSettings != null) {
@@ -405,6 +423,7 @@ class _$Header2StateWithModelSettingsImpl
     required TResult Function(_Empty value) empty,
     required TResult Function(Header2StateWithModelSettings value)
         withModelSettings,
+    required TResult Function(Header2StateWithMaterial value) withMaterial,
   }) {
     return withModelSettings(this);
   }
@@ -414,6 +433,7 @@ class _$Header2StateWithModelSettingsImpl
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Empty value)? empty,
     TResult? Function(Header2StateWithModelSettings value)? withModelSettings,
+    TResult? Function(Header2StateWithMaterial value)? withMaterial,
   }) {
     return withModelSettings?.call(this);
   }
@@ -423,6 +443,7 @@ class _$Header2StateWithModelSettingsImpl
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Empty value)? empty,
     TResult Function(Header2StateWithModelSettings value)? withModelSettings,
+    TResult Function(Header2StateWithMaterial value)? withMaterial,
     required TResult orElse(),
   }) {
     if (withModelSettings != null) {
@@ -450,5 +471,172 @@ abstract class Header2StateWithModelSettings implements Header2State {
   @JsonKey(ignore: true)
   _$$Header2StateWithModelSettingsImplCopyWith<
           _$Header2StateWithModelSettingsImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Header2StateWithMaterialImplCopyWith<$Res>
+    implements $Header2StateCopyWith<$Res> {
+  factory _$$Header2StateWithMaterialImplCopyWith(
+          _$Header2StateWithMaterialImpl value,
+          $Res Function(_$Header2StateWithMaterialImpl) then) =
+      __$$Header2StateWithMaterialImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({Header2 header2, MaterialData material});
+}
+
+/// @nodoc
+class __$$Header2StateWithMaterialImplCopyWithImpl<$Res>
+    extends _$Header2StateCopyWithImpl<$Res, _$Header2StateWithMaterialImpl>
+    implements _$$Header2StateWithMaterialImplCopyWith<$Res> {
+  __$$Header2StateWithMaterialImplCopyWithImpl(
+      _$Header2StateWithMaterialImpl _value,
+      $Res Function(_$Header2StateWithMaterialImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? header2 = null,
+    Object? material = null,
+  }) {
+    return _then(_$Header2StateWithMaterialImpl(
+      header2: null == header2
+          ? _value.header2
+          : header2 // ignore: cast_nullable_to_non_nullable
+              as Header2,
+      material: null == material
+          ? _value.material
+          : material // ignore: cast_nullable_to_non_nullable
+              as MaterialData,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
+  const _$Header2StateWithMaterialImpl(
+      {required this.header2, required this.material});
+
+  @override
+  final Header2 header2;
+  @override
+  final MaterialData material;
+
+  @override
+  String toString() {
+    return 'Header2State.withMaterial(header2: $header2, material: $material)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Header2StateWithMaterialImpl &&
+            (identical(other.header2, header2) || other.header2 == header2) &&
+            (identical(other.material, material) ||
+                other.material == material));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, header2, material);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Header2StateWithMaterialImplCopyWith<_$Header2StateWithMaterialImpl>
+      get copyWith => __$$Header2StateWithMaterialImplCopyWithImpl<
+          _$Header2StateWithMaterialImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Header2? header2) empty,
+    required TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)
+        withModelSettings,
+    required TResult Function(Header2 header2, MaterialData material)
+        withMaterial,
+  }) {
+    return withMaterial(header2, material);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Header2? header2)? empty,
+    TResult? Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+        withModelSettings,
+    TResult? Function(Header2 header2, MaterialData material)? withMaterial,
+  }) {
+    return withMaterial?.call(header2, material);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Header2? header2)? empty,
+    TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, Chunk? chunk, Submesh? submesh)?
+        withModelSettings,
+    TResult Function(Header2 header2, MaterialData material)? withMaterial,
+    required TResult orElse(),
+  }) {
+    if (withMaterial != null) {
+      return withMaterial(header2, material);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Empty value) empty,
+    required TResult Function(Header2StateWithModelSettings value)
+        withModelSettings,
+    required TResult Function(Header2StateWithMaterial value) withMaterial,
+  }) {
+    return withMaterial(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Empty value)? empty,
+    TResult? Function(Header2StateWithModelSettings value)? withModelSettings,
+    TResult? Function(Header2StateWithMaterial value)? withMaterial,
+  }) {
+    return withMaterial?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Empty value)? empty,
+    TResult Function(Header2StateWithModelSettings value)? withModelSettings,
+    TResult Function(Header2StateWithMaterial value)? withMaterial,
+    required TResult orElse(),
+  }) {
+    if (withMaterial != null) {
+      return withMaterial(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Header2StateWithMaterial implements Header2State {
+  const factory Header2StateWithMaterial(
+      {required final Header2 header2,
+      required final MaterialData material}) = _$Header2StateWithMaterialImpl;
+
+  @override
+  Header2 get header2;
+  MaterialData get material;
+  @override
+  @JsonKey(ignore: true)
+  _$$Header2StateWithMaterialImplCopyWith<_$Header2StateWithMaterialImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

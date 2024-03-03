@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
@@ -12,6 +13,7 @@ class Header2 extends GsfPart {
   late final Standard4BytesData<int> modelsSettingCount;
   late final Standard4BytesData<int> animSettingsOffset;
   late final Standard4BytesData<int> animSettingsCount;
+  late final MaterialsTable materialsTable;
 
   late final List<ModelSettings> modelSettings;
   // todo: material Header
@@ -35,6 +37,10 @@ class Header2 extends GsfPart {
         position: modelsSettingCount.relativeEnd, bytes: bytes, offset: offset);
     animSettingsCount = Standard4BytesData(
         position: animSettingsOffset.relativeEnd, bytes: bytes, offset: offset);
+    materialsTable = MaterialsTable.fromBytes(
+      bytes,
+      animSettingsCount.offsettedLength,
+    );
 
     modelSettings = [];
     for (var i = 0; i < modelsSettingCount.value; i++) {
