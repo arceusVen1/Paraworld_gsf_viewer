@@ -34,7 +34,7 @@ class Menu extends ConsumerWidget {
           ),
           _FileLoaderTile(
             title: "Select a texture",
-            allowedExtensions: const ["jpg", "jpeg", "png"],
+            allowedExtensions: const ["jpg", "jpeg", "png", "dds"],
             filePathStateProvider: texturePathStateProvider,
           ),
           ListTile(

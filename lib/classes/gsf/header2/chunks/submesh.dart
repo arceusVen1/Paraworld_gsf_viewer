@@ -1,5 +1,7 @@
+import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
@@ -164,15 +166,26 @@ class Vertex extends GsfPart {
 
   ModelVertex toModelVertex(BoundingBox box) {
     // necessary hack because web doesn't handle getUint64
-    final positionData = BigInt.from(int.parse(
-        vertexData.value
-            .sublist(0, 6)
-            .reversed
-            .map((e) => e.toRadixString(16).length >= 2
-                ? e.toRadixString(16)
-                : "0${e.toRadixString(16)}")
-            .join(),
-        radix: 16));
+    BigInt positionData = BigInt.from(0);
+    if (kIsWeb) {
+      positionData = BigInt.from(int.parse(
+          vertexData.value
+              .sublist(0, 6)
+              .reversed
+              .map((e) => e.toRadixString(16).length >= 2
+                  ? e.toRadixString(16)
+                  : "0${e.toRadixString(16)}")
+              .join(),
+          radix: 16));
+    } else {
+      positionData = BigInt.from(
+        ByteData.sublistView(vertexData.value.sublist(0, 8)).getUint64(
+          0,
+          Endian.little,
+        ),
+      );
+    }
+
     final textureData = ByteData.sublistView(vertexData.value.sublist(6, 8))
         .getUint16(0, Endian.little);
     return ModelVertex.fromModelBytes(positionData, textureData, box);
