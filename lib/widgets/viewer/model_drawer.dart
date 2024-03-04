@@ -25,7 +25,7 @@ class ModelDrawer extends CustomPainter {
 
   final Paint _paint = Paint()
     ..color = const Color.fromRGBO(0, 0, 0, 1)
-    ..strokeWidth = 2
+    ..strokeWidth = 1
     ..strokeCap = StrokeCap.round;
 
   final Paint _paintTest = Paint()

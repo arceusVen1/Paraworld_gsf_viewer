@@ -35,7 +35,7 @@ class ModelSettings extends GsfPart {
   late final Standard4BytesData<int> animObjectCount;
 
   @override
-  String get label => name.value;
+  String get label => "${name.value} (${objectName.label})";
 
   ModelSettings.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     name = Standard4BytesData<String>(

@@ -106,7 +106,7 @@ class _MaterialsTable extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GsfDataTile(
-          label: 'Mseable materials count',
+          label: 'Useable materials count',
           data: materialsTable.materialCount,
           bold: true,
         ),
@@ -117,7 +117,8 @@ class _MaterialsTable extends ConsumerWidget {
         PartSelector(
             value: selected,
             label: "materials",
-            parts: materialsTable.materials,
+            parts: materialsTable.materials
+                .sublist(0, materialsTable.materialCount.value),
             onSelected: (material) {
               ref
                   .read(header2StateNotifierProvider.notifier)
