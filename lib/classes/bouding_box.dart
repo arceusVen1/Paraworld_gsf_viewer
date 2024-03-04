@@ -28,6 +28,14 @@ class BoundingBox {
     return math.max(xMax, math.max(yMax, zMax));
   }
 
+  BoundingBox toParaworldSystem() {
+    return BoundingBox(
+      x: x,
+      y: z,
+      z: (min: -y.min, max: -y.max),
+    );
+  }
+
   Vector3 get center {
     return Vector3(
       (x.max + x.min) / 2,
