@@ -34,7 +34,7 @@ class ModelInfoDisplay extends ConsumerWidget {
     return DataDecorator(
       children: [
         const Label.large('Model Info', fontWeight: FontWeight.bold),
-        GsfDataTile(label: 'Name', data: modelInfo.name!),
+        GsfDataTile(label: 'Name', data: modelInfo.name),
         GsfDataTile(label: 'Index', data: modelInfo.index),
         GsfDataTile(label: 'Anim Count', data: modelInfo.animCount),
         if (modelInfo.modelAnims.isNotEmpty)
@@ -77,7 +77,7 @@ class ModelAnimDisplay extends ConsumerWidget {
     return DataDecorator(
       children: [
         const Label.large('Model Anim', fontWeight: FontWeight.bold),
-        GsfDataTile(label: 'Name', data: selectedModelAnim.name!),
+        GsfDataTile(label: 'Name', data: selectedModelAnim.name),
         GsfDataTile(label: 'index', data: selectedModelAnim.index),
         GsfDataTile(
             label: 'Sound count', data: selectedModelAnim.soundIndices.count),
@@ -138,7 +138,7 @@ class WalkSetDisplay extends ConsumerWidget {
     return DataDecorator(
       children: [
         const Label.large('Walk Set', fontWeight: FontWeight.bold),
-        GsfDataTile(label: 'Name', data: selectedWalkSet.name!),
+        GsfDataTile(label: 'Name', data: selectedWalkSet.name),
         GsfDataTile(
           label: 'walk_1',
           data: selectedWalkSet.walk1PosData,

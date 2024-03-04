@@ -61,7 +61,7 @@ class _Data extends ConsumerWidget {
           GsfDataTile(
               label: 'Content Table Offset', data: header.header2Offset),
           GsfDataTile(label: 'Name Length', data: header.nameLength),
-          GsfDataTile(label: 'Name', data: header.name!, bold: true),
+          GsfDataTile(label: 'Name', data: header.name, bold: true),
           GsfDataTile(
             label: 'Model Count',
             data: header.modelCount,
