@@ -15,6 +15,9 @@ class SoundInfo extends GsfPart {
   late final Standard4BytesData<int> soundGroupNameLength;
   late final GsfData<String> soundGroupName;
 
+  @override
+  String get label => name.value;
+
   SoundInfo.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     nameLength = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
     name = GsfData.fromPosition(

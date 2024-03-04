@@ -19,6 +19,9 @@ class GsfPart extends GsfPartInterface {
   String get label => throw UnimplementedError();
 
   @override
+  String toString() => label;
+
+  @override
   int getEndOffset() {
     throw UnimplementedError();
   }

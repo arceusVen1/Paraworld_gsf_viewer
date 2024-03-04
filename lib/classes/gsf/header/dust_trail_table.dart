@@ -12,6 +12,9 @@ class DustTrailTable extends GsfPart {
   late final Standard4BytesData<int> dustTrailCount;
   late final List<DustTrailInfo> dustTrailInfos;
 
+  @override
+  String get label => 'DustTrailTable: $dustTrailCount dust trails.';
+
   DustTrailTable.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset) {
     dustTrailCount =
@@ -34,11 +37,6 @@ class DustTrailTable extends GsfPart {
     return dustTrailInfos.isNotEmpty
         ? dustTrailInfos.last.getEndOffset()
         : dustTrailCount.offsettedLength;
-  }
-
-  @override
-  String toString() {
-    return 'DustTrailTable: $dustTrailCount dust trails.';
   }
 
   @override

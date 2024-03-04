@@ -10,6 +10,9 @@ class ChunksTable extends GsfPart {
   final List<Standard4BytesData<SignedInt>> chunksOffsets = [];
   final List<Chunk> chunks = [];
 
+  @override
+  String get label => "$count chunks";
+
   ChunksTable.fromBytes(
     Uint8List bytes,
     int offset,

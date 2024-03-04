@@ -12,6 +12,9 @@ class DustTrailInfo extends GsfPart {
   late final Standard4BytesData<int> entryCount;
   late final List<DustTrailEntry> entries = [];
 
+  @override
+  String get label => name.value;
+
   DustTrailInfo.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     unknownData = GsfData.fromPosition(
         relativePos: 0, length: 6, bytes: bytes, offset: offset);
@@ -66,6 +69,9 @@ class DustTrailEntry extends GsfPart {
   late final GsfData<String> name;
   late final Standard4BytesData<int> valueCharsLength;
   late final GsfData<String> valueChars;
+
+  @override
+  String get label => name.value;
 
   DustTrailEntry.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset) {

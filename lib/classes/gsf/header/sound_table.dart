@@ -12,6 +12,9 @@ class SoundTable extends GsfPart {
   late final Standard4BytesData<int> soundCount;
   late final List<SoundInfo> soundInfos;
 
+  @override
+  String get label => 'SoundTable: $soundCount sounds.';
+
   SoundTable.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     soundCount = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
     soundInfos = [];
@@ -32,11 +35,6 @@ class SoundTable extends GsfPart {
     return soundInfos.isNotEmpty
         ? soundInfos.last.getEndOffset()
         : soundCount.offsettedLength;
-  }
-
-  @override
-  String toString() {
-    return 'SoundTable: $soundCount sounds.';
   }
 
   @override

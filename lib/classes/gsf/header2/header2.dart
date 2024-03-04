@@ -16,7 +16,9 @@ class Header2 extends GsfPart {
   late final MaterialsTable materialsTable;
 
   late final List<ModelSettings> modelSettings;
-  // todo: material Header
+
+    @override
+  String get label => "header2 with $modelsCount models, $animCount anims";
 
   Header2.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     _zeroData = Standard4BytesData(position: 0, bytes: bytes, offset: offset);

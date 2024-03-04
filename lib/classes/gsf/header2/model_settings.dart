@@ -34,6 +34,9 @@ class ModelSettings extends GsfPart {
   late final Standard4BytesData<int> animChunksTableHeaderOffset;
   late final Standard4BytesData<int> animObjectCount;
 
+  @override
+  String get label => name.value;
+
   ModelSettings.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     name = Standard4BytesData<String>(
       position: 0,
@@ -51,7 +54,7 @@ class ModelSettings extends GsfPart {
           objectNameRelativeOffset.relativePos +
           objectNameRelativeOffset.value,
     );
-    
+
     chunksTableRelativeOffset = Standard4BytesData(
       position: objectNameRelativeOffset.relativeEnd,
       bytes: bytes,

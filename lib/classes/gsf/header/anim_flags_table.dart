@@ -6,6 +6,8 @@ class AnimFlagTable extends GsfPart {
   late final Standard4BytesData<int> nameLength;
   late final GsfData<String> name;
 
+  @override
+  String get label => name.value;
 
   AnimFlagTable.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     nameLength = Standard4BytesData(

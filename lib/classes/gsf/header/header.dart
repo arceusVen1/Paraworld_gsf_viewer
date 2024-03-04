@@ -30,6 +30,9 @@ class Header extends GsfPart {
   late final Standard4BytesData<int> walkTransitionsCount;
   late final List<WalkTransitionTable> walkTransitionTables = [];
 
+  @override
+  String get label => name.value;
+
   Header.fromBytes(Uint8List bytes) : super(offset: 0) {
     _magic = GsfData.fromPosition(
         relativePos: 0, length: 4, bytes: bytes, offset: offset);

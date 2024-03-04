@@ -21,6 +21,9 @@ class ModelInfo extends GsfPart {
       modelAnims; // watch out for 4 zero bytes between each anim
   late final WalkSetTable walkSetTable;
 
+  @override
+  String get label => name.value;
+
   ModelInfo.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     nameLength =
         Standard4BytesData<int>(position: 0, bytes: bytes, offset: offset);

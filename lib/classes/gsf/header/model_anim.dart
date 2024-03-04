@@ -12,6 +12,9 @@ class ModelAnim extends GsfPart {
   late final SoundIndices soundIndices;
   late final Standard4BytesData<UnknowData> unknownData;
 
+  @override
+  String get label => name.value;
+
   ModelAnim.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     nameLength = Standard4BytesData(position: 0, bytes: bytes, offset: offset);
 

@@ -45,11 +45,6 @@ class ObjectName extends GsfPart {
   }
 
   @override
-  String toString() {
-    return 'ObjectName: $name';
-  }
-
-  @override
   int getEndOffset() {
     return unknownData.offsettedLength;
   }
