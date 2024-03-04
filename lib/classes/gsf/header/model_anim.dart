@@ -7,6 +7,7 @@ class ModelAnim extends GsfPart {
   ModelAnim({required super.offset});
 
   late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
   late final Standard4BytesData<int> index;
   late final SoundIndices soundIndices;
   late final Standard4BytesData<UnknowData> unknownData;
@@ -22,7 +23,7 @@ class ModelAnim extends GsfPart {
     );
 
     index = Standard4BytesData(
-      position: name!.relativeEnd,
+      position: name.relativeEnd,
       bytes: bytes,
       offset: offset,
     );

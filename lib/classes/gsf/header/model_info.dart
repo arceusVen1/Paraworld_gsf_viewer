@@ -14,6 +14,7 @@ class ModelInfo extends GsfPart {
   }) : super(offset: offset);
 
   late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
   late final Standard4BytesData<int> index;
   late final Standard4BytesData<int> animCount;
   late final List<ModelAnim>
@@ -32,7 +33,7 @@ class ModelInfo extends GsfPart {
     );
 
     index = Standard4BytesData(
-      position: name!.relativeEnd,
+      position: name.relativeEnd,
       bytes: bytes,
       offset: offset,
     );

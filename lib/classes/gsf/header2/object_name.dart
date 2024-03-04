@@ -6,20 +6,11 @@ class ObjectName extends GsfPart {
   late final Standard4BytesData<int> stringCount;
   late final Standard4BytesData<int> maxCharactersCount;
   late final Standard4BytesData<int> nameLength;
-  late final GsfData<StringNoZero> trueName;
+  late final GsfData<StringNoZero> name;
   late final GsfData<UnknowData> unknownData;
 
   @override
-  String get label => trueName.value.value;
-
-  @override
-  GsfData<String> get name {
-    return GsfData<String>.fromValue(
-        value: trueName.value.toString(),
-        offset: offset,
-        relativePos: trueName.relativePos,
-        length: trueName.length);
-  }
+  String get label => name.value.value;
 
   ObjectName.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     stringCount = Standard4BytesData(
@@ -38,7 +29,7 @@ class ObjectName extends GsfPart {
       offset: offset,
     );
 
-    trueName = GsfData.fromPosition(
+    name = GsfData.fromPosition(
       relativePos: nameLength.relativeEnd,
       length: nameLength.value,
       bytes: bytes,

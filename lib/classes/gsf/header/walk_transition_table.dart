@@ -4,6 +4,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class WalkTransitionTable extends GsfPart {
   late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
 
   WalkTransitionTable.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset) {
@@ -23,7 +24,7 @@ class WalkTransitionTable extends GsfPart {
 
   @override
   int getEndOffset() {
-    return name!.offsettedLength;
+    return name.offsettedLength;
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class SoundInfo extends GsfPart {
   late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
   late final Standard4BytesData<int> startFrame;
   late final Standard4BytesData<int> volume;
   late final Standard4BytesData<double> speed;
@@ -24,7 +25,7 @@ class SoundInfo extends GsfPart {
     );
 
     startFrame = Standard4BytesData(
-        position: name!.relativeEnd, bytes: bytes, offset: offset);
+        position: name.relativeEnd, bytes: bytes, offset: offset);
 
     volume = Standard4BytesData(
         position: startFrame.relativeEnd, bytes: bytes, offset: offset);

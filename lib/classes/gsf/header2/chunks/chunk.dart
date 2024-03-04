@@ -123,8 +123,5 @@ class Chunk extends GsfPart {
   late final ChunkType type;
 
   @override
-  GsfData<String>? get name => null;
-
-  @override
   String get label => 'Chunk ${type.name} (0x${type.value.toRadixString(16)})';
 }

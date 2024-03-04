@@ -54,6 +54,8 @@ class WalkSet extends GsfPart {
   late final VariableTwoBytesData<int> hitReactionLeftVariant;
   late final VariableTwoBytesData<int> hitReactionRightVariant;
   late final VariableTwoBytesData<int> hitReactionBackVariant;
+  
+  late final GsfData<String> name;
 
   WalkSet.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     walk1PosData =
@@ -277,6 +279,6 @@ class WalkSet extends GsfPart {
 
   @override
   int getEndOffset() {
-    return name!.offsettedLength;
+    return name.offsettedLength;
   }
 }

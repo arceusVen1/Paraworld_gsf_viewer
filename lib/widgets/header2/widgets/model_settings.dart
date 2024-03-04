@@ -85,7 +85,7 @@ class ObjectNameDisplay extends StatelessWidget {
       GsfDataTile(
           label: 'Max characters count', data: objectName.maxCharactersCount),
       GsfDataTile(label: 'Name length', data: objectName.nameLength),
-      GsfDataTile(label: 'True name', data: objectName.trueName),
+      GsfDataTile(label: 'True name', data: objectName.name),
       GsfDataTile(label: 'Unknown data', data: objectName.unknownData),
     ]);
   }

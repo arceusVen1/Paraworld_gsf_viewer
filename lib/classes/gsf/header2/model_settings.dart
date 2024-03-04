@@ -6,6 +6,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class ModelSettings extends GsfPart {
+  late final GsfData<String> name;
   late final Standard4BytesData<int> objectNameRelativeOffset;
   late final ObjectName objectName;
   late final Standard4BytesData<int> chunksTableRelativeOffset;
@@ -40,7 +41,7 @@ class ModelSettings extends GsfPart {
       offset: offset,
     );
     objectNameRelativeOffset = Standard4BytesData(
-      position: name!.relativeEnd,
+      position: name.relativeEnd,
       bytes: bytes,
       offset: offset,
     );

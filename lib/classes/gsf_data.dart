@@ -4,22 +4,19 @@ import 'dart:typed_data';
 abstract class GsfPartInterface {
   int get offset;
   String get label;
-  GsfData<String>? get name;
+  //GsfData<String>? get name;
   int get length;
   int getEndOffset();
 }
 
-class GsfPart implements GsfPartInterface {
+class GsfPart extends GsfPartInterface {
   GsfPart({required this.offset});
 
   @override
   final int offset;
 
   @override
-  String get label => name?.value ?? 'Unknown';
-
-  @override
-  late final GsfData<String>? name;
+  String get label => throw UnimplementedError();
 
   @override
   int getEndOffset() {
@@ -38,7 +35,7 @@ class GsfPart implements GsfPartInterface {
       other.length == length;
 
   @override
-  int get hashCode => offset.hashCode ^ name.hashCode;
+  int get hashCode => offset.hashCode ^ label.hashCode;
 }
 
 typedef UnknowData = Uint8List;

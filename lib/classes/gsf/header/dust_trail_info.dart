@@ -6,6 +6,7 @@ class DustTrailInfo extends GsfPart {
   // 6 unknown bytes
   late final GsfData<UnknowData> unknownData;
   late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
   late final Standard4BytesData<int>
       boneIndex; // we are not sure if this is a bone index
   late final Standard4BytesData<int> entryCount;
@@ -24,7 +25,7 @@ class DustTrailInfo extends GsfPart {
     );
 
     boneIndex = Standard4BytesData(
-      position: name!.relativeEnd,
+      position: name.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
@@ -62,6 +63,7 @@ class DustTrailInfo extends GsfPart {
 
 class DustTrailEntry extends GsfPart {
   late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
   late final Standard4BytesData<int> valueCharsLength;
   late final GsfData<String> valueChars;
 
@@ -76,7 +78,7 @@ class DustTrailEntry extends GsfPart {
     );
 
     valueCharsLength = Standard4BytesData(
-      position: name!.relativeEnd,
+      position: name.relativeEnd,
       bytes: bytes,
       offset: offset,
     );

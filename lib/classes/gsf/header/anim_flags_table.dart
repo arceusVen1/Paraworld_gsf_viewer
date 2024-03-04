@@ -4,6 +4,8 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class AnimFlagTable extends GsfPart {
   late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
+
 
   AnimFlagTable.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     nameLength = Standard4BytesData(
@@ -22,7 +24,7 @@ class AnimFlagTable extends GsfPart {
 
   @override
   int getEndOffset() {
-    return name!.offsettedLength;
+    return name.offsettedLength;
   }
 
   @override

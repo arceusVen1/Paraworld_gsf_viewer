@@ -20,6 +20,7 @@ class Header extends GsfPart {
 
   late final Standard4BytesData<int> header2Offset;
   late final Standard4BytesData<int> nameLength;
+  late final GsfData<String> name;
   late final Standard4BytesData<int> modelCount;
   late final List<ModelInfo> modelInfos;
   late final SoundTable soundTable;
@@ -49,7 +50,7 @@ class Header extends GsfPart {
     );
 
     modelCount = Standard4BytesData<int>(
-      position: name!.relativeEnd,
+      position: name.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
