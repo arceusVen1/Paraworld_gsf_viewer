@@ -239,6 +239,8 @@ class Standard4BytesData<T> extends GsfData<T> {
     super.parseValue(bytes);
   }
 
+  bool get isUnused => T == int && value == 0x80000000;
+
   @override
   int getAsUint(Uint8List bytes) {
     return super.getBytesData(bytes).getUint32(0, Endian.little);

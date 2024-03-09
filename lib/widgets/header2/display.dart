@@ -151,7 +151,7 @@ List<Widget> withMaterial(Header2StateWithMaterial state) {
 }
 
 Widget getChunkWidgetByType(
-    Chunk chunk, FallbackTable fallbackTable, List<MaterialData> materials) {
+    Chunk chunk, FallbackTable? fallbackTable, List<MaterialData> materials) {
   final Widget widget = () {
     switch (chunk.type) {
       case ChunkType.meshSkinned:

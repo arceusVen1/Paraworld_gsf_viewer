@@ -51,8 +51,9 @@ class ModelSettingsDisplay extends ConsumerWidget {
         label: 'Fallback table offset',
         data: modelSettings.fallbackTableRelativeOffset,
       ),
+      if (modelSettings.fallbackTable != null)
       _FallbackTableDisplay(
-        fallbackTable: modelSettings.fallbackTable,
+        fallbackTable: modelSettings.fallbackTable!,
         materialsTable: materialsTable,
       ),
       GsfDataTile(

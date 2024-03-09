@@ -20,7 +20,7 @@ class MeshChunkDisplay extends ConsumerWidget {
   });
 
   final MeshChunk mesh;
-  final FallbackTable fallbackTable;
+  final FallbackTable? fallbackTable;
   final List<MaterialData> materials;
 
   @override
@@ -72,7 +72,9 @@ class MeshChunkDisplay extends ConsumerWidget {
         datas: mesh.materialIndices,
         relatedParts: materials,
         partFromDataFnct: (data, index) {
-          return materials[fallbackTable.usedMaterialIndexes[data.value].value];
+          // fallbaclTable is not null if we have some material indices
+          return materials[
+              fallbackTable!.usedMaterialIndexes[data.value].value];
         },
         onSelected: (_, material) {
           ref

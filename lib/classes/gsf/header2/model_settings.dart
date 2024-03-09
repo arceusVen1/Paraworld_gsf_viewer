@@ -35,7 +35,7 @@ class ModelSettings extends GsfPart {
   late final Standard4BytesData<int> animObjectCount;
 
   late final ChunksTable? chunksTable;
-  late final FallbackTable fallbackTable;
+  late final FallbackTable? fallbackTable;
   @override
   String get label => "${name.value} (${objectName.label})";
 
@@ -84,11 +84,16 @@ class ModelSettings extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
-    fallbackTable = FallbackTable.fromBytes(
-      bytes,
-      fallbackTableRelativeOffset.offsettedPos +
-          fallbackTableRelativeOffset.value,
-    );
+    if (!fallbackTableRelativeOffset.isUnused) {
+      fallbackTable = FallbackTable.fromBytes(
+        bytes,
+        fallbackTableRelativeOffset.offsettedPos +
+            fallbackTableRelativeOffset.value,
+      );
+    } else {
+      fallbackTable = null;
+    }
+
     readData = Standard4BytesData(
       position: fallbackTableRelativeOffset.relativeEnd,
       bytes: bytes,
