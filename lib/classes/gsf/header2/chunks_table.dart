@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh_skinned.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class ChunksTable extends GsfPart {
@@ -37,15 +36,12 @@ class ChunksTable extends GsfPart {
       final ChunkType type = ChunkTypeExtension.fromInt(typeData.value);
       final Chunk chunk = () {
         switch (type) {
+          case ChunkType.meshSkinned:
           case ChunkType.mesh:
             return MeshChunk.fromBytes(
               bytes,
               typeData.offsettedLength,
-            );
-          case ChunkType.meshSkinned:
-            return MeshSkinnedChunk.fromBytes(
-              bytes,
-              typeData.offsettedLength,
+              type,
             );
           default:
             return Chunk(offset: typeData.offsettedLength, type: type);

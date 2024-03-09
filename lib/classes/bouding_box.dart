@@ -4,8 +4,8 @@ import 'package:vector_math/vector_math.dart';
 
 typedef BoxCoordinate = ({double min, double max});
 
-class BoundingBox {
-  BoundingBox({
+class BoundingBoxModel {
+  BoundingBoxModel({
     required this.x,
     required this.y,
     required this.z,
@@ -15,7 +15,7 @@ class BoundingBox {
   late BoxCoordinate y;
   late BoxCoordinate z;
 
-  BoundingBox.zero() {
+  BoundingBoxModel.zero() {
     x = (min: 0, max: 1);
     y = (min: 0, max: 1);
     z = (min: 0, max: 1);
@@ -28,8 +28,8 @@ class BoundingBox {
     return math.max(xMax, math.max(yMax, zMax));
   }
 
-  BoundingBox toParaworldSystem() {
-    return BoundingBox(
+  BoundingBoxModel toParaworldSystem() {
+    return BoundingBoxModel(
       x: x,
       y: z,
       z: (min: -y.min, max: -y.max),
@@ -51,7 +51,7 @@ class BoundingBox {
 
   @override
   bool operator ==(Object other) =>
-      other is BoundingBox && other.x == x && other.y == y && other.z == z;
+      other is BoundingBoxModel && other.x == x && other.y == y && other.z == z;
 
   @override
   int get hashCode => x.hashCode ^ y.hashCode ^ z.hashCode;

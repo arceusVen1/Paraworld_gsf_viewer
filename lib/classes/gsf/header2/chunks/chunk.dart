@@ -30,6 +30,10 @@ extension ChunkTypeExtension on ChunkType {
     return value & 0x80000000 != 0;
   }
 
+  bool isMeshLike() {
+    return this == ChunkType.mesh || this == ChunkType.meshSkinned;
+  }
+
   int get value {
     switch (this) {
       case ChunkType.mesh:

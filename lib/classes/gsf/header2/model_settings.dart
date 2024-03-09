@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
@@ -25,12 +25,6 @@ class ModelSettings extends GsfPart {
   late final Standard4BytesData<int> pathFinderTableOffset;
   late final Standard4BytesData<int> pathFinderTableCount;
   late final BoundingBox boundingBox;
-  // late final Standard4BytesData<double> boundingBoxMinX;
-  // late final Standard4BytesData<double> boundingBoxMinY;
-  // late final Standard4BytesData<double> boundingBoxMinZ;
-  // late final Standard4BytesData<double> boundingBoxMaxX;
-  // late final Standard4BytesData<double> boundingBoxMaxY;
-  // late final Standard4BytesData<double> boundingBoxMaxZ;
   late final Standard4BytesData<int> animChunksTableHeaderOffset;
   late final Standard4BytesData<int> animObjectCount;
 
@@ -132,52 +126,12 @@ class ModelSettings extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
-    final boundingBoxMinX = Standard4BytesData<double>(
-      position: pathFinderTableCount.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    final boundingBoxMinY = Standard4BytesData<double>(
-      position: boundingBoxMinX.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    final boundingBoxMinZ = Standard4BytesData<double>(
-      position: boundingBoxMinY.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    final boundingBoxMaxX = Standard4BytesData<double>(
-      position: boundingBoxMinZ.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    final boundingBoxMaxY = Standard4BytesData<double>(
-      position: boundingBoxMaxX.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    final boundingBoxMaxZ = Standard4BytesData<double>(
-      position: boundingBoxMaxY.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    boundingBox = BoundingBox(
-      x: (
-        min: boundingBoxMinX.value,
-        max: boundingBoxMaxX.value,
-      ),
-      y: (
-        min: boundingBoxMinY.value,
-        max: boundingBoxMaxY.value,
-      ),
-      z: (
-        min: boundingBoxMinZ.value,
-        max: boundingBoxMaxZ.value,
-      ),
+    boundingBox = BoundingBox.fromBytes(
+      bytes,
+      pathFinderTableCount.offsettedLength,
     );
     animChunksTableHeaderOffset = Standard4BytesData(
-      position: boundingBoxMaxZ.relativeEnd,
+      position: pathFinderTableCount.relativeEnd + boundingBox.length,
       bytes: bytes,
       offset: offset,
     );

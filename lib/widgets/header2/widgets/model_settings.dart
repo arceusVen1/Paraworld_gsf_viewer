@@ -6,6 +6,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
@@ -58,9 +59,9 @@ class ModelSettingsDisplay extends ConsumerWidget {
         'Bounding box',
         fontWeight: FontWeight.bold,
       ),
-      Label.regular('x: ${modelSettings.boundingBox.x.toString()}'),
-      Label.regular('y: ${modelSettings.boundingBox.y.toString()}'),
-      Label.regular('z: ${modelSettings.boundingBox.z.toString()}'),
+      BoundingBoxDisplay(
+        boundingBox: modelSettings.boundingBox,
+      ),
       GsfDataTile(
         label: 'Anim chunks table header offset',
         data: modelSettings.animChunksTableHeaderOffset,

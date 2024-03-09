@@ -1,17 +1,12 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 
 class Submesh extends GsfPart {
-  late final Standard4BytesData<double> boundingBoxMinX;
-  late final Standard4BytesData<double> boundingBoxMinY;
-  late final Standard4BytesData<double> boundingBoxMinZ;
-  late final Standard4BytesData<double> boundingBoxMaxX;
-  late final Standard4BytesData<double> boundingBoxMaxY;
-  late final Standard4BytesData<double> boundingBoxMaxZ;
+  late final BoundingBox boundingBox;
   late final Standard4BytesData<int> vertexCount;
   late final Standard4BytesData<int> triangleCount;
   late final Standard4BytesData<int> vertexOffset;
@@ -27,38 +22,12 @@ class Submesh extends GsfPart {
   String get label => "Submesh with ${triangleCount.value} triangles";
 
   Submesh.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    boundingBoxMinX = Standard4BytesData(
-      position: 0,
-      bytes: bytes,
-      offset: offset,
-    );
-    boundingBoxMinY = Standard4BytesData(
-      position: boundingBoxMinX.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    boundingBoxMinZ = Standard4BytesData(
-      position: boundingBoxMinY.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    boundingBoxMaxX = Standard4BytesData(
-      position: boundingBoxMinZ.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    boundingBoxMaxY = Standard4BytesData(
-      position: boundingBoxMaxX.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    boundingBoxMaxZ = Standard4BytesData(
-      position: boundingBoxMaxY.relativeEnd,
-      bytes: bytes,
-      offset: offset,
+    boundingBox = BoundingBox.fromBytes(
+      bytes,
+      offset,
     );
     vertexCount = Standard4BytesData(
-      position: boundingBoxMaxZ.relativeEnd,
+      position: boundingBox.length,
       bytes: bytes,
       offset: offset,
     );
@@ -123,13 +92,12 @@ class Submesh extends GsfPart {
     }
   }
 
-  ({List<ModelVertex> vertices, List<ModelTriangle> triangles, BoundingBox box})
-      getMeshModelData() {
-    final box = BoundingBox(
-        x: (min: boundingBoxMinX.value, max: boundingBoxMaxX.value),
-        y: (min: boundingBoxMinY.value, max: boundingBoxMaxY.value),
-        z: (min: boundingBoxMinZ.value, max: boundingBoxMaxZ.value));
-
+  ({
+    List<ModelVertex> vertices,
+    List<ModelTriangle> triangles,
+    BoundingBoxModel box
+  }) getMeshModelData() {
+    final box = boundingBox.toModelBox();
     final vertices = this.vertices.map((e) => e.toModelVertex(box)).toList();
     final triangles =
         this.triangles.map((e) => e.toModelTriangle(vertices)).toList();
@@ -162,7 +130,7 @@ class Vertex extends GsfPart {
     );
   }
 
-  ModelVertex toModelVertex(BoundingBox box) {
+  ModelVertex toModelVertex(BoundingBoxModel box) {
     // necessary hack because web doesn't handle getUint64
     BigInt positionData = BigInt.from(0);
     if (kIsWeb) {

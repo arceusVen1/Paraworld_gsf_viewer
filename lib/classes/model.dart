@@ -20,7 +20,7 @@ class Model {
   final String name;
   final List<ModelVertex> vertices;
   final List<ModelTriangle> triangles;
-  final BoundingBox boundingBox;
+  final BoundingBoxModel boundingBox;
   //final Vector3 scale;
 
   ({

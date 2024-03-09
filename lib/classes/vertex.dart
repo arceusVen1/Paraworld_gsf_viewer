@@ -21,14 +21,14 @@ class ModelVertex {
   late Vector3 positions;
   late final Vector3 positionOffset;
   (Vector3, Matrix3)? lastTransformation;
-  late final BoundingBox box;
+  late final BoundingBoxModel box;
   Vector2? textureCoordinates;
   ModelVertex? normal;
   int? _normalSphereIndice;
 
   // Because web compiles int as int32 we need to force big int for 64bit integers even in web
   ModelVertex.fromModelBytes(
-      BigInt sequence, int textureSequence, BoundingBox box) {
+      BigInt sequence, int textureSequence, BoundingBoxModel box) {
     positions = Vector3(
       ((_k13BytesRatioValue * (sequence.toInt() & 0x1FFF)) *
               (box.x.max - box.x.min) +
@@ -48,7 +48,7 @@ class ModelVertex {
 
     normal = ModelVertex(
       readFromSphere(256 * sphereCoef + _normalSphereIndice!),
-      box: BoundingBox.zero(),
+      box: BoundingBoxModel.zero(),
       positionOffset: positionOffset,
     );
 

@@ -1,12 +1,11 @@
 import 'dart:typed_data';
 
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
-class MeshChunk extends Chunk {
-  late final Standard4BytesData<int> attributes;
-  late final Standard4BytesData<int> guid;
+class AffineTransformation extends GsfPart {
   late final Standard4BytesData<double> scaleX;
   late final Standard4BytesData<double> stretchY;
   late final Standard4BytesData<double> stretchZX;
@@ -23,40 +22,14 @@ class MeshChunk extends Chunk {
   late final Standard4BytesData<double> positionY;
   late final Standard4BytesData<double> positionZ;
   late final Standard4BytesData<double> unknownFloat4;
-  late final Standard4BytesData<UnknowData> unknownData;
-  late final Standard4BytesData<int> globalBoundingBoxOffset;
-  late final Standard4BytesData<int> unknownId;
-  late final Standard4BytesData<double> globalBBoxMinX;
-  late final Standard4BytesData<double> globalBBoxMinY;
-  late final Standard4BytesData<double> globalBBoxMinZ;
-  late final Standard4BytesData<double> globalBBoxMaxX;
-  late final Standard4BytesData<double> globalBBoxMaxY;
-  late final Standard4BytesData<double> globalBBoxMaxZ;
-  late final Standard4BytesData<int> submeshInfoCount;
-  late final Standard4BytesData<int> submeshInfoOffset;
-  late final Standard4BytesData<int> submeshInfo2Count;
-  late final Standard4BytesData<int> submeshMaterialsOffset;
-  late final Standard4BytesData<int> submeshMaterialsCount;
-  late final List<Submesh> submeshes;
-  late final List<DoubleByteData<int>> materialIndices;
 
   @override
-  String get label => 'mesh 0x${guid.value.toRadixString(16)}';
+  String get label => 'affine transformation';
 
-  MeshChunk.fromBytes(Uint8List bytes, int offset)
-      : super(offset: offset, type: ChunkType.mesh) {
-    attributes = Standard4BytesData(
-      position: 0,
-      bytes: bytes,
-      offset: offset,
-    );
-    guid = Standard4BytesData(
-      position: attributes.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
+  AffineTransformation.fromBytes(Uint8List bytes, int offset)
+      : super(offset: offset) {
     scaleX = Standard4BytesData(
-      position: guid.relativeEnd,
+      position: 0,
       bytes: bytes,
       offset: offset,
     );
@@ -135,13 +108,69 @@ class MeshChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
-    unknownData = Standard4BytesData(
-      position: unknownFloat4.relativeEnd,
+  }
+
+  @override
+  int getEndOffset() {
+    return unknownFloat4.offsettedLength;
+  }
+}
+
+class MeshChunk extends Chunk {
+  late final Standard4BytesData<int> attributes;
+  late final Standard4BytesData<int> guid;
+  late final AffineTransformation transformation;
+  late final Standard4BytesData<UnknowData> unknownData;
+  late final Standard4BytesData<int>? skeletonIndex; // only for skinned mesh
+  late final Standard4BytesData<int> globalBoundingBoxOffset;
+  late final Standard4BytesData<int> unknownId;
+  late final BoundingBox globalBoundingBox;
+  late final Standard4BytesData<int> submeshInfoCount;
+  late final Standard4BytesData<int> submeshInfoOffset;
+  late final Standard4BytesData<int> submeshInfo2Count;
+  late final Standard4BytesData<int> submeshMaterialsOffset;
+  late final Standard4BytesData<int> submeshMaterialsCount;
+  late final List<Submesh> submeshes;
+  late final List<DoubleByteData<int>> materialIndices;
+
+  @override
+  String get label => 'mesh 0x${guid.value.toRadixString(16)}';
+
+  MeshChunk.fromBytes(Uint8List bytes, int offset, ChunkType type)
+      : super(offset: offset, type: type) {
+    assert(type.isMeshLike(), "mesh can only of mesh like type");
+    attributes = Standard4BytesData(
+      position: 0,
       bytes: bytes,
       offset: offset,
     );
+    guid = Standard4BytesData(
+      position: attributes.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+
+    transformation = AffineTransformation.fromBytes(
+      bytes,
+      guid.offsettedLength,
+    );
+
+    unknownData = Standard4BytesData(
+      position: guid.relativeEnd + transformation.length,
+      bytes: bytes,
+      offset: offset,
+    );
+    if (type == ChunkType.meshSkinned) {
+      skeletonIndex = Standard4BytesData(
+        position: unknownData.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+    }
     globalBoundingBoxOffset = Standard4BytesData(
-      position: unknownData.relativeEnd,
+      position: type == ChunkType.meshSkinned
+          ? skeletonIndex!.relativeEnd
+          : unknownData.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
@@ -150,38 +179,12 @@ class MeshChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
-    globalBBoxMinX = Standard4BytesData(
-      position: unknownId.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    globalBBoxMinY = Standard4BytesData(
-      position: globalBBoxMinX.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    globalBBoxMinZ = Standard4BytesData(
-      position: globalBBoxMinY.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    globalBBoxMaxX = Standard4BytesData(
-      position: globalBBoxMinZ.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    globalBBoxMaxY = Standard4BytesData(
-      position: globalBBoxMaxX.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    globalBBoxMaxZ = Standard4BytesData(
-      position: globalBBoxMaxY.relativeEnd,
-      bytes: bytes,
-      offset: offset,
+    globalBoundingBox = BoundingBox.fromBytes(
+      bytes,
+      globalBoundingBoxOffset.offsettedPos + globalBoundingBoxOffset.value,
     );
     submeshInfoCount = Standard4BytesData(
-      position: globalBBoxMaxZ.relativeEnd,
+      position: globalBoundingBox.getEndOffset() - offset,
       bytes: bytes,
       offset: offset,
     );

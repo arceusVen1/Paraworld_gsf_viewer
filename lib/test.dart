@@ -230,7 +230,7 @@ List<ModelVertex> readFullSphere() {
         vertData.getFloat32(4, Endian.little),
         vertData.getFloat32(8, Endian.little),
       ),
-      box: BoundingBox.zero(),
+      box: BoundingBoxModel.zero(),
       positionOffset: Vector3.zero(),
     ));
   }
