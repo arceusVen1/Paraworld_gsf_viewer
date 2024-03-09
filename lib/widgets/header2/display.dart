@@ -15,6 +15,7 @@ import 'package:paraworld_gsf_viewer/widgets/header2/widgets/material.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/model_settings.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
+import 'package:paraworld_gsf_viewer/widgets/viewer/viewer.dart';
 
 class Header2Display extends ConsumerWidget {
   const Header2Display({super.key});
@@ -138,6 +139,12 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
     if (state.chunk != null) ...[
       getChunkWidgetByType(state.chunk!, state.modelSettings.fallbackTable,
           state.header2.materialsTable.materials),
+      if (state.chunk is MeshChunk && state.submesh == null) ...[
+        Flexible(
+            child: Viewer(
+          model: (state.chunk as MeshChunk).toModel(),
+        )),
+      ],
       if (state.submesh != null) SubmeshDisplay(submesh: state.submesh!),
       if (state.material != null) MaterialDisplay(material: state.material!),
     ]
@@ -154,6 +161,7 @@ Widget getChunkWidgetByType(
     Chunk chunk, FallbackTable? fallbackTable, List<MaterialData> materials) {
   final Widget widget = () {
     switch (chunk.type) {
+      case ChunkType.meshSkinnedSimple:
       case ChunkType.meshSkinned:
       case ChunkType.mesh:
         return MeshChunkDisplay(

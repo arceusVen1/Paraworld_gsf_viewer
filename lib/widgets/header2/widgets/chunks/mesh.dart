@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
@@ -25,13 +24,22 @@ class MeshChunkDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final selectedSubMesh = ref.watch(header2StateNotifierProvider).mapOrNull(
+          withModelSettings: (data) => data.submesh,
+        );
     return DataDecorator(children: [
       GsfDataTile(label: 'attributes', data: mesh.attributes),
       GsfDataTile(label: 'guid', data: mesh.guid),
       AffineTransformationDisplay(transformation: mesh.transformation),
       GsfDataTile(label: 'unknown data', data: mesh.unknownData),
-      if (mesh.type == ChunkType.meshSkinned && mesh.skeletonIndex != null) ...[
+      if (mesh.skeletonIndex != null) ...[
         GsfDataTile(label: "skeleton index", data: mesh.skeletonIndex!),
+      ],
+      if (mesh.boneIds != null) ...[
+        GsfDataTile(label: "bone ids", data: mesh.boneIds!),
+      ],
+      if (mesh.boneWeights != null) ...[
+        GsfDataTile(label: "bone weights", data: mesh.boneWeights!),
       ],
       GsfDataTile(
           label: 'global bounding box offset',
@@ -49,9 +57,7 @@ class MeshChunkDisplay extends ConsumerWidget {
         fontWeight: FontWeight.bold,
       ),
       PartSelector(
-        value: ref.watch(header2StateNotifierProvider).mapOrNull(
-              withModelSettings: (data) => data.submesh,
-            ),
+        value: selectedSubMesh,
         label: "submesh info",
         parts: mesh.submeshes,
         onSelected: (submesh) {

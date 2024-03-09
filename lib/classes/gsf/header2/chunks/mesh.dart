@@ -4,6 +4,9 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dar
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:paraworld_gsf_viewer/classes/model.dart';
+import 'package:paraworld_gsf_viewer/classes/triangle.dart';
+import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 
 class AffineTransformation extends GsfPart {
   late final Standard4BytesData<double> scaleX;
@@ -122,6 +125,10 @@ class MeshChunk extends Chunk {
   late final AffineTransformation transformation;
   late final Standard4BytesData<UnknowData> unknownData;
   late final Standard4BytesData<int>? skeletonIndex; // only for skinned mesh
+  late final Standard4BytesData<UnknowData>?
+      boneIds; // only for simple skinned mesh
+  late final Standard4BytesData<UnknowData>?
+      boneWeights; // only for simple skinned mesh
   late final Standard4BytesData<int> globalBoundingBoxOffset;
   late final Standard4BytesData<int> unknownId;
   late final BoundingBox globalBoundingBox;
@@ -134,7 +141,7 @@ class MeshChunk extends Chunk {
   late final List<DoubleByteData<int>> materialIndices;
 
   @override
-  String get label => 'mesh 0x${guid.value.toRadixString(16)}';
+  String get label => '${type.name} 0x${guid.value.toRadixString(16)}';
 
   MeshChunk.fromBytes(Uint8List bytes, int offset, ChunkType type)
       : super(offset: offset, type: type) {
@@ -160,17 +167,36 @@ class MeshChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
-    if (type == ChunkType.meshSkinned) {
+    int nextRelativePos = unknownData.relativeEnd;
+    if (type.isSkinned()) {
       skeletonIndex = Standard4BytesData(
         position: unknownData.relativeEnd,
         bytes: bytes,
         offset: offset,
       );
+      nextRelativePos = skeletonIndex!.relativeEnd;
+    } else {
+      skeletonIndex = null;
     }
+    if (type == ChunkType.meshSkinnedSimple) {
+      boneIds = Standard4BytesData(
+        position: skeletonIndex!.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+      boneWeights = Standard4BytesData(
+        position: boneIds!.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+      nextRelativePos = boneWeights!.relativeEnd;
+    } else {
+      boneIds = null;
+      boneWeights = null;
+    }
+
     globalBoundingBoxOffset = Standard4BytesData(
-      position: type == ChunkType.meshSkinned
-          ? skeletonIndex!.relativeEnd
-          : unknownData.relativeEnd,
+      position: nextRelativePos,
       bytes: bytes,
       offset: offset,
     );
@@ -230,6 +256,23 @@ class MeshChunk extends Chunk {
       );
       submeshes.add(submesh);
     }
+  }
+
+  Model toModel() {
+    final globalBB = globalBoundingBox.toModelBox();
+    final List<ModelVertex> vertices = [];
+    final List<ModelTriangle> triangles = [];
+    for (var submesh in submeshes) {
+      final data = submesh.getMeshModelData(vertices.length, globalBB);
+      vertices.addAll(data.vertices);
+      triangles.addAll(data.triangles);
+    }
+    return Model(
+      name: label,
+      vertices: vertices,
+      triangles: triangles,
+      boundingBox: globalBB,
+    );
   }
 
   @override

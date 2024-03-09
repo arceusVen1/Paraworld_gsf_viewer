@@ -36,6 +36,7 @@ class ChunksTable extends GsfPart {
       final ChunkType type = ChunkTypeExtension.fromInt(typeData.value);
       final Chunk chunk = () {
         switch (type) {
+          case ChunkType.meshSkinnedSimple:
           case ChunkType.meshSkinned:
           case ChunkType.mesh:
             return MeshChunk.fromBytes(

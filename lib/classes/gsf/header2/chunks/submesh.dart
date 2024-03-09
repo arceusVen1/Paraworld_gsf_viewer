@@ -92,15 +92,18 @@ class Submesh extends GsfPart {
     }
   }
 
+  /// Returns the model submesh data that can be offsetted to be used in a global model
   ({
     List<ModelVertex> vertices,
     List<ModelTriangle> triangles,
     BoundingBoxModel box
-  }) getMeshModelData() {
-    final box = boundingBox.toModelBox();
+  }) getMeshModelData(int indicesOffset, BoundingBoxModel? globalBB) {
+    final box = globalBB ?? boundingBox.toModelBox();
     final vertices = this.vertices.map((e) => e.toModelVertex(box)).toList();
-    final triangles =
-        this.triangles.map((e) => e.toModelTriangle(vertices)).toList();
+    final triangles = this
+        .triangles
+        .map((e) => e.toModelTriangle(vertices, indicesOffset))
+        .toList();
     return (
       vertices: vertices,
       triangles: triangles,
@@ -184,7 +187,7 @@ class Triangle extends GsfPart {
     );
   }
 
-  ModelTriangle toModelTriangle(List<ModelVertex> vertices) {
+  ModelTriangle toModelTriangle(List<ModelVertex> vertices, int indicesOffset) {
     assert(
       vertices.length > vertex1.value &&
           vertices.length > vertex2.value &&
@@ -192,7 +195,11 @@ class Triangle extends GsfPart {
       "invalid vertex index or list provided",
     );
     return ModelTriangle(
-      indices: [vertex1.value, vertex2.value, vertex3.value],
+      indices: [
+        vertex1.value + indicesOffset,
+        vertex2.value + indicesOffset,
+        vertex3.value + indicesOffset
+      ],
       points: [
         vertices[vertex1.value],
         vertices[vertex2.value],

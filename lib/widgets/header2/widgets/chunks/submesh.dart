@@ -15,7 +15,7 @@ class SubmeshDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modelData = submesh.getMeshModelData();
+    final modelData = submesh.getMeshModelData(0, null);
     final Model model = Model(
       name: "submesh",
       vertices: modelData.vertices,
@@ -26,7 +26,9 @@ class SubmeshDisplay extends StatelessWidget {
       child: Column(
         children: [
           DataDecorator(children: [
-            BoundingBoxDisplay(boundingBox: submesh.boundingBox, bbName: "Submesh bounding box"),
+            BoundingBoxDisplay(
+                boundingBox: submesh.boundingBox,
+                bbName: "Submesh bounding box"),
             GsfDataTile(label: "vertex count", data: submesh.vertexCount),
             GsfDataTile(label: "triangle count", data: submesh.triangleCount),
             GsfDataTile(label: "vertex offset", data: submesh.vertexOffset),
