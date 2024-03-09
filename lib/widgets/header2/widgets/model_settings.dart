@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
@@ -11,9 +14,14 @@ import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
 class ModelSettingsDisplay extends ConsumerWidget {
-  const ModelSettingsDisplay({super.key, required this.modelSettings});
+  const ModelSettingsDisplay({
+    super.key,
+    required this.modelSettings,
+    required this.materialsTable,
+  });
 
   final ModelSettings modelSettings;
+  final MaterialsTable materialsTable;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -42,6 +50,10 @@ class ModelSettingsDisplay extends ConsumerWidget {
       GsfDataTile(
         label: 'Fallback table offset',
         data: modelSettings.fallbackTableRelativeOffset,
+      ),
+      _FallbackTableDisplay(
+        fallbackTable: modelSettings.fallbackTable,
+        materialsTable: materialsTable,
       ),
       GsfDataTile(
         label: 'Read data',
@@ -166,6 +178,55 @@ class _ChunkOffsetSelector extends ConsumerWidget {
             .read(header2StateNotifierProvider.notifier)
             .setChunk(chunk as Chunk);
       },
+    );
+  }
+}
+
+class _FallbackTableDisplay extends ConsumerWidget {
+  const _FallbackTableDisplay({
+    super.key,
+    required this.fallbackTable,
+    required this.materialsTable,
+  });
+
+  final FallbackTable fallbackTable;
+  final MaterialsTable materialsTable;
+
+  @override
+  Widget build(BuildContext context, ref) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Divider(
+          color: Colors.black,
+        ),
+        const Label.medium('Fallback table', fontWeight: FontWeight.bold),
+        GsfDataTile(
+            label: "header 2 offset", data: fallbackTable.header2Offset),
+        GsfDataTile(
+            label: "model settings offset",
+            data: fallbackTable.modelSettingsOffset),
+        GsfDataTile(label: "unknown num", data: fallbackTable.unknownInt),
+        GsfDataTile(
+            label: "usedMaterialsCount",
+            data: fallbackTable.usedMaterialsCount),
+        GsfDataTile(label: "unknown num 2", data: fallbackTable.unknownInt2),
+        DataSelector(
+          datas: fallbackTable.usedMaterialIndexes,
+          relatedParts: materialsTable.materials,
+          partFromDataFnct: (data, index) {
+            return materialsTable.materials[data.value];
+          },
+          onSelected: (index, material) {
+            ref
+                .read(header2StateNotifierProvider.notifier)
+                .setMaterial(material as MaterialData);
+          },
+        ),
+        const Divider(
+          color: Colors.black,
+        ),
+      ],
     );
   }
 }

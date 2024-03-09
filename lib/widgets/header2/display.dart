@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
@@ -129,12 +130,14 @@ class _MaterialsTable extends ConsumerWidget {
 
 List<Widget> withModelSettings(Header2StateWithModelSettings state) {
   return [
-    ModelSettingsDisplay(modelSettings: state.modelSettings),
+    ModelSettingsDisplay(
+        modelSettings: state.modelSettings,
+        materialsTable: state.header2.materialsTable),
     if (state.objectName != null)
       ObjectNameDisplay(objectName: state.objectName!),
     if (state.chunk != null) ...[
-      getChunkWidgetByType(
-          state.chunk!, state.header2.materialsTable.materials),
+      getChunkWidgetByType(state.chunk!, state.modelSettings.fallbackTable,
+          state.header2.materialsTable.materials),
       if (state.submesh != null) SubmeshDisplay(submesh: state.submesh!),
       if (state.material != null) MaterialDisplay(material: state.material!),
     ]
@@ -147,13 +150,15 @@ List<Widget> withMaterial(Header2StateWithMaterial state) {
   ];
 }
 
-Widget getChunkWidgetByType(Chunk chunk, List<MaterialData> materials) {
+Widget getChunkWidgetByType(
+    Chunk chunk, FallbackTable fallbackTable, List<MaterialData> materials) {
   final Widget widget = () {
     switch (chunk.type) {
       case ChunkType.meshSkinned:
       case ChunkType.mesh:
         return MeshChunkDisplay(
           mesh: chunk as MeshChunk,
+          fallbackTable: fallbackTable,
           materials: materials,
         );
       default:

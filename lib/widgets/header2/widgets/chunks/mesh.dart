@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/affine_transformation.dart';
@@ -14,10 +15,12 @@ class MeshChunkDisplay extends ConsumerWidget {
   const MeshChunkDisplay({
     super.key,
     required this.mesh,
+    required this.fallbackTable,
     required this.materials,
   });
 
   final MeshChunk mesh;
+  final FallbackTable fallbackTable;
   final List<MaterialData> materials;
 
   @override
@@ -34,7 +37,10 @@ class MeshChunkDisplay extends ConsumerWidget {
           label: 'global bounding box offset',
           data: mesh.globalBoundingBoxOffset),
       GsfDataTile(label: 'unknown id', data: mesh.unknownId),
-      BoundingBoxDisplay(boundingBox: mesh.globalBoundingBox, bbName: "Global bounding box",),
+      BoundingBoxDisplay(
+        boundingBox: mesh.globalBoundingBox,
+        bbName: "Global bounding box",
+      ),
       GsfDataTile(label: 'submesh info count', data: mesh.submeshInfoCount),
       GsfDataTile(label: 'submesh info offset', data: mesh.submeshInfoOffset),
       GsfDataTile(label: 'submesh info 2 count', data: mesh.submeshInfo2Count),
@@ -65,6 +71,9 @@ class MeshChunkDisplay extends ConsumerWidget {
       DataSelector(
         datas: mesh.materialIndices,
         relatedParts: materials,
+        partFromDataFnct: (data, index) {
+          return materials[fallbackTable.usedMaterialIndexes[data.value].value];
+        },
         onSelected: (_, material) {
           ref
               .read(header2StateNotifierProvider.notifier)

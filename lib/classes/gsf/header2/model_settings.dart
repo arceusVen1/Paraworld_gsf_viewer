@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
@@ -11,7 +12,6 @@ class ModelSettings extends GsfPart {
   late final ObjectName objectName;
   late final Standard4BytesData<int> chunksTableRelativeOffset;
   late final Standard4BytesData<int> chunksCount;
-  late final ChunksTable? chunksTable;
 
   late final Standard4BytesData<int> fallbackTableRelativeOffset;
   late final Standard4BytesData<bool> readData;
@@ -34,6 +34,8 @@ class ModelSettings extends GsfPart {
   late final Standard4BytesData<int> animChunksTableHeaderOffset;
   late final Standard4BytesData<int> animObjectCount;
 
+  late final ChunksTable? chunksTable;
+  late final FallbackTable fallbackTable;
   @override
   String get label => "${name.value} (${objectName.label})";
 
@@ -81,6 +83,11 @@ class ModelSettings extends GsfPart {
       position: chunksCount.relativeEnd,
       bytes: bytes,
       offset: offset,
+    );
+    fallbackTable = FallbackTable.fromBytes(
+      bytes,
+      fallbackTableRelativeOffset.offsettedPos +
+          fallbackTableRelativeOffset.value,
     );
     readData = Standard4BytesData(
       position: fallbackTableRelativeOffset.relativeEnd,

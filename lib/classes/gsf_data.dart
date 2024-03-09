@@ -78,6 +78,8 @@ class SignedInt {
   int get hashCode => value.hashCode;
 }
 
+typedef NegativeOffset = SignedInt;
+
 class GsfData<T> {
   GsfData();
 

@@ -200,17 +200,21 @@ class PartSelector extends StatelessWidget {
   }
 }
 
+typedef DataToPartRelationFunction = GsfPart? Function(GsfData, int);
+
 class DataSelector extends StatefulWidget {
   const DataSelector({
     super.key,
     required this.datas,
     this.relatedParts,
     this.onSelected,
+    this.partFromDataFnct,
   });
 
   final List<GsfData> datas;
   final List<GsfPart>? relatedParts;
   final Function(GsfData, GsfPart?)? onSelected;
+  final DataToPartRelationFunction? partFromDataFnct;
 
   @override
   State<DataSelector> createState() => _DataSelectorState();
@@ -218,6 +222,13 @@ class DataSelector extends StatefulWidget {
 
 class _DataSelectorState extends State<DataSelector> {
   GsfData? _selected;
+
+  GsfPart? defaultDataToPartRelation(GsfData data, int index) {
+    if (widget.relatedParts != null && (index < widget.relatedParts!.length)) {
+      return widget.relatedParts![index];
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -234,10 +245,11 @@ class _DataSelectorState extends State<DataSelector> {
           cacheExtent: 50,
           itemBuilder: (context, index) {
             final data = widget.datas[index];
-            final relatedPart = widget.relatedParts != null &&
-                    index < widget.relatedParts!.length
-                ? widget.relatedParts![index]
-                : null;
+
+            final relatedPart = widget.partFromDataFnct != null
+                ? widget.partFromDataFnct!(data, index)
+                : defaultDataToPartRelation(data, index);
+
             String label = "$index. ";
 
             if (relatedPart != null) {
