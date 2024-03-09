@@ -15,12 +15,18 @@ class ModelSettings extends GsfPart {
 
   late final Standard4BytesData<int> fallbackTableRelativeOffset;
   late final Standard4BytesData<bool> readData;
-  late final DoubleByteData<int> unknownCount;
-  late final DoubleByteData<int> additionalEffectsCount;
-  late final DoubleByteData<int> chunksCountBeforeLinks;
-  late final DoubleByteData<int> linksCount;
-  late final Standard4BytesData<UnknowData> unknownData;
-  late final Standard4BytesData<UnknowData> unknownData2;
+  late final DoubleByteData<int> firstParticleChunkIndex;
+  late final DoubleByteData<int> particleChunksCount;
+  late final DoubleByteData<int> firstLinkChunkIndex;
+  late final DoubleByteData<int> linkChunksCount;
+  late final SingleByteData<bool> miscChunkExistsFlag;
+  late final SingleByteData<int> skeletonChunksCount;
+  late final SingleByteData<int> collysionPhycicsChunksCount;
+  late final SingleByteData<int> clothChunksCount;
+  late final SingleByteData<int> firstSelectionVolumeChunkIndex;
+  late final SingleByteData<int> selectionVolumeChunksCount;
+  late final SingleByteData<int> speedlineChunksCount;
+  late final SingleByteData<int> zero;
   late final Standard4BytesData<int> unusedOffset;
   late final Standard4BytesData<int> pathFinderTableOffset;
   late final Standard4BytesData<int> pathFinderTableCount;
@@ -81,38 +87,69 @@ class ModelSettings extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
-    unknownCount = DoubleByteData(
+    firstParticleChunkIndex = DoubleByteData(
       relativePos: readData.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    additionalEffectsCount = DoubleByteData(
-      relativePos: unknownCount.relativeEnd,
+    particleChunksCount = DoubleByteData(
+      relativePos: firstParticleChunkIndex.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    chunksCountBeforeLinks = DoubleByteData(
-      relativePos: additionalEffectsCount.relativeEnd,
+    firstLinkChunkIndex = DoubleByteData(
+      relativePos: particleChunksCount.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    linksCount = DoubleByteData(
-      relativePos: chunksCountBeforeLinks.relativeEnd,
+    linkChunksCount = DoubleByteData(
+      relativePos: firstLinkChunkIndex.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData = Standard4BytesData(
-      position: linksCount.relativeEnd,
+    miscChunkExistsFlag = SingleByteData(
+      relativePos: linkChunksCount.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    unknownData2 = Standard4BytesData(
-      position: unknownData.relativeEnd,
+    skeletonChunksCount = SingleByteData(
+      relativePos: miscChunkExistsFlag.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
+    collysionPhycicsChunksCount = SingleByteData(
+      relativePos: skeletonChunksCount.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    clothChunksCount = SingleByteData(
+      relativePos: collysionPhycicsChunksCount.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    firstSelectionVolumeChunkIndex = SingleByteData(
+      relativePos: clothChunksCount.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    selectionVolumeChunksCount = SingleByteData(
+      relativePos: firstSelectionVolumeChunkIndex.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    speedlineChunksCount = SingleByteData(
+      relativePos: selectionVolumeChunksCount.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    zero = SingleByteData(
+      relativePos: speedlineChunksCount.relativeEnd,
+      bytes: bytes,
+      offset: offset,
+    );
+    assert(zero.value == 0, 'Zero is not zero');
     unusedOffset = Standard4BytesData(
-      position: unknownData2.relativeEnd,
+      position: zero.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
@@ -145,10 +182,5 @@ class ModelSettings extends GsfPart {
   @override
   int getEndOffset() {
     return animObjectCount.offsettedLength;
-  }
-
-  @override
-  String toString() {
-    return 'ModelSettings: $name - $objectNameRelativeOffset - $chunksTableRelativeOffset - $chunksCount - $fallbackTableRelativeOffset - $readData - $unknownCount - $additionalEffectsCount - $chunksCountBeforeLinks - $linksCount - $unknownData - $unknownData2 - $unusedOffset - $pathFinderTableOffset - $pathFinderTableCount - $boundingBox - $animChunksTableHeaderOffset - $animObjectCount';
   }
 }

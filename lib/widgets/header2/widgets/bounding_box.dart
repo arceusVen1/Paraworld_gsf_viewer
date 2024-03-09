@@ -4,9 +4,14 @@ import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
 class BoundingBoxDisplay extends StatelessWidget {
-  const BoundingBoxDisplay({super.key, required this.boundingBox});
+  const BoundingBoxDisplay({
+    super.key,
+    required this.boundingBox,
+    this.bbName,
+  });
 
   final BoundingBox boundingBox;
+  final String? bbName;
 
   @override
   Widget build(BuildContext context) {
@@ -14,20 +19,40 @@ class BoundingBoxDisplay extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Label.regular(
-          'MIN',
+        Label.medium(
+          bbName ?? "Bounding box",
           fontWeight: FontWeight.bold,
         ),
-        GsfDataTile(label: 'X', data: boundingBox.minX),
-        GsfDataTile(label: 'Y', data: boundingBox.minY),
-        GsfDataTile(label: 'Z', data: boundingBox.minZ),
-        const Label.regular(
-          'MAX',
-          fontWeight: FontWeight.bold,
+        Wrap(
+          direction: Axis.horizontal,
+          spacing: 20,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Label.regular(
+                  'MIN',
+                  fontWeight: FontWeight.bold,
+                ),
+                GsfDataTile(label: 'X', data: boundingBox.minX),
+                GsfDataTile(label: 'Y', data: boundingBox.minY),
+                GsfDataTile(label: 'Z', data: boundingBox.minZ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Label.regular(
+                  'MAX',
+                  fontWeight: FontWeight.bold,
+                ),
+                GsfDataTile(label: 'X', data: boundingBox.maxX),
+                GsfDataTile(label: 'Y', data: boundingBox.maxY),
+                GsfDataTile(label: 'Z', data: boundingBox.maxZ),
+              ],
+            )
+          ],
         ),
-        GsfDataTile(label: 'X', data: boundingBox.maxX),
-        GsfDataTile(label: 'Y', data: boundingBox.maxY),
-        GsfDataTile(label: 'Z', data: boundingBox.maxZ),
       ],
     );
   }

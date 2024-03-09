@@ -1,27 +1,27 @@
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 enum ChunkType {
-    mesh,
-  billboard,
-  particle,
-  skeleton,
-  cloth,
-  collisionPhysics,
-  positionLink,
-  soundSphere,
-  speedline,
+  mesh,
   meshSkinned,
-  billboardSkinned,
-  particleSkinned,
-  skeletonSkinned,
+  meshSkinnedSimple,
+  cloth,
   clothSkinned,
+  clothSkinnedSimple,
+  billboard,
+  billboardSkinned,
+  particle,
+  particleSkinned,
+  skeleton,
+  collisionPhysics,
   collisionPhysicsSkinned,
-  boneLink,
-  soundSphereSkinned,
+  speedline,
   speedlineSkinned,
+  selectionVolume,
+  selectionVolumeSkinned,
+  positionLink,
+  boneLink,
   unknown,
 }
-
 
 extension ChunkTypeExtension on ChunkType {
   // skinned chunks correspond to chunk with bone weight and relation
@@ -50,8 +50,6 @@ extension ChunkTypeExtension on ChunkType {
         return 0x0000000A;
       case ChunkType.positionLink:
         return 0x0000000B;
-      case ChunkType.soundSphere:
-        return 0x0000000D;
       case ChunkType.speedline:
         return 0x0000000E;
       case ChunkType.meshSkinned:
@@ -59,8 +57,6 @@ extension ChunkTypeExtension on ChunkType {
       case ChunkType.billboardSkinned:
         return 0x80000001;
       case ChunkType.particleSkinned:
-        return 0x80000002;
-      case ChunkType.skeletonSkinned:
         return 0x80000005;
       case ChunkType.clothSkinned:
         return 0x80000009;
@@ -68,12 +64,18 @@ extension ChunkTypeExtension on ChunkType {
         return 0x8000000A;
       case ChunkType.boneLink:
         return 0x8000000B;
-      case ChunkType.soundSphereSkinned:
-        return 0x8000000D;
       case ChunkType.speedlineSkinned:
         return 0x8000000E;
+      case ChunkType.meshSkinnedSimple:
+        return 0x20000000;
+      case ChunkType.clothSkinnedSimple:
+        return 0x20000009;
+      case ChunkType.selectionVolume:
+        return 0x0000000D;
+      case ChunkType.selectionVolumeSkinned:
+        return 0x8000000D;
       case ChunkType.unknown:
-        return 0x20000000; // TODO: there may be other values
+        return 0x00000008;
     }
   }
 
@@ -83,7 +85,7 @@ extension ChunkTypeExtension on ChunkType {
         return ChunkType.mesh;
       case 0x00000001:
         return ChunkType.billboard;
-      case 0x00000002: 
+      case 0x00000002:
         return ChunkType.particle;
       case 0x00000005:
         return ChunkType.skeleton;
@@ -91,10 +93,8 @@ extension ChunkTypeExtension on ChunkType {
         return ChunkType.cloth;
       case 0x0000000A:
         return ChunkType.collisionPhysics;
-      case 0x0000000B:  
+      case 0x0000000B:
         return ChunkType.positionLink;
-      case 0x0000000D:
-        return ChunkType.soundSphere;
       case 0x0000000E:
         return ChunkType.speedline;
       case 0x80000000:
@@ -103,20 +103,26 @@ extension ChunkTypeExtension on ChunkType {
         return ChunkType.billboardSkinned;
       case 0x80000002:
         return ChunkType.particleSkinned;
-      case 0x80000005:
-        return ChunkType.skeletonSkinned;
       case 0x80000009:
         return ChunkType.clothSkinned;
       case 0x8000000A:
         return ChunkType.collisionPhysicsSkinned;
       case 0x8000000B:
         return ChunkType.boneLink;
-      case 0x8000000D:
-        return ChunkType.soundSphereSkinned;
       case 0x8000000E:
         return ChunkType.speedlineSkinned;
-      default:
+      case 0x20000000:
+        return ChunkType.meshSkinnedSimple;
+      case 0x20000009:
+        return ChunkType.clothSkinnedSimple;
+      case 0x0000000D:
+        return ChunkType.selectionVolume;
+      case 0x8000000D:
+        return ChunkType.selectionVolumeSkinned;
+      case 0x00000008:
         return ChunkType.unknown;
+      default:
+        throw Exception('Unknown chunk type: 0x${value.toRadixString(16)}');
     }
   }
 }

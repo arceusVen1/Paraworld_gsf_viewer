@@ -34,11 +34,7 @@ class MeshChunkDisplay extends ConsumerWidget {
           label: 'global bounding box offset',
           data: mesh.globalBoundingBoxOffset),
       GsfDataTile(label: 'unknown id', data: mesh.unknownId),
-      const Label.medium(
-        "Global bounding box",
-        fontWeight: FontWeight.bold,
-      ),
-      BoundingBoxDisplay(boundingBox: mesh.globalBoundingBox),
+      BoundingBoxDisplay(boundingBox: mesh.globalBoundingBox, bbName: "Global bounding box",),
       GsfDataTile(label: 'submesh info count', data: mesh.submeshInfoCount),
       GsfDataTile(label: 'submesh info offset', data: mesh.submeshInfoOffset),
       GsfDataTile(label: 'submesh info 2 count', data: mesh.submeshInfo2Count),

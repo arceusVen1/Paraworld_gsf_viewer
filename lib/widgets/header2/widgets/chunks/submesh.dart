@@ -3,7 +3,6 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
-import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 import 'package:paraworld_gsf_viewer/widgets/viewer/viewer.dart';
 
 class SubmeshDisplay extends StatelessWidget {
@@ -27,11 +26,7 @@ class SubmeshDisplay extends StatelessWidget {
       child: Column(
         children: [
           DataDecorator(children: [
-            Label.medium(
-              "Submesh bounding box",
-              fontWeight: FontWeight.bold,
-            ),
-            BoundingBoxDisplay(boundingBox: submesh.boundingBox),
+            BoundingBoxDisplay(boundingBox: submesh.boundingBox, bbName: "Submesh bounding box"),
             GsfDataTile(label: "vertex count", data: submesh.vertexCount),
             GsfDataTile(label: "triangle count", data: submesh.triangleCount),
             GsfDataTile(label: "vertex offset", data: submesh.vertexOffset),

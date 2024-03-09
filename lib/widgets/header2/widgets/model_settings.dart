@@ -31,34 +31,67 @@ class ModelSettingsDisplay extends ConsumerWidget {
       GsfDataTile(
           label: 'Chunks table offset',
           data: modelSettings.chunksTableRelativeOffset),
-      GsfDataTile(label: 'Chunks table count', data: modelSettings.chunksCount),
+      GsfDataTile(
+        label: 'Chunks table count',
+        data: modelSettings.chunksCount,
+      ),
       if (modelSettings.chunksTable != null)
-        ChunksTableDisplay(chunksTable: modelSettings.chunksTable!),
+        ChunksTableDisplay(
+          chunksTable: modelSettings.chunksTable!,
+        ),
       GsfDataTile(
-          label: 'Fallback table offset',
-          data: modelSettings.fallbackTableRelativeOffset),
-      GsfDataTile(label: 'Read data', data: modelSettings.readData),
-      GsfDataTile(label: 'Unknown count', data: modelSettings.unknownCount),
+        label: 'Fallback table offset',
+        data: modelSettings.fallbackTableRelativeOffset,
+      ),
       GsfDataTile(
-          label: 'Additional effects count',
-          data: modelSettings.additionalEffectsCount),
+        label: 'Read data',
+        data: modelSettings.readData,
+      ),
       GsfDataTile(
-          label: 'Chunks count before links',
-          data: modelSettings.chunksCountBeforeLinks),
+          label: 'First particle chunk index',
+          data: modelSettings.firstParticleChunkIndex),
+      GsfDataTile(
+          label: 'Particle chunks count',
+          data: modelSettings.particleChunksCount),
+      GsfDataTile(
+          label: 'First link chunk index',
+          data: modelSettings.firstLinkChunkIndex),
       GsfDataTile(
         label: 'links count',
-        data: modelSettings.linksCount,
+        data: modelSettings.linkChunksCount,
       ),
-      GsfDataTile(label: 'Unknown data', data: modelSettings.unknownData),
-      GsfDataTile(label: 'Unknown data 2', data: modelSettings.unknownData2),
+      GsfDataTile(
+        label: 'Misc chunk exists flag',
+        data: modelSettings.miscChunkExistsFlag,
+      ),
+      GsfDataTile(
+        label: 'Skeleton chunks count',
+        data: modelSettings.skeletonChunksCount,
+      ),
+      GsfDataTile(
+        label: 'Collision physics chunks count',
+        data: modelSettings.collysionPhycicsChunksCount,
+      ),
+      GsfDataTile(
+        label: 'Cloth chunks count',
+        data: modelSettings.clothChunksCount,
+      ),
+      GsfDataTile(
+        label: 'First selection volume chunk index',
+        data: modelSettings.firstSelectionVolumeChunkIndex,
+      ),
+      GsfDataTile(
+        label: 'Selection volume chunks count',
+        data: modelSettings.selectionVolumeChunksCount,
+      ),
+      GsfDataTile(
+        label: 'Speedline chunks count',
+        data: modelSettings.speedlineChunksCount,
+      ),
       GsfDataTile(label: 'Unused offset', data: modelSettings.unusedOffset),
       GsfDataTile(
           label: 'Path finder table offset',
           data: modelSettings.pathFinderTableOffset),
-      Label.medium(
-        'Bounding box',
-        fontWeight: FontWeight.bold,
-      ),
       BoundingBoxDisplay(
         boundingBox: modelSettings.boundingBox,
       ),

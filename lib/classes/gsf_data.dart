@@ -325,11 +325,13 @@ class VariableTwoBytesData<T> extends GsfData<T> {
 /// A [GsfData] that is 1 byte long.
 class SingleByteData<T> extends GsfData {
   SingleByteData(
-      {required int pos, required Uint8List bytes, required int offset}) {
-    if (T != int) {
-      throw Exception('Invalid type, single byte data can only be int');
+      {required int relativePos,
+      required Uint8List bytes,
+      required int offset}) {
+    if (T != int && T != bool) {
+      throw Exception('Invalid type, single byte data can only be int or bool');
     }
-    super._init(relativePos: pos, length: 1, offset: offset);
+    super._init(relativePos: relativePos, length: 1, offset: offset);
     value = getAsUint(bytes);
   }
 
