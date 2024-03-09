@@ -68003,7 +68003,8 @@ if(f>0){d=e.a
 d===$&&A.a()
 e=e.c
 e===$&&A.a()
-g.go=A.atZ(a6,h+d+e,f)}f=a0.a
+g.go=A.atZ(a6,h+d+e,f)}else g.go=null
+f=a0.a
 f===$&&A.a()
 a0=a0.b
 a0===$&&A.a()
@@ -69956,7 +69957,7 @@ q===$&&A.a()
 q=A.b([new A.G("object name offset",n,!1,s,new A.a_F(b),p),new A.G("Chunks table offset",r,!1,p,p,p),new A.G("Chunks table count",q,!1,p,p,p)],t.p)
 n=o.go
 n===$&&A.a()
-q.push(new A.Dj(n,p))
+if(n!=null)q.push(new A.Dj(n,p))
 n=o.r
 n===$&&A.a()
 q.push(new A.G("Fallback table offset",n,!1,p,p,p))

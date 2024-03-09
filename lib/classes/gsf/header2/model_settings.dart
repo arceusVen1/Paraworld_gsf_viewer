@@ -77,6 +77,8 @@ class ModelSettings extends GsfPart {
             chunksTableRelativeOffset.value,
         chunksCount.value,
       );
+    } else {
+      chunksTable = null;
     }
 
     fallbackTableRelativeOffset = Standard4BytesData(
