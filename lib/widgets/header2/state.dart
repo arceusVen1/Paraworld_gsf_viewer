@@ -1,5 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone_link.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/header2.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
@@ -18,12 +22,34 @@ class Header2State with _$Header2State {
       {required Header2 header2,
       required ModelSettings modelSettings,
       ObjectName? objectName,
-      Chunk? chunk,
-      Submesh? submesh,
-      MaterialData? material}) = Header2StateWithModelSettings;
+      SelectedChunkState? selectedChunkState}) = Header2StateWithModelSettings;
 
   const factory Header2State.withMaterial({
     required Header2 header2,
     required MaterialData material,
   }) = Header2StateWithMaterial;
+}
+
+@freezed
+class SelectedChunkState with _$SelectedChunkState {
+  const factory SelectedChunkState.withSkeleton({
+    required SkeletonChunk skeleton,
+    Bone? bone,
+  }) = SelectedChunkStateWithSkeleton;
+
+  const factory SelectedChunkState.withBoneLink({
+    required BoneLinkChunk boneLink,
+  }) = SelectedChunkStateWithBoneLink;
+
+  const factory SelectedChunkState.withMesh({
+    required MeshChunk mesh,
+    MaterialData? material,
+    Submesh? submesh,
+  }) = SelectedChunkStateWithMesh;
+
+  const factory SelectedChunkState.withCloth({
+    required ClothChunk cloth,
+    MaterialData? material,
+    Submesh? submesh,
+  }) = SelectedChunkStateWithCloth;
 }

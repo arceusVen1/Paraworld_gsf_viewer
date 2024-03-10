@@ -1,6 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone_link.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
@@ -32,8 +37,7 @@ class Header2StateNotifier extends Notifier<Header2State> {
     state = state.maybeMap(
       withModelSettings: (s) => s.copyWith(
         objectName: objectName,
-        chunk: null,
-        submesh: null,
+        selectedChunkState: null,
       ),
       orElse: () => state,
     );
@@ -41,24 +45,66 @@ class Header2StateNotifier extends Notifier<Header2State> {
 
   void setChunk(Chunk chunk) {
     state = state.maybeMap(
+      withModelSettings: (s) {
+        switch(chunk.runtimeType) {
+          case BoneLinkChunk:
+            return s.copyWith(
+              selectedChunkState: SelectedChunkState.withBoneLink(boneLink: chunk as BoneLinkChunk),
+            );
+          case SkeletonChunk:
+            return s.copyWith(
+              selectedChunkState: SelectedChunkState.withSkeleton(skeleton: chunk as SkeletonChunk),
+            );
+          case MeshChunk:
+            return s.copyWith(
+              selectedChunkState: SelectedChunkState.withMesh(mesh: chunk as MeshChunk),
+            );
+          case ClothChunk:
+            return s.copyWith(
+              selectedChunkState: SelectedChunkState.withCloth(cloth: chunk as ClothChunk),
+            );
+          default:
+            return s;
+        }
+      },
+      orElse: () => state,
+    );
+  }
+
+  void setSubmesh(Submesh submesh) {
+    state = state.maybeMap(
       withModelSettings: (s) => s.copyWith(
-        chunk: chunk,
-        submesh: null,
+        selectedChunkState: s.selectedChunkState?.maybeMap(
+          withMesh: (data) => data.copyWith(submesh: submesh),
+          withCloth: (data) => data.copyWith(submesh: submesh),
+          orElse: () => s.selectedChunkState,
+        ),
       ),
       orElse: () => state,
     );
   }
 
-  void setSubmesh(Submesh mesh) {
+  void setBone(Bone bone) {
     state = state.maybeMap(
-      withModelSettings: (s) => s.copyWith(submesh: mesh, material: null),
+      withModelSettings: (s) => s.copyWith(
+        selectedChunkState: s.selectedChunkState?.maybeMap(
+          withSkeleton: (data) => data.copyWith(bone: bone),
+          orElse: () => s.selectedChunkState,
+        ),
+      ),
       orElse: () => state,
     );
   }
 
   void setMaterial(MaterialData material) {
     state = state.maybeMap(
-      withModelSettings: (s) => s.copyWith(material: material, submesh: null),
+       withModelSettings: (s) => s.copyWith(
+        selectedChunkState: s.selectedChunkState?.maybeMap(
+          withMesh: (data) => data.copyWith(material: material),
+          withCloth: (data) => data.copyWith(material: material),
+          orElse: () => s.selectedChunkState,
+        ),
+      ),
       orElse: () => Header2State.withMaterial(
         header2: gsfFile!.header2,
         material: material,

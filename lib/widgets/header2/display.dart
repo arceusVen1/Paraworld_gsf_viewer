@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
@@ -98,9 +95,12 @@ class _MaterialsTable extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final selected = ref.watch(header2StateNotifierProvider).maybeMap(
+    final selectedMaterial = ref.watch(header2StateNotifierProvider).maybeMap(
           withMaterial: (data) => data.material,
-          withModelSettings: (data) => data.material,
+          withModelSettings: (data) => data.selectedChunkState?.mapOrNull(
+            withMesh: (mesh) => mesh.material,
+            withCloth: (cloth) => cloth.material,
+          ),
           orElse: () => null,
         );
     return Column(
@@ -116,7 +116,7 @@ class _MaterialsTable extends ConsumerWidget {
         GsfDataTile(
             label: 'Materials length', data: materialsTable.maxEntriesCount),
         PartSelector(
-            value: selected,
+            value: selectedMaterial,
             label: "materials",
             parts: materialsTable.materials
                 .sublist(0, materialsTable.materialCount.value),
@@ -137,18 +137,12 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
         materialsTable: state.header2.materialsTable),
     if (state.objectName != null)
       ObjectNameDisplay(objectName: state.objectName!),
-    if (state.chunk != null) ...[
-      getChunkWidgetByType(state.chunk!, state.modelSettings.fallbackTable,
-          state.header2.materialsTable.materials),
-      if (state.chunk is MeshToModelInterface && state.submesh == null) ...[
-        Flexible(
-            child: Viewer(
-          model: (state.chunk as MeshToModelInterface).toModel(),
-        )),
-      ],
-      if (state.submesh != null) SubmeshDisplay(submesh: state.submesh!),
-      if (state.material != null) MaterialDisplay(material: state.material!),
-    ]
+    if (state.selectedChunkState != null)
+      ...getChunkWidgetByType(
+        state.selectedChunkState!,
+        state.modelSettings.fallbackTable,
+        state.header2.materialsTable.materials,
+      ),
   ];
 }
 
@@ -158,29 +152,42 @@ List<Widget> withMaterial(Header2StateWithMaterial state) {
   ];
 }
 
-Widget getChunkWidgetByType(
-    Chunk chunk, FallbackTable? fallbackTable, List<MaterialData> materials) {
-  final Widget widget = () {
-    switch (chunk.type) {
-      case ChunkType.meshSkinnedSimple:
-      case ChunkType.meshSkinned:
-      case ChunkType.mesh:
-        return MeshChunkDisplay(
-          mesh: chunk as MeshChunk,
+List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
+    FallbackTable? fallbackTable, List<MaterialData> materials) {
+  final List<Widget> widgets = () {
+    return chunkState.maybeMap(
+      withMesh: (data) => [
+        MeshChunkDisplay(
+          mesh: data.mesh,
           fallbackTable: fallbackTable,
           materials: materials,
-        );
-      case ChunkType.clothSkinnedSimple:
-      case ChunkType.clothSkinned:
-      case ChunkType.cloth:
-        return ClothChunkDisplay(
-          cloth: chunk as ClothChunk,
+        ),
+        data.submesh != null
+            ? SubmeshDisplay(submesh: data.submesh!)
+            : Flexible(
+                child: Viewer(
+                  model: data.mesh.toModel(),
+                ),
+              ),
+        if (data.material != null) MaterialDisplay(material: data.material!),
+      ],
+      withCloth: (data) => [
+        ClothChunkDisplay(
+          cloth: data.cloth,
           fallbackTable: fallbackTable,
           materials: materials,
-        );
-      default:
-        return const SizedBox.shrink();
-    }
+        ),
+        data.submesh != null
+            ? SubmeshDisplay(submesh: data.submesh!)
+            : Flexible(
+                child: Viewer(
+                  model: data.cloth.toModel(),
+                ),
+              ),
+        if (data.material != null) MaterialDisplay(material: data.material!),
+      ],
+      orElse: () => [const SizedBox.shrink()],
+    );
   }();
-  return widget;
+  return widgets;
 }

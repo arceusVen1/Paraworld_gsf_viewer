@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone_link.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class ChunksTable extends GsfPart {
@@ -55,6 +57,16 @@ class ChunksTable extends GsfPart {
               bytes,
               typeData.offsettedLength,
               type,
+            );
+          case ChunkType.skeleton:
+            return SkeletonChunk.fromBytes(
+              bytes,
+              typeData.offsettedLength,
+            );
+          case ChunkType.boneLink:
+            return BoneLinkChunk.fromBytes(
+              bytes,
+              typeData.offsettedLength,
             );
           default:
             return Chunk(offset: typeData.offsettedLength, type: type);

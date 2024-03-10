@@ -26,7 +26,10 @@ class MeshChunkDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final selectedSubMesh = ref.watch(header2StateNotifierProvider).mapOrNull(
-          withModelSettings: (data) => data.submesh,
+          withModelSettings: (data) => data.selectedChunkState?.mapOrNull(
+                withCloth: (cloth) => cloth.submesh,
+                withMesh: (mesh) => mesh.submesh,
+          ),
         );
     return DataDecorator(children: [
       GsfDataTile(label: 'attributes', data: mesh.attributes),
@@ -108,7 +111,10 @@ class ClothChunkDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final selectedSubMesh = ref.watch(header2StateNotifierProvider).mapOrNull(
-          withModelSettings: (data) => data.submesh,
+          withModelSettings: (data) => data.selectedChunkState?.mapOrNull(
+                withCloth: (cloth) => cloth.submesh,
+                withMesh: (mesh) => mesh.submesh,
+          ),
         );
     return DataDecorator(children: [
       GsfDataTile(label: 'attributes', data: cloth.attributes),

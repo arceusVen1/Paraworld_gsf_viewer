@@ -20,13 +20,8 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)
+    required TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -35,13 +30,8 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)?
+    TResult? Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) =>
@@ -49,13 +39,8 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)?
+    TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
@@ -190,13 +175,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)
+    required TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -208,13 +188,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)?
+    TResult? Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
@@ -225,13 +200,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)?
+    TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
@@ -302,9 +272,9 @@ abstract class _$$Header2StateWithModelSettingsImplCopyWith<$Res>
       {Header2 header2,
       ModelSettings modelSettings,
       ObjectName? objectName,
-      Chunk? chunk,
-      Submesh? submesh,
-      MaterialData? material});
+      SelectedChunkState? selectedChunkState});
+
+  $SelectedChunkStateCopyWith<$Res>? get selectedChunkState;
 }
 
 /// @nodoc
@@ -323,9 +293,7 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
     Object? header2 = null,
     Object? modelSettings = null,
     Object? objectName = freezed,
-    Object? chunk = freezed,
-    Object? submesh = freezed,
-    Object? material = freezed,
+    Object? selectedChunkState = freezed,
   }) {
     return _then(_$Header2StateWithModelSettingsImpl(
       header2: null == header2
@@ -340,19 +308,24 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
           ? _value.objectName
           : objectName // ignore: cast_nullable_to_non_nullable
               as ObjectName?,
-      chunk: freezed == chunk
-          ? _value.chunk
-          : chunk // ignore: cast_nullable_to_non_nullable
-              as Chunk?,
-      submesh: freezed == submesh
-          ? _value.submesh
-          : submesh // ignore: cast_nullable_to_non_nullable
-              as Submesh?,
-      material: freezed == material
-          ? _value.material
-          : material // ignore: cast_nullable_to_non_nullable
-              as MaterialData?,
+      selectedChunkState: freezed == selectedChunkState
+          ? _value.selectedChunkState
+          : selectedChunkState // ignore: cast_nullable_to_non_nullable
+              as SelectedChunkState?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $SelectedChunkStateCopyWith<$Res>? get selectedChunkState {
+    if (_value.selectedChunkState == null) {
+      return null;
+    }
+
+    return $SelectedChunkStateCopyWith<$Res>(_value.selectedChunkState!,
+        (value) {
+      return _then(_value.copyWith(selectedChunkState: value));
+    });
   }
 }
 
@@ -364,9 +337,7 @@ class _$Header2StateWithModelSettingsImpl
       {required this.header2,
       required this.modelSettings,
       this.objectName,
-      this.chunk,
-      this.submesh,
-      this.material});
+      this.selectedChunkState});
 
   @override
   final Header2 header2;
@@ -375,15 +346,11 @@ class _$Header2StateWithModelSettingsImpl
   @override
   final ObjectName? objectName;
   @override
-  final Chunk? chunk;
-  @override
-  final Submesh? submesh;
-  @override
-  final MaterialData? material;
+  final SelectedChunkState? selectedChunkState;
 
   @override
   String toString() {
-    return 'Header2State.withModelSettings(header2: $header2, modelSettings: $modelSettings, objectName: $objectName, chunk: $chunk, submesh: $submesh, material: $material)';
+    return 'Header2State.withModelSettings(header2: $header2, modelSettings: $modelSettings, objectName: $objectName, selectedChunkState: $selectedChunkState)';
   }
 
   @override
@@ -396,15 +363,13 @@ class _$Header2StateWithModelSettingsImpl
                 other.modelSettings == modelSettings) &&
             (identical(other.objectName, objectName) ||
                 other.objectName == objectName) &&
-            (identical(other.chunk, chunk) || other.chunk == chunk) &&
-            (identical(other.submesh, submesh) || other.submesh == submesh) &&
-            (identical(other.material, material) ||
-                other.material == material));
+            (identical(other.selectedChunkState, selectedChunkState) ||
+                other.selectedChunkState == selectedChunkState));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, header2, modelSettings,
-      objectName, chunk, submesh, material);
+  int get hashCode => Object.hash(
+      runtimeType, header2, modelSettings, objectName, selectedChunkState);
 
   @JsonKey(ignore: true)
   @override
@@ -418,57 +383,42 @@ class _$Header2StateWithModelSettingsImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)
+    required TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
   }) {
     return withModelSettings(
-        header2, modelSettings, objectName, chunk, submesh, material);
+        header2, modelSettings, objectName, selectedChunkState);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)?
+    TResult? Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
     return withModelSettings?.call(
-        header2, modelSettings, objectName, chunk, submesh, material);
+        header2, modelSettings, objectName, selectedChunkState);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)?
+    TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
   }) {
     if (withModelSettings != null) {
       return withModelSettings(
-          header2, modelSettings, objectName, chunk, submesh, material);
+          header2, modelSettings, objectName, selectedChunkState);
     }
     return orElse();
   }
@@ -511,20 +461,17 @@ class _$Header2StateWithModelSettingsImpl
 
 abstract class Header2StateWithModelSettings implements Header2State {
   const factory Header2StateWithModelSettings(
-      {required final Header2 header2,
-      required final ModelSettings modelSettings,
-      final ObjectName? objectName,
-      final Chunk? chunk,
-      final Submesh? submesh,
-      final MaterialData? material}) = _$Header2StateWithModelSettingsImpl;
+          {required final Header2 header2,
+          required final ModelSettings modelSettings,
+          final ObjectName? objectName,
+          final SelectedChunkState? selectedChunkState}) =
+      _$Header2StateWithModelSettingsImpl;
 
   @override
   Header2 get header2;
   ModelSettings get modelSettings;
   ObjectName? get objectName;
-  Chunk? get chunk;
-  Submesh? get submesh;
-  MaterialData? get material;
+  SelectedChunkState? get selectedChunkState;
   @override
   @JsonKey(ignore: true)
   _$$Header2StateWithModelSettingsImplCopyWith<
@@ -612,13 +559,8 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)
+    required TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -630,13 +572,8 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)?
+    TResult? Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
@@ -647,13 +584,8 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(
-            Header2 header2,
-            ModelSettings modelSettings,
-            ObjectName? objectName,
-            Chunk? chunk,
-            Submesh? submesh,
-            MaterialData? material)?
+    TResult Function(Header2 header2, ModelSettings modelSettings,
+            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
@@ -711,5 +643,801 @@ abstract class Header2StateWithMaterial implements Header2State {
   @override
   @JsonKey(ignore: true)
   _$$Header2StateWithMaterialImplCopyWith<_$Header2StateWithMaterialImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$SelectedChunkState {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
+    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(
+            MeshChunk mesh, MaterialData? material, Submesh? submesh)
+        withMesh,
+    required TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)
+        withCloth,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult? Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectedChunkStateWithSkeleton value)
+        withSkeleton,
+    required TResult Function(SelectedChunkStateWithBoneLink value)
+        withBoneLink,
+    required TResult Function(SelectedChunkStateWithMesh value) withMesh,
+    required TResult Function(SelectedChunkStateWithCloth value) withCloth,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult Function(SelectedChunkStateWithCloth value)? withCloth,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SelectedChunkStateCopyWith<$Res> {
+  factory $SelectedChunkStateCopyWith(
+          SelectedChunkState value, $Res Function(SelectedChunkState) then) =
+      _$SelectedChunkStateCopyWithImpl<$Res, SelectedChunkState>;
+}
+
+/// @nodoc
+class _$SelectedChunkStateCopyWithImpl<$Res, $Val extends SelectedChunkState>
+    implements $SelectedChunkStateCopyWith<$Res> {
+  _$SelectedChunkStateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$SelectedChunkStateWithSkeletonImplCopyWith<$Res> {
+  factory _$$SelectedChunkStateWithSkeletonImplCopyWith(
+          _$SelectedChunkStateWithSkeletonImpl value,
+          $Res Function(_$SelectedChunkStateWithSkeletonImpl) then) =
+      __$$SelectedChunkStateWithSkeletonImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({SkeletonChunk skeleton, Bone? bone});
+}
+
+/// @nodoc
+class __$$SelectedChunkStateWithSkeletonImplCopyWithImpl<$Res>
+    extends _$SelectedChunkStateCopyWithImpl<$Res,
+        _$SelectedChunkStateWithSkeletonImpl>
+    implements _$$SelectedChunkStateWithSkeletonImplCopyWith<$Res> {
+  __$$SelectedChunkStateWithSkeletonImplCopyWithImpl(
+      _$SelectedChunkStateWithSkeletonImpl _value,
+      $Res Function(_$SelectedChunkStateWithSkeletonImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? skeleton = null,
+    Object? bone = freezed,
+  }) {
+    return _then(_$SelectedChunkStateWithSkeletonImpl(
+      skeleton: null == skeleton
+          ? _value.skeleton
+          : skeleton // ignore: cast_nullable_to_non_nullable
+              as SkeletonChunk,
+      bone: freezed == bone
+          ? _value.bone
+          : bone // ignore: cast_nullable_to_non_nullable
+              as Bone?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SelectedChunkStateWithSkeletonImpl
+    implements SelectedChunkStateWithSkeleton {
+  const _$SelectedChunkStateWithSkeletonImpl(
+      {required this.skeleton, this.bone});
+
+  @override
+  final SkeletonChunk skeleton;
+  @override
+  final Bone? bone;
+
+  @override
+  String toString() {
+    return 'SelectedChunkState.withSkeleton(skeleton: $skeleton, bone: $bone)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SelectedChunkStateWithSkeletonImpl &&
+            (identical(other.skeleton, skeleton) ||
+                other.skeleton == skeleton) &&
+            (identical(other.bone, bone) || other.bone == bone));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, skeleton, bone);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SelectedChunkStateWithSkeletonImplCopyWith<
+          _$SelectedChunkStateWithSkeletonImpl>
+      get copyWith => __$$SelectedChunkStateWithSkeletonImplCopyWithImpl<
+          _$SelectedChunkStateWithSkeletonImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
+    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(
+            MeshChunk mesh, MaterialData? material, Submesh? submesh)
+        withMesh,
+    required TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)
+        withCloth,
+  }) {
+    return withSkeleton(skeleton, bone);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult? Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+  }) {
+    return withSkeleton?.call(skeleton, bone);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+    required TResult orElse(),
+  }) {
+    if (withSkeleton != null) {
+      return withSkeleton(skeleton, bone);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectedChunkStateWithSkeleton value)
+        withSkeleton,
+    required TResult Function(SelectedChunkStateWithBoneLink value)
+        withBoneLink,
+    required TResult Function(SelectedChunkStateWithMesh value) withMesh,
+    required TResult Function(SelectedChunkStateWithCloth value) withCloth,
+  }) {
+    return withSkeleton(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
+  }) {
+    return withSkeleton?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult Function(SelectedChunkStateWithCloth value)? withCloth,
+    required TResult orElse(),
+  }) {
+    if (withSkeleton != null) {
+      return withSkeleton(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SelectedChunkStateWithSkeleton implements SelectedChunkState {
+  const factory SelectedChunkStateWithSkeleton(
+      {required final SkeletonChunk skeleton,
+      final Bone? bone}) = _$SelectedChunkStateWithSkeletonImpl;
+
+  SkeletonChunk get skeleton;
+  Bone? get bone;
+  @JsonKey(ignore: true)
+  _$$SelectedChunkStateWithSkeletonImplCopyWith<
+          _$SelectedChunkStateWithSkeletonImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SelectedChunkStateWithBoneLinkImplCopyWith<$Res> {
+  factory _$$SelectedChunkStateWithBoneLinkImplCopyWith(
+          _$SelectedChunkStateWithBoneLinkImpl value,
+          $Res Function(_$SelectedChunkStateWithBoneLinkImpl) then) =
+      __$$SelectedChunkStateWithBoneLinkImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({BoneLinkChunk boneLink});
+}
+
+/// @nodoc
+class __$$SelectedChunkStateWithBoneLinkImplCopyWithImpl<$Res>
+    extends _$SelectedChunkStateCopyWithImpl<$Res,
+        _$SelectedChunkStateWithBoneLinkImpl>
+    implements _$$SelectedChunkStateWithBoneLinkImplCopyWith<$Res> {
+  __$$SelectedChunkStateWithBoneLinkImplCopyWithImpl(
+      _$SelectedChunkStateWithBoneLinkImpl _value,
+      $Res Function(_$SelectedChunkStateWithBoneLinkImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? boneLink = null,
+  }) {
+    return _then(_$SelectedChunkStateWithBoneLinkImpl(
+      boneLink: null == boneLink
+          ? _value.boneLink
+          : boneLink // ignore: cast_nullable_to_non_nullable
+              as BoneLinkChunk,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SelectedChunkStateWithBoneLinkImpl
+    implements SelectedChunkStateWithBoneLink {
+  const _$SelectedChunkStateWithBoneLinkImpl({required this.boneLink});
+
+  @override
+  final BoneLinkChunk boneLink;
+
+  @override
+  String toString() {
+    return 'SelectedChunkState.withBoneLink(boneLink: $boneLink)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SelectedChunkStateWithBoneLinkImpl &&
+            (identical(other.boneLink, boneLink) ||
+                other.boneLink == boneLink));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, boneLink);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SelectedChunkStateWithBoneLinkImplCopyWith<
+          _$SelectedChunkStateWithBoneLinkImpl>
+      get copyWith => __$$SelectedChunkStateWithBoneLinkImplCopyWithImpl<
+          _$SelectedChunkStateWithBoneLinkImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
+    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(
+            MeshChunk mesh, MaterialData? material, Submesh? submesh)
+        withMesh,
+    required TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)
+        withCloth,
+  }) {
+    return withBoneLink(boneLink);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult? Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+  }) {
+    return withBoneLink?.call(boneLink);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+    required TResult orElse(),
+  }) {
+    if (withBoneLink != null) {
+      return withBoneLink(boneLink);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectedChunkStateWithSkeleton value)
+        withSkeleton,
+    required TResult Function(SelectedChunkStateWithBoneLink value)
+        withBoneLink,
+    required TResult Function(SelectedChunkStateWithMesh value) withMesh,
+    required TResult Function(SelectedChunkStateWithCloth value) withCloth,
+  }) {
+    return withBoneLink(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
+  }) {
+    return withBoneLink?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult Function(SelectedChunkStateWithCloth value)? withCloth,
+    required TResult orElse(),
+  }) {
+    if (withBoneLink != null) {
+      return withBoneLink(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SelectedChunkStateWithBoneLink implements SelectedChunkState {
+  const factory SelectedChunkStateWithBoneLink(
+          {required final BoneLinkChunk boneLink}) =
+      _$SelectedChunkStateWithBoneLinkImpl;
+
+  BoneLinkChunk get boneLink;
+  @JsonKey(ignore: true)
+  _$$SelectedChunkStateWithBoneLinkImplCopyWith<
+          _$SelectedChunkStateWithBoneLinkImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SelectedChunkStateWithMeshImplCopyWith<$Res> {
+  factory _$$SelectedChunkStateWithMeshImplCopyWith(
+          _$SelectedChunkStateWithMeshImpl value,
+          $Res Function(_$SelectedChunkStateWithMeshImpl) then) =
+      __$$SelectedChunkStateWithMeshImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({MeshChunk mesh, MaterialData? material, Submesh? submesh});
+}
+
+/// @nodoc
+class __$$SelectedChunkStateWithMeshImplCopyWithImpl<$Res>
+    extends _$SelectedChunkStateCopyWithImpl<$Res,
+        _$SelectedChunkStateWithMeshImpl>
+    implements _$$SelectedChunkStateWithMeshImplCopyWith<$Res> {
+  __$$SelectedChunkStateWithMeshImplCopyWithImpl(
+      _$SelectedChunkStateWithMeshImpl _value,
+      $Res Function(_$SelectedChunkStateWithMeshImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? mesh = null,
+    Object? material = freezed,
+    Object? submesh = freezed,
+  }) {
+    return _then(_$SelectedChunkStateWithMeshImpl(
+      mesh: null == mesh
+          ? _value.mesh
+          : mesh // ignore: cast_nullable_to_non_nullable
+              as MeshChunk,
+      material: freezed == material
+          ? _value.material
+          : material // ignore: cast_nullable_to_non_nullable
+              as MaterialData?,
+      submesh: freezed == submesh
+          ? _value.submesh
+          : submesh // ignore: cast_nullable_to_non_nullable
+              as Submesh?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SelectedChunkStateWithMeshImpl implements SelectedChunkStateWithMesh {
+  const _$SelectedChunkStateWithMeshImpl(
+      {required this.mesh, this.material, this.submesh});
+
+  @override
+  final MeshChunk mesh;
+  @override
+  final MaterialData? material;
+  @override
+  final Submesh? submesh;
+
+  @override
+  String toString() {
+    return 'SelectedChunkState.withMesh(mesh: $mesh, material: $material, submesh: $submesh)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SelectedChunkStateWithMeshImpl &&
+            (identical(other.mesh, mesh) || other.mesh == mesh) &&
+            (identical(other.material, material) ||
+                other.material == material) &&
+            (identical(other.submesh, submesh) || other.submesh == submesh));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, mesh, material, submesh);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SelectedChunkStateWithMeshImplCopyWith<_$SelectedChunkStateWithMeshImpl>
+      get copyWith => __$$SelectedChunkStateWithMeshImplCopyWithImpl<
+          _$SelectedChunkStateWithMeshImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
+    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(
+            MeshChunk mesh, MaterialData? material, Submesh? submesh)
+        withMesh,
+    required TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)
+        withCloth,
+  }) {
+    return withMesh(mesh, material, submesh);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult? Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+  }) {
+    return withMesh?.call(mesh, material, submesh);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+    required TResult orElse(),
+  }) {
+    if (withMesh != null) {
+      return withMesh(mesh, material, submesh);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectedChunkStateWithSkeleton value)
+        withSkeleton,
+    required TResult Function(SelectedChunkStateWithBoneLink value)
+        withBoneLink,
+    required TResult Function(SelectedChunkStateWithMesh value) withMesh,
+    required TResult Function(SelectedChunkStateWithCloth value) withCloth,
+  }) {
+    return withMesh(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
+  }) {
+    return withMesh?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult Function(SelectedChunkStateWithCloth value)? withCloth,
+    required TResult orElse(),
+  }) {
+    if (withMesh != null) {
+      return withMesh(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SelectedChunkStateWithMesh implements SelectedChunkState {
+  const factory SelectedChunkStateWithMesh(
+      {required final MeshChunk mesh,
+      final MaterialData? material,
+      final Submesh? submesh}) = _$SelectedChunkStateWithMeshImpl;
+
+  MeshChunk get mesh;
+  MaterialData? get material;
+  Submesh? get submesh;
+  @JsonKey(ignore: true)
+  _$$SelectedChunkStateWithMeshImplCopyWith<_$SelectedChunkStateWithMeshImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SelectedChunkStateWithClothImplCopyWith<$Res> {
+  factory _$$SelectedChunkStateWithClothImplCopyWith(
+          _$SelectedChunkStateWithClothImpl value,
+          $Res Function(_$SelectedChunkStateWithClothImpl) then) =
+      __$$SelectedChunkStateWithClothImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ClothChunk cloth, MaterialData? material, Submesh? submesh});
+}
+
+/// @nodoc
+class __$$SelectedChunkStateWithClothImplCopyWithImpl<$Res>
+    extends _$SelectedChunkStateCopyWithImpl<$Res,
+        _$SelectedChunkStateWithClothImpl>
+    implements _$$SelectedChunkStateWithClothImplCopyWith<$Res> {
+  __$$SelectedChunkStateWithClothImplCopyWithImpl(
+      _$SelectedChunkStateWithClothImpl _value,
+      $Res Function(_$SelectedChunkStateWithClothImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? cloth = null,
+    Object? material = freezed,
+    Object? submesh = freezed,
+  }) {
+    return _then(_$SelectedChunkStateWithClothImpl(
+      cloth: null == cloth
+          ? _value.cloth
+          : cloth // ignore: cast_nullable_to_non_nullable
+              as ClothChunk,
+      material: freezed == material
+          ? _value.material
+          : material // ignore: cast_nullable_to_non_nullable
+              as MaterialData?,
+      submesh: freezed == submesh
+          ? _value.submesh
+          : submesh // ignore: cast_nullable_to_non_nullable
+              as Submesh?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SelectedChunkStateWithClothImpl implements SelectedChunkStateWithCloth {
+  const _$SelectedChunkStateWithClothImpl(
+      {required this.cloth, this.material, this.submesh});
+
+  @override
+  final ClothChunk cloth;
+  @override
+  final MaterialData? material;
+  @override
+  final Submesh? submesh;
+
+  @override
+  String toString() {
+    return 'SelectedChunkState.withCloth(cloth: $cloth, material: $material, submesh: $submesh)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SelectedChunkStateWithClothImpl &&
+            (identical(other.cloth, cloth) || other.cloth == cloth) &&
+            (identical(other.material, material) ||
+                other.material == material) &&
+            (identical(other.submesh, submesh) || other.submesh == submesh));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, cloth, material, submesh);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SelectedChunkStateWithClothImplCopyWith<_$SelectedChunkStateWithClothImpl>
+      get copyWith => __$$SelectedChunkStateWithClothImplCopyWithImpl<
+          _$SelectedChunkStateWithClothImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
+    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(
+            MeshChunk mesh, MaterialData? material, Submesh? submesh)
+        withMesh,
+    required TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)
+        withCloth,
+  }) {
+    return withCloth(cloth, material, submesh);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult? Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+  }) {
+    return withCloth?.call(cloth, material, submesh);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
+    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
+        withMesh,
+    TResult Function(
+            ClothChunk cloth, MaterialData? material, Submesh? submesh)?
+        withCloth,
+    required TResult orElse(),
+  }) {
+    if (withCloth != null) {
+      return withCloth(cloth, material, submesh);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectedChunkStateWithSkeleton value)
+        withSkeleton,
+    required TResult Function(SelectedChunkStateWithBoneLink value)
+        withBoneLink,
+    required TResult Function(SelectedChunkStateWithMesh value) withMesh,
+    required TResult Function(SelectedChunkStateWithCloth value) withCloth,
+  }) {
+    return withCloth(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
+  }) {
+    return withCloth?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
+    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithMesh value)? withMesh,
+    TResult Function(SelectedChunkStateWithCloth value)? withCloth,
+    required TResult orElse(),
+  }) {
+    if (withCloth != null) {
+      return withCloth(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SelectedChunkStateWithCloth implements SelectedChunkState {
+  const factory SelectedChunkStateWithCloth(
+      {required final ClothChunk cloth,
+      final MaterialData? material,
+      final Submesh? submesh}) = _$SelectedChunkStateWithClothImpl;
+
+  ClothChunk get cloth;
+  MaterialData? get material;
+  Submesh? get submesh;
+  @JsonKey(ignore: true)
+  _$$SelectedChunkStateWithClothImplCopyWith<_$SelectedChunkStateWithClothImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
