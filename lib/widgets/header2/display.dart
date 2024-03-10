@@ -7,7 +7,9 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/state.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/bone_link.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/material.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/model_settings.dart';
@@ -186,6 +188,11 @@ List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
               ),
         if (data.material != null) MaterialDisplay(material: data.material!),
       ],
+      withSkeleton: (data) => [
+        SkeletonDisplay(skeleton: data.skeleton),
+        if (data.bone != null) BoneDisplay(bone: data.bone!),
+      ],
+      withBoneLink: (data) => [BoneLinkDisplay(boneLink: data.boneLink)],
       orElse: () => [const SizedBox.shrink()],
     );
   }();
