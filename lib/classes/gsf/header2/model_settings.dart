@@ -7,7 +7,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class ModelSettings extends GsfPart {
-  late final GsfData<String> name;
+  late final GsfData<String> fourCC;
   late final Standard4BytesData<int> objectNameRelativeOffset;
   late final ObjectName objectName;
   late final Standard4BytesData<int> chunksTableRelativeOffset;
@@ -37,16 +37,16 @@ class ModelSettings extends GsfPart {
   late final ChunksTable? chunksTable;
   late final FallbackTable? fallbackTable;
   @override
-  String get label => "${name.value} (${objectName.label})";
+  String get label => "${fourCC.value} (${objectName.label})";
 
   ModelSettings.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
-    name = Standard4BytesData<String>(
+    fourCC = Standard4BytesData<String>(
       position: 0,
       bytes: bytes,
       offset: offset,
     );
     objectNameRelativeOffset = Standard4BytesData(
-      position: name.relativeEnd,
+      position: fourCC.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
@@ -56,6 +56,7 @@ class ModelSettings extends GsfPart {
           objectNameRelativeOffset.relativePos +
           objectNameRelativeOffset.value,
     );
+    print(objectName.label);
 
     chunksTableRelativeOffset = Standard4BytesData(
       position: objectNameRelativeOffset.relativeEnd,

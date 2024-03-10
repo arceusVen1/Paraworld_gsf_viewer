@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
@@ -139,10 +140,10 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
     if (state.chunk != null) ...[
       getChunkWidgetByType(state.chunk!, state.modelSettings.fallbackTable,
           state.header2.materialsTable.materials),
-      if (state.chunk is MeshChunk && state.submesh == null) ...[
+      if (state.chunk is MeshToModelInterface && state.submesh == null) ...[
         Flexible(
             child: Viewer(
-          model: (state.chunk as MeshChunk).toModel(),
+          model: (state.chunk as MeshToModelInterface).toModel(),
         )),
       ],
       if (state.submesh != null) SubmeshDisplay(submesh: state.submesh!),
@@ -166,6 +167,14 @@ Widget getChunkWidgetByType(
       case ChunkType.mesh:
         return MeshChunkDisplay(
           mesh: chunk as MeshChunk,
+          fallbackTable: fallbackTable,
+          materials: materials,
+        );
+      case ChunkType.clothSkinnedSimple:
+      case ChunkType.clothSkinned:
+      case ChunkType.cloth:
+        return ClothChunkDisplay(
+          cloth: chunk as ClothChunk,
           fallbackTable: fallbackTable,
           materials: materials,
         );

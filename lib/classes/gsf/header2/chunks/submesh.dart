@@ -9,6 +9,7 @@ class Submesh extends GsfPart {
   late final BoundingBox boundingBox;
   late final Standard4BytesData<int> vertexCount;
   late final Standard4BytesData<int> triangleCount;
+  late final Standard4BytesData<UnknowData>? unknownClothOnlyValue;
   late final Standard4BytesData<int> vertexOffset;
   late final Standard4BytesData<int> triangleOffset;
   late final Standard4BytesData<int> triangleCount2;
@@ -21,7 +22,8 @@ class Submesh extends GsfPart {
   @override
   String get label => "Submesh with ${triangleCount.value} triangles";
 
-  Submesh.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
+  Submesh.fromBytes(Uint8List bytes, int offset, bool isFromCloth)
+      : super(offset: offset) {
     boundingBox = BoundingBox.fromBytes(
       bytes,
       offset,
@@ -36,8 +38,17 @@ class Submesh extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
+    if (isFromCloth) {
+      unknownClothOnlyValue = Standard4BytesData(
+        position: triangleCount.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+    } else {
+      unknownClothOnlyValue = null;
+    }
     vertexOffset = Standard4BytesData(
-      position: triangleCount.relativeEnd,
+      position: unknownClothOnlyValue?.relativeEnd ?? triangleCount.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
@@ -51,21 +62,39 @@ class Submesh extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
-    vertexType = Standard4BytesData(
-      position: triangleCount2.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    lightDataOffset = Standard4BytesData(
-      position: vertexType.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    lightDataCount = Standard4BytesData(
-      position: lightDataOffset.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
+    if (isFromCloth) {
+      lightDataOffset = Standard4BytesData(
+        position: triangleCount2.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+      lightDataCount = Standard4BytesData(
+        position: lightDataOffset.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+      vertexType = Standard4BytesData(
+        position: lightDataCount.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+    } else {
+      vertexType = Standard4BytesData(
+        position: triangleCount2.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+      lightDataOffset = Standard4BytesData(
+        position: vertexType.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+      lightDataCount = Standard4BytesData(
+        position: lightDataOffset.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+    }
 
     vertices = [];
     for (int i = 0; i < vertexCount.value; i++) {

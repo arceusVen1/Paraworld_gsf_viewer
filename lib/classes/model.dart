@@ -11,13 +11,11 @@ import 'dart:math' as math;
 
 class Model {
   Model({
-    required this.name,
     required this.vertices,
     required this.triangles,
     required this.boundingBox,
   });
 
-  final String name;
   final List<ModelVertex> vertices;
   final List<ModelTriangle> triangles;
   final BoundingBoxModel boundingBox;

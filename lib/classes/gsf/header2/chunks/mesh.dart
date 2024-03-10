@@ -119,7 +119,27 @@ class AffineTransformation extends GsfPart {
   }
 }
 
-class MeshChunk extends Chunk {
+mixin MeshToModelInterface on Chunk {
+  BoundingBox get boundingBox;
+  List<Submesh> get submeshes;
+  Model toModel() {
+    final globalBB = boundingBox.toModelBox();
+    final List<ModelVertex> vertices = [];
+    final List<ModelTriangle> triangles = [];
+    for (var submesh in submeshes) {
+      final data = submesh.getMeshModelData(vertices.length, globalBB);
+      vertices.addAll(data.vertices);
+      triangles.addAll(data.triangles);
+    }
+    return Model(
+      vertices: vertices,
+      triangles: triangles,
+      boundingBox: globalBB,
+    );
+  }
+}
+
+class MeshChunk extends Chunk with MeshToModelInterface {
   late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
   late final AffineTransformation transformation;
@@ -131,12 +151,15 @@ class MeshChunk extends Chunk {
       boneWeights; // only for simple skinned mesh
   late final Standard4BytesData<int> globalBoundingBoxOffset;
   late final Standard4BytesData<int> unknownId;
-  late final BoundingBox globalBoundingBox;
+  @override
+  late final BoundingBox boundingBox;
   late final Standard4BytesData<int> submeshInfoCount;
   late final Standard4BytesData<int> submeshInfoOffset;
   late final Standard4BytesData<int> submeshInfo2Count;
   late final Standard4BytesData<int> submeshMaterialsOffset;
   late final Standard4BytesData<int> submeshMaterialsCount;
+
+  @override
   late final List<Submesh> submeshes;
   late final List<DoubleByteData<int>> materialIndices;
 
@@ -205,12 +228,12 @@ class MeshChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
-    globalBoundingBox = BoundingBox.fromBytes(
+    boundingBox = BoundingBox.fromBytes(
       bytes,
       globalBoundingBoxOffset.offsettedPos + globalBoundingBoxOffset.value,
     );
     submeshInfoCount = Standard4BytesData(
-      position: globalBoundingBox.getEndOffset() - offset,
+      position: boundingBox.getEndOffset() - offset,
       bytes: bytes,
       offset: offset,
     );
@@ -252,31 +275,17 @@ class MeshChunk extends Chunk {
         bytes,
         submeshes.isNotEmpty
             ? submeshes.last.getEndOffset()
-            : submeshMaterialsCount.offsettedLength,
+            : submeshInfoOffset.offsettedPos + submeshInfoOffset.value,
+        false,
       );
       submeshes.add(submesh);
     }
   }
 
-  Model toModel() {
-    final globalBB = globalBoundingBox.toModelBox();
-    final List<ModelVertex> vertices = [];
-    final List<ModelTriangle> triangles = [];
-    for (var submesh in submeshes) {
-      final data = submesh.getMeshModelData(vertices.length, globalBB);
-      vertices.addAll(data.vertices);
-      triangles.addAll(data.triangles);
-    }
-    return Model(
-      name: label,
-      vertices: vertices,
-      triangles: triangles,
-      boundingBox: globalBB,
-    );
-  }
-
   @override
   int getEndOffset() {
-    return submeshMaterialsCount.relativeEnd;
+    return submeshes.isNotEmpty
+        ? submeshes.last.getEndOffset()
+        : submeshMaterialsCount.offsettedLength;
   }
 }

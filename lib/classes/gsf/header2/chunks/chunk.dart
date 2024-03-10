@@ -27,13 +27,19 @@ extension ChunkTypeExtension on ChunkType {
   // skinned chunks correspond to chunk with bone weight and relation
   // https://forum.unity.com/threads/stupid-question-of-the-day-whats-the-difference-between-a-skinned-mesh-and-a-non-skinned-mesh.379701/
   bool isSkinned() {
-    return value & 0x80000000 != 0 || this == ChunkType.meshSkinnedSimple;
+    return value & 0x80000000 != 0 || value & 0x20000000 != 0;
   }
 
   bool isMeshLike() {
     return this == ChunkType.mesh ||
         this == ChunkType.meshSkinned ||
         this == ChunkType.meshSkinnedSimple;
+  }
+
+  bool isClothLike() {
+    return this == ChunkType.cloth ||
+        this == ChunkType.clothSkinned ||
+        this == ChunkType.clothSkinnedSimple;
   }
 
   int get value {

@@ -17,7 +17,6 @@ class SubmeshDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final modelData = submesh.getMeshModelData(0, null);
     final Model model = Model(
-      name: "submesh",
       vertices: modelData.vertices,
       triangles: modelData.triangles,
       boundingBox: modelData.box,
