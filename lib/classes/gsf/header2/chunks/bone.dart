@@ -20,8 +20,8 @@ class Bone extends GsfPart {
   late final Standard4BytesData<int> bonesCount2;
 
   @override
-  String get label => 'Bone $guid';
-  
+  String get label => 'Bone 0x${guid.value.toRadixString(16)}';
+
   Bone.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     guid = Standard4BytesData(
       position: 0,
@@ -100,8 +100,8 @@ class Bone extends GsfPart {
     );
   }
 
-  @override 
+  @override
   int getEndOffset() {
-    return bonesCount2.offsettedLength;    
+    return bonesCount2.offsettedLength;
   }
 }

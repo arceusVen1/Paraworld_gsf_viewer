@@ -5,6 +5,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
+/// WARNING: This class the first bone is included in skeleton chunk
 class SkeletonChunk extends Chunk {
   late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
@@ -21,9 +22,9 @@ class SkeletonChunk extends Chunk {
   late final Standard4BytesData<double> quaternionI;
   late final Standard4BytesData<double> quaternionJ;
   late final Standard4BytesData<double> quaternionK;
-  late final Standard4BytesData<int> bonesCount;
+  late final Standard4BytesData<int> childBonesCount;
   late final Standard4BytesData<int> bonesOffset;
-  late final Standard4BytesData<int> bonesCount2;
+  late final Standard4BytesData<int> childBonesCount2;
   late final Standard4BytesData<int> bindPoseOffset;
   late final Standard4BytesData<int> allBonesCount;
   late final Standard4BytesData<int> allBones2;
@@ -112,24 +113,24 @@ class SkeletonChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
-    bonesCount = Standard4BytesData(
+    childBonesCount = Standard4BytesData(
       position: quaternionK.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
     bonesOffset = Standard4BytesData(
-      position: bonesCount.relativeEnd,
+      position: childBonesCount.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    bonesCount2 = Standard4BytesData(
+    childBonesCount2 = Standard4BytesData(
       position: bonesOffset.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
 
     bindPoseOffset = Standard4BytesData(
-      position: bonesCount2.relativeEnd,
+      position: childBonesCount2.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
@@ -151,8 +152,8 @@ class SkeletonChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
-    bones = [];
-    for (var i = 0; i < bonesCount.value; i++) {
+    bones = []; // see warning where first nbone is inclueded in skeleton chunk
+    for (var i = 0; i < allBonesCount.value - 1; i++) {
       bones.add(
         Bone.fromBytes(
           bytes,
