@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone_link.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/link.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
@@ -37,9 +37,9 @@ class SelectedChunkState with _$SelectedChunkState {
     Bone? bone,
   }) = SelectedChunkStateWithSkeleton;
 
-  const factory SelectedChunkState.withBoneLink({
-    required BoneLinkChunk boneLink,
-  }) = SelectedChunkStateWithBoneLink;
+  const factory SelectedChunkState.withLink({
+    required LinkChunk linkChunk,
+  }) = SelectedChunkStateWithLink;
 
   const factory SelectedChunkState.withMesh({
     required MeshChunk mesh,

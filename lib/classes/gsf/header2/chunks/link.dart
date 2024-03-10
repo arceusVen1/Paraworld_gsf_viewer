@@ -3,26 +3,29 @@ import 'dart:typed_data';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
-class BoneLinkChunk extends Chunk {
+class LinkChunk extends Chunk {
   late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
-  late final Standard4BytesData<int> positionX;
-  late final Standard4BytesData<int> positionY;
-  late final Standard4BytesData<int> positionZ;
-  late final Standard4BytesData<int> quaternionL;
-  late final Standard4BytesData<int> quaternionI;
-  late final Standard4BytesData<int> quaternionJ;
-  late final Standard4BytesData<int> quaternionK;
+  late final Standard4BytesData<double> positionX;
+  late final Standard4BytesData<double> positionY;
+  late final Standard4BytesData<double> positionZ;
+  late final Standard4BytesData<double> quaternionL;
+  late final Standard4BytesData<double> quaternionI;
+  late final Standard4BytesData<double> quaternionJ;
+  late final Standard4BytesData<double> quaternionK;
   late final Standard4BytesData<StringNoZero> fourccLink;
-  late final Standard4BytesData<int> skeletonIndex;
-  late final Standard4BytesData<UnknowData> boneIds;
-  late final Standard4BytesData<UnknowData> boneWeights;
+  // for bone only
+  late final Standard4BytesData<int>? skeletonIndex;
+  late final Standard4BytesData<UnknowData>? boneIds;
+  late final Standard4BytesData<UnknowData>? boneWeights;
 
   @override
-  String get label => 'BoneLink 0x${guid.value.toRadixString(16)}';
+  String get label => '${type.name} 0x${guid.value.toRadixString(16)}';
 
-  BoneLinkChunk.fromBytes(Uint8List bytes, int offset)
-      : super(offset: offset, type: ChunkType.boneLink) {
+  LinkChunk.fromBytes(Uint8List bytes, int offset, ChunkType type)
+      : super(offset: offset, type: type) {
+    assert(type.isLinkLike(),
+        'LinkChunk can only be created from link-like types');
     attributes = Standard4BytesData(
       position: 0,
       bytes: bytes,
@@ -73,25 +76,31 @@ class BoneLinkChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
-    skeletonIndex = Standard4BytesData(
-      position: fourccLink.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    boneIds = Standard4BytesData(
-      position: skeletonIndex.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
-    boneWeights = Standard4BytesData(
-      position: boneIds.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
+    if (type == ChunkType.boneLink) {
+      skeletonIndex = Standard4BytesData(
+        position: fourccLink.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+      boneIds = Standard4BytesData(
+        position: skeletonIndex!.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+      boneWeights = Standard4BytesData(
+        position: boneIds!.relativeEnd,
+        bytes: bytes,
+        offset: offset,
+      );
+    } else {
+      skeletonIndex = null;
+      boneIds = null;
+      boneWeights = null;
+    }
   }
 
   @override
   int getEndOffset() {
-    return boneWeights.offsettedLength;
+    return boneWeights?.offsettedLength ?? fourccLink.offsettedLength;
   }
 }

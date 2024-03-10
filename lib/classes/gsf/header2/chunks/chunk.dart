@@ -42,6 +42,10 @@ extension ChunkTypeExtension on ChunkType {
         this == ChunkType.clothSkinnedSimple;
   }
 
+  bool isLinkLike() {
+    return this == ChunkType.positionLink || this == ChunkType.boneLink;
+  }
+
   int get value {
     switch (this) {
       case ChunkType.mesh:

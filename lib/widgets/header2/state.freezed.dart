@@ -651,7 +651,7 @@ mixin _$SelectedChunkState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
-    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(LinkChunk linkChunk) withLink,
     required TResult Function(
             MeshChunk mesh, MaterialData? material, Submesh? submesh)
         withMesh,
@@ -663,7 +663,7 @@ mixin _$SelectedChunkState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(LinkChunk linkChunk)? withLink,
     TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult? Function(
@@ -674,7 +674,7 @@ mixin _$SelectedChunkState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(LinkChunk linkChunk)? withLink,
     TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult Function(
@@ -687,8 +687,7 @@ mixin _$SelectedChunkState {
   TResult map<TResult extends Object?>({
     required TResult Function(SelectedChunkStateWithSkeleton value)
         withSkeleton,
-    required TResult Function(SelectedChunkStateWithBoneLink value)
-        withBoneLink,
+    required TResult Function(SelectedChunkStateWithLink value) withLink,
     required TResult Function(SelectedChunkStateWithMesh value) withMesh,
     required TResult Function(SelectedChunkStateWithCloth value) withCloth,
   }) =>
@@ -696,7 +695,7 @@ mixin _$SelectedChunkState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithLink value)? withLink,
     TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
   }) =>
@@ -704,7 +703,7 @@ mixin _$SelectedChunkState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithLink value)? withLink,
     TResult Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult Function(SelectedChunkStateWithCloth value)? withCloth,
     required TResult orElse(),
@@ -811,7 +810,7 @@ class _$SelectedChunkStateWithSkeletonImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
-    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(LinkChunk linkChunk) withLink,
     required TResult Function(
             MeshChunk mesh, MaterialData? material, Submesh? submesh)
         withMesh,
@@ -826,7 +825,7 @@ class _$SelectedChunkStateWithSkeletonImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(LinkChunk linkChunk)? withLink,
     TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult? Function(
@@ -840,7 +839,7 @@ class _$SelectedChunkStateWithSkeletonImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(LinkChunk linkChunk)? withLink,
     TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult Function(
@@ -859,8 +858,7 @@ class _$SelectedChunkStateWithSkeletonImpl
   TResult map<TResult extends Object?>({
     required TResult Function(SelectedChunkStateWithSkeleton value)
         withSkeleton,
-    required TResult Function(SelectedChunkStateWithBoneLink value)
-        withBoneLink,
+    required TResult Function(SelectedChunkStateWithLink value) withLink,
     required TResult Function(SelectedChunkStateWithMesh value) withMesh,
     required TResult Function(SelectedChunkStateWithCloth value) withCloth,
   }) {
@@ -871,7 +869,7 @@ class _$SelectedChunkStateWithSkeletonImpl
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithLink value)? withLink,
     TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
   }) {
@@ -882,7 +880,7 @@ class _$SelectedChunkStateWithSkeletonImpl
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithLink value)? withLink,
     TResult Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult Function(SelectedChunkStateWithCloth value)? withCloth,
     required TResult orElse(),
@@ -908,78 +906,76 @@ abstract class SelectedChunkStateWithSkeleton implements SelectedChunkState {
 }
 
 /// @nodoc
-abstract class _$$SelectedChunkStateWithBoneLinkImplCopyWith<$Res> {
-  factory _$$SelectedChunkStateWithBoneLinkImplCopyWith(
-          _$SelectedChunkStateWithBoneLinkImpl value,
-          $Res Function(_$SelectedChunkStateWithBoneLinkImpl) then) =
-      __$$SelectedChunkStateWithBoneLinkImplCopyWithImpl<$Res>;
+abstract class _$$SelectedChunkStateWithLinkImplCopyWith<$Res> {
+  factory _$$SelectedChunkStateWithLinkImplCopyWith(
+          _$SelectedChunkStateWithLinkImpl value,
+          $Res Function(_$SelectedChunkStateWithLinkImpl) then) =
+      __$$SelectedChunkStateWithLinkImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({BoneLinkChunk boneLink});
+  $Res call({LinkChunk linkChunk});
 }
 
 /// @nodoc
-class __$$SelectedChunkStateWithBoneLinkImplCopyWithImpl<$Res>
+class __$$SelectedChunkStateWithLinkImplCopyWithImpl<$Res>
     extends _$SelectedChunkStateCopyWithImpl<$Res,
-        _$SelectedChunkStateWithBoneLinkImpl>
-    implements _$$SelectedChunkStateWithBoneLinkImplCopyWith<$Res> {
-  __$$SelectedChunkStateWithBoneLinkImplCopyWithImpl(
-      _$SelectedChunkStateWithBoneLinkImpl _value,
-      $Res Function(_$SelectedChunkStateWithBoneLinkImpl) _then)
+        _$SelectedChunkStateWithLinkImpl>
+    implements _$$SelectedChunkStateWithLinkImplCopyWith<$Res> {
+  __$$SelectedChunkStateWithLinkImplCopyWithImpl(
+      _$SelectedChunkStateWithLinkImpl _value,
+      $Res Function(_$SelectedChunkStateWithLinkImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? boneLink = null,
+    Object? linkChunk = null,
   }) {
-    return _then(_$SelectedChunkStateWithBoneLinkImpl(
-      boneLink: null == boneLink
-          ? _value.boneLink
-          : boneLink // ignore: cast_nullable_to_non_nullable
-              as BoneLinkChunk,
+    return _then(_$SelectedChunkStateWithLinkImpl(
+      linkChunk: null == linkChunk
+          ? _value.linkChunk
+          : linkChunk // ignore: cast_nullable_to_non_nullable
+              as LinkChunk,
     ));
   }
 }
 
 /// @nodoc
 
-class _$SelectedChunkStateWithBoneLinkImpl
-    implements SelectedChunkStateWithBoneLink {
-  const _$SelectedChunkStateWithBoneLinkImpl({required this.boneLink});
+class _$SelectedChunkStateWithLinkImpl implements SelectedChunkStateWithLink {
+  const _$SelectedChunkStateWithLinkImpl({required this.linkChunk});
 
   @override
-  final BoneLinkChunk boneLink;
+  final LinkChunk linkChunk;
 
   @override
   String toString() {
-    return 'SelectedChunkState.withBoneLink(boneLink: $boneLink)';
+    return 'SelectedChunkState.withLink(linkChunk: $linkChunk)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SelectedChunkStateWithBoneLinkImpl &&
-            (identical(other.boneLink, boneLink) ||
-                other.boneLink == boneLink));
+            other is _$SelectedChunkStateWithLinkImpl &&
+            (identical(other.linkChunk, linkChunk) ||
+                other.linkChunk == linkChunk));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, boneLink);
+  int get hashCode => Object.hash(runtimeType, linkChunk);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SelectedChunkStateWithBoneLinkImplCopyWith<
-          _$SelectedChunkStateWithBoneLinkImpl>
-      get copyWith => __$$SelectedChunkStateWithBoneLinkImplCopyWithImpl<
-          _$SelectedChunkStateWithBoneLinkImpl>(this, _$identity);
+  _$$SelectedChunkStateWithLinkImplCopyWith<_$SelectedChunkStateWithLinkImpl>
+      get copyWith => __$$SelectedChunkStateWithLinkImplCopyWithImpl<
+          _$SelectedChunkStateWithLinkImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
-    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(LinkChunk linkChunk) withLink,
     required TResult Function(
             MeshChunk mesh, MaterialData? material, Submesh? submesh)
         withMesh,
@@ -987,28 +983,28 @@ class _$SelectedChunkStateWithBoneLinkImpl
             ClothChunk cloth, MaterialData? material, Submesh? submesh)
         withCloth,
   }) {
-    return withBoneLink(boneLink);
+    return withLink(linkChunk);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(LinkChunk linkChunk)? withLink,
     TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult? Function(
             ClothChunk cloth, MaterialData? material, Submesh? submesh)?
         withCloth,
   }) {
-    return withBoneLink?.call(boneLink);
+    return withLink?.call(linkChunk);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(LinkChunk linkChunk)? withLink,
     TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult Function(
@@ -1016,8 +1012,8 @@ class _$SelectedChunkStateWithBoneLinkImpl
         withCloth,
     required TResult orElse(),
   }) {
-    if (withBoneLink != null) {
-      return withBoneLink(boneLink);
+    if (withLink != null) {
+      return withLink(linkChunk);
     }
     return orElse();
   }
@@ -1027,50 +1023,47 @@ class _$SelectedChunkStateWithBoneLinkImpl
   TResult map<TResult extends Object?>({
     required TResult Function(SelectedChunkStateWithSkeleton value)
         withSkeleton,
-    required TResult Function(SelectedChunkStateWithBoneLink value)
-        withBoneLink,
+    required TResult Function(SelectedChunkStateWithLink value) withLink,
     required TResult Function(SelectedChunkStateWithMesh value) withMesh,
     required TResult Function(SelectedChunkStateWithCloth value) withCloth,
   }) {
-    return withBoneLink(this);
+    return withLink(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithLink value)? withLink,
     TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
   }) {
-    return withBoneLink?.call(this);
+    return withLink?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithLink value)? withLink,
     TResult Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult Function(SelectedChunkStateWithCloth value)? withCloth,
     required TResult orElse(),
   }) {
-    if (withBoneLink != null) {
-      return withBoneLink(this);
+    if (withLink != null) {
+      return withLink(this);
     }
     return orElse();
   }
 }
 
-abstract class SelectedChunkStateWithBoneLink implements SelectedChunkState {
-  const factory SelectedChunkStateWithBoneLink(
-          {required final BoneLinkChunk boneLink}) =
-      _$SelectedChunkStateWithBoneLinkImpl;
+abstract class SelectedChunkStateWithLink implements SelectedChunkState {
+  const factory SelectedChunkStateWithLink(
+      {required final LinkChunk linkChunk}) = _$SelectedChunkStateWithLinkImpl;
 
-  BoneLinkChunk get boneLink;
+  LinkChunk get linkChunk;
   @JsonKey(ignore: true)
-  _$$SelectedChunkStateWithBoneLinkImplCopyWith<
-          _$SelectedChunkStateWithBoneLinkImpl>
+  _$$SelectedChunkStateWithLinkImplCopyWith<_$SelectedChunkStateWithLinkImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1161,7 +1154,7 @@ class _$SelectedChunkStateWithMeshImpl implements SelectedChunkStateWithMesh {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
-    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(LinkChunk linkChunk) withLink,
     required TResult Function(
             MeshChunk mesh, MaterialData? material, Submesh? submesh)
         withMesh,
@@ -1176,7 +1169,7 @@ class _$SelectedChunkStateWithMeshImpl implements SelectedChunkStateWithMesh {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(LinkChunk linkChunk)? withLink,
     TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult? Function(
@@ -1190,7 +1183,7 @@ class _$SelectedChunkStateWithMeshImpl implements SelectedChunkStateWithMesh {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(LinkChunk linkChunk)? withLink,
     TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult Function(
@@ -1209,8 +1202,7 @@ class _$SelectedChunkStateWithMeshImpl implements SelectedChunkStateWithMesh {
   TResult map<TResult extends Object?>({
     required TResult Function(SelectedChunkStateWithSkeleton value)
         withSkeleton,
-    required TResult Function(SelectedChunkStateWithBoneLink value)
-        withBoneLink,
+    required TResult Function(SelectedChunkStateWithLink value) withLink,
     required TResult Function(SelectedChunkStateWithMesh value) withMesh,
     required TResult Function(SelectedChunkStateWithCloth value) withCloth,
   }) {
@@ -1221,7 +1213,7 @@ class _$SelectedChunkStateWithMeshImpl implements SelectedChunkStateWithMesh {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithLink value)? withLink,
     TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
   }) {
@@ -1232,7 +1224,7 @@ class _$SelectedChunkStateWithMeshImpl implements SelectedChunkStateWithMesh {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithLink value)? withLink,
     TResult Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult Function(SelectedChunkStateWithCloth value)? withCloth,
     required TResult orElse(),
@@ -1345,7 +1337,7 @@ class _$SelectedChunkStateWithClothImpl implements SelectedChunkStateWithCloth {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(SkeletonChunk skeleton, Bone? bone) withSkeleton,
-    required TResult Function(BoneLinkChunk boneLink) withBoneLink,
+    required TResult Function(LinkChunk linkChunk) withLink,
     required TResult Function(
             MeshChunk mesh, MaterialData? material, Submesh? submesh)
         withMesh,
@@ -1360,7 +1352,7 @@ class _$SelectedChunkStateWithClothImpl implements SelectedChunkStateWithCloth {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult? Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult? Function(LinkChunk linkChunk)? withLink,
     TResult? Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult? Function(
@@ -1374,7 +1366,7 @@ class _$SelectedChunkStateWithClothImpl implements SelectedChunkStateWithCloth {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(SkeletonChunk skeleton, Bone? bone)? withSkeleton,
-    TResult Function(BoneLinkChunk boneLink)? withBoneLink,
+    TResult Function(LinkChunk linkChunk)? withLink,
     TResult Function(MeshChunk mesh, MaterialData? material, Submesh? submesh)?
         withMesh,
     TResult Function(
@@ -1393,8 +1385,7 @@ class _$SelectedChunkStateWithClothImpl implements SelectedChunkStateWithCloth {
   TResult map<TResult extends Object?>({
     required TResult Function(SelectedChunkStateWithSkeleton value)
         withSkeleton,
-    required TResult Function(SelectedChunkStateWithBoneLink value)
-        withBoneLink,
+    required TResult Function(SelectedChunkStateWithLink value) withLink,
     required TResult Function(SelectedChunkStateWithMesh value) withMesh,
     required TResult Function(SelectedChunkStateWithCloth value) withCloth,
   }) {
@@ -1405,7 +1396,7 @@ class _$SelectedChunkStateWithClothImpl implements SelectedChunkStateWithCloth {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult? Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult? Function(SelectedChunkStateWithLink value)? withLink,
     TResult? Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult? Function(SelectedChunkStateWithCloth value)? withCloth,
   }) {
@@ -1416,7 +1407,7 @@ class _$SelectedChunkStateWithClothImpl implements SelectedChunkStateWithCloth {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SelectedChunkStateWithSkeleton value)? withSkeleton,
-    TResult Function(SelectedChunkStateWithBoneLink value)? withBoneLink,
+    TResult Function(SelectedChunkStateWithLink value)? withLink,
     TResult Function(SelectedChunkStateWithMesh value)? withMesh,
     TResult Function(SelectedChunkStateWithCloth value)? withCloth,
     required TResult orElse(),

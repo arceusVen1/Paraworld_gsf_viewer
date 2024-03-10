@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone_link.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/link.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
@@ -47,9 +47,9 @@ class Header2StateNotifier extends Notifier<Header2State> {
     state = state.maybeMap(
       withModelSettings: (s) {
         switch(chunk.runtimeType) {
-          case BoneLinkChunk:
+          case LinkChunk:
             return s.copyWith(
-              selectedChunkState: SelectedChunkState.withBoneLink(boneLink: chunk as BoneLinkChunk),
+              selectedChunkState: SelectedChunkState.withLink(linkChunk: chunk as LinkChunk),
             );
           case SkeletonChunk:
             return s.copyWith(
