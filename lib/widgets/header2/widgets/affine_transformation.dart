@@ -34,7 +34,7 @@ class AffineTransformationDisplay extends StatelessWidget {
           GsfDataTile(label: 'position Z', data: transformation.positionZ),
           GsfDataTile(
               label: 'unknown float 4', data: transformation.unknownFloat4),
-          GsfDataTile(label: 'unknown data', data: transformation.unknownData),
+         
         ],
       ),
     );

@@ -11,6 +11,7 @@ class ClothChunk extends Chunk with MeshToModelInterface {
   late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
   late final AffineTransformation affineTransformation;
+  late final Standard4BytesData<UnknowData> unknownData;
   late final Standard4BytesData<int>? skeletonIndex; // only for skinned mesh
   late final Standard4BytesData<UnknowData>?
       boneIds; // only for simple skinned mesh
@@ -56,9 +57,13 @@ class ClothChunk extends Chunk with MeshToModelInterface {
       bytes,
       guid.offsettedLength,
     );
+    unknownData = Standard4BytesData(
+      position: guid.relativeEnd + affineTransformation.length,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    int nextRelativePos = guid.relativeEnd + affineTransformation.length;
-
+    int nextRelativePos = unknownData.relativeEnd;
     if (type.isSkinned()) {
       skeletonIndex = Standard4BytesData(
         position: nextRelativePos,

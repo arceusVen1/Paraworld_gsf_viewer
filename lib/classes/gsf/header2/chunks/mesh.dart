@@ -9,8 +9,6 @@ import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 
-
-
 mixin MeshToModelInterface on Chunk {
   BoundingBox get boundingBox;
   List<Submesh> get submeshes;
@@ -35,6 +33,7 @@ class MeshChunk extends Chunk with MeshToModelInterface {
   late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
   late final AffineTransformation transformation;
+  late final Standard4BytesData<UnknowData> unknownData;
   late final Standard4BytesData<int>? skeletonIndex; // only for skinned mesh
   late final Standard4BytesData<UnknowData>?
       boneIds; // only for simple skinned mesh
@@ -75,8 +74,13 @@ class MeshChunk extends Chunk with MeshToModelInterface {
       bytes,
       guid.offsettedLength,
     );
+    unknownData = Standard4BytesData(
+      position: guid.relativeEnd + transformation.length,
+      bytes: bytes,
+      offset: offset,
+    );
 
-    int nextRelativePos = guid.relativeEnd + transformation.length;
+    int nextRelativePos = unknownData.relativeEnd;
     if (type.isSkinned()) {
       skeletonIndex = Standard4BytesData(
         position: nextRelativePos,

@@ -19,7 +19,6 @@ class AffineTransformation extends GsfPart {
   late final Standard4BytesData<double> positionY;
   late final Standard4BytesData<double> positionZ;
   late final Standard4BytesData<double> unknownFloat4;
-  late final Standard4BytesData<UnknowData> unknownData;
 
   @override
   String get label => 'affine transformation';
@@ -106,16 +105,10 @@ class AffineTransformation extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
-
-    unknownData = Standard4BytesData(
-      position: unknownFloat4.relativeEnd,
-      bytes: bytes,
-      offset: offset,
-    );
   }
 
   @override
   int getEndOffset() {
-    return unknownData.offsettedLength;
+    return unknownFloat4.offsettedLength;
   }
 }

@@ -35,6 +35,7 @@ class MeshChunkDisplay extends ConsumerWidget {
       GsfDataTile(label: 'attributes', data: mesh.attributes),
       GsfDataTile(label: 'guid', data: mesh.guid),
       AffineTransformationDisplay(transformation: mesh.transformation),
+      GsfDataTile(label: 'unknown data', data: mesh.unknownData),
       if (mesh.skeletonIndex != null) ...[
         GsfDataTile(label: "skeleton index", data: mesh.skeletonIndex!),
       ],
@@ -119,6 +120,7 @@ class ClothChunkDisplay extends ConsumerWidget {
       GsfDataTile(label: 'attributes', data: cloth.attributes),
       GsfDataTile(label: 'guid', data: cloth.guid),
       AffineTransformationDisplay(transformation: cloth.affineTransformation),
+      GsfDataTile(label: 'unknown data', data: cloth.unknownData),
       if (cloth.skeletonIndex != null) ...[
         GsfDataTile(label: "skeleton index", data: cloth.skeletonIndex!),
       ],
