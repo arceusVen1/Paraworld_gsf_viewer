@@ -14,16 +14,20 @@ class Menu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final showNormals = ref.watch(showNormalsProvider);
+    final theme = Theme.of(context);
     return Drawer(
       child: ListView(
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: theme.primaryColor,
             ),
-            child: Label.extraLarge("Options"),
+            child: const Label.extraLarge(
+              "Options",
+              color: Colors.white,
+            ),
           ),
           _FileLoaderTile(
             title: "Select a .gsf",
@@ -41,10 +45,10 @@ class Menu extends ConsumerWidget {
             title: Label.medium(
               showNormals ? "normals visible" : "normals hidden",
             ),
-            trailing: Switch(
+            trailing: Switch.adaptive(
               // This bool value toggles the switch.
               value: showNormals,
-              activeColor: Colors.red,
+              activeColor: theme.colorScheme.secondary,
               onChanged: (bool value) {
                 // This is called when the user toggles the switch.
                 ref.read(showNormalsProvider.notifier).state = value;

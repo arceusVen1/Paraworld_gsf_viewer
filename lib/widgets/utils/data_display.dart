@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
@@ -110,6 +109,7 @@ class GsfDataTile extends StatelessWidget {
       waitDuration: const Duration(milliseconds: 200),
       child: _SelectableTile(
         title: title,
+        valueToCopy: toolTip,
         onSelected: () {
           if (onSelected != null) {
             onSelected!(relatedPart);
@@ -125,11 +125,13 @@ class _SelectableTile extends StatefulWidget {
   const _SelectableTile({
     required this.title,
     required this.onSelected,
+    required this.valueToCopy,
     this.bold = false,
   });
 
   final String title;
   final bool bold;
+  final String valueToCopy;
   final void Function() onSelected;
 
   @override
@@ -152,6 +154,13 @@ class __SelectableTileState extends State<_SelectableTile> {
       }),
       child: GestureDetector(
         onTap: widget.onSelected,
+        onSecondaryTap: () {
+          Clipboard.setData(ClipboardData(text: widget.valueToCopy));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+            "Copied to clipboard: ${widget.valueToCopy}",
+          )));
+        },
         child: Container(
           color: _isHovering ? Colors.grey.shade300 : null,
           padding: const EdgeInsets.symmetric(vertical: 2.0),

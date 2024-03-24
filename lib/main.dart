@@ -9,6 +9,10 @@ void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
+const kPrimaryColor = Color(0xff5c7ca4);
+const kSecondaryColor = Color(0xffc23a31);
+const kSecondaryContainerColor = Color(0xffd08f8a);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -18,8 +22,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ParaWorld GSF viewer',
       theme: ThemeData(
-        useMaterial3: true,
-      ),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: kPrimaryColor,
+            secondary: kSecondaryColor,
+            secondaryContainer: kSecondaryContainerColor,
+          )),
       home: DefaultTabController(
         length: 3,
         child: Scaffold(

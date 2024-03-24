@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-const primaryColor = Color.fromARGB(255, 252, 0, 92);
-const secondaryColor = Color.fromARGB(255, 228, 228, 228);
-
 class Button extends StatelessWidget {
   const Button({
     super.key,
     this.child,
     this.isOutlined = false,
     this.disabled = false,
-    required this.color,
+    this.isPrimary = false,
+    this.color,
     this.disabledColor,
     this.innerPadding,
     this.onPressed,
@@ -18,7 +16,8 @@ class Button extends StatelessWidget {
   final Widget? child;
   final bool isOutlined;
   final bool disabled;
-  final Color color;
+  final bool isPrimary;
+  final Color? color;
   final Color? disabledColor;
   final EdgeInsets? innerPadding;
   final void Function()? onPressed;
@@ -28,19 +27,21 @@ class Button extends StatelessWidget {
     this.child,
     this.isOutlined = false,
     this.disabled = false,
+    this.color,
     this.disabledColor,
     this.innerPadding,
     this.onPressed,
-  }) : color = primaryColor;
+  }) : isPrimary = true;
 
   const Button.outlinedPrimary({
     super.key,
     this.child,
+    this.color,
     this.disabledColor,
     this.disabled = false,
     this.innerPadding,
     this.onPressed,
-  })  : color = primaryColor,
+  })  : isPrimary = true,
         isOutlined = true;
 
   const Button.secondary({
@@ -48,42 +49,50 @@ class Button extends StatelessWidget {
     this.child,
     this.isOutlined = false,
     this.disabled = false,
+    this.color,
     this.disabledColor,
     this.innerPadding,
     this.onPressed,
-  }) : color = secondaryColor;
+  }) : isPrimary = false;
 
   const Button.outlinedSecondary({
     super.key,
     this.child,
+    this.color,
     this.disabledColor,
     this.disabled = false,
     this.innerPadding,
     this.onPressed,
-  })  : color = secondaryColor,
+  })  : isPrimary = false,
         isOutlined = true;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final buttonChild = Padding(
       padding: innerPadding ?? const EdgeInsets.all(0),
       child: child,
     );
+    final colorToUse = color ??
+        (isPrimary
+            ? theme.colorScheme.secondary
+            : theme.colorScheme.primaryContainer);
     return isOutlined
         ? OutlinedButton(
             onPressed: !disabled ? onPressed : null,
             style: OutlinedButton.styleFrom(
               side: BorderSide(
-                  color: disabled && disabledColor != null
-                      ? disabledColor!
-                      : color),
+                color: disabled && disabledColor != null
+                    ? disabledColor!
+                    : colorToUse,
+              ),
             ),
             child: buttonChild,
           )
         : ElevatedButton(
             onPressed: !disabled ? onPressed : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: disabled ? disabledColor : color,
+              backgroundColor: disabled ? disabledColor : colorToUse,
             ),
             child: buttonChild,
           );
