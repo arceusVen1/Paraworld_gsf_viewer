@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
+
 abstract class GsfPartInterface {
   int get offset;
   String get label;
@@ -93,6 +95,7 @@ class GsfData<T> {
   late final int length;
   late final T value;
   late final int offset;
+  Uint8List? bytesData;
 
   GsfData.fromPosition({
     required this.relativePos,
@@ -138,24 +141,25 @@ class GsfData<T> {
         value = getAsBool(bytes) as T;
       case UnknowData:
         value = bytes.sublist(offsettedPos, offsettedLength) as T;
+        bytesData = value as Uint8List;
       default:
         throw Exception('Invalid type');
     }
   }
 
   String getAsAsciiString(Uint8List bytes, bool trailingZero) {
-    final stringBytes = bytes.sublist(offsettedPos, offsettedLength);
-    int strLength = stringBytes.length;
+    bytesData = bytes.sublist(offsettedPos, offsettedLength);
+    int strLength = bytesData!.length;
     if (trailingZero) {
-      assert(
-          stringBytes.last == 0); // all names should have a 0 name terminator
+      assert(bytesData!.last == 0); // all names should have a 0 name terminator
       strLength -= 1;
     }
-    return const AsciiDecoder().convert(stringBytes.sublist(0, strLength));
+    return const AsciiDecoder().convert(bytesData!.sublist(0, strLength));
   }
 
   ByteData getBytesData(Uint8List bytes) {
-    return ByteData.sublistView(bytes, offsettedPos, offsettedLength);
+    bytesData = bytes.sublist(offsettedPos, offsettedLength);
+    return ByteData.sublistView(bytesData!);
   }
 
   int getAsUint(Uint8List bytes) {

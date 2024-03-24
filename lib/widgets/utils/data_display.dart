@@ -101,6 +101,10 @@ class GsfDataTile extends StatelessWidget {
     }
     String toolTip =
         "position: 0x${data.offsettedPos.toRadixString(16)}, length: ${data.length}";
+    if (data.bytesData != null) {
+      toolTip +=
+          ', bytes: ${data.bytesData!.map((element) => element.toRadixString(16).length > 1 ? element.toRadixString(16) : '0${element.toRadixString(16)}').join(' ')}';
+    }
     if (data.value is int) {
       toolTip = 'value: 0x${(data.value as int).toRadixString(16)}, $toolTip';
     }
@@ -143,6 +147,7 @@ class __SelectableTileState extends State<_SelectableTile> {
 
   @override
   Widget build(BuildContext context) {
+    final messenger = ScaffoldMessenger.of(context);
     return MouseRegion(
       onHover: (event) {
         setState(() {
@@ -156,7 +161,8 @@ class __SelectableTileState extends State<_SelectableTile> {
         onTap: widget.onSelected,
         onSecondaryTap: () {
           Clipboard.setData(ClipboardData(text: widget.valueToCopy));
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          messenger.clearSnackBars();
+          messenger.showSnackBar(SnackBar(
               content: Text(
             "Copied to clipboard: ${widget.valueToCopy}",
           )));
