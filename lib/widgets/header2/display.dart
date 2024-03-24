@@ -168,7 +168,10 @@ List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
           materials: materials,
         ),
         data.submesh != null
-            ? SubmeshDisplay(submesh: data.submesh!)
+            ? SubmeshDisplay(
+                submesh: data.submesh!,
+                boundingBox: data.mesh.boundingBox,
+              )
             : Flexible(
                 child: Viewer(
                   model: data.mesh.toModel(),
@@ -183,7 +186,10 @@ List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
           materials: materials,
         ),
         data.submesh != null
-            ? SubmeshDisplay(submesh: data.submesh!)
+            ? SubmeshDisplay(
+                submesh: data.submesh!,
+                boundingBox: data.cloth.boundingBox,
+              )
             : Flexible(
                 child: Viewer(
                   model: data.cloth.toModel(),

@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/viewer/viewer.dart';
-import 'package:vector_math/vector_math.dart' as vector;
 
 class SubmeshDisplay extends StatelessWidget {
   const SubmeshDisplay({
     super.key,
     required this.submesh,
+    required this.boundingBox,
   });
 
   final Submesh submesh;
+  final BoundingBox boundingBox;
 
   @override
   Widget build(BuildContext context) {
     final modelData = submesh.getMeshModelData(
       0,
-      null,
+      boundingBox.toModelBox(),
       null,
     );
     final Model model = Model(
