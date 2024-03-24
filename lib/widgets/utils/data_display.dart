@@ -99,21 +99,30 @@ class GsfDataTile extends StatelessWidget {
     } else {
       title += data.toString();
     }
-    String toolTip =
-        "position: 0x${data.offsettedPos.toRadixString(16)}, length: ${data.length}";
-    if (data.bytesData != null) {
-      toolTip +=
-          ', bytes: ${data.bytesData!.map((element) => element.toRadixString(16).length > 1 ? element.toRadixString(16) : '0${element.toRadixString(16)}').join(' ')}';
+    final position = data.offsettedPos.toRadixString(16);
+    final String? bytes = data.bytesData
+        ?.map((element) => element.toRadixString(16).length > 1
+            ? element.toRadixString(16)
+            : '0${element.toRadixString(16)}')
+        .join(' ');
+
+    String toolTip = "position: 0x$position, length: ${data.length}";
+    if (bytes != null) {
+      toolTip += ', bytes: $bytes';
     }
     if (data.value is int) {
       toolTip = 'value: 0x${(data.value as int).toRadixString(16)}, $toolTip';
+    } else {
+      toolTip = 'value: ${data.value}, $toolTip';
     }
     return Tooltip(
       message: toolTip,
       waitDuration: const Duration(milliseconds: 200),
       child: _SelectableTile(
         title: title,
-        valueToCopy: toolTip,
+        position: position,
+        bytes: bytes,
+        value: data.value.toString(),
         onSelected: () {
           if (onSelected != null) {
             onSelected!(relatedPart);
@@ -129,13 +138,17 @@ class _SelectableTile extends StatefulWidget {
   const _SelectableTile({
     required this.title,
     required this.onSelected,
-    required this.valueToCopy,
+    required this.position,
+    required this.value,
+    this.bytes,
     this.bold = false,
   });
 
   final String title;
   final bool bold;
-  final String valueToCopy;
+  final String position;
+  final String? bytes;
+  final String value;
   final void Function() onSelected;
 
   @override
@@ -144,10 +157,24 @@ class _SelectableTile extends StatefulWidget {
 
 class __SelectableTileState extends State<_SelectableTile> {
   bool _isHovering = false;
+  final ContextMenuController _contextMenuController = ContextMenuController();
+
+  void _onCopy(BuildContext context, String value) {
+    final messenger = ScaffoldMessenger.of(context);
+    ContextMenuController.removeAny();
+    Clipboard.setData(ClipboardData(text: value));
+    messenger.clearSnackBars();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          "Copied to clipboard: $value",
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final messenger = ScaffoldMessenger.of(context);
     return MouseRegion(
       onHover: (event) {
         setState(() {
@@ -158,14 +185,36 @@ class __SelectableTileState extends State<_SelectableTile> {
         _isHovering = false;
       }),
       child: GestureDetector(
-        onTap: widget.onSelected,
-        onSecondaryTap: () {
-          Clipboard.setData(ClipboardData(text: widget.valueToCopy));
-          messenger.clearSnackBars();
-          messenger.showSnackBar(SnackBar(
-              content: Text(
-            "Copied to clipboard: ${widget.valueToCopy}",
-          )));
+        onTap: () {
+          ContextMenuController.removeAny();
+          widget.onSelected;
+        },
+        onSecondaryTapUp: (details) {
+          _contextMenuController.show(
+            context: context,
+            contextMenuBuilder: (BuildContext context) {
+              return AdaptiveTextSelectionToolbar.buttonItems(
+                anchors: TextSelectionToolbarAnchors(
+                  primaryAnchor: details.globalPosition,
+                ),
+                buttonItems: <ContextMenuButtonItem>[
+                  ContextMenuButtonItem(
+                    onPressed: () => _onCopy(context, widget.position),
+                    label: 'Copy position',
+                  ),
+                  if (widget.bytes != null)
+                    ContextMenuButtonItem(
+                      onPressed: () => _onCopy(context, widget.bytes!),
+                      label: 'Copy bytes',
+                    ),
+                  ContextMenuButtonItem(
+                    onPressed: () => _onCopy(context, widget.value),
+                    label: 'Copy value',
+                  ),
+                ],
+              );
+            },
+          );
         },
         child: Container(
           color: _isHovering ? Colors.grey.shade300 : null,
@@ -211,6 +260,7 @@ class PartSelector extends StatelessWidget {
               label:
                   "$index. ${part.label} (0x${part.offset.toRadixString(16)})",
               onTap: () {
+                ContextMenuController.removeAny();
                 onSelected(part);
               });
         },
@@ -281,6 +331,7 @@ class _DataSelectorState extends State<DataSelector> {
               isSelected: data == _selected,
               label: label,
               onTap: () {
+                ContextMenuController.removeAny();
                 setState(() {
                   _selected = data;
                 });

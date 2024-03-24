@@ -262,8 +262,8 @@ class Standard4BytesData<T> extends GsfData<T> {
 
   @override
   String getAsAsciiString(Uint8List bytes, bool trailingZero) {
-    final stringBytes = bytes.sublist(offsettedPos, offsettedLength);
-    return const AsciiDecoder().convert(stringBytes);
+    bytesData = bytes.sublist(offsettedPos, offsettedLength);
+    return const AsciiDecoder().convert(bytesData!);
   }
 }
 
@@ -293,8 +293,8 @@ class DoubleByteData<T> extends GsfData<T> {
 
   @override
   String getAsAsciiString(Uint8List bytes, bool trailingZero) {
-    return const AsciiDecoder()
-        .convert(bytes.sublist(offsettedPos, offsettedLength));
+    bytesData = bytes.sublist(offsettedPos, offsettedLength);
+    return const AsciiDecoder().convert(bytesData!);
   }
 }
 
