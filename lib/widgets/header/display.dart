@@ -22,8 +22,11 @@ class HeaderDisplay extends ConsumerWidget {
     final gsfState = ref.watch(gsfProvider);
     return gsfState.map(
       loading: (_) => const Loading(),
-      error: (error) => Label.large('Error: $error',
-          color: Colors.red, fontWeight: FontWeight.bold),
+      error: (error) => Label.large(
+        'Error: $error',
+        color: Colors.red,
+        isBold: true,
+      ),
       data: (state) {
         if (state.value == null) {
           return const Empty();
@@ -57,7 +60,7 @@ class _Data extends ConsumerWidget {
       sideArea: variablePart,
       mainArea: DataDecorator(
         children: [
-          const Label.large('Header', fontWeight: FontWeight.bold),
+          const Label.large('Header', isBold: true),
           GsfDataTile(
               label: 'Content Table Offset', data: header.header2Offset),
           GsfDataTile(label: 'Name Length', data: header.nameLength),

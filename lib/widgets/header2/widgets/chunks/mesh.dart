@@ -27,15 +27,14 @@ class MeshChunkDisplay extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final selectedSubMesh = ref.watch(header2StateNotifierProvider).mapOrNull(
           withModelSettings: (data) => data.selectedChunkState?.mapOrNull(
-                withCloth: (cloth) => cloth.submesh,
-                withMesh: (mesh) => mesh.submesh,
+            withCloth: (cloth) => cloth.submesh,
+            withMesh: (mesh) => mesh.submesh,
           ),
         );
     return DataDecorator(children: [
       GsfDataTile(label: 'attributes', data: mesh.attributes),
       GsfDataTile(label: 'guid', data: mesh.guid),
       AffineTransformationDisplay(transformation: mesh.transformation),
-      GsfDataTile(label: 'unknown data', data: mesh.unknownData),
       if (mesh.skeletonIndex != null) ...[
         GsfDataTile(label: "skeleton index", data: mesh.skeletonIndex!),
       ],
@@ -58,7 +57,7 @@ class MeshChunkDisplay extends ConsumerWidget {
       GsfDataTile(label: 'submesh info 2 count', data: mesh.submeshInfo2Count),
       const Label.medium(
         "Submeshes",
-        fontWeight: FontWeight.bold,
+        isBold: true,
       ),
       PartSelector(
         value: selectedSubMesh,
@@ -76,7 +75,7 @@ class MeshChunkDisplay extends ConsumerWidget {
           label: 'submesh materials count', data: mesh.submeshMaterialsCount),
       const Label.medium(
         "materials",
-        fontWeight: FontWeight.bold,
+        isBold: true,
       ),
       DataSelector(
         datas: mesh.materialIndices,
@@ -112,15 +111,14 @@ class ClothChunkDisplay extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final selectedSubMesh = ref.watch(header2StateNotifierProvider).mapOrNull(
           withModelSettings: (data) => data.selectedChunkState?.mapOrNull(
-                withCloth: (cloth) => cloth.submesh,
-                withMesh: (mesh) => mesh.submesh,
+            withCloth: (cloth) => cloth.submesh,
+            withMesh: (mesh) => mesh.submesh,
           ),
         );
     return DataDecorator(children: [
       GsfDataTile(label: 'attributes', data: cloth.attributes),
       GsfDataTile(label: 'guid', data: cloth.guid),
       AffineTransformationDisplay(transformation: cloth.affineTransformation),
-      GsfDataTile(label: 'unknown data', data: cloth.unknownData),
       if (cloth.skeletonIndex != null) ...[
         GsfDataTile(label: "skeleton index", data: cloth.skeletonIndex!),
       ],
@@ -131,8 +129,7 @@ class ClothChunkDisplay extends ConsumerWidget {
         GsfDataTile(label: "bone weights", data: cloth.boneWeights!),
       ],
       GsfDataTile(
-          label: 'global bounding box offset',
-          data: cloth.boundingBoxOffset),
+          label: 'global bounding box offset', data: cloth.boundingBoxOffset),
       GsfDataTile(label: 'unknown offset', data: cloth.unknownOffset),
       GsfDataTile(label: 'unknown value', data: cloth.unknownValue),
       GsfDataTile(label: 'unknown offset 1', data: cloth.unknownOffset1),
@@ -149,7 +146,7 @@ class ClothChunkDisplay extends ConsumerWidget {
       GsfDataTile(label: 'submesh info 2 count', data: cloth.submeshCount2),
       const Label.medium(
         "Submeshes",
-        fontWeight: FontWeight.bold,
+        isBold: true,
       ),
       PartSelector(
         value: selectedSubMesh,
@@ -162,12 +159,13 @@ class ClothChunkDisplay extends ConsumerWidget {
         },
       ),
       GsfDataTile(
-          label: 'submesh materials offset', data: cloth.submeshMaterialsOffset),
+          label: 'submesh materials offset',
+          data: cloth.submeshMaterialsOffset),
       GsfDataTile(
           label: 'submesh materials count', data: cloth.submeshMaterialsCount),
       const Label.medium(
         "materials",
-        fontWeight: FontWeight.bold,
+        isBold: true,
       ),
       DataSelector(
         datas: cloth.materialIndices,
@@ -186,4 +184,3 @@ class ClothChunkDisplay extends ConsumerWidget {
     ]);
   }
 }
-

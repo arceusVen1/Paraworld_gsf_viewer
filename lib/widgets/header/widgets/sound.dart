@@ -11,7 +11,7 @@ class SoundDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataDecorator(children: [
-      const Label.large('Sound Info', fontWeight: FontWeight.bold),
+      const Label.large('Sound Info', isBold: true),
       GsfDataTile(label: 'Name', data: soundInfo.name),
       GsfDataTile(label: 'start frame', data: soundInfo.startFrame),
       GsfDataTile(label: 'volume', data: soundInfo.volume),

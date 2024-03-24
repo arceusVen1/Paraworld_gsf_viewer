@@ -12,14 +12,14 @@ class DustTrailDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataDecorator(children: [
-      const Label.large('Dust Trail', fontWeight: FontWeight.bold),
+      const Label.large('Dust Trail', isBold: true),
       GsfDataTile(label: 'unknown data', data: dustTrailInfo.unknownData),
       GsfDataTile(label: 'name', data: dustTrailInfo.name),
       GsfDataTile(label: 'bone index (unsure)', data: dustTrailInfo.boneIndex),
       GsfDataTile(label: 'number of entries', data: dustTrailInfo.entryCount),
       if (dustTrailInfo.entries.isNotEmpty)
         for (var entry in dustTrailInfo.entries) ...[
-          const Label.medium('Entry', fontWeight: FontWeight.bold),
+          const Label.medium('Entry', isBold: true),
           GsfDataTile(label: 'name', data: entry.name),
           GsfDataTile(label: 'length', data: entry.valueCharsLength),
           GsfDataTile(label: 'value', data: entry.valueChars),

@@ -25,8 +25,11 @@ class Header2Display extends ConsumerWidget {
     final gsfState = ref.watch(gsfProvider);
     return gsfState.map(
       loading: (_) => const Loading(),
-      error: (error) => Label.large('Error: $error',
-          color: Colors.red, fontWeight: FontWeight.bold),
+      error: (error) => Label.large(
+        'Error: $error',
+        color: Colors.red,
+        isBold: true,
+      ),
       data: (state) {
         if (state.value == null) {
           return const Empty();
@@ -79,7 +82,7 @@ class _Data extends ConsumerWidget {
             label: 'Anim settings count', data: header2.animSettingsCount),
         const Label.large(
           "Material table",
-          fontWeight: FontWeight.bold,
+          isBold: true,
         ),
         _MaterialsTable(materialsTable: header2.materialsTable),
       ]),

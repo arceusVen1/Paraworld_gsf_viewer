@@ -33,7 +33,7 @@ class ModelInfoDisplay extends ConsumerWidget {
     }
     return DataDecorator(
       children: [
-        const Label.large('Model Info', fontWeight: FontWeight.bold),
+        const Label.large('Model Info', isBold: true),
         GsfDataTile(label: 'Name', data: modelInfo.name),
         GsfDataTile(label: 'Index', data: modelInfo.index),
         GsfDataTile(label: 'Anim Count', data: modelInfo.animCount),
@@ -76,7 +76,7 @@ class ModelAnimDisplay extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return DataDecorator(
       children: [
-        const Label.large('Model Anim', fontWeight: FontWeight.bold),
+        const Label.large('Model Anim', isBold: true),
         GsfDataTile(label: 'Name', data: selectedModelAnim.name),
         GsfDataTile(label: 'index', data: selectedModelAnim.index),
         GsfDataTile(
@@ -137,7 +137,7 @@ class WalkSetDisplay extends ConsumerWidget {
 
     return DataDecorator(
       children: [
-        const Label.large('Walk Set', fontWeight: FontWeight.bold),
+        const Label.large('Walk Set', isBold: true),
         GsfDataTile(label: 'Name', data: selectedWalkSet.name),
         GsfDataTile(
           label: 'walk_1',

@@ -21,7 +21,7 @@ class BoundingBoxDisplay extends StatelessWidget {
       children: [
         Label.medium(
           bbName ?? "Bounding box",
-          fontWeight: FontWeight.bold,
+          isBold: true,
         ),
         Wrap(
           direction: Axis.horizontal,
@@ -32,7 +32,7 @@ class BoundingBoxDisplay extends StatelessWidget {
               children: [
                 const Label.regular(
                   'MIN',
-                  fontWeight: FontWeight.bold,
+                  isBold: true,
                 ),
                 GsfDataTile(label: 'X', data: boundingBox.minX),
                 GsfDataTile(label: 'Y', data: boundingBox.minY),
@@ -44,7 +44,7 @@ class BoundingBoxDisplay extends StatelessWidget {
               children: [
                 const Label.regular(
                   'MAX',
-                  fontWeight: FontWeight.bold,
+                  isBold: true,
                 ),
                 GsfDataTile(label: 'X', data: boundingBox.maxX),
                 GsfDataTile(label: 'Y', data: boundingBox.maxY),

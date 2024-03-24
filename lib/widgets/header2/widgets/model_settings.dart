@@ -52,10 +52,10 @@ class ModelSettingsDisplay extends ConsumerWidget {
         data: modelSettings.fallbackTableRelativeOffset,
       ),
       if (modelSettings.fallbackTable != null)
-      _FallbackTableDisplay(
-        fallbackTable: modelSettings.fallbackTable!,
-        materialsTable: materialsTable,
-      ),
+        _FallbackTableDisplay(
+          fallbackTable: modelSettings.fallbackTable!,
+          materialsTable: materialsTable,
+        ),
       GsfDataTile(
         label: 'Read data',
         data: modelSettings.readData,
@@ -151,7 +151,10 @@ class ChunksTableDisplay extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Label.medium('Chunks table', fontWeight: FontWeight.bold),
+        const Label.medium(
+          'Chunks table',
+          isBold: true,
+        ),
         _ChunkOffsetSelector(
             offsets: chunksTable.chunksOffsets, chunks: chunksTable.chunks),
       ],
@@ -201,7 +204,7 @@ class _FallbackTableDisplay extends ConsumerWidget {
         const Divider(
           color: Colors.black,
         ),
-        const Label.medium('Fallback table', fontWeight: FontWeight.bold),
+        const Label.medium('Fallback table', isBold: true),
         GsfDataTile(
             label: "header 2 offset", data: fallbackTable.header2Offset),
         GsfDataTile(

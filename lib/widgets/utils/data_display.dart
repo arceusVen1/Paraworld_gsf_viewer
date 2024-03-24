@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
@@ -153,8 +155,10 @@ class __SelectableTileState extends State<_SelectableTile> {
         child: Container(
           color: _isHovering ? Colors.grey.shade300 : null,
           padding: const EdgeInsets.symmetric(vertical: 2.0),
-          child: Label.regular(widget.title,
-              fontWeight: widget.bold ? FontWeight.bold : null),
+          child: Label.regular(
+            widget.title,
+            isBold: widget.bold,
+          ),
         ),
       ),
     );
@@ -333,6 +337,59 @@ class ListTileWrapper extends StatelessWidget {
       selectedTileColor: Colors.grey.shade400,
       title: Label.regular(label),
       onTap: onTap,
+    );
+  }
+}
+
+class DropdownWrapper extends StatefulWidget {
+  const DropdownWrapper({
+    super.key,
+    required this.label,
+    required this.child,
+  });
+
+  final String label;
+  final Widget child;
+
+  @override
+  State<DropdownWrapper> createState() => _DropdownWrapperState();
+}
+
+class _DropdownWrapperState extends State<DropdownWrapper> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            setState(() {
+              _isExpanded = !_isExpanded;
+            });
+          },
+          child: Row(
+            children: [
+              Expanded(
+                  child: Label.medium(
+                widget.label,
+                isBold: true,
+              )),
+              Icon(_isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+            ],
+          ),
+        ),
+        AnimatedSize(
+          alignment: Alignment.topCenter,
+          curve: Curves.easeInOut,
+          duration: const Duration(milliseconds: 250),
+          child: _isExpanded
+              ? widget.child
+              : const SizedBox(
+                  width: double.infinity,
+                ),
+        ),
+      ],
     );
   }
 }

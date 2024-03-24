@@ -8,21 +8,21 @@ class Label extends StatelessWidget {
     required this.size,
     this.color,
     this.maxLines,
-    this.fontWeight,
+    this.isBold = false,
   });
 
   final ThemeSize size;
   final String label;
   final Color? color;
   final int? maxLines;
-  final FontWeight? fontWeight;
+  final bool isBold;
 
   const Label.extraTiny(
     this.label, {
     super.key,
     this.color,
     this.maxLines,
-    this.fontWeight,
+    this.isBold = false,
   }) : size = ThemeSize.extraTiny;
 
   const Label.tiny(
@@ -30,7 +30,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
-    this.fontWeight,
+    this.isBold = false,
   }) : size = ThemeSize.extraTiny;
 
   const Label.small(
@@ -38,7 +38,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
-    this.fontWeight,
+    this.isBold = false,
   }) : size = ThemeSize.small;
 
   const Label.regular(
@@ -46,7 +46,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
-    this.fontWeight,
+    this.isBold = false,
   }) : size = ThemeSize.regular;
 
   const Label.medium(
@@ -54,7 +54,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
-    this.fontWeight,
+    this.isBold = false,
   }) : size = ThemeSize.medium;
 
   const Label.large(
@@ -62,7 +62,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
-    this.fontWeight,
+    this.isBold = false,
   }) : size = ThemeSize.large;
 
   const Label.extraLarge(
@@ -70,7 +70,7 @@ class Label extends StatelessWidget {
     super.key,
     this.color,
     this.maxLines,
-    this.fontWeight,
+    this.isBold = false,
   }) : size = ThemeSize.extraLarge;
 
   double getFontSize(ThemeSize size) {
@@ -103,7 +103,7 @@ class Label extends StatelessWidget {
         style: TextStyle(
           color: color ?? Colors.black,
           fontSize: getFontSize(size),
-          fontWeight: fontWeight,
+          fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
           overflow: TextOverflow.ellipsis,
         ),
       ),
