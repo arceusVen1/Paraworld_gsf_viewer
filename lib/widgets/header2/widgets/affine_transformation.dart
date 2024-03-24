@@ -11,31 +11,59 @@ class AffineTransformationDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownWrapper(
       label: "Affine Matrix",
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GsfDataTile(label: 'scale X', data: transformation.scaleX),
-          GsfDataTile(label: 'stretch Y', data: transformation.stretchY),
-          GsfDataTile(label: 'stretch Z_X', data: transformation.stretchZX),
-          GsfDataTile(label: 'unknown float', data: transformation.unknownFloat1),
-          GsfDataTile(label: 'stretch X', data: transformation.stretchX),
-          GsfDataTile(label: 'scale Y', data: transformation.scaleY),
-          GsfDataTile(label: 'stretch Z_Y', data: transformation.stretchZY),
-          GsfDataTile(
-              label: 'unknown float 2', data: transformation.unknownFloat2),
-          GsfDataTile(label: 'shear X', data: transformation.shearX),
-          GsfDataTile(label: 'shear Y', data: transformation.shearY),
-          GsfDataTile(label: 'scale Z', data: transformation.scaleZ),
-          GsfDataTile(
-              label: 'unknow float 3', data: transformation.unknownFloat3),
-          GsfDataTile(label: 'position X', data: transformation.positionX),
-          GsfDataTile(label: 'position Y', data: transformation.positionY),
-          GsfDataTile(label: 'position Z', data: transformation.positionZ),
-          GsfDataTile(
-              label: 'unknown float 4', data: transformation.unknownFloat4),
-         
-        ],
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Wrap(
+          spacing: 4,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GsfDataTile(label: 'scaleX', data: transformation.scaleX),
+                GsfDataTile(label: 'stretchY', data: transformation.stretchY),
+                GsfDataTile(
+                    label: 'stretchZ_X', data: transformation.stretchZX),
+                GsfDataTile(
+                    label: 'float1', data: transformation.unknownFloat1),
+              ],
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GsfDataTile(label: 'stretchX', data: transformation.stretchX),
+                GsfDataTile(label: 'scaleY', data: transformation.scaleY),
+                GsfDataTile(
+                    label: 'stretchZ_Y', data: transformation.stretchZY),
+                GsfDataTile(
+                    label: 'float2', data: transformation.unknownFloat2),
+              ],
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GsfDataTile(label: 'shearX', data: transformation.shearX),
+                GsfDataTile(label: 'shearY', data: transformation.shearY),
+                GsfDataTile(label: 'scaleZ', data: transformation.scaleZ),
+                GsfDataTile(
+                    label: 'float3', data: transformation.unknownFloat3),
+              ],
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GsfDataTile(label: 'posX', data: transformation.positionX),
+                GsfDataTile(label: 'posY', data: transformation.positionY),
+                GsfDataTile(label: 'posZ', data: transformation.positionZ),
+                GsfDataTile(
+                    label: 'float4', data: transformation.unknownFloat4),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

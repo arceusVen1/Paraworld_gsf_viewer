@@ -4,6 +4,7 @@ import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/viewer/viewer.dart';
+import 'package:vector_math/vector_math.dart' as vector;
 
 class SubmeshDisplay extends StatelessWidget {
   const SubmeshDisplay({
@@ -15,7 +16,11 @@ class SubmeshDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modelData = submesh.getMeshModelData(0, null);
+    final modelData = submesh.getMeshModelData(
+      0,
+      null,
+      null,
+    );
     final Model model = Model(
       vertices: modelData.vertices,
       triangles: modelData.triangles,

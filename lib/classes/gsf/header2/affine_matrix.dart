@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:vector_math/vector_math.dart';
 
 class AffineTransformation extends GsfPart {
   late final Standard4BytesData<double> scaleX;
@@ -104,6 +105,15 @@ class AffineTransformation extends GsfPart {
       position: positionZ.relativeEnd,
       bytes: bytes,
       offset: offset,
+    );
+  }
+
+  Matrix4 get matrix {
+    return Matrix4(
+      scaleX.value, stretchY.value, stretchZX.value, unknownFloat1.value, //
+      stretchX.value, scaleY.value, stretchZY.value, unknownFloat2.value, //
+      shearX.value, shearY.value, scaleZ.value, unknownFloat3.value, //
+      positionX.value, positionY.value, positionZ.value, unknownFloat4.value, //
     );
   }
 

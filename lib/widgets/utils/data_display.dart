@@ -428,6 +428,9 @@ class _DropdownWrapperState extends State<DropdownWrapper> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const Divider(
+          height: 1,
+        ),
         InkWell(
           onTap: () {
             setState(() {
@@ -454,6 +457,9 @@ class _DropdownWrapperState extends State<DropdownWrapper> {
               : const SizedBox(
                   width: double.infinity,
                 ),
+        ),
+        const Divider(
+          height: 1,
         ),
       ],
     );

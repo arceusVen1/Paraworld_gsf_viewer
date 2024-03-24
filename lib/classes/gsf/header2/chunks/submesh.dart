@@ -4,6 +4,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dar
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
+import 'package:vector_math/vector_math.dart';
 
 class Submesh extends GsfPart {
   late final BoundingBox boundingBox;
@@ -126,9 +127,11 @@ class Submesh extends GsfPart {
     List<ModelVertex> vertices,
     List<ModelTriangle> triangles,
     BoundingBoxModel box
-  }) getMeshModelData(int indicesOffset, BoundingBoxModel? globalBB) {
+  }) getMeshModelData(
+      int indicesOffset, BoundingBoxModel? globalBB, Matrix4? matrix) {
     final box = globalBB ?? boundingBox.toModelBox();
-    final vertices = this.vertices.map((e) => e.toModelVertex(box)).toList();
+    final vertices =
+        this.vertices.map((e) => e.toModelVertex(box, matrix)).toList();
     final triangles = this
         .triangles
         .map((e) => e.toModelTriangle(vertices, indicesOffset))
@@ -162,7 +165,7 @@ class Vertex extends GsfPart {
     );
   }
 
-  ModelVertex toModelVertex(BoundingBoxModel box) {
+  ModelVertex toModelVertex(BoundingBoxModel box, Matrix4? matrix) {
     // necessary hack because web doesn't handle getUint64
     BigInt positionData = BigInt.from(0);
     if (kIsWeb) {
@@ -186,7 +189,12 @@ class Vertex extends GsfPart {
 
     final textureData = ByteData.sublistView(vertexData.value.sublist(6, 8))
         .getUint16(0, Endian.little);
-    return ModelVertex.fromModelBytes(positionData, textureData, box);
+    return ModelVertex.fromModelBytes(
+      positionData,
+      textureData,
+      box,
+      matrix,
+    );
   }
 }
 

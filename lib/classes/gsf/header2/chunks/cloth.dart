@@ -6,6 +6,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:vector_math/vector_math.dart';
 
 class ClothChunk extends Chunk with MeshToModelInterface {
   late final Standard4BytesData<int> attributes;
@@ -36,6 +37,9 @@ class ClothChunk extends Chunk with MeshToModelInterface {
   @override
   late final List<Submesh> submeshes;
   late final List<DoubleByteData<int>> materialIndices;
+
+  @override
+  Matrix4 get matrix => affineTransformation.matrix;
 
   @override
   String get label => '${type.name} 0x${guid.value.toRadixString(16)}';

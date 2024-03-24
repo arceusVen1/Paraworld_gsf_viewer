@@ -8,20 +8,23 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
+import 'package:vector_math/vector_math.dart';
 
 mixin MeshToModelInterface on Chunk {
   BoundingBox get boundingBox;
   List<Submesh> get submeshes;
+  Matrix4 get matrix;
   Model toModel() {
     final globalBB = boundingBox.toModelBox();
     final List<ModelVertex> vertices = [];
     final List<ModelTriangle> triangles = [];
     for (var submesh in submeshes) {
-      final data = submesh.getMeshModelData(vertices.length, globalBB);
+      final data = submesh.getMeshModelData(vertices.length, globalBB, matrix);
       vertices.addAll(data.vertices);
       triangles.addAll(data.triangles);
     }
     return Model(
+
       vertices: vertices,
       triangles: triangles,
       boundingBox: globalBB,
@@ -52,6 +55,9 @@ class MeshChunk extends Chunk with MeshToModelInterface {
   @override
   late final List<Submesh> submeshes;
   late final List<DoubleByteData<int>> materialIndices;
+
+  @override
+  Matrix4 get matrix => transformation.matrix;
 
   @override
   String get label => '${type.name} 0x${guid.value.toRadixString(16)}';
