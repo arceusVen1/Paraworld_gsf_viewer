@@ -44,12 +44,12 @@ class ModelDrawer extends CustomPainter {
     ..strokeCap = StrokeCap.round;
 
   final Paint _paintPrimary = Paint()
-    ..color = kPrimaryColor
+    ..color = kBlueColor
     ..strokeWidth = 2
     ..strokeCap = StrokeCap.round;
 
   final Paint _paintSecondary = Paint()
-    ..color = kSecondaryColor
+    ..color = kRedColor
     ..strokeWidth = 2
     ..strokeCap = StrokeCap.round;
 
