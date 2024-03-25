@@ -12,9 +12,11 @@ void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-const kPrimaryColor = Color(0xff5c7ca4);
-const kSecondaryColor = Color(0xffc23a31);
-const kSecondaryContainerColor = Color(0xffd08f8a);
+const kWhiteColor = Color(0xffffffff);
+const kBlackColor = Color(0xff000000);
+const kTransparentColor = Color(0x00ffffff);
+const kBlueColor = Color(0xff5a78a0);
+const kRedColor = Color(0xffd73d33);
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -48,9 +50,36 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: kPrimaryColor,
-            secondary: kSecondaryColor,
-            secondaryContainer: kSecondaryContainerColor,
+            seedColor: kBlueColor,
+
+			primary: kRedColor,
+
+			primaryContainer: kRedColor,
+
+			outline: kBlueColor,
+			outlineVariant: kBlueColor,
+			
+			background: kWhiteColor,
+
+			surface: kWhiteColor,
+			onSurface: kBlueColor,
+			
+			surfaceVariant: kWhiteColor,
+			onSurfaceVariant: kBlueColor,
+
+			shadow: kBlackColor,
+			scrim: kBlackColor,
+			surfaceTint: kTransparentColor,
+
+			inversePrimary: kRedColor,
+			secondary: kRedColor,
+			onSecondary: kRedColor,
+
+			error: kRedColor,
+			onError: kRedColor,
+			errorContainer: kRedColor,
+			onErrorContainer: kRedColor,
+
           )),
       home: DefaultTabController(
         length: 3,
@@ -58,13 +87,13 @@ class _MyAppState extends State<MyApp> {
           appBar: AppBar(
               bottom: const TabBar(
                 tabs: [
-                  Tab(text: "header 1", icon: Icon(Icons.info)),
-                  Tab(text: "header 2", icon: Icon(Icons.info)),
-                  Tab(text: "model", icon: Icon(Icons.hub)),
+                  Tab(text: "Contents Table", icon: Icon(Icons.info)),
+                  Tab(text: "Mesh Viewer", icon: Icon(Icons.info)),
+                  Tab(text: "Model Viewer", icon: Icon(Icons.hub)),
                 ],
               ),
               title: const Text(
-                "Paraworld Gsf viewer",
+                "Options",
               )),
           body: Padding(
             padding: const EdgeInsets.symmetric(vertical: 25),
