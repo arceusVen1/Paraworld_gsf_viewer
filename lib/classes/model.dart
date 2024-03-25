@@ -21,6 +21,22 @@ class Model {
   final BoundingBoxModel boundingBox;
   //final Vector3 scale;
 
+  ({double widthOffset, double heightOffset, double maxFactor})
+      getProjectionData(Size size) {
+    final widthOffset = size.width / 2;
+    final heightOffset = size.height / 2;
+    final maxCoord = boundingBox.maxOfCoordinates;
+
+    final maxFactor =
+        math.min(widthOffset * 1 / maxCoord, heightOffset * 1 / maxCoord);
+
+    return (
+      widthOffset: widthOffset,
+      heightOffset: heightOffset,
+      maxFactor: maxFactor,
+    );
+  }
+
   ({
     Float32List positions,
     Float32List textureCoordinates,
@@ -32,12 +48,7 @@ class Model {
     ModelTexture? texture,
     bool showNormals = false,
   }) {
-    final widthOffset = size.width / 2;
-    final heightOffset = size.height / 2;
-    final maxCoord = boundingBox.maxOfCoordinates;
-
-    final maxFactor =
-        math.min(widthOffset * 1 / maxCoord, heightOffset * 1 / maxCoord);
+    final projectionData = getProjectionData(size);
 
     final Float32List positions =
         Float32List.fromList(List<double>.filled(vertices.length * 2, 0));
@@ -65,10 +76,10 @@ class Model {
           }
 
           final projected = triangle.points[j].project(
-            widthOffset: widthOffset,
-            heightOffset: heightOffset,
-            maxWidth: maxFactor,
-            maxHeight: maxFactor,
+            widthOffset: projectionData.widthOffset,
+            heightOffset: projectionData.heightOffset,
+            maxWidth: projectionData.maxFactor,
+            maxHeight: projectionData.maxFactor,
             rotation: rotation,
           );
           normals.addAll([

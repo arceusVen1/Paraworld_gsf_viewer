@@ -27,12 +27,9 @@ class ModelVertex {
   int? _normalSphereIndice;
 
   // Because web compiles int as int32 we need to force big int for 64bit integers even in web
-  ModelVertex.fromModelBytes(
-    BigInt sequence,
-    int textureSequence,
-    BoundingBoxModel box,
-    Matrix4? matrix,
-  ) {
+  ModelVertex.fromModelBytes(BigInt sequence, int textureSequence,
+      BoundingBoxModel box, Matrix4? matrix,
+      [bool centerInWindow = false]) {
     positions = Vector3(
       ((_k13BytesRatioValue * (sequence.toInt() & 0x1FFF)) *
               (box.x.max - box.x.min) +
@@ -46,7 +43,12 @@ class ModelVertex {
     );
     positions.applyMatrix4(matrix ?? Matrix4.identity());
     this.box = box.toParaworldSystem();
-    positionOffset = this.box.center;
+
+    if (centerInWindow) {
+      positionOffset = this.box.center;
+    } else {
+      positionOffset = Vector3.zero();
+    }
 
     _normalSphereIndice = (sequence >> 40).toInt() & 0xFF;
     final sphereCoef = (sequence >> 39).toInt() & 0x1;

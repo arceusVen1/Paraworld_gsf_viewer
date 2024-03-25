@@ -2,11 +2,16 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/rotation.dart';
 import 'package:paraworld_gsf_viewer/classes/texture.dart';
+import 'package:paraworld_gsf_viewer/classes/vertex.dart';
+import 'package:paraworld_gsf_viewer/main.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/mouse_movement_notifier.dart';
 import 'dart:math' as math;
+
+import 'package:vector_math/vector_math.dart';
 
 class ModelDrawer extends CustomPainter {
   ModelDrawer({
@@ -28,15 +33,49 @@ class ModelDrawer extends CustomPainter {
     ..strokeWidth = 1
     ..strokeCap = StrokeCap.round;
 
-  final Paint _paintTest = Paint()
+  final Paint _paintNormals = Paint()
     ..color = const Color.fromARGB(255, 255, 0, 0)
     ..strokeWidth = 1
     ..strokeCap = StrokeCap.round;
 
-  // final Paint _paintHighlight = Paint()
-  //   ..color = const Color.fromARGB(255, 30, 255, 0)
-  //   ..strokeWidth = 8
-  //   ..strokeCap = StrokeCap.round;
+  final Paint _paintHighlight = Paint()
+    ..color = const Color.fromARGB(255, 30, 255, 0)
+    ..strokeWidth = 2
+    ..strokeCap = StrokeCap.round;
+
+  final Paint _paintPrimary = Paint()
+    ..color = kPrimaryColor
+    ..strokeWidth = 2
+    ..strokeCap = StrokeCap.round;
+
+  final Paint _paintSecondary = Paint()
+    ..color = kSecondaryColor
+    ..strokeWidth = 2
+    ..strokeCap = StrokeCap.round;
+
+  final origin = ModelVertex(
+    Vector3.zero(),
+    box: BoundingBoxModel.zero(),
+    positionOffset: Vector3.zero(),
+  );
+
+  final xPoint = ModelVertex(
+    Vector3(1, 0, 0),
+    box: BoundingBoxModel.zero(),
+    positionOffset: Vector3.zero(),
+  );
+
+  final yPoint = ModelVertex(
+    Vector3(0, 1, 0),
+    box: BoundingBoxModel.zero(),
+    positionOffset: Vector3.zero(),
+  );
+
+  final zPoint = ModelVertex(
+    Vector3(0, 0, 1),
+    box: BoundingBoxModel.zero(),
+    positionOffset: Vector3.zero(),
+  );
 
   void drawTrianglesOutside(
       Canvas canvas, Uint16List indices, Float32List positions,
@@ -53,6 +92,83 @@ class ModelDrawer extends CustomPainter {
       canvas.drawLine(p2, p3, customPaint ?? _paint);
       canvas.drawLine(p3, p1, customPaint ?? _paint);
     }
+  }
+
+  void drawAxis(Size size, Canvas canvas) {
+    final projectionData = model.getProjectionData(size);
+
+    final originData = origin
+        .project(
+          widthOffset: projectionData.widthOffset,
+          heightOffset: projectionData.heightOffset,
+          maxWidth: projectionData.maxFactor,
+          maxHeight: projectionData.maxFactor,
+          rotation: rotation,
+        )
+        .pointProjection;
+
+    final xPointData = xPoint
+        .project(
+          widthOffset: projectionData.widthOffset,
+          heightOffset: projectionData.heightOffset,
+          maxWidth: projectionData.maxFactor,
+          maxHeight: projectionData.maxFactor,
+          rotation: rotation,
+        )
+        .pointProjection;
+
+    final yPointData = yPoint
+        .project(
+          widthOffset: projectionData.widthOffset,
+          heightOffset: projectionData.heightOffset,
+          maxWidth: projectionData.maxFactor,
+          maxHeight: projectionData.maxFactor,
+          rotation: rotation,
+        )
+        .pointProjection;
+
+    final zPointData = zPoint
+        .project(
+          widthOffset: projectionData.widthOffset,
+          heightOffset: projectionData.heightOffset,
+          maxWidth: projectionData.maxFactor,
+          maxHeight: projectionData.maxFactor,
+          rotation: rotation,
+        )
+        .pointProjection;
+
+    canvas.drawRawPoints(
+      PointMode.lines,
+      Float32List.fromList([
+        originData.x,
+        originData.y,
+        xPointData.x,
+        xPointData.y,
+      ]),
+      _paintSecondary,
+    );
+
+    canvas.drawRawPoints(
+      PointMode.lines,
+      Float32List.fromList([
+        originData.x,
+        originData.y,
+        yPointData.x,
+        yPointData.y,
+      ]),
+      _paintHighlight,
+    );
+
+    canvas.drawRawPoints(
+      PointMode.lines,
+      Float32List.fromList([
+        originData.x,
+        originData.y,
+        zPointData.x,
+        zPointData.y,
+      ]),
+      _paintPrimary,
+    );
   }
 
   @override
@@ -77,7 +193,7 @@ class ModelDrawer extends CustomPainter {
       showNormals: showNormals,
     );
 
-    final colors = Int32List.fromList(List.filled(
+    final colorList = Int32List.fromList(List.filled(
         (data.positions.length / 2).round(),
         const Color.fromRGBO(0, 0, 0, 0.3).value));
 
@@ -86,7 +202,7 @@ class ModelDrawer extends CustomPainter {
       canvas.drawRawPoints(
         PointMode.lines,
         data.normals,
-        _paintTest,
+        _paintNormals,
       );
     }
 
@@ -99,28 +215,13 @@ class ModelDrawer extends CustomPainter {
           VertexMode.triangles,
           data.positions,
           indices: data.triangleIndices,
-          colors: colors,
+          colors: colorList,
           textureCoordinates: data.textureCoordinates,
         ),
         BlendMode.srcOver,
         texture?.painter ?? _paint);
 
-    // final viewPoint =
-    //     Vertex(vector.Vector3.all(0), box: BoundingBox.zero()).project(
-    //   widthOffset: widthOffset,
-    //   heightOffset: heightOffset,
-    //   maxWidth: maxWidth,
-    //   maxHeight: maxHeight,
-    //   xRotation: yRotationAngle,
-    //   zRotation: zRotationAngle,
-    // );
-
-    // a center point for reference
-    // canvas.drawRawPoints(
-    //     PointMode.points,
-    //     Float32List.fromList(
-    //         [viewPoint.pointProjection.x, viewPoint.pointProjection.y]),
-    //     _paintHighlight);
+    drawAxis(size, canvas);
   }
 
   @override
