@@ -57,7 +57,7 @@ class ConvertToObjCta extends StatelessWidget {
         }
       },
       child: const Label.medium(
-        "Convert to obj",
+        "Convert to .obj",
         color: Colors.white,
       ),
     );

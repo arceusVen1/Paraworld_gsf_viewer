@@ -35,8 +35,8 @@ class ModelInfoDisplay extends ConsumerWidget {
       children: [
         const Label.large('Model Info', isBold: true),
         GsfDataTile(label: 'Name', data: modelInfo.name),
-        GsfDataTile(label: 'Index', data: modelInfo.index),
-        GsfDataTile(label: 'Anim Count', data: modelInfo.animCount),
+        GsfDataTile(label: 'Model index', data: modelInfo.index),
+        GsfDataTile(label: 'Anim count', data: modelInfo.animCount),
         if (modelInfo.modelAnims.isNotEmpty)
           PartSelector(
             value: state.modelAnim,
@@ -47,7 +47,7 @@ class ModelInfoDisplay extends ConsumerWidget {
                 .setModelAnim(part as ModelAnim),
           ),
         GsfDataTile(
-            label: 'Walk Set count', data: modelInfo.walkSetTable.count),
+            label: 'Walkset count', data: modelInfo.walkSetTable.count),
         if (modelInfo.walkSetTable.walkSets.isNotEmpty)
           PartSelector(
             value: state.walkSet,
@@ -78,13 +78,13 @@ class ModelAnimDisplay extends ConsumerWidget {
       children: [
         const Label.large('Model Anim', isBold: true),
         GsfDataTile(label: 'Name', data: selectedModelAnim.name),
-        GsfDataTile(label: 'index', data: selectedModelAnim.index),
+        GsfDataTile(label: 'Anim index', data: selectedModelAnim.index),
         GsfDataTile(
             label: 'Sound count', data: selectedModelAnim.soundIndices.count),
         _SoundIndicesDisplay(
             soundIndices: selectedModelAnim.soundIndices.indices,
             soundInfos: soundTable.soundInfos),
-        GsfDataTile(label: "unknown", data: selectedModelAnim.unknownData),
+        GsfDataTile(label: "Unknown", data: selectedModelAnim.unknownData),
       ],
     );
   }
@@ -194,7 +194,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.walk1endMData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'walk_1_end_L',
+          label: 'walk_1_end_l',
           data: selectedWalkSet.walk1endLData,
           relatedPart: selectedWalkSet.walk1endLData.value > 0
               ? modelAnims[selectedWalkSet.walk1endLData.value - 1]
@@ -221,7 +221,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.walk2endMData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'walk_2_end_L',
+          label: 'walk_2_end_l',
           data: selectedWalkSet.walk2endLData,
           relatedPart: selectedWalkSet.walk2endLData.value > 0
               ? modelAnims[selectedWalkSet.walk2endLData.value - 1]
@@ -248,7 +248,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.walk3endMData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'walk_3_end_L',
+          label: 'walk_3_end_l',
           data: selectedWalkSet.walk3endLData,
           relatedPart: selectedWalkSet.walk3endLData.value > 0
               ? modelAnims[selectedWalkSet.walk3endLData.value - 1]
@@ -275,7 +275,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.walk4endMData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'walk_4_end_L',
+          label: 'walk_4_end_l',
           data: selectedWalkSet.walk4endLData,
           relatedPart: selectedWalkSet.walk4endLData.value > 0
               ? modelAnims[selectedWalkSet.walk4endLData.value - 1]
@@ -284,7 +284,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.walk4endLData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'standing turn right',
+          label: 'standing_turn_right',
           data: selectedWalkSet.standingTurnRightData,
           relatedPart: selectedWalkSet.standingTurnRightData.value > 0
               ? modelAnims[selectedWalkSet.standingTurnRightData.value - 1]
@@ -294,7 +294,7 @@ class WalkSetDisplay extends ConsumerWidget {
               : null,
         ),
         GsfDataTile(
-          label: 'standing turn left',
+          label: 'standing_turn_left',
           data: selectedWalkSet.standingTurnLeftData,
           relatedPart: selectedWalkSet.standingTurnLeftData.value > 0
               ? modelAnims[selectedWalkSet.standingTurnLeftData.value - 1]
@@ -367,7 +367,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.brake2To1Data.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'walk left',
+          label: 'walk_left',
           data: selectedWalkSet.walkLeftData,
           relatedPart: selectedWalkSet.walkLeftData.value > 0
               ? modelAnims[selectedWalkSet.walkLeftData.value - 1]
@@ -376,7 +376,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.walkLeftData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'walk right',
+          label: 'walk_right',
           data: selectedWalkSet.walkRightData,
           relatedPart: selectedWalkSet.walkRightData.value > 0
               ? modelAnims[selectedWalkSet.walkRightData.value - 1]
@@ -411,7 +411,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.growUpData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'sail up',
+          label: 'sail_up',
           data: selectedWalkSet.sailUpData,
           relatedPart: selectedWalkSet.sailUpData.value > 0
               ? modelAnims[selectedWalkSet.sailUpData.value - 1]
@@ -420,7 +420,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.sailUpData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'sail down',
+          label: 'sail_down',
           data: selectedWalkSet.sailDownData,
           relatedPart: selectedWalkSet.sailDownData.value > 0
               ? modelAnims[selectedWalkSet.sailDownData.value - 1]
@@ -447,7 +447,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.walkToSwimData.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'hit reaction front',
+          label: 'hit_reaction_fa',
           data: selectedWalkSet.hitReactionFront,
           relatedPart: selectedWalkSet.hitReactionFront.value > 0
               ? modelAnims[selectedWalkSet.hitReactionFront.value - 1]
@@ -456,7 +456,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.hitReactionFront.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'hit reaction left',
+          label: 'hit_reaction_la',
           data: selectedWalkSet.hitReactionLeft,
           relatedPart: selectedWalkSet.hitReactionLeft.value > 0
               ? modelAnims[selectedWalkSet.hitReactionLeft.value - 1]
@@ -465,7 +465,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.hitReactionLeft.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'hit reaction right',
+          label: 'hit_reaction_ra',
           data: selectedWalkSet.hitReactionRight,
           relatedPart: selectedWalkSet.hitReactionRight.value > 0
               ? modelAnims[selectedWalkSet.hitReactionRight.value - 1]
@@ -474,7 +474,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.hitReactionRight.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'hit reaction back',
+          label: 'hit_reaction_ba',
           data: selectedWalkSet.hitReactionBack,
           relatedPart: selectedWalkSet.hitReactionBack.value > 0
               ? modelAnims[selectedWalkSet.hitReactionBack.value - 1]
@@ -483,7 +483,7 @@ class WalkSetDisplay extends ConsumerWidget {
               selectedWalkSet.hitReactionBack.value > 0 ? setModelAnim : null,
         ),
         GsfDataTile(
-          label: 'hit reaction front variant',
+          label: 'hit_reaction_fb',
           data: selectedWalkSet.hitReactionFrontVariant,
           relatedPart: selectedWalkSet.hitReactionFrontVariant.value > 0
               ? modelAnims[selectedWalkSet.hitReactionFrontVariant.value - 1]
@@ -493,7 +493,7 @@ class WalkSetDisplay extends ConsumerWidget {
               : null,
         ),
         GsfDataTile(
-          label: 'hit reaction left variant',
+          label: 'hit_reaction_lb',
           data: selectedWalkSet.hitReactionLeftVariant,
           relatedPart: selectedWalkSet.hitReactionLeftVariant.value > 0
               ? modelAnims[selectedWalkSet.hitReactionLeftVariant.value - 1]
@@ -503,7 +503,7 @@ class WalkSetDisplay extends ConsumerWidget {
               : null,
         ),
         GsfDataTile(
-          label: 'hit reaction right variant',
+          label: 'hit_reaction_rb',
           data: selectedWalkSet.hitReactionRightVariant,
           relatedPart: selectedWalkSet.hitReactionRightVariant.value > 0
               ? modelAnims[selectedWalkSet.hitReactionRightVariant.value - 1]
@@ -513,7 +513,7 @@ class WalkSetDisplay extends ConsumerWidget {
               : null,
         ),
         GsfDataTile(
-          label: 'hit reaction back variant',
+          label: 'hit_reaction_bb',
           data: selectedWalkSet.hitReactionBackVariant,
           relatedPart: selectedWalkSet.hitReactionBackVariant.value > 0
               ? modelAnims[selectedWalkSet.hitReactionBackVariant.value - 1]

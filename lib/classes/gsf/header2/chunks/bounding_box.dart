@@ -12,7 +12,7 @@ class BoundingBox extends GsfPart {
   late final Standard4BytesData<double> maxZ;
 
     @override
-  String get label => 'Bounding Box (min: $minX, $minY, $minZ; max: $maxX, $maxY, $maxZ)';
+  String get label => 'Model bounding Box (min: $minX, $minY, $minZ; max: $maxX, $maxY, $maxZ)';
 
   BoundingBox.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     minX = Standard4BytesData(

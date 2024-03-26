@@ -13,20 +13,20 @@ class MaterialDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataDecorator(children: [
-      GsfDataTile(label: "bitset attribute 1", data: material.bitsetAttribute1),
-      GsfDataTile(label: "bitset attribute 2", data: material.bitsetAttribute2),
+      GsfDataTile(label: "Bitset attributes 1", data: material.bitsetAttribute1),
+      GsfDataTile(label: "Bitset attributes 2", data: material.bitsetAttribute2),
       GsfDataTile(
-        label: "texture",
+        label: "Texture name offset",
         data: material.textureNameOffset,
         relatedPart: material.textureName,
       ),
       GsfDataTile(
-        label: "nm",
+        label: "NM name offset",
         data: material.nmNameOffset,
         relatedPart: material.nmName,
       ),
       GsfDataTile(
-        label: "env",
+        label: "Env name offset",
         data: material.envNameOffset,
         relatedPart: material.envName,
       ),

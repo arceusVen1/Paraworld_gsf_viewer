@@ -24,7 +24,7 @@ class HeaderDisplay extends ConsumerWidget {
       loading: (_) => const Loading(),
       error: (error) => Label.large(
         'Error: $error',
-        color: Colors.red,
+        color: Color(0xffd73d33),
         isBold: true,
       ),
       data: (state) {
@@ -60,13 +60,12 @@ class _Data extends ConsumerWidget {
       sideArea: variablePart,
       mainArea: DataDecorator(
         children: [
-          const Label.large('Header', isBold: true),
           GsfDataTile(
-              label: 'Content Table Offset', data: header.header2Offset),
-          GsfDataTile(label: 'Name Length', data: header.nameLength),
-          GsfDataTile(label: 'Name', data: header.name, bold: true),
+              label: 'Header offset', data: header.header2Offset),
+          GsfDataTile(label: 'GSF name length', data: header.nameLength),
+          GsfDataTile(label: 'GSF name', data: header.name),
           GsfDataTile(
-            label: 'Model Count',
+            label: 'Model count',
             data: header.modelCount,
             bold: true,
           ),
@@ -81,7 +80,7 @@ class _Data extends ConsumerWidget {
                 .setModelInfo(part as ModelInfo),
           ),
           GsfDataTile(
-            label: 'Sound Count',
+            label: 'Sound count',
             data: header.soundTable.soundCount,
             bold: true,
           ),
@@ -98,7 +97,7 @@ class _Data extends ConsumerWidget {
                   .setSoundInfo(part as SoundInfo),
             ),
           GsfDataTile(
-            label: 'Dust Trail Count',
+            label: 'Dust trail count',
             data: header.dustTrailTable.dustTrailCount,
             bold: true,
           ),
@@ -114,23 +113,23 @@ class _Data extends ConsumerWidget {
                   .setDustTrailInfo(part as DustTrailInfo),
             ),
           GsfDataTile(
-            label: 'anim flags count ',
+            label: 'Anim flags count ',
             data: header.animFlagsCount,
             bold: true,
           ),
           ...header.animFlagsTables
               .map((part) => Label.regular(
-                    'anim flag: ${part.name} (0x${part.offset.toRadixString(16)})',
+                    'Flag name: ${part.name} (0x${part.offset.toRadixString(16)})',
                   ))
               .toList(),
           GsfDataTile(
-            label: 'Walk Transitions conunt',
+            label: 'Walk transitions count',
             data: header.walkTransitionsCount,
             bold: true,
           ),
           ...header.walkTransitionTables
               .map((part) => Label.regular(
-                    'Walk Transition: ${part.name} (0x${part.offset.toRadixString(16)})',
+                    'Walk transition name: ${part.name} (0x${part.offset.toRadixString(16)})',
                   ))
               .toList(),
         ],

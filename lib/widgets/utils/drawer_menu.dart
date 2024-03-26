@@ -22,7 +22,7 @@ class Menu extends ConsumerWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: theme.primaryColor,
+              color: Color(0xff5a78a0),
             ),
             child: const Label.extraLarge(
               "Options",
@@ -42,9 +42,7 @@ class Menu extends ConsumerWidget {
             filePathStateProvider: texturePathStateProvider,
           ),
           ListTile(
-            title: Label.medium(
-              showNormals ? "normals visible" : "normals hidden",
-            ),
+            title: Label.medium("Show normals"),
             trailing: Switch.adaptive(
               // This bool value toggles the switch.
               value: showNormals,
@@ -105,7 +103,7 @@ class _FileLoaderTile extends ConsumerWidget {
               },
               icon: const Icon(
                 Icons.delete_forever,
-                color: Colors.red,
+                color: Color(0xffd73d33),
               ))
           : null,
       onTap: () {

@@ -17,17 +17,17 @@ class MaterialData extends GsfPart {
   @override
   String get label {
     if (textureName == null && nmName == null && envName == null) {
-      return "empty material";
+      return "Empty material";
     }
     List<String> label = [];
     if (textureName != null) {
-      label.add("texture $textureName");
+      label.add("Texture name offset $textureName");
     }
     if (nmName != null) {
-      label.add("nm $nmName");
+      label.add("NM name offset $nmName");
     }
     if (envName != null) {
-      label.add("env $envName");
+      label.add("Env name offset $envName");
     }
     return label.join("\n");
   }
