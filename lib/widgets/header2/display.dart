@@ -27,7 +27,7 @@ class Header2Display extends ConsumerWidget {
       loading: (_) => const Loading(),
       error: (error) => Label.large(
         'Error: $error',
-        color: Colors.red,
+        color: Color(0xffd73d33),
         isBold: true,
       ),
       data: (state) {
@@ -111,18 +111,14 @@ class _MaterialsTable extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GsfDataTile(
-          label: 'Useable materials count',
-          data: materialsTable.materialCount,
-          bold: true,
-        ),
+        GsfDataTile(label: 'Used materials count', data: materialsTable.materialCount),
         GsfDataTile(
             label: 'Materials offset', data: materialsTable.materialOffset),
         GsfDataTile(
             label: 'Materials length', data: materialsTable.maxEntriesCount),
         PartSelector(
             value: selectedMaterial,
-            label: "materials",
+            label: "Materials",
             parts: materialsTable.materials
                 .sublist(0, materialsTable.materialCount.value),
             onSelected: (material) {

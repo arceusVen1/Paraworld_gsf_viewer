@@ -10,16 +10,16 @@ class LinkDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataDecorator(children: [
-      GsfDataTile(label: "attributes", data: link.attributes),
-      GsfDataTile(label: "guid", data: link.guid),
-      GsfDataTile(label: "Position X", data: link.positionX),
-      GsfDataTile(label: "Position Y", data: link.positionY),
-      GsfDataTile(label: "Position Z", data: link.positionZ),
-      GsfDataTile(label: "Quaternion L", data: link.quaternionL),
-      GsfDataTile(label: "Quaternion I", data: link.quaternionI),
-      GsfDataTile(label: "Quaternion J", data: link.quaternionJ),
-      GsfDataTile(label: "Quaternion K", data: link.quaternionK),
-      GsfDataTile(label: "FourCC link", data: link.fourccLink),
+      GsfDataTile(label: "Attributes", data: link.attributes),
+      GsfDataTile(label: "Guid", data: link.guid),
+      GsfDataTile(label: "Pos X", data: link.positionX),
+      GsfDataTile(label: "Pos Y", data: link.positionY),
+      GsfDataTile(label: "Pos Z", data: link.positionZ),
+      GsfDataTile(label: "Quat X", data: link.quaternionL),
+      GsfDataTile(label: "Quat Y", data: link.quaternionI),
+      GsfDataTile(label: "Quat Z", data: link.quaternionJ),
+      GsfDataTile(label: "Quat W", data: link.quaternionK),
+      GsfDataTile(label: "FourCC", data: link.fourccLink),
       if (link.skeletonIndex != null)
         GsfDataTile(label: "Skeleton index", data: link.skeletonIndex!),
       if (link.boneIds != null)

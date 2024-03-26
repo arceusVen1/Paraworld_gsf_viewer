@@ -35,17 +35,17 @@ class SubmeshDisplay extends StatelessWidget {
             BoundingBoxDisplay(
                 boundingBox: submesh.boundingBox,
                 bbName: "Submesh bounding box"),
-            GsfDataTile(label: "vertex count", data: submesh.vertexCount),
-            GsfDataTile(label: "triangle count", data: submesh.triangleCount),
-            GsfDataTile(label: "vertex offset", data: submesh.vertexOffset),
-            GsfDataTile(label: "triangle offset", data: submesh.triangleOffset),
+            GsfDataTile(label: "Vertex count", data: submesh.vertexCount),
+            GsfDataTile(label: "Triangle count", data: submesh.triangleCount),
+            GsfDataTile(label: "Vertex offset", data: submesh.vertexOffset),
+            GsfDataTile(label: "Triangle offset", data: submesh.triangleOffset),
             GsfDataTile(
-                label: "triangle count 2", data: submesh.triangleCount2),
-            GsfDataTile(label: "vertex type", data: submesh.vertexType),
+                label: "Triangle count 2", data: submesh.triangleCount2),
+            GsfDataTile(label: "Vertex type", data: submesh.vertexType),
             GsfDataTile(
-                label: "light data offset", data: submesh.lightDataOffset),
+                label: "Light data offset", data: submesh.lightDataOffset),
             GsfDataTile(
-                label: "light data count", data: submesh.lightDataCount),
+                label: "Light data count", data: submesh.lightDataCount),
           ]),
           Flexible(
               child: Viewer(

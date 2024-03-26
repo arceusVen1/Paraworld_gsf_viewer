@@ -13,14 +13,14 @@ class SoundDisplay extends StatelessWidget {
     return DataDecorator(children: [
       const Label.large('Sound Info', isBold: true),
       GsfDataTile(label: 'Name', data: soundInfo.name),
-      GsfDataTile(label: 'start frame', data: soundInfo.startFrame),
-      GsfDataTile(label: 'volume', data: soundInfo.volume),
-      GsfDataTile(label: 'speed', data: soundInfo.speed),
-      GsfDataTile(label: 'unknown data 1', data: soundInfo.unknownData1),
-      GsfDataTile(label: 'unknown data 2', data: soundInfo.unknownData2),
-      GsfDataTile(label: 'unknown data 3', data: soundInfo.unknownData3),
-      GsfDataTile(label: 'unknown data 4', data: soundInfo.unknownData4),
-      GsfDataTile(label: 'sound group name', data: soundInfo.soundGroupName),
+      GsfDataTile(label: 'Start frame', data: soundInfo.startFrame),
+      GsfDataTile(label: 'Volume', data: soundInfo.volume),
+      GsfDataTile(label: 'Speed', data: soundInfo.speed),
+      GsfDataTile(label: 'Unknown data 1', data: soundInfo.unknownData1),
+      GsfDataTile(label: 'Unknown data 2', data: soundInfo.unknownData2),
+      GsfDataTile(label: 'Unknown data 3', data: soundInfo.unknownData3),
+      GsfDataTile(label: 'Unknown data 4', data: soundInfo.unknownData4),
+      GsfDataTile(label: 'Sound group name', data: soundInfo.soundGroupName),
     ]);
   }
 }
