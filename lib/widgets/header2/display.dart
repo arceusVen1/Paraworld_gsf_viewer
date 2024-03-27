@@ -119,7 +119,7 @@ class _MaterialsTable extends ConsumerWidget {
         GsfDataTile(
             label: 'Materials offset', data: materialsTable.materialOffset),
         GsfDataTile(
-            label: 'Materials length', data: materialsTable.maxEntriesCount),
+            label: 'Max materials count', data: materialsTable.maxEntriesCount),
         PartSelector(
             value: selectedMaterial,
             label: "materials",
