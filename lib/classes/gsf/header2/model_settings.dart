@@ -6,8 +6,24 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
+enum ModelType {
+  char,
+  ress,
+  bldg,
+  deko,
+  vehi,
+  fiel,
+  misc,
+  towe,
+  anim,
+  ship,
+  vgtn,
+  rivr,
+}
+
 class ModelSettings extends GsfPart {
   late final GsfData<String> fourCC;
+  late final ModelType type;
   late final Standard4BytesData<int> objectNameRelativeOffset;
   late final ObjectName objectName;
   late final Standard4BytesData<int> chunksTableRelativeOffset;
@@ -44,6 +60,9 @@ class ModelSettings extends GsfPart {
       position: 0,
       bytes: bytes,
       offset: offset,
+    );
+    type = ModelType.values.firstWhere(
+      (element) => element.name == fourCC.value.toLowerCase(),
     );
     objectNameRelativeOffset = Standard4BytesData(
       position: fourCC.relativeEnd,
