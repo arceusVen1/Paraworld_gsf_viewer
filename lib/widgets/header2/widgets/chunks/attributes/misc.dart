@@ -15,6 +15,7 @@ class MiscFlagsDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<FlagBox> miscFlags = () {
       switch (chunkAttributes.typeOfModel) {
+        case ModelType.wall:
         case ModelType.bldg:
           final attributes = chunkAttributes as BldgAttributes;
           return [

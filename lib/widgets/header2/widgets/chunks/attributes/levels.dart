@@ -30,6 +30,7 @@ class LevelFlagsDisplay extends StatelessWidget {
               ],
             )
           ];
+        case ModelType.wall:
         case ModelType.bldg:
           final attributes = chunkAttributes as BldgAttributes;
           return [

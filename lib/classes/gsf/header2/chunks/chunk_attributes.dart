@@ -1,5 +1,4 @@
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
-import 'package:paraworld_gsf_viewer/classes/model.dart';
 
 class ChunkAttributes {
   ChunkAttributes({
@@ -31,7 +30,7 @@ class ChunkAttributes {
       case ModelType.ress:
         return RessAttributes(value);
       case ModelType.bldg:
-        return BldgAttributes(value);
+        return BldgAttributes(value, null);
       case ModelType.deko:
         return DekoAttributes(value);
       case ModelType.vehi:
@@ -51,7 +50,7 @@ class ChunkAttributes {
       case ModelType.rivr:
         return RivrAttributes(value);
       case ModelType.wall:
-        return ChunkAttributes(value: value, typeOfModel: ModelType.wall);
+        return WallAttributes(value);
       case ModelType.unknown:
         return ChunkAttributes(value: value, typeOfModel: ModelType.unknown);
     }
@@ -77,7 +76,7 @@ class RessAttributes extends ChunkAttributes {
   bool get isRes3 => bits[0];
   bool get isRes2 => bits[1];
   bool get isRes1 => bits[2];
-  
+
   bool get isRes6 => bits[13];
   bool get isRes5 => bits[14];
   bool get isRes4 => bits[15];
@@ -85,7 +84,8 @@ class RessAttributes extends ChunkAttributes {
 }
 
 class BldgAttributes extends ChunkAttributes {
-  BldgAttributes(int value) : super.fromValue(value, ModelType.bldg);
+  BldgAttributes(int value, ModelType? modelType)
+      : super.fromValue(value, modelType ?? ModelType.bldg);
 
   bool get animateConEnd => bits[1];
   bool get animateConStart => bits[2];
@@ -109,6 +109,10 @@ class BldgAttributes extends ChunkAttributes {
 
   bool get isCon4 => bits[30];
   bool get isCon3 => bits[31];
+}
+
+class WallAttributes extends BldgAttributes {
+  WallAttributes(int value) : super(value, ModelType.wall);
 }
 
 class DekoAttributes extends ChunkAttributes {

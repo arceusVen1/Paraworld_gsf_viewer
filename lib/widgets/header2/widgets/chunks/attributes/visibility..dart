@@ -33,6 +33,7 @@ class VisibilityFlagsDisplay extends StatelessWidget {
                 label: "is selection volume",
                 isOn: attributes.isSelectionVolume),
           ];
+        case ModelType.wall:
         case ModelType.bldg:
           final attributes = chunkAttributes as BldgAttributes;
           return [
@@ -69,7 +70,7 @@ class VisibilityFlagsDisplay extends StatelessWidget {
         case ModelType.vgtn:
           final attributes = chunkAttributes as VgtnAttributes;
           return [
-            FlagBox(label: "is for night", isOn: attributes.isTreeBillboard),
+            FlagBox(label: "treebillboard", isOn: attributes.isTreeBillboard),
             FlagBox(
               label: "is selection volume",
               isOn: attributes.isSelectionVolume,
