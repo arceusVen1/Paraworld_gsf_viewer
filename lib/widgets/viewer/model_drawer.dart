@@ -7,7 +7,7 @@ import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/rotation.dart';
 import 'package:paraworld_gsf_viewer/classes/texture.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
-import 'package:paraworld_gsf_viewer/main.dart';
+import 'package:paraworld_gsf_viewer/theme.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/mouse_movement_notifier.dart';
 import 'dart:math' as math;
 
@@ -19,17 +19,19 @@ class ModelDrawer extends CustomPainter {
     required this.model,
     required this.texture,
     required this.showNormals,
+    required this.meshColor,
   }) : super(repaint: mousePosition);
 
   final ValueNotifier<MousePositionDrag> mousePosition;
   final Model model;
   final ModelTexture? texture;
   final bool showNormals;
+  final Color meshColor;
 
   final Rotation rotation = Rotation();
 
-  final Paint _paint = Paint()
-    ..color = const Color.fromRGBO(0, 0, 0, 1)
+  late final Paint _paint = Paint()
+    ..color = meshColor
     ..strokeWidth = 1
     ..strokeCap = StrokeCap.round;
 
@@ -194,8 +196,7 @@ class ModelDrawer extends CustomPainter {
     );
 
     final colorList = Int32List.fromList(List.filled(
-        (data.positions.length / 2).round(),
-        const Color.fromRGBO(0, 0, 0, 0.3).value));
+        (data.positions.length / 2).round(), meshColor.withOpacity(0.3).value));
 
     //canvas.drawRawPoints(PointMode.points, positions.lenght, _paint);
     if (showNormals) {
