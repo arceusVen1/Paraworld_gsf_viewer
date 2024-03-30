@@ -101,7 +101,12 @@ class _LevelWrapper extends StatelessWidget {
             : theme.colorScheme.primaryContainer,
         border: Border.all(color: Colors.black),
       ),
-      child: Label.small(level.toString()),
+      child: Label.small(
+        level.toString(),
+        color: isOn
+            ? theme.colorScheme.onSecondaryContainer
+            : theme.colorScheme.onPrimaryContainer,
+      ),
     );
   }
 }
