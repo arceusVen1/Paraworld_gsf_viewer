@@ -94,6 +94,7 @@ class Label extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return FittedBox(
       fit: BoxFit.scaleDown, // this will force the text to be resized to fit
       alignment: Alignment.centerLeft,
@@ -101,7 +102,7 @@ class Label extends StatelessWidget {
         label,
         maxLines: maxLines,
         style: TextStyle(
-          color: color ?? Colors.black,
+          color: color ?? theme.colorScheme.onBackground,
           fontSize: getFontSize(size),
           fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
           overflow: TextOverflow.ellipsis,

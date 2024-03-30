@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paraworld_gsf_viewer/theme.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/display.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/drawer_menu.dart';
@@ -12,21 +12,14 @@ void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-const kWhiteColor = Color(0xffffffff);
-const kBlackColor = Color(0xff000000);
-const kTransparentColor = Color(0x00ffffff);
-const kBlueColor = Color(0xff5a78a0);
-const kRedColor = Color(0xffd73d33);
-
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  
+class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     if (kIsWeb) {
@@ -45,52 +38,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeModeProvider);
+
+    const tabs = [
+      Tab(text: "Contents Table", icon: Icon(Icons.info)),
+      Tab(text: "Mesh Viewer", icon: Icon(Icons.info)),
+      Tab(text: "Model Viewer", icon: Icon(Icons.hub)),
+    ];
     return MaterialApp(
       title: 'ParaWorld GSF viewer',
-      theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: kBlueColor,
-
-			primary: kRedColor,
-
-			primaryContainer: kRedColor,
-
-			outline: kBlueColor,
-			outlineVariant: kBlueColor,
-			
-			background: kWhiteColor,
-
-			surface: kWhiteColor,
-			onSurface: kBlueColor,
-			
-			surfaceVariant: kWhiteColor,
-			onSurfaceVariant: kBlueColor,
-
-			shadow: kBlackColor,
-			scrim: kBlackColor,
-			surfaceTint: kTransparentColor,
-
-			inversePrimary: kRedColor,
-			secondary: kRedColor,
-			onSecondary: kRedColor,
-
-			error: kRedColor,
-			onError: kRedColor,
-			errorContainer: kRedColor,
-			onErrorContainer: kRedColor,
-
-          )),
+      theme: CustomTheme.lightThemeData(),
+      darkTheme: CustomTheme.darkThemeData(),
+      themeMode: themeMode,
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
           appBar: AppBar(
               bottom: const TabBar(
-                tabs: [
-                  Tab(text: "Contents Table", icon: Icon(Icons.info)),
-                  Tab(text: "Mesh Viewer", icon: Icon(Icons.info)),
-                  Tab(text: "Model Viewer", icon: Icon(Icons.hub)),
-                ],
+                tabs: tabs,
               ),
               title: const Text(
                 "Options",

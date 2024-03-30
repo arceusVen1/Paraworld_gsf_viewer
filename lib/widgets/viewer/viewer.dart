@@ -20,6 +20,7 @@ class Viewer extends StatelessWidget {
         child: Label.extraLarge("No model to show"),
       );
     }
+    final theme = Theme.of(context);
 
     return Column(
       children: [
@@ -31,6 +32,7 @@ class Viewer extends StatelessWidget {
                   return ShowNormalWrapper(
                     builder: (showNormals) => CustomPaint(
                       painter: ModelDrawer(
+                        meshColor: theme.colorScheme.onBackground,
                         mousePosition: mouseNotifier,
                         model: model!,
                         texture: texture,

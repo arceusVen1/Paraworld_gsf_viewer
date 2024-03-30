@@ -24,7 +24,7 @@ class HeaderDisplay extends ConsumerWidget {
       loading: (_) => const Loading(),
       error: (error) => Label.large(
         'Error: $error',
-        color: Color(0xffd73d33),
+        color: Theme.of(context).colorScheme.error,
         isBold: true,
       ),
       data: (state) {
@@ -60,8 +60,7 @@ class _Data extends ConsumerWidget {
       sideArea: variablePart,
       mainArea: DataDecorator(
         children: [
-          GsfDataTile(
-              label: 'Header offset', data: header.header2Offset),
+          GsfDataTile(label: 'Header offset', data: header.header2Offset),
           GsfDataTile(label: 'GSF name length', data: header.nameLength),
           GsfDataTile(label: 'GSF name', data: header.name),
           GsfDataTile(

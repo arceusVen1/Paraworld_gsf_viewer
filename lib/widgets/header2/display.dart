@@ -27,7 +27,7 @@ class Header2Display extends ConsumerWidget {
       loading: (_) => const Loading(),
       error: (error) => Label.large(
         'Error: $error',
-        color: Color(0xffd73d33),
+        color: Theme.of(context).colorScheme.error,
         isBold: true,
       ),
       data: (state) {

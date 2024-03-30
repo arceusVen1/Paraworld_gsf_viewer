@@ -109,7 +109,7 @@ class DataDecorator extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xff5a78a0)),
+          border: Border.all(color: Theme.of(context).colorScheme.primary),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: ListView(
@@ -263,15 +263,17 @@ class __SelectableTileState extends State<_SelectableTile> {
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 2.0),
+          decoration: BoxDecoration(
+            border: Border.all(
+                width: 1,
+                color: _isHovering
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.black.withOpacity(0)),
+            borderRadius: BorderRadius.circular(4.0),
+          ),
           child: Label.regular(
             widget.title,
             isBold: widget.bold,
-          ),
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1, 
-              color: _isHovering ? Color(0xff5a78a0) : Color(0x00000000)),
-			borderRadius: BorderRadius.circular(4.0),
           ),
         ),
       ),
@@ -413,7 +415,7 @@ class ListViewWrapper extends StatelessWidget {
       padding: EdgeInsets.only(top: 3.0, bottom: 3.0, right: rightPadding),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xff5a78a0)),
+          border: Border.all(color: Theme.of(context).colorScheme.primary),
           borderRadius: BorderRadius.circular(8.0),
         ),
         clipBehavior: Clip.hardEdge,
@@ -450,7 +452,7 @@ class ListTileWrapper extends StatelessWidget {
       ),
       contentPadding: const EdgeInsets.only(left: 5, right: 5),
       selected: isSelected,
-      selectedTileColor: Color(0xff5a78a0),
+      selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
       title: Label.regular(label),
       onTap: onTap,
     );
