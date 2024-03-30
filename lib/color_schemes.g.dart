@@ -2,68 +2,88 @@ import 'package:flutter/material.dart';
 
 const lightColorScheme = ColorScheme(
   brightness: Brightness.light,
-  background: Color(0xffffffff),
-  error: Color(0xffba1a1a),
-  errorContainer: Color(0xffffdad6),
-  inversePrimary: Color(0xff18ff00),
-  inverseSurface: Color(0xff12ff00),
-  onBackground: Color(0xff1cff00),
-  onError: Color(0xffffffff),
-  onErrorContainer: Color(0xff410002),
-  onInverseSurface: Color(0xff23ff00),
-  onPrimary: Color(0xffb6a483),
-  onPrimaryContainer: Color(0xff333232),
-  onSecondary: Color(0xff08ff00),
-  onSecondaryContainer: Color(0xff17ff00),
-  onSurface: Color(0xff333232),
-  onSurfaceVariant: Color(0xff333232),
-  onTertiary: Color(0xff2dff00),
-  onTertiaryContainer: Color(0xff17ff00),
-  outline: Color(0xff333232),
-  outlineVariant: Color(0xffc3c7cf),
+  
   primary: Color(0xff993300),
   primaryContainer: Color(0xffb6a483),
-  scrim: Color(0xff000000),
-  secondary: Color(0xff00ff04),
-  secondaryContainer: Color(0xff3dff00),
-  shadow: Color(0xff000000),
+  onPrimary: Color(0xffb6a483),
+  onPrimaryContainer: Color(0xff333232),
+  
+  secondary: Color(0xff993300),
+  secondaryContainer: Color(0xff00ff00),
+  onSecondary: Color(0xff00ff00),
+  onSecondaryContainer: Color(0xff00ff00),
+
+  tertiary: Color(0xff00ff00),
+  tertiaryContainer: Color(0xff00ff00),
+  onTertiary: Color(0xff00ff00),
+  onTertiaryContainer: Color(0xff00ff00),
+
+  background: Color(0xffffffff),
+  onBackground: Color(0xff333232),
+  
+  inversePrimary: Color(0xff00ff00),
+  inverseSurface: Color(0xff00ff00),
+  onInverseSurface: Color(0xff00ff00),
+  
+  onSurface: Color(0xff333232),
+  onSurfaceVariant: Color(0xff333232),
+
+  outline: Color(0xff333232),
+  outlineVariant: Color(0xff993300),
+  
   surface: Color(0xffb6a483),
-  surfaceTint: Color(0xff0061a4),
+  surfaceTint: Color(0x00000000),
   surfaceVariant: Color(0xffb6a483),
-  tertiary: Color(0xff0cff00),
-  tertiaryContainer: Color(0xff43ff00),
+
+  error: Color(0xffba1a1a),
+  errorContainer: Color(0xffffdad6),
+  onError: Color(0xffffffff),
+  onErrorContainer: Color(0xff410002),
+  
+  shadow: Color(0xff000000),
+  scrim: Color(0xff000000),
 );
 
 const darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
-  background: Color(0xff000000),
-  error: Color(0xffffb4ab),
-  errorContainer: Color(0xff93000a),
-  inversePrimary: Color(0xff1aff00),
-  inverseSurface: Color(0xff14ff00),
-  onBackground: Color(0xff00ff09),
-  onError: Color(0xff690005),
-  onErrorContainer: Color(0xffffb4ab),
-  onInverseSurface: Color(0xff0eff00),
+ 
+  primary: Color(0xff993300),
+  primaryContainer: Color(0xff993300),
   onPrimary: Color(0xff993300),
   onPrimaryContainer: Color(0xffb3ada1),
-  onSecondary: Color(0xff2bff00),
-  onSecondaryContainer: Color(0xff00ff05),
-  onSurface: Color(0xffb3ada1),
-  onSurfaceVariant: Color(0xffb3ada1),
-  onTertiary: Color(0xff00ff04),
-  onTertiaryContainer: Color(0xff002200),
-  outline: Color(0xffb3ada1),
-  outlineVariant: Color(0xff43474e),
-  primary: Color(0xffb3ada1),
-  primaryContainer: Color(0xff993300),
-  scrim: Color(0xff000000),
+  
   secondary: Color(0xff993300),
   secondaryContainer: Color(0xff993300),
-  shadow: Color(0xff000000),
+  onSecondary: Color(0xff00ff00),
+  onSecondaryContainer: Color(0xff00ff00),
+
+  tertiary: Color(0xff00ff00),
+  tertiaryContainer: Color(0xff00ff00),
+  onTertiary: Color(0xff00ff00),
+  onTertiaryContainer: Color(0xff00ff00),
+
+  background: Color(0xff000000),
+  onBackground: Color(0xffb3ada1),
+  
+  inversePrimary: Color(0xff00ff00),
+  inverseSurface: Color(0xff00ff00),
+  onInverseSurface: Color(0xff00ff00),
+  
+  onSurface: Color(0xffb3ada1),
+  onSurfaceVariant: Color(0xffb3ada1),
+
+  outline: Color(0xffb3ada1),
+  outlineVariant: Color(0xffb3ada1),
+  
   surface: Color(0xff333232),
-  surfaceTint: Color(0xff9ecaff),
+  surfaceTint: Color(0x00000000),
   surfaceVariant: Color(0xff333232),
-  tertiary: Color(0xff00ff10),
-  tertiaryContainer: Color(0xffbbf1aa),
+
+  error: Color(0xffba1a1a),
+  errorContainer: Color(0xffffdad6),
+  onError: Color(0xffffffff),
+  onErrorContainer: Color(0xff410002),
+  
+  shadow: Color(0xff000000),
+  scrim: Color(0xff000000),
 );
