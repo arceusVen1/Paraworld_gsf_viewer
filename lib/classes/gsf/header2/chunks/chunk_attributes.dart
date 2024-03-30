@@ -1,4 +1,5 @@
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
+import 'package:paraworld_gsf_viewer/classes/model.dart';
 
 class ChunkAttributes {
   ChunkAttributes({
@@ -49,6 +50,10 @@ class ChunkAttributes {
         return VgtnAttributes(value);
       case ModelType.rivr:
         return RivrAttributes(value);
+      case ModelType.wall:
+        return ChunkAttributes(value: value, typeOfModel: ModelType.wall);
+      case ModelType.unknown:
+        return ChunkAttributes(value: value, typeOfModel: ModelType.unknown);
     }
   }
 }
@@ -72,6 +77,10 @@ class RessAttributes extends ChunkAttributes {
   bool get isRes3 => bits[0];
   bool get isRes2 => bits[1];
   bool get isRes1 => bits[2];
+  
+  bool get isRes6 => bits[13];
+  bool get isRes5 => bits[14];
+  bool get isRes4 => bits[15];
   bool get isSelectionVolume => bits[21];
 }
 
@@ -80,10 +89,6 @@ class BldgAttributes extends ChunkAttributes {
 
   bool get animateConEnd => bits[1];
   bool get animateConStart => bits[2];
-
-  bool get isRes6 => bits[13];
-  bool get isRes5 => bits[14];
-  bool get isRes4 => bits[15];
 
   // con is for construction level of buildings
   // con 0 is start of construction, con 4 is finished

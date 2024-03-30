@@ -19,6 +19,8 @@ enum ModelType {
   ship,
   vgtn,
   rivr,
+  wall,
+  unknown,
 }
 
 class ModelSettings extends GsfPart {
@@ -64,6 +66,12 @@ class ModelSettings extends GsfPart {
     type = ModelType.values.firstWhere(
       (element) => element.name == fourCC.value.toLowerCase(),
     );
+    // type = ModelType.values
+    //         .where(
+    //           (element) => element.name == fourCC.value.toLowerCase(),
+    //         )
+    //         .firstOrNull ??
+    //     ModelType.unknown;
     objectNameRelativeOffset = Standard4BytesData(
       position: fourCC.relativeEnd,
       bytes: bytes,

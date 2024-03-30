@@ -24,20 +24,15 @@ class LevelFlagsDisplay extends StatelessWidget {
                 _Level(label: "1", isOn: attributes.isRes1),
                 _Level(label: "2", isOn: attributes.isRes2),
                 _Level(label: "3", isOn: attributes.isRes3),
+                _Level(label: "4", isOn: attributes.isRes4),
+                _Level(label: "5", isOn: attributes.isRes5),
+                _Level(label: "6", isOn: attributes.isRes6),
               ],
             )
           ];
         case ModelType.bldg:
           final attributes = chunkAttributes as BldgAttributes;
           return [
-            _LevelRow(
-              title: "res",
-              levels: [
-                _Level(label: "4", isOn: attributes.isRes4),
-                _Level(label: "5", isOn: attributes.isRes5),
-                _Level(label: "6", isOn: attributes.isRes6),
-              ],
-            ),
             _LevelRow(
               title: "con",
               levels: [
