@@ -120,6 +120,7 @@ class ClothChunkDisplay extends ConsumerWidget {
         );
     return DataDecorator(children: [
       GsfDataTile(label: 'Attributes', data: cloth.attributes),
+      ChunkAttributesDisplay(attributes: cloth.attributes.value),
       GsfDataTile(label: 'Guid', data: cloth.guid),
       AffineTransformationDisplay(transformation: cloth.affineTransformation),
       GsfDataTile(label: 'Unknown data', data: cloth.unknownData),
