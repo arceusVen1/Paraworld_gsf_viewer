@@ -20,7 +20,7 @@ class BoundingBoxDisplay extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Label.medium(
-          bbName ?? "Bounding box",
+          bbName ?? "Model bounding box",
           isBold: true,
         ),
         Wrap(

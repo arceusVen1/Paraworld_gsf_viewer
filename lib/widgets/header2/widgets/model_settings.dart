@@ -27,7 +27,7 @@ class ModelSettingsDisplay extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return DataDecorator(children: [
       GsfDataTile(
-        label: 'object name offset',
+        label: 'Object name offset',
         data: modelSettings.objectNameRelativeOffset,
         relatedPart: modelSettings.objectName,
         onSelected: (part) {
@@ -37,27 +37,7 @@ class ModelSettingsDisplay extends ConsumerWidget {
         },
       ),
       GsfDataTile(
-          label: 'Chunks table offset',
-          data: modelSettings.chunksTableRelativeOffset),
-      GsfDataTile(
-        label: 'Chunks table count',
-        data: modelSettings.chunksCount,
-      ),
-      if (modelSettings.chunksTable != null)
-        ChunksTableDisplay(
-          chunksTable: modelSettings.chunksTable!,
-        ),
-      GsfDataTile(
-        label: 'Fallback table offset',
-        data: modelSettings.fallbackTableRelativeOffset,
-      ),
-      if (modelSettings.fallbackTable != null)
-        _FallbackTableDisplay(
-          fallbackTable: modelSettings.fallbackTable!,
-          materialsTable: materialsTable,
-        ),
-      GsfDataTile(
-        label: 'Read data',
+        label: 'bReadData',
         data: modelSettings.readData,
       ),
       GsfDataTile(
@@ -70,11 +50,11 @@ class ModelSettingsDisplay extends ConsumerWidget {
           label: 'First link chunk index',
           data: modelSettings.firstLinkChunkIndex),
       GsfDataTile(
-        label: 'links count',
+        label: 'Links count',
         data: modelSettings.linkChunksCount,
       ),
       GsfDataTile(
-        label: 'Misc chunk exists flag',
+        label: 'bMisc chunk exists',
         data: modelSettings.miscChunkExistsFlag,
       ),
       GsfDataTile(
@@ -108,6 +88,26 @@ class ModelSettingsDisplay extends ConsumerWidget {
       BoundingBoxDisplay(
         boundingBox: modelSettings.boundingBox,
       ),
+      GsfDataTile(
+          label: 'Chunks table offset',
+          data: modelSettings.chunksTableRelativeOffset),
+      GsfDataTile(
+        label: 'Chunks count',
+        data: modelSettings.chunksCount,
+      ),
+      if (modelSettings.chunksTable != null)
+        ChunksTableDisplay(
+          chunksTable: modelSettings.chunksTable!,
+        ),
+      GsfDataTile(
+        label: 'Fallback table offset',
+        data: modelSettings.fallbackTableRelativeOffset,
+      ),
+      if (modelSettings.fallbackTable != null)
+        _FallbackTableDisplay(
+          fallbackTable: modelSettings.fallbackTable!,
+          materialsTable: materialsTable,
+        ),
       GsfDataTile(
         label: 'Anim chunks table header offset',
         data: modelSettings.animChunksTableHeaderOffset,
@@ -202,19 +202,19 @@ class _FallbackTableDisplay extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Divider(
-          color: Colors.black,
+          color: Color(0xff5a78a0),
         ),
         const Label.medium('Fallback table', isBold: true),
         GsfDataTile(
-            label: "header 2 offset", data: fallbackTable.header2Offset),
+            label: "Header 2 offset", data: fallbackTable.header2Offset),
         GsfDataTile(
-            label: "model settings offset",
+            label: "Model settings offset",
             data: fallbackTable.modelSettingsOffset),
-        GsfDataTile(label: "unknown num", data: fallbackTable.unknownInt),
+        GsfDataTile(label: "Unknown count", data: fallbackTable.unknownInt),
         GsfDataTile(
-            label: "usedMaterialsCount",
+            label: "Used materials count",
             data: fallbackTable.usedMaterialsCount),
-        GsfDataTile(label: "unknown num 2", data: fallbackTable.unknownInt2),
+        GsfDataTile(label: "Unknown count 2", data: fallbackTable.unknownInt2),
         DataSelector(
           datas: fallbackTable.usedMaterialIndexes,
           relatedParts: materialsTable.materials,
@@ -228,7 +228,7 @@ class _FallbackTableDisplay extends ConsumerWidget {
           },
         ),
         const Divider(
-          color: Colors.black,
+          color: Color(0xff5a78a0),
         ),
       ],
     );
