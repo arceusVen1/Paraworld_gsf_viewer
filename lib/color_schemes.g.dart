@@ -9,9 +9,9 @@ const lightColorScheme = ColorScheme(
   onPrimaryContainer: Color(0xff333232),
   
   secondary: Color(0xff993300),
-  secondaryContainer: Color(0xff00ff00),
+  secondaryContainer: Color(0xff993300),
   onSecondary: Color(0xff00ff00),
-  onSecondaryContainer: Color(0xff00ff00),
+  onSecondaryContainer: Color(0xff333232),
 
   tertiary: Color(0xff00ff00),
   tertiaryContainer: Color(0xff00ff00),
@@ -22,8 +22,8 @@ const lightColorScheme = ColorScheme(
   onBackground: Color(0xff333232),
   
   inversePrimary: Color(0xff00ff00),
-  inverseSurface: Color(0xff00ff00),
-  onInverseSurface: Color(0xff00ff00),
+  inverseSurface: Color(0xffb6a483),
+  onInverseSurface: Color(0xff333232),
   
   onSurface: Color(0xff333232),
   onSurfaceVariant: Color(0xff333232),
@@ -55,7 +55,7 @@ const darkColorScheme = ColorScheme(
   secondary: Color(0xff993300),
   secondaryContainer: Color(0xff993300),
   onSecondary: Color(0xff00ff00),
-  onSecondaryContainer: Color(0xff00ff00),
+  onSecondaryContainer: Color(0xff333232),
 
   tertiary: Color(0xff00ff00),
   tertiaryContainer: Color(0xff00ff00),
@@ -66,8 +66,8 @@ const darkColorScheme = ColorScheme(
   onBackground: Color(0xffb3ada1),
   
   inversePrimary: Color(0xff00ff00),
-  inverseSurface: Color(0xff00ff00),
-  onInverseSurface: Color(0xff00ff00),
+  inverseSurface: Color(0xff333232),
+  onInverseSurface: Color(0xffb3ada1),
   
   onSurface: Color(0xffb3ada1),
   onSurfaceVariant: Color(0xffb3ada1),
