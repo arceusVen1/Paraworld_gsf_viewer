@@ -32,6 +32,51 @@ class DisplayWrapper extends StatelessWidget {
   }
 }
 
+class SectionWrapper extends StatelessWidget {
+  const SectionWrapper({
+    super.key,
+    required this.label,
+    required this.children,
+  });
+
+  final String label;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 1),
+            borderRadius: BorderRadius.circular(5),
+            shape: BoxShape.rectangle,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...children,
+            ],
+          ),
+        ),
+        Positioned(
+          left: 50,
+          top: 12,
+          child: Container(
+            padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+            color: theme.colorScheme.background,
+            child: Label.regular(
+              label,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class Empty extends StatelessWidget {
   const Empty({super.key});
 
