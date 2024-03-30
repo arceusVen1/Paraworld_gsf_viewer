@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/link.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 
 class LinkDisplay extends StatelessWidget {
@@ -11,6 +12,7 @@ class LinkDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return DataDecorator(children: [
       GsfDataTile(label: "Attributes", data: link.attributes),
+      ChunkAttributesDisplay(attributes: link.attributes.value),
       GsfDataTile(label: "Guid", data: link.guid),
       GsfDataTile(label: "Pos X", data: link.positionX),
       GsfDataTile(label: "Pos Y", data: link.positionY),

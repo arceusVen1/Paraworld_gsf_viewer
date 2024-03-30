@@ -8,7 +8,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/affine_transformation.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bounding_box.dart';
-import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/chunk_attributes.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 

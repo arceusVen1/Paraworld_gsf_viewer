@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
@@ -37,37 +40,50 @@ class SectionWrapper extends StatelessWidget {
     super.key,
     required this.label,
     required this.children,
+    this.spacing = 5,
   });
 
   final String label;
   final List<Widget> children;
+  final double spacing;
 
   @override
   Widget build(BuildContext context) {
+    const double defaultPadding = 10;
     final theme = Theme.of(context);
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
     return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1),
-            borderRadius: BorderRadius.circular(5),
-            shape: BoxShape.rectangle,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...children,
-            ],
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(defaultPadding, defaultPadding,
+                defaultPadding, max(defaultPadding - spacing, 0)),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: theme.colorScheme.primary, width: 1),
+              borderRadius: BorderRadius.circular(5),
+              shape: BoxShape.rectangle,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ...children.expand((element) => [element, Gap(spacing)])
+              ],
+            ),
           ),
         ),
         Positioned(
-          left: 50,
-          top: 12,
+          left: 20,
+          top: 0,
           child: Container(
-            padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+            padding: const EdgeInsets.only(bottom: 1, left: 5, right: 5),
             color: theme.colorScheme.background,
-            child: Label.regular(
+            child: Label.small(
               label,
             ),
           ),
