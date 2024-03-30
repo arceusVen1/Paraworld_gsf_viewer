@@ -4,7 +4,6 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class LinkChunk extends Chunk {
-  late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
   late final Standard4BytesData<double> positionX;
   late final Standard4BytesData<double> positionY;

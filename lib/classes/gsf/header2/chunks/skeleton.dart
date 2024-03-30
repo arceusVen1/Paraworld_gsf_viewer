@@ -7,7 +7,6 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 /// WARNING: This class the first bone is included in skeleton chunk
 class SkeletonChunk extends Chunk {
-  late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
   late final Standard4BytesData<int> index;
   late final Standard4BytesData<int> id;

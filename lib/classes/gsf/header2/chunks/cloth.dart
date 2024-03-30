@@ -9,7 +9,6 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:vector_math/vector_math.dart';
 
 class ClothChunk extends Chunk with MeshToModelInterface {
-  late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
   late final AffineTransformation affineTransformation;
   late final Standard4BytesData<UnknowData> unknownData;

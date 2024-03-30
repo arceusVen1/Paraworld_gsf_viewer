@@ -140,9 +140,13 @@ extension ChunkTypeExtension on ChunkType {
 }
 
 class Chunk extends GsfPart {
-  Chunk({required super.offset, required this.type});
+  Chunk({
+    required super.offset,
+    required this.type,
+  });
 
-  late final ChunkType type;
+  final ChunkType type;
+  late final Standard4BytesData<int> attributes;
 
   @override
   String get label => 'Chunk ${type.name} (0x${type.value.toRadixString(16)})';
