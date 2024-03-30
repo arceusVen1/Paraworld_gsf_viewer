@@ -25,20 +25,31 @@ class CustomTheme {
 }
 
 class ThemeModeSwitcher extends ConsumerWidget {
+  const ThemeModeSwitcher({super.key});
   void _toggleTheme(ThemeMode themeMode, WidgetRef ref) {
     ref.read(themeModeProvider.notifier).state = themeMode;
   }
 
   @override
   Widget build(BuildContext context, ref) {
+    final theme = Theme.of(context);
     bool isDarkMode = ref.watch(themeModeProvider) == ThemeMode.dark;
-    return Switch.adaptive(
-      value: isDarkMode,
-      onChanged: (isOn) {
-        isOn
-            ? _toggleTheme(ThemeMode.dark, ref)
-            : _toggleTheme(ThemeMode.light, ref);
-      },
+    return Row(
+      children: [
+        Icon(
+          isDarkMode ? Icons.dark_mode : Icons.light_mode,
+          color: theme.colorScheme.onPrimaryContainer,
+        ),
+        Switch.adaptive(
+          activeColor: theme.colorScheme.primary,
+          value: isDarkMode,
+          onChanged: (isOn) {
+            isOn
+                ? _toggleTheme(ThemeMode.dark, ref)
+                : _toggleTheme(ThemeMode.light, ref);
+          },
+        ),
+      ],
     );
   }
 }

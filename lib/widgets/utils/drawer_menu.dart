@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/providers/normals.dart';
 import 'package:paraworld_gsf_viewer/providers/texture.dart';
+import 'package:paraworld_gsf_viewer/theme.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/buttons.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
@@ -24,9 +25,18 @@ class Menu extends ConsumerWidget {
             decoration: BoxDecoration(
               color: theme.colorScheme.primaryContainer,
             ),
-            child: Label.extraLarge(
-              "Options",
-              color: theme.colorScheme.onPrimaryContainer,
+            child: Wrap(
+              direction: Axis.vertical,
+              alignment: WrapAlignment.start,
+              crossAxisAlignment: WrapCrossAlignment.start,
+              spacing: 8,
+              children: [
+                const ThemeModeSwitcher(),
+                Label.extraLarge(
+                  "Options",
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+              ],
             ),
           ),
           _FileLoaderTile(

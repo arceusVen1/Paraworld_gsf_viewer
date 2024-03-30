@@ -54,7 +54,6 @@ class _MyAppState extends ConsumerState<MyApp> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-              actions: [ThemeModeSwitcher()],
               bottom: const TabBar(
                 tabs: tabs,
               ),
