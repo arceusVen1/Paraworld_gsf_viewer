@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
@@ -37,13 +40,16 @@ class SectionWrapper extends StatelessWidget {
     super.key,
     required this.label,
     required this.children,
+    this.spacing = 5,
   });
 
   final String label;
   final List<Widget> children;
+  final double spacing;
 
   @override
   Widget build(BuildContext context) {
+    const double defaultPadding = 10;
     final theme = Theme.of(context);
     if (children.isEmpty) {
       return const SizedBox.shrink();
@@ -51,9 +57,10 @@ class SectionWrapper extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          padding: const EdgeInsets.symmetric(vertical: defaultPadding),
           child: Container(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.fromLTRB(defaultPadding, defaultPadding,
+                defaultPadding, max(defaultPadding - spacing, 0)),
             width: double.infinity,
             decoration: BoxDecoration(
               border: Border.all(color: theme.colorScheme.primary, width: 1),
@@ -62,9 +69,10 @@ class SectionWrapper extends StatelessWidget {
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ...children,
+                ...children.expand((element) => [element, Gap(spacing)])
               ],
             ),
           ),
