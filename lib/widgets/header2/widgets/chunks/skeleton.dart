@@ -4,6 +4,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bind_pose.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 
 class SkeletonDisplay extends ConsumerWidget {
@@ -20,6 +21,7 @@ class SkeletonDisplay extends ConsumerWidget {
         );
     return DataDecorator(children: [
       GsfDataTile(label: "Attributes", data: skeleton.attributes),
+      ChunkAttributesDisplay(attributes: skeleton.attributes.value),
       GsfDataTile(label: "Guid", data: skeleton.guid),
       GsfDataTile(label: "Index", data: skeleton.index),
       GsfDataTile(label: "Guid 2", data: skeleton.id),
@@ -35,7 +37,8 @@ class SkeletonDisplay extends ConsumerWidget {
       GsfDataTile(label: "Quat W", data: skeleton.quaternionK),
       GsfDataTile(label: "Child bones count", data: skeleton.childBonesCount),
       GsfDataTile(label: "Bones offset", data: skeleton.bonesOffset),
-      GsfDataTile(label: "Child bones count 2", data: skeleton.childBonesCount2),
+      GsfDataTile(
+          label: "Child bones count 2", data: skeleton.childBonesCount2),
       GsfDataTile(label: "Bind pose offset", data: skeleton.bindPoseOffset),
       GsfDataTile(label: "All bones count", data: skeleton.allBonesCount),
       GsfDataTile(label: "All bones count 2", data: skeleton.allBones2),

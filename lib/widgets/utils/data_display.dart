@@ -45,29 +45,37 @@ class SectionWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
     return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1),
-            borderRadius: BorderRadius.circular(5),
-            shape: BoxShape.rectangle,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...children,
-            ],
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: Container(
+            padding: const EdgeInsets.all(10.0),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: theme.colorScheme.primary, width: 1),
+              borderRadius: BorderRadius.circular(5),
+              shape: BoxShape.rectangle,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...children,
+              ],
+            ),
           ),
         ),
         Positioned(
-          left: 50,
-          top: 12,
+          left: 20,
+          top: 0,
           child: Container(
-            padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+            padding: const EdgeInsets.only(bottom: 1, left: 5, right: 5),
             color: theme.colorScheme.background,
-            child: Label.regular(
+            child: Label.small(
               label,
             ),
           ),

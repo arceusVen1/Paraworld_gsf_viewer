@@ -88,11 +88,12 @@ class BldgAttributes extends ChunkAttributes {
   // con is for construction level of buildings
   // con 0 is start of construction, con 4 is finished
   bool get isCon2 => bits[16];
-  bool get isCon01 => bits[17];
+  bool get isCon1 => bits[17];
   bool get isCon0 => bits[18];
 
   bool get isForNight => bits[19];
 
+  bool get unknown => bits[20];
   bool get isSelectionVolume => bits[21];
 
   // dest is destruction damage level
@@ -117,6 +118,7 @@ class VehiAttributes extends ChunkAttributes {
 
   bool get ramHigh => bits[1];
   bool get ramLow => bits[2];
+  bool get unknown => bits[20];
 }
 
 class FielAttributes extends ChunkAttributes {
@@ -129,6 +131,7 @@ class MiscAttributes extends ChunkAttributes {
   bool get isStep2 => bits[0];
   bool get isStep1 => bits[1];
   bool get isStep0 => bits[2];
+  bool get unknown => bits[20];
 }
 
 class ToweAttributes extends ChunkAttributes {
@@ -157,7 +160,7 @@ class AnimAttributes extends ChunkAttributes {
 
   bool get misc => bits[12];
   bool get isArmorSaddle => bits[13];
-  bool get isStandart => bits[14];
+  bool get isStandard => bits[14];
   bool get isArmor => bits[15];
 
   bool get isRightLeg => bits[16];
@@ -179,6 +182,7 @@ class ShipAttributes extends ChunkAttributes {
   bool get isDest1 => bits[28];
   bool get useConFlags => bits[29];
   bool get isCon4 => bits[30];
+  bool get unknown => bits[20];
 }
 
 class VgtnAttributes extends ChunkAttributes {
@@ -191,5 +195,5 @@ class VgtnAttributes extends ChunkAttributes {
 class RivrAttributes extends ChunkAttributes {
   RivrAttributes(int value) : super.fromValue(value, ModelType.rivr);
 
-  bool get usWaterShader => bits[18];
+  bool get useWaterShader => bits[18];
 }
