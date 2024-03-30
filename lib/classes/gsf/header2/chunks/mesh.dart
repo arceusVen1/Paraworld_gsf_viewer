@@ -33,7 +33,6 @@ mixin MeshToModelInterface on Chunk {
 }
 
 class MeshChunk extends Chunk with MeshToModelInterface {
-  late final Standard4BytesData<int> attributes;
   late final Standard4BytesData<int> guid;
   late final AffineTransformation transformation;
   late final Standard4BytesData<UnknowData> unknownData;
