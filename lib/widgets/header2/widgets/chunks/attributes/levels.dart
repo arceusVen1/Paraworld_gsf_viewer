@@ -21,12 +21,12 @@ class LevelFlagsDisplay extends StatelessWidget {
             _LevelRow(
               title: "res:",
               levels: [
-                _Level(label: " 1 ", isOn: attributes.isRes1),
-                _Level(label: " 2 ", isOn: attributes.isRes2),
-                _Level(label: " 3 ", isOn: attributes.isRes3),
-                _Level(label: " 4 ", isOn: attributes.isRes4),
-                _Level(label: " 5 ", isOn: attributes.isRes5),
-                _Level(label: " 6 ", isOn: attributes.isRes6),
+                _Level(label: "1", isOn: attributes.isRes1),
+                _Level(label: "2", isOn: attributes.isRes2),
+                _Level(label: "3", isOn: attributes.isRes3),
+                _Level(label: "4", isOn: attributes.isRes4),
+                _Level(label: "5", isOn: attributes.isRes5),
+                _Level(label: "6", isOn: attributes.isRes6),
               ],
             )
           ];
@@ -37,18 +37,18 @@ class LevelFlagsDisplay extends StatelessWidget {
             _LevelRow(
               title: "Con:",
               levels: [
-                _Level(label: " 0 ", isOn: attributes.isCon0),
-                _Level(label: " 1 ", isOn: attributes.isCon1),
-                _Level(label: " 2 ", isOn: attributes.isCon2),
-                _Level(label: " 3 ", isOn: attributes.isCon3),
-                _Level(label: " 4 ", isOn: attributes.isCon4),
+                _Level(label: "0", isOn: attributes.isCon0),
+                _Level(label: "1", isOn: attributes.isCon1),
+                _Level(label: "2", isOn: attributes.isCon2),
+                _Level(label: "3", isOn: attributes.isCon3),
+                _Level(label: "4", isOn: attributes.isCon4),
               ],
             ),
             _LevelRow(
               title: "Dest:",
               levels: [
-                _Level(label: " 1 ", isOn: attributes.isDest1),
-                _Level(label: " 2 ", isOn: attributes.isDest2),
+                _Level(label: "1", isOn: attributes.isDest1),
+                _Level(label: "2", isOn: attributes.isDest2),
               ],
             )
           ];
@@ -58,9 +58,9 @@ class LevelFlagsDisplay extends StatelessWidget {
             _LevelRow(
               title: "Misc_Step:",
               levels: [
-                _Level(label: " 0 ", isOn: attributes.isStep0),
-                _Level(label: " 1 ", isOn: attributes.isStep1),
-                _Level(label: " 2 ", isOn: attributes.isStep2),
+                _Level(label: "0", isOn: attributes.isStep0),
+                _Level(label: "1", isOn: attributes.isStep1),
+                _Level(label: "2", isOn: attributes.isStep2),
               ],
             )
           ];
@@ -70,15 +70,15 @@ class LevelFlagsDisplay extends StatelessWidget {
             _LevelRow(
               title: "Zinnen:",
               levels: [
-                _Level(label: " 1 ", isOn: attributes.isZinnen1),
-                _Level(label: " 2 ", isOn: attributes.isZinnen2),
-                _Level(label: " 3 ", isOn: attributes.isZinnen3),
-                _Level(label: " 4 ", isOn: attributes.isZinnen4),
-                _Level(label: " 5 ", isOn: attributes.isZinnen5),
-                _Level(label: " 6 ", isOn: attributes.isZinnen6),
-                _Level(label: " 7 ", isOn: attributes.isZinnen7),
-                _Level(label: " 8 ", isOn: attributes.isZinnen8),
-                _Level(label: " 9 ", isOn: attributes.isZinnen9),
+                _Level(label: "1", isOn: attributes.isZinnen1),
+                _Level(label: "2", isOn: attributes.isZinnen2),
+                _Level(label: "3", isOn: attributes.isZinnen3),
+                _Level(label: "4", isOn: attributes.isZinnen4),
+                _Level(label: "5", isOn: attributes.isZinnen5),
+                _Level(label: "6", isOn: attributes.isZinnen6),
+                _Level(label: "7", isOn: attributes.isZinnen7),
+                _Level(label: "8", isOn: attributes.isZinnen8),
+                _Level(label: "9", isOn: attributes.isZinnen9),
               ],
             )
           ];
@@ -88,14 +88,14 @@ class LevelFlagsDisplay extends StatelessWidget {
             _LevelRow(
               title: "Dest:",
               levels: [
-                _Level(label: " 1 ", isOn: attributes.isDest1),
-                _Level(label: " 2 ", isOn: attributes.isDest2),
+                _Level(label: "1", isOn: attributes.isDest1),
+                _Level(label: "2", isOn: attributes.isDest2),
               ],
             ),
             _LevelRow(
               title: "Con:",
               levels: [
-                _Level(label: " 4 ", isOn: attributes.isCon4),
+                _Level(label: "4", isOn: attributes.isCon4),
               ],
             )
           ];
@@ -122,11 +122,11 @@ class LevelOfDetailsDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final levels = <_Level>[
-      _Level(label: " 0 ", isOn: chunkAttributes.isLOD0),
-      _Level(label: " 1 ", isOn: chunkAttributes.isLOD1),
-      _Level(label: " 2 ", isOn: chunkAttributes.isLOD2),
-      _Level(label: " 3 ", isOn: chunkAttributes.isLOD3),
-      _Level(label: " 4 ", isOn: chunkAttributes.isLOD4),
+      _Level(label: "0", isOn: chunkAttributes.isLOD0),
+      _Level(label: "1", isOn: chunkAttributes.isLOD1),
+      _Level(label: "2", isOn: chunkAttributes.isLOD2),
+      _Level(label: "3", isOn: chunkAttributes.isLOD3),
+      _Level(label: "4", isOn: chunkAttributes.isLOD4),
     ];
     return _LevelRow(title: "LoD:", levels: levels);
   }
@@ -175,13 +175,13 @@ class _LevelWrapper extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       clipBehavior: Clip.hardEdge,
-      padding: const EdgeInsets.all(2),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
       decoration: BoxDecoration(
         color: level.isOn
             ? theme.colorScheme.onPrimary
             : theme.colorScheme.background,
         border: Border.all(color: theme.colorScheme.outline),
-		borderRadius: BorderRadius.circular(4.0),
+        borderRadius: BorderRadius.circular(4.0),
       ),
       child: Label.small(
         level.label,
