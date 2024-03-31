@@ -19,7 +19,7 @@ class LevelFlagsDisplay extends StatelessWidget {
           final attributes = chunkAttributes as RessAttributes;
           return [
             _LevelRow(
-              title: "res",
+              title: "res:",
               levels: [
                 _Level(label: " 1 ", isOn: attributes.isRes1),
                 _Level(label: " 2 ", isOn: attributes.isRes2),
@@ -35,7 +35,7 @@ class LevelFlagsDisplay extends StatelessWidget {
           final attributes = chunkAttributes as BldgAttributes;
           return [
             _LevelRow(
-              title: "Con",
+              title: "Con:",
               levels: [
                 _Level(label: " 0 ", isOn: attributes.isCon0),
                 _Level(label: " 1 ", isOn: attributes.isCon1),
@@ -45,7 +45,7 @@ class LevelFlagsDisplay extends StatelessWidget {
               ],
             ),
             _LevelRow(
-              title: "Dest",
+              title: "Dest:",
               levels: [
                 _Level(label: " 1 ", isOn: attributes.isDest1),
                 _Level(label: " 2 ", isOn: attributes.isDest2),
@@ -56,7 +56,7 @@ class LevelFlagsDisplay extends StatelessWidget {
           final attributes = chunkAttributes as MiscAttributes;
           return [
             _LevelRow(
-              title: "Misc_Step",
+              title: "Misc_Step:",
               levels: [
                 _Level(label: " 0 ", isOn: attributes.isStep0),
                 _Level(label: " 1 ", isOn: attributes.isStep1),
@@ -68,7 +68,7 @@ class LevelFlagsDisplay extends StatelessWidget {
           final attributes = chunkAttributes as ToweAttributes;
           return [
             _LevelRow(
-              title: "Zinnen",
+              title: "Zinnen:",
               levels: [
                 _Level(label: " 1 ", isOn: attributes.isZinnen1),
                 _Level(label: " 2 ", isOn: attributes.isZinnen2),
@@ -86,14 +86,14 @@ class LevelFlagsDisplay extends StatelessWidget {
           final attributes = chunkAttributes as ShipAttributes;
           return [
             _LevelRow(
-              title: "Dest",
+              title: "Dest:",
               levels: [
                 _Level(label: " 1 ", isOn: attributes.isDest1),
                 _Level(label: " 2 ", isOn: attributes.isDest2),
               ],
             ),
             _LevelRow(
-              title: "Con",
+              title: "Con:",
               levels: [
                 _Level(label: " 4 ", isOn: attributes.isCon4),
               ],
@@ -128,7 +128,7 @@ class LevelOfDetailsDisplay extends StatelessWidget {
       _Level(label: " 3 ", isOn: chunkAttributes.isLOD3),
       _Level(label: " 4 ", isOn: chunkAttributes.isLOD4),
     ];
-    return _LevelRow(title: "LoD", levels: levels);
+    return _LevelRow(title: "LoD:", levels: levels);
   }
 }
 

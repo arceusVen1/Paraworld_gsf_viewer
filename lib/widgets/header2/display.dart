@@ -80,11 +80,12 @@ class _Data extends ConsumerWidget {
             label: 'Anim settings offset', data: header2.animSettingsOffset),
         GsfDataTile(
             label: 'Anim settings count', data: header2.animSettingsCount),
-        const Label.large(
-          "Material table",
-          isBold: true,
-        ),
-        _MaterialsTable(materialsTable: header2.materialsTable),
+        SectionWrapper(
+          label: "Materials table",
+          children: [
+            _MaterialsTable(materialsTable: header2.materialsTable),
+          ],
+		),
       ]),
     );
   }
