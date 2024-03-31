@@ -11,7 +11,6 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
-import 'package:paraworld_gsf_viewer/widgets/utils/divider.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
 class ModelSettingsDisplay extends ConsumerWidget {
@@ -199,11 +198,10 @@ class _FallbackTableDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  
+    return SectionWrapper(
+      label: "Fallback table",
       children: [
-        const ThemedDivider(),
-        const Label.medium('Fallback table', isBold: true),
         GsfDataTile(
             label: "Header 2 offset", data: fallbackTable.header2Offset),
         GsfDataTile(
@@ -226,7 +224,6 @@ class _FallbackTableDisplay extends ConsumerWidget {
                 .setMaterial(material as MaterialData);
           },
         ),
-        const ThemedDivider(),
       ],
     );
   }

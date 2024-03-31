@@ -19,41 +19,41 @@ class MiscFlagsDisplay extends StatelessWidget {
         case ModelType.bldg:
           final attributes = chunkAttributes as BldgAttributes;
           return [
-            FlagBox(label: "animate con end", isOn: attributes.animateConEnd),
+            FlagBox(label: "Animate construction end", isOn: attributes.animateConEnd),
             FlagBox(
-                label: "animate con start", isOn: attributes.animateConStart),
-            FlagBox(label: "unknown", isOn: attributes.unknown),
+                label: "Animate construction start", isOn: attributes.animateConStart),
+            FlagBox(label: "Unknown (light collision?)", isOn: attributes.unknown),
           ];
 
         case ModelType.vehi:
           final attributes = chunkAttributes as VehiAttributes;
           return [
-            FlagBox(label: "ram high", isOn: attributes.ramHigh),
-            FlagBox(label: "ram low", isOn: attributes.ramLow),
-            FlagBox(label: "unknown", isOn: attributes.unknown),
+            FlagBox(label: "ram_high", isOn: attributes.ramHigh),
+            FlagBox(label: "ram_low", isOn: attributes.ramLow),
+            FlagBox(label: "Unknown (light collision?)", isOn: attributes.unknown),
           ];
         case ModelType.misc:
           final attributes = chunkAttributes as MiscAttributes;
           return [
-            FlagBox(label: "unknown", isOn: attributes.unknown),
+            FlagBox(label: "Unknown (light collision?)", isOn: attributes.unknown),
           ];
         case ModelType.anim:
           final attributes = chunkAttributes as AnimAttributes;
           return [
-            FlagBox(label: "misc", isOn: attributes.misc),
+            FlagBox(label: "Misc", isOn: attributes.misc),
           ];
         case ModelType.ship:
           final attributes = chunkAttributes as ShipAttributes;
           return [
-            FlagBox(label: "ram high", isOn: attributes.ramHigh),
-            FlagBox(label: "ram low", isOn: attributes.ramLow),
-            FlagBox(label: "use con flags", isOn: attributes.useConFlags),
-            FlagBox(label: "unknown", isOn: attributes.unknown),
+            FlagBox(label: "ram_high", isOn: attributes.ramHigh),
+            FlagBox(label: "ram_low", isOn: attributes.ramLow),
+            FlagBox(label: "Use construction flags", isOn: attributes.useConFlags),
+            FlagBox(label: "Unknown (light collision?)", isOn: attributes.unknown),
           ];
         case ModelType.rivr:
           final attributes = chunkAttributes as RivrAttributes;
           return [
-            FlagBox(label: "use water shader", isOn: attributes.useWaterShader),
+            FlagBox(label: "Use water shader", isOn: attributes.useWaterShader),
           ];
         default:
           return <FlagBox>[];
@@ -61,7 +61,7 @@ class MiscFlagsDisplay extends StatelessWidget {
     }();
 
     return SectionWrapper(
-      label: "Misc Flags",
+      label: "Misc flags",
       children: miscFlags,
     );
   }

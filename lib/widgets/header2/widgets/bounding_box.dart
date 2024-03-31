@@ -15,14 +15,9 @@ class BoundingBoxDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return SectionWrapper(
+      label: bbName ?? "Model bounding box",
       children: [
-        Label.medium(
-          bbName ?? "Model bounding box",
-          isBold: true,
-        ),
         Wrap(
           direction: Axis.horizontal,
           spacing: 20,

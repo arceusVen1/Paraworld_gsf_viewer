@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
+import 'package:paraworld_gsf_viewer/widgets/utils/divider.dart';
 
 class DisplayWrapper extends StatelessWidget {
   const DisplayWrapper({
@@ -63,14 +64,15 @@ class SectionWrapper extends StatelessWidget {
                 defaultPadding, max(defaultPadding - spacing, 0)),
             width: double.infinity,
             decoration: BoxDecoration(
-              border: Border.all(color: theme.colorScheme.primary, width: 1),
-              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: theme.colorScheme.outline, width: 1),
+              borderRadius: BorderRadius.circular(4.0),
               shape: BoxShape.rectangle,
+			  color: theme.colorScheme.background,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...children.expand((element) => [element, Gap(spacing)])
               ],
@@ -82,9 +84,9 @@ class SectionWrapper extends StatelessWidget {
           top: 0,
           child: Container(
             padding: const EdgeInsets.only(bottom: 1, left: 5, right: 5),
-            color: theme.colorScheme.background,
-            child: Label.small(
-              label,
+			color: theme.colorScheme.background,
+            child: Label.regular(
+              label, isBold: true
             ),
           ),
         ),
@@ -125,8 +127,8 @@ class DataDecorator extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.primary),
-          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
+          borderRadius: BorderRadius.circular(4.0),
         ),
         child: ListView(
           children: children,
@@ -283,7 +285,7 @@ class __SelectableTileState extends State<_SelectableTile> {
             border: Border.all(
                 width: 1,
                 color: _isHovering
-                    ? Theme.of(context).colorScheme.primary
+                    ? Theme.of(context).colorScheme.outline
                     : Colors.black.withOpacity(0)),
             borderRadius: BorderRadius.circular(4.0),
           ),
@@ -431,8 +433,8 @@ class ListViewWrapper extends StatelessWidget {
       padding: EdgeInsets.only(top: 3.0, bottom: 3.0, right: rightPadding),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.primary),
-          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
+          borderRadius: BorderRadius.circular(4.0),
         ),
         clipBehavior: Clip.hardEdge,
         constraints: BoxConstraints(maxHeight: maxHeight),
@@ -496,9 +498,7 @@ class _DropdownWrapperState extends State<DropdownWrapper> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Divider(
-          height: 1,
-        ),
+        const ThemedDivider(),
         InkWell(
           onTap: () {
             setState(() {
@@ -526,9 +526,7 @@ class _DropdownWrapperState extends State<DropdownWrapper> {
                   width: double.infinity,
                 ),
         ),
-        const Divider(
-          height: 1,
-        ),
+        const ThemedDivider(),
       ],
     );
   }

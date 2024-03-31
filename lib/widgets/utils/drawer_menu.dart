@@ -23,7 +23,7 @@ class Menu extends ConsumerWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
+              color: theme.colorScheme.surface,
             ),
             child: Wrap(
               direction: Axis.vertical,
@@ -34,7 +34,7 @@ class Menu extends ConsumerWidget {
                 const ThemeModeSwitcher(),
                 Label.extraLarge(
                   "Options",
-                  color: theme.colorScheme.onPrimaryContainer,
+                  color: theme.colorScheme.onBackground,
                 ),
               ],
             ),
