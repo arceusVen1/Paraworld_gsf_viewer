@@ -27,8 +27,7 @@ class ChunkAttributesDisplay extends ConsumerWidget {
     }
     final chunkAttributes =
         ChunkAttributes.fromModelType(currentModelType, attributes);
-    return DropdownWrapper(
-        label: "Attributes",
+    return Container(
         child: Column(
           children: [
             LevelOfDetailsDisplay(

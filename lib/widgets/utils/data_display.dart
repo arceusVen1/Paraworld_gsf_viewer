@@ -65,13 +65,14 @@ class SectionWrapper extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               border: Border.all(color: theme.colorScheme.outline, width: 1),
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(4.0),
               shape: BoxShape.rectangle,
+			  color: theme.colorScheme.background,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...children.expand((element) => [element, Gap(spacing)])
               ],
@@ -83,9 +84,9 @@ class SectionWrapper extends StatelessWidget {
           top: 0,
           child: Container(
             padding: const EdgeInsets.only(bottom: 1, left: 5, right: 5),
-            color: theme.colorScheme.background,
-            child: Label.small(
-              label,
+			color: theme.colorScheme.background,
+            child: Label.regular(
+              label, isBold: true
             ),
           ),
         ),
@@ -127,7 +128,7 @@ class DataDecorator extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           border: Border.all(color: Theme.of(context).colorScheme.outline),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(4.0),
         ),
         child: ListView(
           children: children,
@@ -433,7 +434,7 @@ class ListViewWrapper extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Theme.of(context).colorScheme.outline),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(4.0),
         ),
         clipBehavior: Clip.hardEdge,
         constraints: BoxConstraints(maxHeight: maxHeight),

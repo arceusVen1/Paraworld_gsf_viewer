@@ -181,6 +181,7 @@ class _LevelWrapper extends StatelessWidget {
             ? theme.colorScheme.onPrimary
             : theme.colorScheme.background,
         border: Border.all(color: theme.colorScheme.outline),
+		borderRadius: BorderRadius.circular(4.0),
       ),
       child: Label.small(
         level.label,
