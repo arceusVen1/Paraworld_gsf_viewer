@@ -17,6 +17,18 @@ class ChunkAttributes {
   bool get isLOD1 => bits[6];
   bool get isLOD0 => bits[7];
 
+  List<int> get usedIndices {
+    return <int>[3, 4, 5, 6, 7];
+  }
+
+  List<int> get unknownBits {
+    final used = usedIndices;
+    return bits.indexed
+        .where((bit) => bit.$2 && !used.contains(bit.$1))
+        .expand((element) => [element.$1])
+        .toList();
+  }
+
   ChunkAttributes.fromValue(this.value, this.typeOfModel) {
     for (var i = 0; i < 32; i++) {
       bits[i] = (value & (1 << 8 * ((i / 8).floor() + 1) - i % 8 - 1)) != 0;
@@ -65,6 +77,9 @@ class CharAttributes extends ChunkAttributes {
   bool get isHead => bits[2];
 
   bool get isSelectionVolume => bits[21];
+
+  @override
+  List<int> get usedIndices => super.usedIndices..addAll([0, 1, 2, 21]);
 }
 
 class RessAttributes extends ChunkAttributes {
@@ -81,6 +96,10 @@ class RessAttributes extends ChunkAttributes {
   bool get isRes5 => bits[14];
   bool get isRes4 => bits[15];
   bool get isSelectionVolume => bits[21];
+
+  @override
+  List<int> get usedIndices =>
+      super.usedIndices..addAll([0, 1, 2, 13, 14, 15, 21]);
 }
 
 class BldgAttributes extends ChunkAttributes {
@@ -109,6 +128,12 @@ class BldgAttributes extends ChunkAttributes {
 
   bool get isCon4 => bits[30];
   bool get isCon3 => bits[31];
+
+  @override
+  List<int> get usedIndices => super.usedIndices
+    ..addAll(
+      [1, 2, 16, 17, 18, 19, 20, 21, 27, 28, 29, 30, 31],
+    );
 }
 
 class WallAttributes extends BldgAttributes {
@@ -120,6 +145,9 @@ class DekoAttributes extends ChunkAttributes {
 
   bool get isSequence => bits[2];
   bool get isForNight => bits[19];
+
+  @override
+  List<int> get usedIndices => super.usedIndices..addAll([2, 19]);
 }
 
 class VehiAttributes extends ChunkAttributes {
@@ -128,6 +156,9 @@ class VehiAttributes extends ChunkAttributes {
   bool get ramHigh => bits[1];
   bool get ramLow => bits[2];
   bool get unknown => bits[20];
+
+  @override
+  List<int> get usedIndices => super.usedIndices..addAll([1, 2, 20]);
 }
 
 class FielAttributes extends ChunkAttributes {
@@ -141,6 +172,9 @@ class MiscAttributes extends ChunkAttributes {
   bool get isStep1 => bits[1];
   bool get isStep0 => bits[2];
   bool get unknown => bits[20];
+
+  @override
+  List<int> get usedIndices => super.usedIndices..addAll([0, 1, 2, 20]);
 }
 
 class ToweAttributes extends ChunkAttributes {
@@ -158,6 +192,10 @@ class ToweAttributes extends ChunkAttributes {
   bool get isZinnen6 => bits[13];
   bool get isZinnen5 => bits[14];
   bool get isZinnen4 => bits[15];
+
+  @override
+  List<int> get usedIndices =>
+      super.usedIndices..addAll([0, 1, 2, 10, 11, 12, 13, 14, 15]);
 }
 
 class AnimAttributes extends ChunkAttributes {
@@ -180,6 +218,10 @@ class AnimAttributes extends ChunkAttributes {
   bool get isHead => bits[29];
   bool get isRightBelly => bits[30];
   bool get isLeftBelly => bits[31];
+
+  @override
+  List<int> get usedIndices => super.usedIndices
+    ..addAll([0, 1, 2, 12, 13, 14, 15, 16, 17, 18, 19, 28, 29, 30, 31]);
 }
 
 class ShipAttributes extends ChunkAttributes {
@@ -192,6 +234,10 @@ class ShipAttributes extends ChunkAttributes {
   bool get useConFlags => bits[29];
   bool get isCon4 => bits[30];
   bool get unknown => bits[20];
+
+  @override
+  List<int> get usedIndices =>
+      super.usedIndices..addAll([1, 2, 20, 27, 28, 29, 30]);
 }
 
 class VgtnAttributes extends ChunkAttributes {
@@ -199,10 +245,16 @@ class VgtnAttributes extends ChunkAttributes {
 
   bool get isTreeBillboard => bits[20];
   bool get isSelectionVolume => bits[21];
+
+  @override
+  List<int> get usedIndices => super.usedIndices..addAll([20, 21]);
 }
 
 class RivrAttributes extends ChunkAttributes {
   RivrAttributes(int value) : super.fromValue(value, ModelType.rivr);
 
   bool get useWaterShader => bits[18];
+
+  @override
+  List<int> get usedIndices => super.usedIndices..addAll([18]);
 }

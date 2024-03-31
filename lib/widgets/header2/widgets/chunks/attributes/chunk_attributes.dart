@@ -5,8 +5,8 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/levels.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/misc.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/unknown.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/visibility..dart';
-import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
 class ChunkAttributesDisplay extends ConsumerWidget {
@@ -27,22 +27,22 @@ class ChunkAttributesDisplay extends ConsumerWidget {
     }
     final chunkAttributes =
         ChunkAttributes.fromModelType(currentModelType, attributes);
-    return Container(
-        child: Column(
-          children: [
-            LevelOfDetailsDisplay(
-              chunkAttributes: chunkAttributes,
-            ),
-            Gap(10),
-            LevelFlagsDisplay(chunkAttributes: chunkAttributes),
-            VisibilityFlagsDisplay(
-              chunkAttributes: chunkAttributes,
-            ),
-            MiscFlagsDisplay(
-              chunkAttributes: chunkAttributes,
-            ),
-          ],
-        ));
+    return Column(
+      children: [
+        LevelOfDetailsDisplay(
+          chunkAttributes: chunkAttributes,
+        ),
+        const Gap(10),
+        LevelFlagsDisplay(chunkAttributes: chunkAttributes),
+        VisibilityFlagsDisplay(
+          chunkAttributes: chunkAttributes,
+        ),
+        MiscFlagsDisplay(
+          chunkAttributes: chunkAttributes,
+        ),
+        UnknownFlagsDisplay(chunkAttributes: chunkAttributes),
+      ],
+    );
   }
 }
 
@@ -63,9 +63,8 @@ class FlagBox extends StatelessWidget {
       alignment: Alignment.center,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: isOn
-            ? theme.colorScheme.onPrimary
-            : theme.colorScheme.background,
+        color:
+            isOn ? theme.colorScheme.onPrimary : theme.colorScheme.background,
         border: Border.all(color: theme.colorScheme.outline),
         borderRadius: BorderRadius.circular(4),
       ),
