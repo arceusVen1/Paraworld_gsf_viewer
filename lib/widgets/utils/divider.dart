@@ -6,8 +6,9 @@ class ThemedDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Divider(
-      color: Theme.of(context).colorScheme.primary,
+      color: Theme.of(context).colorScheme.outline,
       thickness: 1,
+	  height: 1,
     );
   }
 }
