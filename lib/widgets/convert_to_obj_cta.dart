@@ -15,7 +15,7 @@ class ConvertToObjCta extends StatelessWidget {
 
   final Model model;
 
-  Future<String?> writeAsObj() async {
+  Future<String?> writeAsObj(bool asSingleMesh) async {
     String? outputFile = await FilePicker.platform.saveFile(
       dialogTitle: 'Please select an output file:',
       fileName: 'model.obj',
@@ -29,7 +29,7 @@ class ConvertToObjCta extends StatelessWidget {
     String fileContent = "";
     int offset = 0;
     for (final mesh in model.meshes) {
-      fileContent += "\n\no ${mesh.hashCode}\n\n";
+      fileContent += "\n\n${asSingleMesh ? "o" : "g"} ${mesh.hashCode}\n\n";
       fileContent += "# offset of group for triangles indices $offset\n\n";
       String vertexPart = "", normalPart = "", texturePart = "";
       for (final vertex in mesh.vertices) {
@@ -49,20 +49,47 @@ class ConvertToObjCta extends StatelessWidget {
     return objFile.path;
   }
 
+  _onPressed(bool asSingleMesh, ScaffoldMessengerState messenger) async {
+    final filePath = await writeAsObj(asSingleMesh);
+    if (filePath != null) {
+      Clipboard.setData(ClipboardData(text: filePath));
+      messenger.showSnackBar(SnackBar(content: Text(filePath)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final messenger = ScaffoldMessenger.of(context);
-    return Button.primary(
-      onPressed: () async {
-        final filePath = await writeAsObj();
-        if (filePath != null) {
-          Clipboard.setData(ClipboardData(text: filePath));
-          messenger.showSnackBar(SnackBar(content: Text(filePath)));
-        }
-      },
-      child: const Label.medium(
-        "Convert to .obj",
-        color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Wrap(
+          direction: Axis.horizontal,
+          alignment: WrapAlignment.center,
+          spacing: 10,
+          children: [
+            Button.primary(
+              onPressed: () {
+                _onPressed(true, messenger);
+              },
+              child: const Label.medium(
+                "To .obj as single Mesh",
+                color: Colors.white,
+              ),
+            ),
+            if (model.meshes.length > 1)
+              Button.primary(
+                onPressed: () {
+                  _onPressed(false, messenger);
+                },
+                child: const Label.medium(
+                  "To .obj with multiple meshes",
+                  color: Colors.white,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

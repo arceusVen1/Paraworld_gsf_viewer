@@ -200,14 +200,16 @@ class _LevelWrapper extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
       decoration: BoxDecoration(
         color: level.isOn
-            ? theme.colorScheme.onPrimary
+            ? theme.colorScheme.primaryContainer
             : theme.colorScheme.background,
         border: Border.all(color: theme.colorScheme.outline),
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Label.small(
         level.label,
-        color: theme.colorScheme.onBackground,
+        color: level.isOn
+            ? theme.colorScheme.onPrimaryContainer
+            : theme.colorScheme.onBackground,
       ),
     );
   }
