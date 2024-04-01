@@ -63,14 +63,17 @@ class FlagBox extends StatelessWidget {
       alignment: Alignment.center,
       width: double.infinity,
       decoration: BoxDecoration(
-        color:
-            isOn ? theme.colorScheme.onPrimary : theme.colorScheme.background,
+        color: isOn
+            ? theme.colorScheme.primaryContainer
+            : theme.colorScheme.background,
         border: Border.all(color: theme.colorScheme.outline),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Label.small(
         label,
-        color: theme.colorScheme.onBackground,
+        color: isOn
+            ? theme.colorScheme.onPrimaryContainer
+            : theme.colorScheme.onBackground,
       ),
     );
   }
