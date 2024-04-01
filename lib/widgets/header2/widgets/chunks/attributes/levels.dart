@@ -31,8 +31,9 @@ class LevelFlagsDisplay extends StatelessWidget {
             )
           ];
         case ModelType.wall:
+        case ModelType.fiel:
         case ModelType.bldg:
-          final attributes = chunkAttributes as BldgAttributes;
+          final attributes = chunkAttributes as BuildingAttributes;
           return [
             _LevelRow(
               title: "Con:",
@@ -50,7 +51,28 @@ class LevelFlagsDisplay extends StatelessWidget {
                 _Level(label: "1", isOn: attributes.isDest1),
                 _Level(label: "2", isOn: attributes.isDest2),
               ],
-            )
+            ),
+            if (chunkAttributes.typeOfModel == ModelType.bldg)
+              _LevelRow(
+                title: "Age:",
+                levels: [
+                  _Level(
+                      label: "1",
+                      isOn: (chunkAttributes as BldgAttributes).isAge1),
+                  _Level(
+                      label: "2",
+                      isOn: (chunkAttributes as BldgAttributes).isAge2),
+                  _Level(
+                      label: "3",
+                      isOn: (chunkAttributes as BldgAttributes).isAge3),
+                  _Level(
+                      label: "4",
+                      isOn: (chunkAttributes as BldgAttributes).isAge4),
+                  _Level(
+                      label: "5",
+                      isOn: (chunkAttributes as BldgAttributes).isAge5),
+                ],
+              ),
           ];
         case ModelType.misc:
           final attributes = chunkAttributes as MiscAttributes;

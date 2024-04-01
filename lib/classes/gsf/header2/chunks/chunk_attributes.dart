@@ -42,7 +42,7 @@ class ChunkAttributes {
       case ModelType.ress:
         return RessAttributes(value);
       case ModelType.bldg:
-        return BldgAttributes(value, null);
+        return BldgAttributes(value);
       case ModelType.deko:
         return DekoAttributes(value);
       case ModelType.vehi:
@@ -102,10 +102,13 @@ class RessAttributes extends ChunkAttributes {
       super.usedIndices..addAll([0, 1, 2, 13, 14, 15, 21]);
 }
 
-class BldgAttributes extends ChunkAttributes {
-  BldgAttributes(int value, ModelType? modelType)
-      : super.fromValue(value, modelType ?? ModelType.bldg);
-
+class BuildingAttributes extends ChunkAttributes {
+  BuildingAttributes(int value, ModelType modelType)
+      : super.fromValue(value, modelType) {
+    assert(modelType == ModelType.bldg ||
+        modelType == ModelType.wall ||
+        modelType == ModelType.fiel);
+  }
   bool get animateConEnd => bits[1];
   bool get animateConStart => bits[2];
 
@@ -115,10 +118,7 @@ class BldgAttributes extends ChunkAttributes {
   bool get isCon1 => bits[17];
   bool get isCon0 => bits[18];
 
-  bool get isForNight => bits[19];
-
   bool get unknown => bits[20];
-  bool get isSelectionVolume => bits[21];
 
   // dest is destruction damage level
   // dest 1 is for 50% damage, dest 2 is for 75% damage
@@ -132,12 +132,45 @@ class BldgAttributes extends ChunkAttributes {
   @override
   List<int> get usedIndices => super.usedIndices
     ..addAll(
-      [1, 2, 16, 17, 18, 19, 20, 21, 27, 28, 29, 30, 31],
+      [1, 2, 16, 17, 18, 20, 27, 28, 29, 30, 31],
     );
 }
 
-class WallAttributes extends BldgAttributes {
+class BldgAttributes extends BuildingAttributes {
+  BldgAttributes(int value) : super(value, ModelType.bldg);
+
+  bool get resinFieldFire => bits[0];
+  bool get isAge5 => bits[10];
+  bool get isAge4 => bits[11];
+  bool get isAge3 => bits[12];
+  bool get isAge2 => bits[13];
+  bool get isAge1 => bits[14];
+  bool get isForNight => bits[19];
+  bool get isSelectionVolume => bits[21];
+
+  @override
+  List<int> get usedIndices =>
+      super.usedIndices..addAll([0, 10, 11, 12, 13, 14, 19, 21]);
+}
+
+class WallAttributes extends BuildingAttributes {
   WallAttributes(int value) : super(value, ModelType.wall);
+
+  bool get unknown2 => bits[21];
+
+  @override
+  List<int> get usedIndices => super.usedIndices..addAll([21]);
+}
+
+class FielAttributes extends BuildingAttributes {
+  FielAttributes(int value) : super(value, ModelType.fiel);
+
+  bool get resinFieldFire => bits[0];
+  bool get huCornField => bits[14];
+  bool get isSelectionVolume => bits[21];
+
+  @override
+  List<int> get usedIndices => super.usedIndices..addAll([0, 14, 21]);
 }
 
 class DekoAttributes extends ChunkAttributes {
@@ -145,6 +178,7 @@ class DekoAttributes extends ChunkAttributes {
 
   bool get isSequence => bits[2];
   bool get isForNight => bits[19];
+  bool get unknown => bits[20];
 
   @override
   List<int> get usedIndices => super.usedIndices..addAll([2, 19]);
@@ -161,10 +195,6 @@ class VehiAttributes extends ChunkAttributes {
   List<int> get usedIndices => super.usedIndices..addAll([1, 2, 20]);
 }
 
-class FielAttributes extends ChunkAttributes {
-  FielAttributes(int value) : super.fromValue(value, ModelType.fiel);
-}
-
 class MiscAttributes extends ChunkAttributes {
   MiscAttributes(int value) : super.fromValue(value, ModelType.misc);
 
@@ -172,9 +202,10 @@ class MiscAttributes extends ChunkAttributes {
   bool get isStep1 => bits[1];
   bool get isStep0 => bits[2];
   bool get unknown => bits[20];
+  bool get isSelectionVolume => bits[21];
 
   @override
-  List<int> get usedIndices => super.usedIndices..addAll([0, 1, 2, 20]);
+  List<int> get usedIndices => super.usedIndices..addAll([0, 1, 2, 20, 21]);
 }
 
 class ToweAttributes extends ChunkAttributes {
