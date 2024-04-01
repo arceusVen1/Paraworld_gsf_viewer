@@ -3,20 +3,17 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:paraworld_gsf_viewer/classes/triangle.dart';
-import 'package:paraworld_gsf_viewer/classes/vertex.dart';
+import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/buttons.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
 class ConvertToObjCta extends StatelessWidget {
   const ConvertToObjCta({
     super.key,
-    required this.vertices,
-    required this.triangles,
+    required this.model,
   });
 
-  final List<ModelVertex> vertices;
-  final List<ModelTriangle> triangles;
+  final Model model;
 
   Future<String?> writeAsObj() async {
     String? outputFile = await FilePicker.platform.saveFile(
@@ -29,19 +26,26 @@ class ConvertToObjCta extends StatelessWidget {
       // User canceled the picker
     }
     final objFile = File(outputFile);
-    String vertexPart = "", normalPart = "", texturePart = "";
-    for (final vertex in vertices) {
-      final newContent = vertex.toObj();
-      vertexPart += "${newContent.$1}\n";
-      normalPart += "${newContent.$2}\n";
-      texturePart += "${newContent.$3}\n";
-    }
-    String fileContent = "$vertexPart\n$normalPart\n$texturePart\n";
+    String fileContent = "";
+    int offset = 0;
+    for (final mesh in model.meshes) {
+      fileContent += "\n\no ${mesh.hashCode}\n\n";
+      fileContent += "# offset of group for triangles indices $offset\n\n";
+      String vertexPart = "", normalPart = "", texturePart = "";
+      for (final vertex in mesh.vertices) {
+        final newContent = vertex.toObj();
+        vertexPart += "${newContent.$1}\n";
+        normalPart += "${newContent.$2}\n";
+        texturePart += "${newContent.$3}\n";
+      }
+      fileContent += "$vertexPart\n$normalPart\n$texturePart\n";
 
-    for (final triangle in triangles) {
-      fileContent += triangle.toObj();
+      for (final triangle in mesh.triangles) {
+        fileContent += triangle.toObj(offset);
+      }
+      offset += mesh.vertices.length;
     }
-    objFile.writeAsString(fileContent);
+    await objFile.writeAsString(fileContent);
     return objFile.path;
   }
 

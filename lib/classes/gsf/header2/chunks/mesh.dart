@@ -6,8 +6,6 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
-import 'package:paraworld_gsf_viewer/classes/triangle.dart';
-import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:vector_math/vector_math.dart';
 
 mixin MeshToModelInterface on Chunk {
@@ -16,17 +14,17 @@ mixin MeshToModelInterface on Chunk {
   Matrix4 get matrix;
   Model toModel() {
     final globalBB = boundingBox.toModelBox();
-    final List<ModelVertex> vertices = [];
-    final List<ModelTriangle> triangles = [];
+    final List<ModelMesh> meshes = [];
     for (var submesh in submeshes) {
-      final data = submesh.getMeshModelData(vertices.length, globalBB, matrix);
-      vertices.addAll(data.vertices);
-      triangles.addAll(data.triangles);
+      final data = submesh.getMeshModelData(
+        0,
+        globalBB,
+        matrix,
+      );
+      meshes.add((vertices: data.vertices, triangles: data.triangles));
     }
     return Model(
-
-      vertices: vertices,
-      triangles: triangles,
+      meshes: meshes,
       boundingBox: globalBB,
     );
   }

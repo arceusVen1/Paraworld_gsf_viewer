@@ -24,8 +24,12 @@ class SubmeshDisplay extends StatelessWidget {
       null,
     );
     final Model model = Model(
-      vertices: modelData.vertices,
-      triangles: modelData.triangles,
+      meshes: [
+        (
+          vertices: modelData.vertices,
+          triangles: modelData.triangles,
+        )
+      ],
       boundingBox: modelData.box,
     );
     return Flexible(

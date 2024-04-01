@@ -47,8 +47,7 @@ class Viewer extends StatelessWidget {
           ),
         ),
         ConvertToObjCta(
-          vertices: model!.vertices,
-          triangles: model!.triangles,
+          model: model!,
         ),
       ],
     );

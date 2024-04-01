@@ -112,9 +112,12 @@ class ModelVertex {
   }
 
   (String, String, String) toObj() {
+    // converting to paraworld coordinate system
+    //copy.y = copy.z;
+    //copy.z = -positions.y;
     return (
-      "v ${-positions.x} ${positions.y} ${-positions.z} 1.0",
-      "vn ${(-(normal?.positions.x ?? 0)).toStringAsFixed(3)} ${(normal?.positions.y ?? 0).toStringAsFixed(3)} ${(-(normal?.positions.z ?? 0)).toStringAsFixed(3)}",
+      "v ${-positions.x} ${positions.z} ${positions.y} 1.0",
+      "vn ${(-(normal?.positions.x ?? 0)).toStringAsFixed(3)} ${(normal?.positions.z ?? 0).toStringAsFixed(3)} ${((normal?.positions.y ?? 0)).toStringAsFixed(3)}",
       "vt ${textureCoordinates?.x ?? 0} ${(textureCoordinates?.y ?? 0)}"
     );
   }
