@@ -64,7 +64,7 @@ class SectionWrapper extends StatelessWidget {
                 defaultPadding, max(defaultPadding - spacing, 0)),
             width: double.infinity,
             decoration: BoxDecoration(
-              border: Border.all(color: theme.colorScheme.outline, width: 1),
+              border: Border.all(color: theme.colorScheme.onBackground, width: 1),
               borderRadius: BorderRadius.circular(4.0),
               shape: BoxShape.rectangle,
 			  color: theme.colorScheme.background,
@@ -127,7 +127,7 @@ class DataDecorator extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.outline),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground),
           borderRadius: BorderRadius.circular(4.0),
         ),
         child: ListView(
@@ -285,7 +285,7 @@ class __SelectableTileState extends State<_SelectableTile> {
             border: Border.all(
                 width: 1,
                 color: _isHovering
-                    ? Theme.of(context).colorScheme.outline
+                    ? Theme.of(context).colorScheme.onBackground
                     : Colors.black.withOpacity(0)),
             borderRadius: BorderRadius.circular(4.0),
           ),
@@ -433,7 +433,7 @@ class ListViewWrapper extends StatelessWidget {
       padding: EdgeInsets.only(top: 3.0, bottom: 3.0, right: rightPadding),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.outline),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground),
           borderRadius: BorderRadius.circular(4.0),
         ),
         clipBehavior: Clip.hardEdge,
@@ -470,7 +470,7 @@ class ListTileWrapper extends StatelessWidget {
       ),
       contentPadding: const EdgeInsets.only(left: 5, right: 5),
       selected: isSelected,
-      selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
+      selectedTileColor: Theme.of(context).colorScheme.secondary,
       title: Label.regular(label),
       onTap: onTap,
     );

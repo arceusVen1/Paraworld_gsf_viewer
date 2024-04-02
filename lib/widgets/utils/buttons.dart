@@ -76,7 +76,7 @@ class Button extends StatelessWidget {
     final colorToUse = color ??
         (isPrimary
             ? theme.colorScheme.secondary
-            : theme.colorScheme.primaryContainer);
+            : theme.colorScheme.secondary);
     return isOutlined
         ? OutlinedButton(
             onPressed: !disabled ? onPressed : null,

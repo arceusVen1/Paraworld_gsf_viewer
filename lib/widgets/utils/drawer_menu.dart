@@ -23,7 +23,7 @@ class Menu extends ConsumerWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
+              color: theme.colorScheme.primary,
             ),
             child: Wrap(
               direction: Axis.vertical,
@@ -56,7 +56,8 @@ class Menu extends ConsumerWidget {
             trailing: Switch.adaptive(
               // This bool value toggles the switch.
               value: showNormals,
-              activeColor: theme.colorScheme.secondary,
+			  inactiveTrackColor: theme.colorScheme.tertiary,
+              activeColor: theme.colorScheme.surfaceVariant,
               onChanged: (bool value) {
                 // This is called when the user toggles the switch.
                 ref.read(showNormalsProvider.notifier).state = value;
