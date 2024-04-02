@@ -38,10 +38,11 @@ class ThemeModeSwitcher extends ConsumerWidget {
       children: [
         Icon(
           isDarkMode ? Icons.dark_mode : Icons.light_mode,
-          color: theme.colorScheme.onPrimaryContainer,
+          color: theme.colorScheme.onBackground,
         ),
         Switch.adaptive(
-          activeColor: theme.colorScheme.primary,
+		  inactiveTrackColor: theme.colorScheme.tertiary,
+          activeColor: theme.colorScheme.surfaceVariant,
           value: isDarkMode,
           onChanged: (isOn) {
             isOn
