@@ -116,8 +116,7 @@ class Model {
             textureCoordinates: data.textureCoordinates,
           ),
           BlendMode.srcOver,
-          texture?.painter ?? _paint
-            ..color = meshColor.withOpacity(0.3));
+          texture?.painter ?? (_paint..color = meshColor.withOpacity(0.3)));
     }
   }
 }
