@@ -69,9 +69,7 @@ class _MyAppState extends ConsumerState<MyApp> {
                 children: [
                   HeaderDisplay(),
                   Header2Display(),
-                  Viewer(
-                    model: null,
-                  ),
+                  ModelViewerPageLayout(),
                 ],
               ),
             ),

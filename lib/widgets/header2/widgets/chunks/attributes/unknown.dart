@@ -14,7 +14,12 @@ class UnknownFlagsDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<FlagBox> unknownFlags = chunkAttributes.unknownBits
         .map(
-          (indice) => FlagBox(label: "Unknown bit ${indice + 1}", isOn: true),
+          (indice) => FlagBox(
+            label: "Unknown bit ${indice + 1}",
+            indice: indice,
+            attributes: chunkAttributes,
+            onPress: null,
+          ),
         )
         .toList();
 

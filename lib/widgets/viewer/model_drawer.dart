@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/rotation.dart';
 import 'package:paraworld_gsf_viewer/classes/texture.dart';
@@ -20,6 +21,8 @@ class ModelDrawer extends CustomPainter {
     required this.texture,
     required this.showNormals,
     required this.meshColor,
+    required this.attributesFilter,
+    required this.showCloth,
   }) : super(repaint: mousePosition);
 
   final ValueNotifier<MousePositionDrag> mousePosition;
@@ -27,18 +30,10 @@ class ModelDrawer extends CustomPainter {
   final ModelTexture? texture;
   final bool showNormals;
   final Color meshColor;
+  final ChunkAttributes attributesFilter;
+  final bool showCloth;
 
   final Rotation rotation = Rotation();
-
-  late final Paint _paint = Paint()
-    ..color = meshColor
-    ..strokeWidth = 1
-    ..strokeCap = StrokeCap.round;
-
-  final Paint _paintNormals = Paint()
-    ..color = const Color.fromARGB(255, 255, 0, 0)
-    ..strokeWidth = 1
-    ..strokeCap = StrokeCap.round;
 
   final Paint _paintHighlight = Paint()
     ..color = const Color.fromARGB(255, 30, 255, 0)
@@ -78,23 +73,6 @@ class ModelDrawer extends CustomPainter {
     box: BoundingBoxModel.zero(),
     positionOffset: Vector3.zero(),
   );
-
-  void drawTrianglesOutside(
-      Canvas canvas, Uint16List indices, Float32List positions,
-      [Paint? customPaint]) {
-    for (int i = 0; i < indices.length; i += 3) {
-      final p1 =
-          Offset(positions[indices[i] * 2], positions[indices[i] * 2 + 1]);
-      final p2 = Offset(
-          positions[indices[i + 1] * 2], positions[indices[i + 1] * 2 + 1]);
-      final p3 = Offset(
-          positions[indices[i + 2] * 2], positions[indices[(i + 2)] * 2 + 1]);
-
-      canvas.drawLine(p1, p2, customPaint ?? _paint);
-      canvas.drawLine(p2, p3, customPaint ?? _paint);
-      canvas.drawLine(p3, p1, customPaint ?? _paint);
-    }
-  }
 
   void drawAxis(Size size, Canvas canvas) {
     final projectionData = model.getProjectionData(size);
@@ -188,39 +166,16 @@ class ModelDrawer extends CustomPainter {
             size.height;
     rotation.setMatrix(0, yRotationAngle, zRotationAngle);
 
-    final data = model.getDrawingData(
+    model.draw(
       rotation,
       size,
+      canvas,
+      meshColor,
+      attributesFilter,
       texture: texture,
       showNormals: showNormals,
+      showCloths: showCloth,
     );
-
-    final colorList = Int32List.fromList(List.filled(
-        (data.positions.length / 2).round(), meshColor.withOpacity(0.3).value));
-
-    //canvas.drawRawPoints(PointMode.points, positions.lenght, _paint);
-    if (showNormals) {
-      canvas.drawRawPoints(
-        PointMode.lines,
-        data.normals,
-        _paintNormals,
-      );
-    }
-
-    if (texture == null) {
-      drawTrianglesOutside(canvas, data.triangleIndices, data.positions);
-    }
-
-    canvas.drawVertices(
-        Vertices.raw(
-          VertexMode.triangles,
-          data.positions,
-          indices: data.triangleIndices,
-          colors: colorList,
-          textureCoordinates: data.textureCoordinates,
-        ),
-        BlendMode.srcOver,
-        texture?.painter ?? _paint);
 
     drawAxis(size, canvas);
   }

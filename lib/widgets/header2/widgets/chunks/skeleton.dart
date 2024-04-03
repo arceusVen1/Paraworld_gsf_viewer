@@ -21,7 +21,8 @@ class SkeletonDisplay extends ConsumerWidget {
         );
     return DataDecorator(children: [
       GsfDataTile(label: "Attributes", data: skeleton.attributes),
-      ChunkAttributesDisplay(attributes: skeleton.attributes.value),
+      ChunkAttributesFromHeader2WrapperDisplay(
+          attributesValue: skeleton.attributes.value),
       GsfDataTile(label: "Guid", data: skeleton.guid),
       GsfDataTile(label: "Index", data: skeleton.index),
       GsfDataTile(label: "Guid 2", data: skeleton.id),

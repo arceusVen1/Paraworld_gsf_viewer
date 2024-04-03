@@ -12,7 +12,8 @@ class LinkDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return DataDecorator(children: [
       GsfDataTile(label: "Attributes", data: link.attributes),
-      ChunkAttributesDisplay(attributes: link.attributes.value),
+      ChunkAttributesFromHeader2WrapperDisplay(
+          attributesValue: link.attributes.value),
       GsfDataTile(label: "Guid", data: link.guid),
       GsfDataTile(label: "Pos X", data: link.positionX),
       GsfDataTile(label: "Pos Y", data: link.positionY),

@@ -34,7 +34,8 @@ class MeshChunkDisplay extends ConsumerWidget {
         );
     return DataDecorator(children: [
       GsfDataTile(label: 'Attributes', data: mesh.attributes),
-      ChunkAttributesDisplay(attributes: mesh.attributes.value),
+      ChunkAttributesFromHeader2WrapperDisplay(
+          attributesValue: mesh.attributes.value),
       GsfDataTile(label: 'Guid', data: mesh.guid),
       AffineTransformationDisplay(transformation: mesh.transformation),
       GsfDataTile(label: 'Unknown data', data: mesh.unknownData),
@@ -120,7 +121,8 @@ class ClothChunkDisplay extends ConsumerWidget {
         );
     return DataDecorator(children: [
       GsfDataTile(label: 'Attributes', data: cloth.attributes),
-      ChunkAttributesDisplay(attributes: cloth.attributes.value),
+      ChunkAttributesFromHeader2WrapperDisplay(
+          attributesValue: cloth.attributes.value),
       GsfDataTile(label: 'Guid', data: cloth.guid),
       AffineTransformationDisplay(transformation: cloth.affineTransformation),
       GsfDataTile(label: 'Unknown data', data: cloth.unknownData),
