@@ -311,13 +311,16 @@ class BuildingAttributes extends ChunkAttributes {
   @override
   bool isCompatible(ChunkAttributes filter) {
     final buildingFilter = filter as BuildingAttributes;
-    final isConCompatible = (isCon0 && buildingFilter.isCon0) ||
-        (isCon1 && buildingFilter.isCon1) ||
-        (isCon2 && buildingFilter.isCon2) ||
-        (isCon3 && buildingFilter.isCon3) ||
-        (isCon4 && buildingFilter.isCon4);
+    final isConCompatible =
+        (!isCon0 && !isCon1 && isCon2 && !isCon3 && !isCon4) ||
+            (isCon0 && buildingFilter.isCon0) ||
+            (isCon1 && buildingFilter.isCon1) ||
+            (isCon2 && buildingFilter.isCon2) ||
+            (isCon3 && buildingFilter.isCon3) ||
+            (isCon4 && buildingFilter.isCon4);
 
-    final isDestCompatible = (isDest1 && buildingFilter.isDest1) ||
+    final isDestCompatible = (!isDest1 && !isDest2) ||
+        (isDest1 && buildingFilter.isDest1) ||
         (isDest2 && buildingFilter.isDest2);
     return isLodCompatible(filter) &&
         isConCompatible &&
@@ -380,11 +383,13 @@ class BldgAttributes extends BuildingAttributes {
   @override
   bool isCompatible(ChunkAttributes filter) {
     final bldgFilter = filter as BldgAttributes;
-    final isAgeCompatible = (isAge1 && bldgFilter.isAge1) ||
-        (isAge2 && bldgFilter.isAge2) ||
-        (isAge3 && bldgFilter.isAge3) ||
-        (isAge4 && bldgFilter.isAge4) ||
-        (isAge5 && bldgFilter.isAge5);
+    final isAgeCompatible =
+        (!isAge1 && !isAge2 && !isAge3 && !isAge4 && !isAge5) ||
+            (isAge1 && bldgFilter.isAge1) ||
+            (isAge2 && bldgFilter.isAge2) ||
+            (isAge3 && bldgFilter.isAge3) ||
+            (isAge4 && bldgFilter.isAge4) ||
+            (isAge5 && bldgFilter.isAge5);
     return isAgeCompatible && super.isCompatible(filter);
   }
 
@@ -521,7 +526,8 @@ class MiscAttributes extends ChunkAttributes {
   @override
   bool isCompatible(ChunkAttributes filter) {
     final miscFilter = filter as MiscAttributes;
-    final isStepCompatible = (isStep0 && miscFilter.isStep0) ||
+    final isStepCompatible = (!isStep0 && !isStep1 && !isStep2) ||
+        (isStep0 && miscFilter.isStep0) ||
         (isStep1 && miscFilter.isStep1) ||
         (isStep2 && miscFilter.isStep2);
     return isLodCompatible(filter) &&
@@ -686,8 +692,9 @@ class ShipAttributes extends ChunkAttributes {
   @override
   bool isCompatible(ChunkAttributes filter) {
     final shipFilter = filter as ShipAttributes;
-    final isDestCompatible =
-        (isDest1 && shipFilter.isDest1) || (isDest2 && shipFilter.isDest2);
+    final isDestCompatible = (!isDest1 && !isDest2) ||
+        (isDest1 && shipFilter.isDest1) ||
+        (isDest2 && shipFilter.isDest2);
     return isLodCompatible(filter) &&
         isDestCompatible &&
         isFlagCompatible(filter);
