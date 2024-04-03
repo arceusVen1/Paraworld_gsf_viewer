@@ -21,7 +21,7 @@ class ConvertToObjCta extends StatelessWidget {
   Future<String?> writeAsObj(bool asSingleMesh) async {
     String? outputFile = await FilePicker.platform.saveFile(
       dialogTitle: 'Please select an output file:',
-      fileName: 'model.obj',
+      fileName: '${model.name.isNotEmpty ? model.name : "model"}.obj',
     );
 
     if (outputFile == null) {
