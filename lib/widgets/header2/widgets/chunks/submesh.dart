@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
+import 'package:paraworld_gsf_viewer/classes/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
@@ -24,12 +27,20 @@ class SubmeshDisplay extends StatelessWidget {
       null,
     );
     final Model model = Model(
+      name: submesh.label,
+      type: ModelType.none,
       meshes: [
-        (
-          vertices: modelData.vertices,
-          triangles: modelData.triangles,
+        ModelMesh(
+          submeshes: [
+            ModelSubMesh(
+              vertices: modelData.vertices,
+              triangles: modelData.triangles,
+            ),
+          ],
+          attributes: ChunkAttributes.simple(),
         )
       ],
+      cloth: [],
       boundingBox: modelData.box,
     );
     return Flexible(
@@ -54,6 +65,7 @@ class SubmeshDisplay extends StatelessWidget {
           Flexible(
               child: Viewer(
             model: model,
+            attributesFilter: model.meshes.first.attributes,
           )),
         ],
       ),

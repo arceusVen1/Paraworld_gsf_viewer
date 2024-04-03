@@ -6,15 +6,15 @@ import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/levels.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/misc.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/unknown.dart';
-import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/visibility..dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/visibility.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
-class ChunkAttributesDisplay extends ConsumerWidget {
-  const ChunkAttributesDisplay({
+class ChunkAttributesFromHeader2WrapperDisplay extends ConsumerWidget {
+  const ChunkAttributesFromHeader2WrapperDisplay({
     super.key,
-    required this.attributes,
+    required this.attributesValue,
   });
-  final int attributes;
+  final int attributesValue;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -26,21 +26,47 @@ class ChunkAttributesDisplay extends ConsumerWidget {
       return const SizedBox.shrink();
     }
     final chunkAttributes =
-        ChunkAttributes.fromModelType(currentModelType, attributes);
+        ChunkAttributes.fromValue(currentModelType, attributesValue);
+    return ChunkAttributesDisplay(
+      attributes: chunkAttributes,
+    );
+  }
+}
+
+typedef OnAttributePress = void Function(int);
+
+class ChunkAttributesDisplay extends StatelessWidget {
+  const ChunkAttributesDisplay({
+    super.key,
+    required this.attributes,
+    this.onAttributePress,
+  });
+
+  final ChunkAttributes attributes;
+  final OnAttributePress? onAttributePress;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         LevelOfDetailsDisplay(
-          chunkAttributes: chunkAttributes,
+          chunkAttributes: attributes,
+          onPress: onAttributePress,
         ),
         const Gap(10),
-        LevelFlagsDisplay(chunkAttributes: chunkAttributes),
+        LevelFlagsDisplay(
+          chunkAttributes: attributes,
+          onPress: onAttributePress,
+        ),
         VisibilityFlagsDisplay(
-          chunkAttributes: chunkAttributes,
+          chunkAttributes: attributes,
+          onPress: onAttributePress,
         ),
         MiscFlagsDisplay(
-          chunkAttributes: chunkAttributes,
+          chunkAttributes: attributes,
+          onPress: onAttributePress,
         ),
-        UnknownFlagsDisplay(chunkAttributes: chunkAttributes),
+        UnknownFlagsDisplay(chunkAttributes: attributes),
       ],
     );
   }
@@ -50,30 +76,40 @@ class FlagBox extends StatelessWidget {
   const FlagBox({
     super.key,
     required this.label,
-    required this.isOn,
+    required this.indice,
+    required this.attributes,
+    required this.onPress,
   });
 
   final String label;
-  final bool isOn;
+  final int indice;
+  final ChunkAttributes attributes;
+  final OnAttributePress? onPress;
 
   @override
   Widget build(BuildContext context) {
+    final isOn = attributes.isFlagOn(indice);
     final theme = Theme.of(context);
-    return Container(
-      alignment: Alignment.center,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: isOn
-            ? theme.colorScheme.primaryContainer
-            : theme.colorScheme.background,
-        border: Border.all(color: theme.colorScheme.outline),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Label.small(
-        label,
-        color: isOn
-            ? theme.colorScheme.onPrimaryContainer
-            : theme.colorScheme.onBackground,
+    return InkWell(
+      onTap: () {
+        onPress?.call(indice);
+      },
+      child: Container(
+        alignment: Alignment.center,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: isOn
+              ? theme.colorScheme.primaryContainer
+              : theme.colorScheme.background,
+          border: Border.all(color: theme.colorScheme.outline),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Label.small(
+          label,
+          color: isOn
+              ? theme.colorScheme.onPrimaryContainer
+              : theme.colorScheme.onBackground,
+        ),
       ),
     );
   }

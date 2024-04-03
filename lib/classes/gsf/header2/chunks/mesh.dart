@@ -3,8 +3,11 @@ import 'dart:typed_data';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/affine_matrix.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:paraworld_gsf_viewer/classes/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:vector_math/vector_math.dart';
 
@@ -12,19 +15,34 @@ mixin MeshToModelInterface on Chunk {
   BoundingBox get boundingBox;
   List<Submesh> get submeshes;
   Matrix4 get matrix;
-  Model toModel() {
-    final globalBB = boundingBox.toModelBox();
-    final List<ModelMesh> meshes = [];
+
+  ModelMesh toModelMesh(ChunkAttributes attributes) {
+    final List<ModelSubMesh> meshes = [];
     for (var submesh in submeshes) {
       final data = submesh.getMeshModelData(
         0,
-        globalBB,
+        boundingBox.toModelBox(),
         matrix,
       );
-      meshes.add((vertices: data.vertices, triangles: data.triangles));
+      meshes.add(
+          ModelSubMesh(vertices: data.vertices, triangles: data.triangles));
     }
+    return ModelMesh(
+      submeshes: meshes,
+      attributes: attributes,
+    );
+  }
+
+  Model toModel() {
+    final globalBB = boundingBox.toModelBox();
     return Model(
-      meshes: meshes,
+      name: label,
+      type: ModelType.none,
+      meshes: [
+        toModelMesh(ChunkAttributes(
+            value: attributes.value, typeOfModel: ModelType.unknown))
+      ],
+      cloth: [],
       boundingBox: globalBB,
     );
   }

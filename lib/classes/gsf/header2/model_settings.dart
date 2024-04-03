@@ -1,10 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:paraworld_gsf_viewer/classes/model.dart';
 
 enum ModelType {
   char,
@@ -21,6 +26,7 @@ enum ModelType {
   rivr,
   wall,
   unknown,
+  none,
 }
 
 class ModelSettings extends GsfPart {
@@ -218,6 +224,28 @@ class ModelSettings extends GsfPart {
       position: animChunksTableHeaderOffset.relativeEnd,
       bytes: bytes,
       offset: offset,
+    );
+  }
+
+  Model toModel() {
+    final meshes = chunksTable?.chunks
+        .where((chunk) => chunk.type.isMeshLike())
+        .map((mesh) => (mesh as MeshChunk).toModelMesh(
+              ChunkAttributes.fromValue(type, mesh.attributes.value),
+            ))
+        .toList();
+    final cloths = chunksTable?.chunks
+        .where((chunk) => chunk.type.isClothLike())
+        .map((cloth) => (cloth as ClothChunk).toModelMesh(
+              ChunkAttributes.fromValue(type, cloth.attributes.value),
+            ))
+        .toList();
+    return Model(
+      name: objectName.label,
+      type: type,
+      meshes: meshes ?? [],
+      cloth: cloths ?? [],
+      boundingBox: boundingBox.toModelBox(),
     );
   }
 

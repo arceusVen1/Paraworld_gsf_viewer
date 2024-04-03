@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
@@ -85,7 +86,7 @@ class _Data extends ConsumerWidget {
           children: [
             _MaterialsTable(materialsTable: header2.materialsTable),
           ],
-		),
+        ),
       ]),
     );
   }
@@ -112,7 +113,8 @@ class _MaterialsTable extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GsfDataTile(label: 'Used materials count', data: materialsTable.materialCount),
+        GsfDataTile(
+            label: 'Used materials count', data: materialsTable.materialCount),
         GsfDataTile(
             label: 'Materials offset', data: materialsTable.materialOffset),
         GsfDataTile(
@@ -144,6 +146,13 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
         state.selectedChunkState!,
         state.modelSettings.fallbackTable,
         state.header2.materialsTable.materials,
+      )
+    else
+      Flexible(
+        child: Viewer(
+          model: state.modelSettings.toModel(),
+          attributesFilter: ChunkAttributes.fromValue(state.modelSettings.type, ChunkAttributes.defaultLoD),
+        ),
       ),
   ];
 }
@@ -172,6 +181,10 @@ List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
             : Flexible(
                 child: Viewer(
                   model: data.mesh.toModel(),
+                  attributesFilter: ChunkAttributes(
+                    value: data.mesh.attributes.value,
+                    typeOfModel: ModelType.unknown,
+                  ),
                 ),
               ),
         if (data.material != null) MaterialDisplay(material: data.material!),
@@ -190,6 +203,10 @@ List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
             : Flexible(
                 child: Viewer(
                   model: data.cloth.toModel(),
+                  attributesFilter: ChunkAttributes(
+                    value: data.cloth.attributes.value,
+                    typeOfModel: ModelType.unknown,
+                  ),
                 ),
               ),
         if (data.material != null) MaterialDisplay(material: data.material!),

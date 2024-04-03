@@ -21,7 +21,8 @@ class Submesh extends GsfPart {
   late final List<Triangle> triangles;
 
   @override
-  String get label => "Submesh with ${triangleCount.value} triangles";
+  String get label =>
+      "Submesh with ${vertexCount.value} verts and ${triangleCount.value} tris";
 
   Submesh.fromBytes(Uint8List bytes, int offset, bool isFromCloth)
       : super(offset: offset) {
