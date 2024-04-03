@@ -56,7 +56,7 @@ class Menu extends ConsumerWidget {
             trailing: Switch.adaptive(
               // This bool value toggles the switch.
               value: showNormals,
-			  inactiveTrackColor: theme.colorScheme.tertiary,
+              inactiveTrackColor: theme.colorScheme.tertiary,
               activeColor: theme.colorScheme.surfaceVariant,
               onChanged: (bool value) {
                 // This is called when the user toggles the switch.

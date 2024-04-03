@@ -66,7 +66,7 @@ class _ViewerControls extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Switch(
+            Switch.adaptive(
               value: showCloth,
               onChanged: (value) => ref
                   .read(modelSelectionStateNotifierProvider.notifier)
