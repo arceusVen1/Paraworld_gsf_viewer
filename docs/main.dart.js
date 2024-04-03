@@ -72923,9 +72923,8 @@ k=m[3]
 m=m[2]
 m=$.ai().a6z(B.Py,l,null,k,m)
 l=r?null:a0.b
-if(l==null)l=q
-l.sac(0,A.R(B.c.bj(76.5),d.gl(d)>>>16&255,d.gl(d)>>>8&255,d.gl(d)&255))
-c.a79(m,B.bw,l)}}}
+if(l==null){q.sac(0,A.R(B.c.bj(76.5),d.gl(d)>>>16&255,d.gl(d)>>>8&255,d.gl(d)&255))
+l=q}c.a79(m,B.bw,l)}}}
 A.KB.prototype={
 i(a){return this.a.i(0)},
 j(a,b){if(b==null)return!1
@@ -73073,57 +73072,58 @@ A.q9.prototype={
 rL(a){return this.ach(a)},
 ach(b6){var s=0,r=A.a3(t.Q),q,p=this,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,b0,b1,b2,b3,b4,b5
 var $async$rL=A.a4(function(b7,b8){if(b7===1)return A.a0(b8,r)
-while(true)switch(s){case 0:s=3
-return A.a6($.aoV().ff("Please select an output file:","model.obj"),$async$rL)
+while(true)switch(s){case 0:b2=$.aoV()
+b3=p.c
+b4=b3.b
+s=3
+return A.a6(b2.ff("Please select an output file:",(b4.length!==0?b4:"model")+".obj"),$async$rL)
 case 3:b5=b8
 if(b5==null){q=null
 s=1
 break}o=A.Ho(b5)
-n=p.c
-m=n.b
-l=b6?"o "+m+"\n\n":"# Model: "+m+"\n\n"
-for(n=n.c,m=n.length,k=p.d,j=0,i=0;i<n.length;n.length===m||(0,A.N)(n),++i){h=n[i]
-if(!h.b.ky(k))continue
-for(g=h.a,f=g.length,e=0;e<g.length;g.length===f||(0,A.N)(g),++e){d=g[e]
-c=b6?"o":"g"
-b=A.ed(h)
-for(a=d.a,a0=a.length,a1="",a2="",a3="",a4=0;a5=a.length,a4<a5;a.length===a0||(0,A.N)(a),++a4){a6=a[a4]
-a5=a6.a
-a5===$&&A.a()
-a5=a5.a
-a7=a5[0]
-a8=a5[2]
-a5=a5[1]
-a9=a6.f
-if(a9==null)a9=null
-else{a9=a9.a
-a9===$&&A.a()
-a9=a9.a[0]}a9=B.c.a1(-(a9==null?0:a9),3)
-b0=a6.f
-if(b0==null)b0=null
-else{b0=b0.a
-b0===$&&A.a()
-b0=b0.a[2]}b0=B.c.a1(b0==null?0:b0,3)
-b1=a6.f
-if(b1==null)b1=null
-else{b1=b1.a
-b1===$&&A.a()
-b1=b1.a[1]}b1=B.c.a1(b1==null?0:b1,3)
-b2=a6.e
-b3=b2==null
-b4=b3?null:b2.a[0]
-if(b4==null)b4=0
-b2=b3?null:b2.a[1]
-if(b2==null)b2=0
-a1+="v "+A.i(-a7)+" "+A.i(a8)+" "+A.i(a5)+" 1.0\n"
-a2+="vn "+a9+" "+b0+" "+b1+"\n"
-a3+="vt "+A.i(b4)+" "+A.i(b2)+"\n"}l=l+("\n\n"+c+" "+b+"\n\n")+("# offset of group for triangles indices "+j+"\n\n")+(a1+"\n"+a2+"\n"+a3+"\n")
-for(c=d.b,b=c.length,a4=0;a4<b;++a4){a=c[a4].b
-a0=""+(a[0]+1+j)
-a7=""+(a[1]+1+j)
-a=""+(a[2]+1+j)
-l+="f "+a0+"/"+a0+"/"+a0+" "+a7+"/"+a7+"/"+a7+" "+a+"/"+a+"/"+a+"\n"}j+=a5}}s=4
-return A.a6(o.aci(l),$async$rL)
+n=b6?"o "+b4+"\n\n":"# Model: "+b4+"\n\n"
+for(b2=b3.c,b3=b2.length,b4=p.d,m=0,l=0;l<b2.length;b2.length===b3||(0,A.N)(b2),++l){k=b2[l]
+if(!k.b.ky(b4))continue
+for(j=k.a,i=j.length,h=0;h<j.length;j.length===i||(0,A.N)(j),++h){g=j[h]
+f=b6?"o":"g"
+e=A.ed(k)
+for(d=g.a,c=d.length,b="",a="",a0="",a1=0;a2=d.length,a1<a2;d.length===c||(0,A.N)(d),++a1){a3=d[a1]
+a2=a3.a
+a2===$&&A.a()
+a2=a2.a
+a4=a2[0]
+a5=a2[2]
+a2=a2[1]
+a6=a3.f
+if(a6==null)a6=null
+else{a6=a6.a
+a6===$&&A.a()
+a6=a6.a[0]}a6=B.c.a1(-(a6==null?0:a6),3)
+a7=a3.f
+if(a7==null)a7=null
+else{a7=a7.a
+a7===$&&A.a()
+a7=a7.a[2]}a7=B.c.a1(a7==null?0:a7,3)
+a8=a3.f
+if(a8==null)a8=null
+else{a8=a8.a
+a8===$&&A.a()
+a8=a8.a[1]}a8=B.c.a1(a8==null?0:a8,3)
+a9=a3.e
+b0=a9==null
+b1=b0?null:a9.a[0]
+if(b1==null)b1=0
+a9=b0?null:a9.a[1]
+if(a9==null)a9=0
+b+="v "+A.i(-a4)+" "+A.i(a5)+" "+A.i(a2)+" 1.0\n"
+a+="vn "+a6+" "+a7+" "+a8+"\n"
+a0+="vt "+A.i(b1)+" "+A.i(a9)+"\n"}n=n+("\n\n"+f+" "+e+"\n\n")+("# offset of group for triangles indices "+m+"\n\n")+(b+"\n"+a+"\n"+a0+"\n")
+for(f=g.b,e=f.length,a1=0;a1<e;++a1){d=f[a1].b
+c=""+(d[0]+1+m)
+a4=""+(d[1]+1+m)
+d=""+(d[2]+1+m)
+n+="f "+c+"/"+c+"/"+c+" "+a4+"/"+a4+"/"+a4+" "+d+"/"+d+"/"+d+"\n"}m+=a2}}s=4
+return A.a6(o.aci(n),$async$rL)
 case 4:q=o.a
 s=1
 break
