@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 
 class ChunkAttributes {
   ChunkAttributes({
-    required int value,
     required this.typeOfModel,
     List<bool> bits = const [],
+    int value = 0,
   }) {
     if (bits.isNotEmpty) {
       assert(bits.length == 32);
@@ -22,9 +23,26 @@ class ChunkAttributes {
     }
   }
 
-  ChunkAttributes.simple()
-      : this(value: defaultLoD, typeOfModel: ModelType.unknown);
   static const int defaultLoD = 1;
+
+  static ChunkAttributes defaultValue(ModelType typeOfModel) {
+    switch (typeOfModel) {
+      case ModelType.ress:
+        return RessAttributes.defaultValue();
+      case ModelType.bldg:
+        return BldgAttributes.defaultValue();
+      case ModelType.wall:
+        return WallAttributes.defaultValue();
+      case ModelType.fiel:
+        return FielAttributes.defaultValue();
+      case ModelType.towe:
+        return ToweAttributes.defaultValue();
+      case ModelType.anim:
+        return AnimAttributes.defaultValue();
+      default:
+        return ChunkAttributes(value: defaultLoD, typeOfModel: typeOfModel);
+    }
+  }
 
   bool isLodCompatible(ChunkAttributes filter) {
     return (isLOD4 && filter.isLOD4) ||
@@ -39,32 +57,33 @@ class ChunkAttributes {
   }
 
   bool isFlagCompatible(ChunkAttributes filter) {
-    final indicesToCompare =
-        usedIndices.where((indice) => !levelIndices.contains(indice));
-
-    return indicesToCompare.isEmpty ||
-        indicesToCompare
+    return visibilityFlags.isEmpty ||
+        visibilityFlags
                 .where((indice) =>
                     !bits[indice] || bits[indice] == filter.bits[indice])
                 .length ==
-            indicesToCompare.length;
+            visibilityFlags.length;
   }
 
   bool isCompatible(ChunkAttributes filter) {
-    return isLodCompatible(filter) && isFlagCompatible(filter);
+    return this == filter ||
+        (isLodCompatible(filter) && isFlagCompatible(filter));
   }
 
-  int get lod4Indice => 3;
-  int get lod3Indice => 4;
-  int get lod2Indice => 5;
-  int get lod1Indice => 6;
-  int get lod0Indice => 7;
+  static const int lod4Indice = 3;
+  static const int lod3Indice = 4;
+  static const int lod2Indice = 5;
+  static const int lod1Indice = 6;
+  static const int lod0Indice = 7;
 
   bool get isLOD4 => bits[lod4Indice]; // level of details
   bool get isLOD3 => bits[lod3Indice];
   bool get isLOD2 => bits[lod2Indice];
   bool get isLOD1 => bits[lod1Indice];
   bool get isLOD0 => bits[lod0Indice];
+
+  List<int> get visibilityFlags =>
+      usedIndices.where((indice) => !levelIndices.contains(indice)).toList();
 
   List<int> get levelIndices {
     return <int>[
@@ -167,6 +186,18 @@ class ChunkAttributes {
         return ChunkAttributes(value: 0, typeOfModel: ModelType.none);
     }
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ChunkAttributes &&
+        other.typeOfModel == typeOfModel &&
+        listEquals(other.bits, bits);
+  }
+
+  @override
+  int get hashCode => Object.hash(typeOfModel, bits);
 }
 
 class CharAttributes extends ChunkAttributes {
@@ -177,10 +208,10 @@ class CharAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  int get legIndice => 0;
-  int get bodyIndice => 1;
-  int get headIndice => 2;
-  int get selectionVolumeIndice => 21;
+  static const int legIndice = 0;
+  static const int bodyIndice = 1;
+  static const int headIndice = 2;
+  static const int selectionVolumeIndice = 21;
 
   bool get isLegs => bits[legIndice];
   bool get isBody => bits[bodyIndice];
@@ -209,14 +240,14 @@ class RessAttributes extends ChunkAttributes {
   // res is for ressource (such as trees, stone, etc.)
   // If they are full then res6 model is used (biggest model)
   // If they are low then res0 is used with smallest model
-  int get res3Indice => 0;
-  int get res2Indice => 1;
-  int get res1Indice => 2;
+  static const int res3Indice = 0;
+  static const int res2Indice = 1;
+  static const int res1Indice = 2;
 
-  int get res6Indice => 13;
-  int get res5Indice => 14;
-  int get res4Indice => 15;
-  int get selectionVolumeIndice => 21;
+  static const int res6Indice = 13;
+  static const int res5Indice = 14;
+  static const int res4Indice = 15;
+  static const int selectionVolumeIndice = 21;
 
   bool get isRes3 => bits[res3Indice];
   bool get isRes2 => bits[res2Indice];
@@ -227,6 +258,19 @@ class RessAttributes extends ChunkAttributes {
   bool get isRes4 => bits[res4Indice];
 
   bool get isSelectionVolume => bits[selectionVolumeIndice];
+
+  RessAttributes.defaultValue()
+      : super(
+          bits: List<bool>.filled(32, false)
+            ..[ChunkAttributes.lod0Indice] = true
+            ..[res6Indice] = true
+            ..[res5Indice] = true
+            ..[res4Indice] = true
+            ..[res3Indice] = true
+            ..[res2Indice] = true
+            ..[res1Indice] = true,
+          typeOfModel: ModelType.ress,
+        );
 
   @override
   List<int> get levelIndices => super.levelIndices
@@ -245,16 +289,16 @@ class RessAttributes extends ChunkAttributes {
 
   @override
   bool isCompatible(ChunkAttributes filter) {
-    final ressFilter = filter as RessAttributes;
-    final isResCompatible = (isRes1 && ressFilter.isRes1) ||
-        (isRes2 && ressFilter.isRes2) ||
-        (isRes3 && ressFilter.isRes3) ||
-        (isRes4 && ressFilter.isRes4) ||
-        (isRes5 && ressFilter.isRes5) ||
-        (isRes6 && ressFilter.isRes6);
-    return isLodCompatible(filter) &&
-        isResCompatible &&
-        isFlagCompatible(filter);
+    final isResCompatible = (isRes1 && filter.bits[res1Indice]) ||
+        (isRes2 && filter.bits[res2Indice]) ||
+        (isRes3 && filter.bits[res3Indice]) ||
+        (isRes4 && filter.bits[res4Indice]) ||
+        (isRes5 && filter.bits[res5Indice]) ||
+        (isRes6 && filter.bits[res6Indice]);
+    return this == filter ||
+        (isLodCompatible(filter) &&
+            isResCompatible &&
+            isFlagCompatible(filter));
   }
 }
 
@@ -272,21 +316,21 @@ class BuildingAttributes extends ChunkAttributes {
         modelType == ModelType.wall ||
         modelType == ModelType.fiel);
   }
-  int get animateConEndIndice => 1;
-  int get animateConStartIndice => 2;
+  static const int animateConEndIndice = 1;
+  static const int animateConStartIndice = 2;
 
-  int get con2Indice => 16;
-  int get con1Indice => 17;
-  int get con0Indice => 18;
+  static const int con2Indice = 16;
+  static const int con1Indice = 17;
+  static const int con0Indice = 18;
 
-  int get unknownIndice => 20;
+  static const int unknownIndice = 20;
 
-  int get dest2Indice => 27;
-  int get dest1Indice => 28;
-  int get useConFlagsIndice => 29;
+  static const int dest2Indice = 27;
+  static const int dest1Indice = 28;
+  static const int useConFlagsIndice = 29;
 
-  int get con4Indice => 30;
-  int get con3Indice => 31;
+  static const int con4Indice = 30;
+  static const int con3Indice = 31;
 
   bool get animateConEnd => bits[animateConEndIndice];
   bool get animateConStart => bits[animateConStartIndice];
@@ -308,24 +352,28 @@ class BuildingAttributes extends ChunkAttributes {
   bool get isCon4 => bits[con4Indice];
   bool get isCon3 => bits[con3Indice];
 
+  static List<bool> defaultValue = List<bool>.filled(32, false)
+    ..[ChunkAttributes.lod0Indice] = true
+    ..[con4Indice] = true;
+
   @override
   bool isCompatible(ChunkAttributes filter) {
-    final buildingFilter = filter as BuildingAttributes;
     final isConCompatible =
         (!isCon0 && !isCon1 && isCon2 && !isCon3 && !isCon4) ||
-            (isCon0 && buildingFilter.isCon0) ||
-            (isCon1 && buildingFilter.isCon1) ||
-            (isCon2 && buildingFilter.isCon2) ||
-            (isCon3 && buildingFilter.isCon3) ||
-            (isCon4 && buildingFilter.isCon4);
+            (isCon0 && filter.bits[con0Indice]) ||
+            (isCon1 && filter.bits[con1Indice]) ||
+            (isCon2 && filter.bits[con2Indice]) ||
+            (isCon3 && filter.bits[con3Indice]) ||
+            (isCon4 && filter.bits[con4Indice]);
 
     final isDestCompatible = (!isDest1 && !isDest2) ||
-        (isDest1 && buildingFilter.isDest1) ||
-        (isDest2 && buildingFilter.isDest2);
-    return isLodCompatible(filter) &&
-        isConCompatible &&
-        isDestCompatible &&
-        isFlagCompatible(filter);
+        (isDest1 && filter.bits[dest1Indice]) ||
+        (isDest2 && filter.bits[dest2Indice]);
+    return this == filter ||
+        (isLodCompatible(filter) &&
+            isConCompatible &&
+            isDestCompatible &&
+            isFlagCompatible(filter));
   }
 
   @override
@@ -362,14 +410,18 @@ class BldgAttributes extends BuildingAttributes {
           bits,
         );
 
-  int get resinFieldFireIndice => 0;
-  int get isAge5Indice => 10;
-  int get isAge4Indice => 11;
-  int get isAge3Indice => 12;
-  int get isAge2Indice => 13;
-  int get isAge1Indice => 14;
-  int get isForNightIndice => 19;
-  int get isSelectionVolumeIndice => 21;
+  BldgAttributes.defaultValue()
+      : super(0, ModelType.bldg,
+            BuildingAttributes.defaultValue..[isAge5Indice] = true);
+
+  static const int resinFieldFireIndice = 0;
+  static const int isAge5Indice = 10;
+  static const int isAge4Indice = 11;
+  static const int isAge3Indice = 12;
+  static const int isAge2Indice = 13;
+  static const int isAge1Indice = 14;
+  static const int isForNightIndice = 19;
+  static const int isSelectionVolumeIndice = 21;
 
   bool get resinFieldFire => bits[resinFieldFireIndice];
   bool get isAge5 => bits[isAge5Indice];
@@ -381,15 +433,20 @@ class BldgAttributes extends BuildingAttributes {
   bool get isSelectionVolume => bits[isSelectionVolumeIndice];
 
   @override
+  List<int> get visibilityFlags => [
+        isForNightIndice,
+        isSelectionVolumeIndice,
+      ];
+
+  @override
   bool isCompatible(ChunkAttributes filter) {
-    final bldgFilter = filter as BldgAttributes;
     final isAgeCompatible =
         (!isAge1 && !isAge2 && !isAge3 && !isAge4 && !isAge5) ||
-            (isAge1 && bldgFilter.isAge1) ||
-            (isAge2 && bldgFilter.isAge2) ||
-            (isAge3 && bldgFilter.isAge3) ||
-            (isAge4 && bldgFilter.isAge4) ||
-            (isAge5 && bldgFilter.isAge5);
+            (isAge1 && filter.bits[isAge1Indice]) ||
+            (isAge2 && filter.bits[isAge2Indice]) ||
+            (isAge3 && filter.bits[isAge3Indice]) ||
+            (isAge4 && filter.bits[isAge4Indice]) ||
+            (isAge5 && filter.bits[isAge5Indice]);
     return isAgeCompatible && super.isCompatible(filter);
   }
 
@@ -404,12 +461,11 @@ class BldgAttributes extends BuildingAttributes {
     ]);
 
   @override
-  List<int> get usedIndices => super.usedIndices
-    ..addAll([
-      resinFieldFireIndice,
-      isForNightIndice,
-      isSelectionVolumeIndice,
-    ]);
+  List<int> get usedIndices => [
+        resinFieldFireIndice,
+        isForNightIndice,
+        isSelectionVolumeIndice,
+      ];
 }
 
 class WallAttributes extends BuildingAttributes {
@@ -420,7 +476,14 @@ class WallAttributes extends BuildingAttributes {
           bits,
         );
 
-  int get unknown2Indice => 21;
+  WallAttributes.defaultValue()
+      : super(
+          0,
+          ModelType.bldg,
+          BuildingAttributes.defaultValue,
+        );
+
+  static const int unknown2Indice = 21;
 
   bool get unknown2 => bits[unknown2Indice];
 
@@ -436,13 +499,25 @@ class FielAttributes extends BuildingAttributes {
           bits,
         );
 
-  int get resinFieldFireIndice => 0;
-  int get huCornFieldIndice => 14;
-  int get isSelectionVolumeIndice => 21;
+  FielAttributes.defaultValue()
+      : super(
+          0,
+          ModelType.bldg,
+          BuildingAttributes.defaultValue,
+        );
+
+  static const int resinFieldFireIndice = 0;
+  static const int huCornFieldIndice = 14;
+  static const int isSelectionVolumeIndice = 21;
 
   bool get resinFieldFire => bits[resinFieldFireIndice];
   bool get huCornField => bits[huCornFieldIndice];
   bool get isSelectionVolume => bits[isSelectionVolumeIndice];
+
+  @override
+  List<int> get visibilityFlags => [
+        isSelectionVolumeIndice,
+      ];
 
   @override
   List<int> get usedIndices => super.usedIndices
@@ -461,13 +536,19 @@ class DekoAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  int get isSequenceIndice => 2;
-  int get isForNightIndice => 19;
-  int get unknownIndice => 20;
+  static const int isSequenceIndice = 2;
+  static const int isForNightIndice = 19;
+  static const int unknownIndice = 20;
 
   bool get isSequence => bits[isSequenceIndice];
   bool get isForNight => bits[isForNightIndice];
   bool get unknown => bits[unknownIndice];
+
+  @override
+  List<int> get visibilityFlags => [
+        isForNightIndice,
+        isSequenceIndice,
+      ];
 
   @override
   List<int> get usedIndices => super.usedIndices
@@ -486,13 +567,16 @@ class VehiAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  int get ramHighIndice => 1;
-  int get ramLowIndice => 2;
-  int get unknownIndice => 20;
+  static const int ramHighIndice = 1;
+  static const int ramLowIndice = 2;
+  static const int unknownIndice = 20;
 
   bool get ramHigh => bits[ramHighIndice];
   bool get ramLow => bits[ramLowIndice];
   bool get unknown => bits[unknownIndice];
+
+  @override
+  List<int> get visibilityFlags => [];
 
   @override
   List<int> get usedIndices => super.usedIndices
@@ -511,11 +595,11 @@ class MiscAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  int get isStep2Indice => 0;
-  int get isStep1Indice => 1;
-  int get isStep0Indice => 2;
-  int get unknownIndice => 20;
-  int get isSelectionVolumeIndice => 21;
+  static const int isStep2Indice = 0;
+  static const int isStep1Indice = 1;
+  static const int isStep0Indice = 2;
+  static const int unknownIndice = 20;
+  static const int isSelectionVolumeIndice = 21;
 
   bool get isStep2 => bits[isStep2Indice];
   bool get isStep1 => bits[isStep1Indice];
@@ -524,15 +608,20 @@ class MiscAttributes extends ChunkAttributes {
   bool get isSelectionVolume => bits[isSelectionVolumeIndice];
 
   @override
+  List<int> get visibilityFlags => [
+        isSelectionVolumeIndice,
+      ];
+
+  @override
   bool isCompatible(ChunkAttributes filter) {
-    final miscFilter = filter as MiscAttributes;
     final isStepCompatible = (!isStep0 && !isStep1 && !isStep2) ||
-        (isStep0 && miscFilter.isStep0) ||
-        (isStep1 && miscFilter.isStep1) ||
-        (isStep2 && miscFilter.isStep2);
-    return isLodCompatible(filter) &&
-        isStepCompatible &&
-        isFlagCompatible(filter);
+        (isStep0 && filter.bits[isStep0Indice]) ||
+        (isStep1 && filter.bits[isStep1Indice]) ||
+        (isStep2 && filter.bits[isStep2Indice]);
+    return this == filter ||
+        (isLodCompatible(filter) &&
+            isStepCompatible &&
+            isFlagCompatible(filter));
   }
 
   @override
@@ -558,17 +647,33 @@ class ToweAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  // zinnen are unknow and unused attr
-  int get zinnen9Indice => 10;
-  int get zinnen8Indice => 11;
-  int get zinnen7Indice => 12;
-  int get zinnen6Indice => 13;
-  int get zinnen5Indice => 14;
-  int get zinnen4Indice => 15;
+  ToweAttributes.defaultValue()
+      : super(
+          bits: List<bool>.filled(32, false)
+            ..[ChunkAttributes.lod0Indice] = true
+            ..[zinnen9Indice] = true
+            ..[zinnen8Indice] = true
+            ..[zinnen7Indice] = true
+            ..[zinnen6Indice] = true
+            ..[zinnen5Indice] = true
+            ..[zinnen4Indice] = true
+            ..[zinnen3Indice] = true
+            ..[zinnen2Indice] = true
+            ..[zinnen1Indice] = true,
+          typeOfModel: ModelType.ress,
+        );
 
-  int get zinnen3Indice => 0;
-  int get zinnen2Indice => 1;
-  int get zinnen1Indice => 2;
+  // zinnen are unknow and unused attr
+  static const int zinnen9Indice = 10;
+  static const int zinnen8Indice = 11;
+  static const int zinnen7Indice = 12;
+  static const int zinnen6Indice = 13;
+  static const int zinnen5Indice = 14;
+  static const int zinnen4Indice = 15;
+
+  static const int zinnen3Indice = 0;
+  static const int zinnen2Indice = 1;
+  static const int zinnen1Indice = 2;
 
   bool get isZinnen3 => bits[zinnen3Indice];
   bool get isZinnen2 => bits[zinnen2Indice];
@@ -604,26 +709,34 @@ class AnimAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  int get isHelmetIndice => 0;
-  int get isSaddleIndice => 1;
-  int get isPartyColorIndice => 2;
+  AnimAttributes.defaultValue()
+      : super(
+          bits: List<bool>.filled(32, false)
+            ..[ChunkAttributes.lod0Indice] = true
+            ..[miscIndice] = true,
+          typeOfModel: ModelType.anim,
+        );
 
-  int get miscIndice => 12;
-  int get isArmorSaddleIndice => 13;
-  int get isStandardIndice => 14;
-  int get isArmorIndice => 15;
+  static const int isHelmetIndice = 0;
+  static const int isSaddleIndice = 1;
+  static const int isPartyColorIndice = 2;
 
-  int get isRightLegIndice => 16;
-  int get isLeftLegIndice => 17;
-  int get isRightArmIndice => 18;
-  int get isLeftArmIndice => 19;
+  static const int miscIndice = 12;
+  static const int isArmorSaddleIndice = 13;
+  static const int isStandardIndice = 14;
+  static const int isArmorIndice = 15;
 
-  int get selectionVolumeIndice => 21;
+  static const int isRightLegIndice = 16;
+  static const int isLeftLegIndice = 17;
+  static const int isRightArmIndice = 18;
+  static const int isLeftArmIndice = 19;
 
-  int get isTailIndice => 28;
-  int get isHeadIndice => 29;
-  int get isRightBellyIndice => 30;
-  int get isLeftBellyIndice => 31;
+  static const int selectionVolumeIndice = 21;
+
+  static const int isTailIndice = 28;
+  static const int isHeadIndice = 29;
+  static const int isRightBellyIndice = 30;
+  static const int isLeftBellyIndice = 31;
 
   bool get isHelmet => bits[isHelmetIndice];
   bool get isSaddle => bits[isSaddleIndice];
@@ -673,13 +786,13 @@ class ShipAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  int get ramHighIndice => 1;
-  int get ramLowIndice => 2;
-  int get isDest2Indice => 27;
-  int get isDest1Indice => 28;
-  int get useConFlagsIndice => 29;
-  int get isCon4Indice => 30;
-  int get unknownIndice => 20;
+  static const int ramHighIndice = 1;
+  static const int ramLowIndice = 2;
+  static const int isDest2Indice = 27;
+  static const int isDest1Indice = 28;
+  static const int useConFlagsIndice = 29;
+  static const int isCon4Indice = 30;
+  static const int unknownIndice = 20;
 
   bool get ramHigh => bits[ramHighIndice];
   bool get ramLow => bits[ramLowIndice];
@@ -690,14 +803,17 @@ class ShipAttributes extends ChunkAttributes {
   bool get unknown => bits[unknownIndice];
 
   @override
+  List<int> get visibilityFlags => [];
+
+  @override
   bool isCompatible(ChunkAttributes filter) {
-    final shipFilter = filter as ShipAttributes;
     final isDestCompatible = (!isDest1 && !isDest2) ||
-        (isDest1 && shipFilter.isDest1) ||
-        (isDest2 && shipFilter.isDest2);
-    return isLodCompatible(filter) &&
-        isDestCompatible &&
-        isFlagCompatible(filter);
+        (isDest1 && filter.bits[isDest1Indice]) ||
+        (isDest2 && filter.bits[isDest2Indice]);
+    return this == filter ||
+        (isLodCompatible(filter) &&
+            isDestCompatible &&
+            isFlagCompatible(filter));
   }
 
   @override
@@ -724,8 +840,8 @@ class VgtnAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  int get isTreeBillboardIndice => 20;
-  int get isSelectionVolumeIndice => 21;
+  static const int isTreeBillboardIndice = 20;
+  static const int isSelectionVolumeIndice = 21;
 
   bool get isTreeBillboard => bits[isTreeBillboardIndice];
   bool get isSelectionVolume => bits[isSelectionVolumeIndice];
@@ -746,8 +862,11 @@ class RivrAttributes extends ChunkAttributes {
           bits: bits,
         );
 
-  int get useWaterShaderIndice => 18;
+  static const int useWaterShaderIndice = 18;
   bool get useWaterShader => bits[useWaterShaderIndice];
+
+  @override
+  List<int> get visibilityFlags => [];
 
   @override
   List<int> get usedIndices =>

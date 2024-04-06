@@ -37,7 +37,7 @@ class SubmeshDisplay extends StatelessWidget {
               triangles: modelData.triangles,
             ),
           ],
-          attributes: ChunkAttributes.simple(),
+          attributes: ChunkAttributes.defaultValue(ModelType.unknown),
         )
       ],
       cloth: [],

@@ -92,6 +92,7 @@ class _ViewerControls extends ConsumerWidget {
             ? SizedBox.shrink()
             : ChunkAttributesDisplay(
                 attributes: currentFilter,
+                showNonFlags: false,
                 onAttributePress: (indice) {
                   ref
                       .read(modelSelectionStateNotifierProvider.notifier)

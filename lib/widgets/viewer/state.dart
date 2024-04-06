@@ -14,6 +14,6 @@ class ModelViewerSelectionState with _$ModelViewerSelectionState {
     required List<ModelSettings> models,
     required ModelSettings model,
     required ChunkAttributes filter,
-    @Default(false) showCloth, 
+    @Default(true) showCloth, 
   }) = ModelViewerSelectionStateWithModel;
 }

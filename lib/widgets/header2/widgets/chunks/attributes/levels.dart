@@ -22,18 +22,17 @@ class LevelFlagsDisplay extends StatelessWidget {
     final List<_LevelRow> miscFlags = () {
       switch (chunkAttributes.typeOfModel) {
         case ModelType.ress:
-          final attributes = chunkAttributes as RessAttributes;
           return [
             _LevelRow(
               title: "res:",
               attributes: chunkAttributes,
-              levels: [
-                _Level(label: "1", indice: attributes.res1Indice),
-                _Level(label: "2", indice: attributes.res2Indice),
-                _Level(label: "3", indice: attributes.res3Indice),
-                _Level(label: "4", indice: attributes.res4Indice),
-                _Level(label: "5", indice: attributes.res5Indice),
-                _Level(label: "6", indice: attributes.res6Indice),
+              levels: const [
+                _Level(label: "1", indice: RessAttributes.res1Indice),
+                _Level(label: "2", indice: RessAttributes.res2Indice),
+                _Level(label: "3", indice: RessAttributes.res3Indice),
+                _Level(label: "4", indice: RessAttributes.res4Indice),
+                _Level(label: "5", indice: RessAttributes.res5Indice),
+                _Level(label: "6", indice: RessAttributes.res6Indice),
               ],
               onPress: onPress,
             )
@@ -41,26 +40,25 @@ class LevelFlagsDisplay extends StatelessWidget {
         case ModelType.wall:
         case ModelType.fiel:
         case ModelType.bldg:
-          final attributes = chunkAttributes as BuildingAttributes;
           return [
             _LevelRow(
               title: "Con:",
               attributes: chunkAttributes,
-              levels: [
-                _Level(label: "0", indice: attributes.con0Indice),
-                _Level(label: "1", indice: attributes.con1Indice),
-                _Level(label: "2", indice: attributes.con2Indice),
-                _Level(label: "3", indice: attributes.con3Indice),
-                _Level(label: "4", indice: attributes.con4Indice),
+              levels: const [
+                _Level(label: "0", indice: BuildingAttributes.con0Indice),
+                _Level(label: "1", indice: BuildingAttributes.con1Indice),
+                _Level(label: "2", indice: BuildingAttributes.con2Indice),
+                _Level(label: "3", indice: BuildingAttributes.con3Indice),
+                _Level(label: "4", indice: BuildingAttributes.con4Indice),
               ],
               onPress: onPress,
             ),
             _LevelRow(
               title: "Dest:",
               attributes: chunkAttributes,
-              levels: [
-                _Level(label: "1", indice: attributes.dest1Indice),
-                _Level(label: "2", indice: attributes.dest2Indice),
+              levels: const [
+                _Level(label: "1", indice: BuildingAttributes.dest1Indice),
+                _Level(label: "2", indice: BuildingAttributes.dest2Indice),
               ],
               onPress: onPress,
             ),
@@ -68,82 +66,79 @@ class LevelFlagsDisplay extends StatelessWidget {
               _LevelRow(
                 title: "Age:",
                 attributes: chunkAttributes,
-                levels: [
+                levels: const [
                   _Level(
                     label: "1",
-                    indice: (chunkAttributes as BldgAttributes).isAge1Indice,
+                    indice: BldgAttributes.isAge1Indice,
                   ),
                   _Level(
                     label: "2",
-                    indice: (chunkAttributes as BldgAttributes).isAge2Indice,
+                    indice: BldgAttributes.isAge2Indice,
                   ),
                   _Level(
                     label: "3",
-                    indice: (chunkAttributes as BldgAttributes).isAge3Indice,
+                    indice: BldgAttributes.isAge3Indice,
                   ),
                   _Level(
                     label: "4",
-                    indice: (chunkAttributes as BldgAttributes).isAge4Indice,
+                    indice: BldgAttributes.isAge4Indice,
                   ),
                   _Level(
                     label: "5",
-                    indice: (chunkAttributes as BldgAttributes).isAge5Indice,
+                    indice: BldgAttributes.isAge5Indice,
                   ),
                 ],
                 onPress: onPress,
               ),
           ];
         case ModelType.misc:
-          final attributes = chunkAttributes as MiscAttributes;
           return [
             _LevelRow(
               title: "Misc_Step:",
               attributes: chunkAttributes,
-              levels: [
-                _Level(label: "0", indice: attributes.isStep0Indice),
-                _Level(label: "1", indice: attributes.isStep1Indice),
-                _Level(label: "2", indice: attributes.isStep2Indice),
+              levels: const [
+                _Level(label: "0", indice: MiscAttributes.isStep0Indice),
+                _Level(label: "1", indice: MiscAttributes.isStep1Indice),
+                _Level(label: "2", indice: MiscAttributes.isStep2Indice),
               ],
               onPress: onPress,
             )
           ];
         case ModelType.towe:
-          final attributes = chunkAttributes as ToweAttributes;
           return [
             _LevelRow(
               title: "Zinnen:",
               attributes: chunkAttributes,
-              levels: [
-                _Level(label: "1", indice: attributes.zinnen1Indice),
-                _Level(label: "2", indice: attributes.zinnen2Indice),
-                _Level(label: "3", indice: attributes.zinnen3Indice),
-                _Level(label: "4", indice: attributes.zinnen4Indice),
-                _Level(label: "5", indice: attributes.zinnen5Indice),
-                _Level(label: "6", indice: attributes.zinnen6Indice),
-                _Level(label: "7", indice: attributes.zinnen7Indice),
-                _Level(label: "8", indice: attributes.zinnen8Indice),
-                _Level(label: "9", indice: attributes.zinnen9Indice),
+              levels: const [
+                _Level(label: "1", indice: ToweAttributes.zinnen1Indice),
+                _Level(label: "2", indice: ToweAttributes.zinnen2Indice),
+                _Level(label: "3", indice: ToweAttributes.zinnen3Indice),
+                _Level(label: "4", indice: ToweAttributes.zinnen4Indice),
+                _Level(label: "5", indice: ToweAttributes.zinnen5Indice),
+                _Level(label: "6", indice: ToweAttributes.zinnen6Indice),
+                _Level(label: "7", indice: ToweAttributes.zinnen7Indice),
+                _Level(label: "8", indice: ToweAttributes.zinnen8Indice),
+                _Level(label: "9", indice: ToweAttributes.zinnen9Indice),
               ],
               onPress: onPress,
             )
           ];
         case ModelType.ship:
-          final attributes = chunkAttributes as ShipAttributes;
           return [
             _LevelRow(
               title: "Dest:",
               attributes: chunkAttributes,
-              levels: [
-                _Level(label: "1", indice: attributes.isDest1Indice),
-                _Level(label: "2", indice: attributes.isDest2Indice),
+              levels: const [
+                _Level(label: "1", indice: ShipAttributes.isDest1Indice),
+                _Level(label: "2", indice: ShipAttributes.isDest2Indice),
               ],
               onPress: onPress,
             ),
             _LevelRow(
               title: "Con:",
               attributes: chunkAttributes,
-              levels: [
-                _Level(label: "4", indice: attributes.isCon4Indice),
+              levels: const [
+                _Level(label: "4", indice: ShipAttributes.isCon4Indice),
               ],
               onPress: onPress,
             )
@@ -172,12 +167,12 @@ class LevelOfDetailsDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final levels = <_Level>[
-      _Level(label: "0", indice: chunkAttributes.lod0Indice),
-      _Level(label: "1", indice: chunkAttributes.lod1Indice),
-      _Level(label: "2", indice: chunkAttributes.lod2Indice),
-      _Level(label: "3", indice: chunkAttributes.lod3Indice),
-      _Level(label: "4", indice: chunkAttributes.lod4Indice),
+    const levels = <_Level>[
+      _Level(label: "0", indice: ChunkAttributes.lod0Indice),
+      _Level(label: "1", indice: ChunkAttributes.lod1Indice),
+      _Level(label: "2", indice: ChunkAttributes.lod2Indice),
+      _Level(label: "3", indice: ChunkAttributes.lod3Indice),
+      _Level(label: "4", indice: ChunkAttributes.lod4Indice),
     ];
     return _LevelRow(
       title: "LoD:",

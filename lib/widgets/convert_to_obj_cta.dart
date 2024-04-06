@@ -41,7 +41,7 @@ class ConvertToObjCta extends StatelessWidget {
         continue;
       }
       for (var submesh in mesh.submeshes) {
-        fileContent += "\n\n${asSingleMesh ? "o" : "g"} ${mesh.hashCode}\n\n";
+        fileContent += "\n\n${asSingleMesh ? "g" : "o"} ${mesh.hashCode}\n\n";
         fileContent += "# offset of group for triangles indices $offset\n\n";
         String vertexPart = "", normalPart = "", texturePart = "";
         for (final vertex in submesh.vertices) {

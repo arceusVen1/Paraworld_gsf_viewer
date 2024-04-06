@@ -19,202 +19,200 @@ class VisibilityFlagsDisplay extends StatelessWidget {
     final List<FlagBox> visibilityFlags = () {
       switch (chunkAttributes.typeOfModel) {
         case ModelType.char:
-          final attributes = chunkAttributes as CharAttributes;
           return [
             FlagBox(
               label: "Is legs (Legs)",
-              attributes: attributes,
-              indice: attributes.legIndice,
+              attributes: chunkAttributes,
+              indice: CharAttributes.legIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is body (Body)",
-              attributes: attributes,
-              indice: attributes.bodyIndice,
+              attributes: chunkAttributes,
+              indice: CharAttributes.bodyIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is head (Head)",
-              attributes: attributes,
-              indice: attributes.headIndice,
+              attributes: chunkAttributes,
+              indice: CharAttributes.headIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is selection volume",
-              attributes: attributes,
-              indice: attributes.selectionVolumeIndice,
+              attributes: chunkAttributes,
+              indice: CharAttributes.selectionVolumeIndice,
               onPress: onPress,
             ),
           ];
         case ModelType.ress:
-          final attributes = chunkAttributes as RessAttributes;
           return [
             FlagBox(
               label: "Is selection volume",
-              attributes: attributes,
-              indice: attributes.selectionVolumeIndice,
+              attributes: chunkAttributes,
+              indice: RessAttributes.selectionVolumeIndice,
               onPress: onPress,
             ),
           ];
         case ModelType.bldg:
-          final attributes = chunkAttributes as BldgAttributes;
           return [
             FlagBox(
               label: "Is for night (Night)",
-              attributes: attributes,
-              indice: attributes.isForNightIndice,
+              attributes: chunkAttributes,
+              indice: BldgAttributes.isForNightIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is selection volume",
-              attributes: attributes,
-              indice: attributes.isSelectionVolumeIndice,
+              attributes: chunkAttributes,
+              indice: BldgAttributes.isSelectionVolumeIndice,
               onPress: onPress,
             ),
           ];
         case ModelType.fiel:
-          final attributes = chunkAttributes as FielAttributes;
           return [
             FlagBox(
               label: "Is selection volume",
-              attributes: attributes,
-              indice: attributes.isSelectionVolumeIndice,
+              attributes: chunkAttributes,
+              indice: FielAttributes.isSelectionVolumeIndice,
               onPress: onPress,
             ),
           ];
         case ModelType.anim:
-          final attributes = chunkAttributes as AnimAttributes;
           return [
             FlagBox(
+              label: "Misc",
+              attributes: chunkAttributes,
+              indice: AnimAttributes.miscIndice,
+              onPress: onPress,
+            ),
+            FlagBox(
               label: "Is helmet (Helmet)",
-              attributes: attributes,
-              indice: attributes.isHelmetIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isHelmetIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is saddle (Saddle)",
-              attributes: attributes,
-              indice: attributes.isSaddleIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isSaddleIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is party color",
-              attributes: attributes,
-              indice: attributes.isPartyColorIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isPartyColorIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is armor saddle (Armorsaddle)",
-              attributes: attributes,
-              indice: attributes.isArmorSaddleIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isArmorSaddleIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is standarte (Standarte)",
-              attributes: attributes,
-              indice: attributes.isStandardIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isStandardIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is armor (Armor)",
-              attributes: attributes,
-              indice: attributes.isArmorIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isArmorIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is right leg (leg_re)",
-              attributes: attributes,
-              indice: attributes.isRightLegIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isRightLegIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is left leg (leg_li)",
-              attributes: attributes,
-              indice: attributes.isLeftLegIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isLeftLegIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is right arm (arm_re)",
-              attributes: attributes,
-              indice: attributes.isRightArmIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isRightArmIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is left arm (arm_li)",
-              attributes: attributes,
-              indice: attributes.isLeftArmIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isLeftArmIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is tail (tail)",
-              attributes: attributes,
-              indice: attributes.isTailIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isTailIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is head (head)",
-              attributes: attributes,
-              indice: attributes.isHeadIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isHeadIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is right belly (bauch_re)",
-              attributes: attributes,
-              indice: attributes.isRightBellyIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isRightBellyIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is left belly (bauch_li)",
-              attributes: attributes,
-              indice: attributes.isLeftBellyIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.isLeftBellyIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "is Selection Volume",
-              attributes: attributes,
-              indice: attributes.selectionVolumeIndice,
+              attributes: chunkAttributes,
+              indice: AnimAttributes.selectionVolumeIndice,
               onPress: onPress,
             ),
           ];
         case ModelType.deko:
-          final attributes = chunkAttributes as DekoAttributes;
           return [
             FlagBox(
               label: "Is sequence (Sequence)",
-              attributes: attributes,
-              indice: attributes.isSequenceIndice,
+              attributes: chunkAttributes,
+              indice: DekoAttributes.isSequenceIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is for night (Night)",
-              attributes: attributes,
-              indice: attributes.isForNightIndice,
+              attributes: chunkAttributes,
+              indice: DekoAttributes.isForNightIndice,
               onPress: onPress,
             ),
           ];
         case ModelType.misc:
-          final attributes = chunkAttributes as MiscAttributes;
           return [
             FlagBox(
               label: "Is selection volume",
-              attributes: attributes,
-              indice: attributes.isSelectionVolumeIndice,
+              attributes: chunkAttributes,
+              indice: MiscAttributes.isSelectionVolumeIndice,
               onPress: onPress,
             ),
           ];
         case ModelType.vgtn:
-          final attributes = chunkAttributes as VgtnAttributes;
           return [
             FlagBox(
               label: "Tree billboard",
-              attributes: attributes,
-              indice: attributes.isTreeBillboardIndice,
+              attributes: chunkAttributes,
+              indice: VgtnAttributes.isTreeBillboardIndice,
               onPress: onPress,
             ),
             FlagBox(
               label: "Is selection volume",
-              attributes: attributes,
-              indice: attributes.isSelectionVolumeIndice,
+              attributes: chunkAttributes,
+              indice: VgtnAttributes.isSelectionVolumeIndice,
               onPress: onPress,
             ),
           ];

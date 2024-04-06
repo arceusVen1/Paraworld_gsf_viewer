@@ -22,18 +22,21 @@ class ModelSelectionStateNotifier extends Notifier<ModelViewerSelectionState> {
   void setModel(ModelSettings model) {
     state = state.map(
       empty: (_) => ModelViewerSelectionState.withModel(
-          models: models,
-          model: model,
-          filter: ChunkAttributes.fromValue(
-            model.type,
-            ChunkAttributes.defaultLoD,
-          )),
+        models: models,
+        model: model,
+        filter: ChunkAttributes.defaultValue(
+          model.type,
+        ),
+        showCloth: true,
+      ),
       withModel: (withModel) => withModel.copyWith(
         model: model,
-        filter: ChunkAttributes.fromBits(
-          model.type,
-          withModel.filter.bits,
-        ),
+        filter: withModel.model.type != model.type
+            ? ChunkAttributes.defaultValue(model.type)
+            : ChunkAttributes.fromBits(
+                model.type,
+                withModel.filter.bits,
+              ),
       ),
     );
   }

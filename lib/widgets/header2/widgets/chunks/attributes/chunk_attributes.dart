@@ -29,6 +29,7 @@ class ChunkAttributesFromHeader2WrapperDisplay extends ConsumerWidget {
         ChunkAttributes.fromValue(currentModelType, attributesValue);
     return ChunkAttributesDisplay(
       attributes: chunkAttributes,
+      showNonFlags: true,
     );
   }
 }
@@ -39,10 +40,12 @@ class ChunkAttributesDisplay extends StatelessWidget {
   const ChunkAttributesDisplay({
     super.key,
     required this.attributes,
+    required this.showNonFlags,
     this.onAttributePress,
   });
 
   final ChunkAttributes attributes;
+  final bool showNonFlags;
   final OnAttributePress? onAttributePress;
 
   @override
@@ -62,11 +65,13 @@ class ChunkAttributesDisplay extends StatelessWidget {
           chunkAttributes: attributes,
           onPress: onAttributePress,
         ),
-        MiscFlagsDisplay(
-          chunkAttributes: attributes,
-          onPress: onAttributePress,
-        ),
-        UnknownFlagsDisplay(chunkAttributes: attributes),
+        if (showNonFlags) ...[
+          MiscFlagsDisplay(
+            chunkAttributes: attributes,
+            onPress: onAttributePress,
+          ),
+          UnknownFlagsDisplay(chunkAttributes: attributes),
+        ],
       ],
     );
   }
