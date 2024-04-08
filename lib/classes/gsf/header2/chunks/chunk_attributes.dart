@@ -461,11 +461,12 @@ class BldgAttributes extends BuildingAttributes {
     ]);
 
   @override
-  List<int> get usedIndices => [
-        resinFieldFireIndice,
-        isForNightIndice,
-        isSelectionVolumeIndice,
-      ];
+  List<int> get usedIndices => super.usedIndices
+    ..addAll([
+      resinFieldFireIndice,
+      isForNightIndice,
+      isSelectionVolumeIndice,
+    ]);
 }
 
 class WallAttributes extends BuildingAttributes {
