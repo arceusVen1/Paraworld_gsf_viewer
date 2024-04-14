@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/affine_matrix.dart';
@@ -5,27 +7,95 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dar
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
+import 'package:paraworld_gsf_viewer/classes/texture.dart';
+import 'package:paraworld_gsf_viewer/providers/texture.dart';
 import 'package:vector_math/vector_math.dart';
+import 'dart:ui' as ui;
 
 mixin MeshToModelInterface on Chunk {
   BoundingBox get boundingBox;
   List<Submesh> get submeshes;
+  List<DoubleByteData<int>> get materialIndices;
   Matrix4 get matrix;
 
-  ModelMesh toModelMesh(ChunkAttributes attributes) {
+  Future<ui.Image?> _getImage(
+    String name,
+    String pwFolder,
+    DetailTable detailTable,
+  ) async {
+    try {
+      String textureRealName = name.split("/").last.split(".").first;
+
+      String pathToTexture = name.replaceAll("/$textureRealName.tga", "");
+      if (detailTable[textureRealName] == null) {
+        return null;
+      }
+      final int maxResolution =
+          detailTable[textureRealName]!.availableResolutions.last;
+      if (detailTable[textureRealName]!.overrideNameWithResolution) {
+        textureRealName =
+            "${textureRealName}_(${maxResolution > 1000 ? maxResolution : "0${maxResolution < 100 ? "0$maxResolution" : maxResolution}"}).dds";
+      } else {
+        textureRealName = name.split("/").last;
+      }
+
+      final texture =
+          File('$pwFolder/Data/Base/Texture/$pathToTexture/$textureRealName');
+      final completer = Completer<ui.Image>();
+      final bytes = await texture.readAsBytes();
+      ui.decodeImageFromList(bytes, completer.complete);
+      return completer.future;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<ModelMesh> toModelMesh(
+    ChunkAttributes attributes, [
+    List<int> fallbackMaterialIndices = const [],
+    List<MaterialData> materialTable = const [],
+    String? pwFolder,
+    DetailTable? detailTable,
+  ]) async {
     final List<ModelSubMesh> meshes = [];
-    for (var submesh in submeshes) {
+    for (var submeshIndice = 0;
+        submeshIndice < submeshes.length;
+        submeshIndice++) {
+      final submesh = submeshes[submeshIndice];
       final data = submesh.getMeshModelData(
         0,
         boundingBox.toModelBox(),
         matrix,
       );
+      ui.Image? texture;
+      if (pwFolder != null &&
+          detailTable != null &&
+          materialIndices.length > submeshIndice &&
+          fallbackMaterialIndices.length >
+              materialIndices[submeshIndice].value) {
+        final textureName = materialTable[
+                fallbackMaterialIndices[materialIndices[submeshIndice].value]]
+            .textureName
+            ?.trueName
+            .value
+            .value;
+        if (textureName != null && textureName.isNotEmpty) {
+          texture = await _getImage(textureName, pwFolder, detailTable);
+        }
+      }
       meshes.add(
-          ModelSubMesh(vertices: data.vertices, triangles: data.triangles));
+        ModelSubMesh(
+          vertices: data.vertices,
+          triangles: data.triangles,
+          texture: texture != null ? ModelTexture(texture) : null,
+        ),
+      );
     }
     return ModelMesh(
       submeshes: meshes,
@@ -33,14 +103,18 @@ mixin MeshToModelInterface on Chunk {
     );
   }
 
-  Model toModel() {
+  Future<Model> toModel() async {
     final globalBB = boundingBox.toModelBox();
     return Model(
       name: label,
       type: ModelType.none,
       meshes: [
-        toModelMesh(ChunkAttributes(
-            value: attributes.value, typeOfModel: ModelType.unknown))
+        await toModelMesh(
+          ChunkAttributes(
+            value: attributes.value,
+            typeOfModel: ModelType.unknown,
+          ),
+        )
       ],
       cloth: [],
       boundingBox: globalBB,
@@ -69,6 +143,8 @@ class MeshChunk extends Chunk with MeshToModelInterface {
 
   @override
   late final List<Submesh> submeshes;
+
+  @override
   late final List<DoubleByteData<int>> materialIndices;
 
   @override

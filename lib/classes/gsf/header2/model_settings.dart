@@ -7,9 +7,12 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:paraworld_gsf_viewer/classes/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
+import 'package:paraworld_gsf_viewer/providers/texture.dart';
 
 enum ModelType {
   char,
@@ -227,24 +230,39 @@ class ModelSettings extends GsfPart {
     );
   }
 
-  Model toModel() {
-    final meshes = chunksTable?.chunks
-        .where((chunk) => chunk.type.isMeshLike())
-        .map((mesh) => (mesh as MeshChunk).toModelMesh(
-              ChunkAttributes.fromValue(type, mesh.attributes.value),
-            ))
-        .toList();
-    final cloths = chunksTable?.chunks
-        .where((chunk) => chunk.type.isClothLike())
-        .map((cloth) => (cloth as ClothChunk).toModelMesh(
-              ChunkAttributes.fromValue(type, cloth.attributes.value),
-            ))
-        .toList();
+  Future<Model> toModel(
+    MaterialsTable materialsTable,
+    String? pwFolder,
+    DetailTable? detailTable,
+  ) async {
+    final List<ModelMesh> meshes = [];
+    final List<ModelMesh> cloths = [];
+    final List<int> materialIndices =
+        fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
+    for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
+      if (chunk.type.isMeshLike()) {
+        meshes.add(await (chunk as MeshChunk).toModelMesh(
+          ChunkAttributes.fromValue(type, chunk.attributes.value),
+          materialIndices,
+          materialsTable.materials,
+          pwFolder,
+          detailTable,
+        ));
+      } else if (chunk.type.isClothLike()) {
+        cloths.add(await (chunk as ClothChunk).toModelMesh(
+          ChunkAttributes.fromValue(type, chunk.attributes.value),
+          materialIndices,
+          materialsTable.materials,
+          pwFolder,
+          detailTable,
+        ));
+      }
+    }
     return Model(
       name: objectName.label,
       type: type,
-      meshes: meshes ?? [],
-      cloth: cloths ?? [],
+      meshes: meshes,
+      cloth: cloths,
       boundingBox: boundingBox.toModelBox(),
     );
   }

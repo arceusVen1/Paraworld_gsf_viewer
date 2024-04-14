@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/providers/normals.dart';
+import 'package:paraworld_gsf_viewer/providers/texture.dart';
 import 'package:paraworld_gsf_viewer/widgets/convert_to_obj_cta.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
@@ -21,6 +26,8 @@ class ModelViewerPageLayout extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final materialTable = ref.watch(modelSelectionStateNotifierProvider
+        .select((state) => state.materialsTable));
     final currentModel = ref
         .watch(modelSelectionStateNotifierProvider.select((state) => state.map(
               empty: (_) => null,
@@ -29,11 +36,12 @@ class ModelViewerPageLayout extends ConsumerWidget {
 
     return Row(
       children: [
-        _ViewerControls(),
+        const _ViewerControls(),
         Flexible(
           flex: 3,
-          child: Viewer(
-            model: currentModel?.toModel(),
+          child: ModelViewerLoader(
+            model: currentModel,
+            materialsTable: materialTable,
             //attributesFilter: currentFilter,
             //showCloth: showCloth,
           ),
@@ -104,17 +112,102 @@ class _ViewerControls extends ConsumerWidget {
   }
 }
 
+class ChunkViewerLoader extends ConsumerWidget {
+  const ChunkViewerLoader({
+    super.key,
+    required this.chunk,
+    required this.materialsTable,
+  });
+
+  final Chunk chunk;
+  final MaterialsTable materialsTable;
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final pwfolder = ref.watch(pwFolderPathStateProvider);
+    final detailTable = ref.watch(detailTableStateProvider).asData?.value;
+    Future<Model>? future;
+    if (chunk.type.isClothLike()) {
+      future = (chunk as ClothChunk).toModel();
+    } else if (chunk.type.isMeshLike()) {
+      future = (chunk as MeshChunk).toModel();
+    } else {
+      return const SizedBox.shrink();
+    }
+
+    return FutureBuilder(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Viewer(
+            model: snapshot.data,
+            attributesFilter: ChunkAttributes(
+              value: chunk.attributes.value,
+              typeOfModel: ModelType.unknown,
+            ),
+            pwfolder: pwfolder,
+            detailTable: detailTable,
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+}
+
+class ModelViewerLoader extends ConsumerWidget {
+  const ModelViewerLoader({
+    super.key,
+    required this.model,
+    required this.materialsTable,
+    this.attributesFilter,
+  });
+
+  final ModelSettings? model;
+  final MaterialsTable materialsTable;
+  final ChunkAttributes? attributesFilter;
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final pwfolder = ref.watch(pwFolderPathStateProvider);
+    final detailTable = ref.watch(detailTableStateProvider).asData?.value;
+    if (model == null) {
+      return const Center(
+        child: Label.extraLarge("No model to show"),
+      );
+    }
+    return FutureBuilder(
+      future: model?.toModel(materialsTable, pwfolder, detailTable),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Viewer(
+            model: snapshot.data,
+            attributesFilter: attributesFilter,
+            pwfolder: pwfolder,
+            detailTable: detailTable,
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+}
+
 class Viewer extends StatelessWidget {
   const Viewer({
     super.key,
     required this.model,
-    this.attributesFilter,
-    this.showCloth = false,
+    required this.attributesFilter,
+    this.pwfolder,
+    this.detailTable,
   });
 
   final Model? model;
   final ChunkAttributes? attributesFilter;
-  final bool showCloth;
+  final String? pwfolder;
+  final DetailTable? detailTable;
 
   @override
   Widget build(BuildContext context) {

@@ -16,28 +16,49 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ModelViewerSelectionState {
+  MaterialsTable get materialsTable => throw _privateConstructorUsedError;
   List<ModelSettings> get models => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<ModelSettings> models) empty,
-    required TResult Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)
+    required TResult Function(
+            MaterialsTable materialsTable, List<ModelSettings> models)
+        empty,
+    required TResult Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)
         withModel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<ModelSettings> models)? empty,
-    TResult? Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)?
+    TResult? Function(
+            MaterialsTable materialsTable, List<ModelSettings> models)?
+        empty,
+    TResult? Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)?
         withModel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<ModelSettings> models)? empty,
-    TResult Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)?
+    TResult Function(MaterialsTable materialsTable, List<ModelSettings> models)?
+        empty,
+    TResult Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)?
         withModel,
     required TResult orElse(),
   }) =>
@@ -74,7 +95,7 @@ abstract class $ModelViewerSelectionStateCopyWith<$Res> {
           $Res Function(ModelViewerSelectionState) then) =
       _$ModelViewerSelectionStateCopyWithImpl<$Res, ModelViewerSelectionState>;
   @useResult
-  $Res call({List<ModelSettings> models});
+  $Res call({MaterialsTable materialsTable, List<ModelSettings> models});
 }
 
 /// @nodoc
@@ -91,9 +112,14 @@ class _$ModelViewerSelectionStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? materialsTable = null,
     Object? models = null,
   }) {
     return _then(_value.copyWith(
+      materialsTable: null == materialsTable
+          ? _value.materialsTable
+          : materialsTable // ignore: cast_nullable_to_non_nullable
+              as MaterialsTable,
       models: null == models
           ? _value.models
           : models // ignore: cast_nullable_to_non_nullable
@@ -110,7 +136,7 @@ abstract class _$$EmptyImplCopyWith<$Res>
       __$$EmptyImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ModelSettings> models});
+  $Res call({MaterialsTable materialsTable, List<ModelSettings> models});
 }
 
 /// @nodoc
@@ -124,10 +150,15 @@ class __$$EmptyImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? materialsTable = null,
     Object? models = null,
   }) {
     return _then(_$EmptyImpl(
-      null == models
+      materialsTable: null == materialsTable
+          ? _value.materialsTable
+          : materialsTable // ignore: cast_nullable_to_non_nullable
+              as MaterialsTable,
+      models: null == models
           ? _value._models
           : models // ignore: cast_nullable_to_non_nullable
               as List<ModelSettings>,
@@ -138,8 +169,12 @@ class __$$EmptyImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$EmptyImpl implements _Empty {
-  const _$EmptyImpl(final List<ModelSettings> models) : _models = models;
+  const _$EmptyImpl(
+      {required this.materialsTable, required final List<ModelSettings> models})
+      : _models = models;
 
+  @override
+  final MaterialsTable materialsTable;
   final List<ModelSettings> _models;
   @override
   List<ModelSettings> get models {
@@ -150,7 +185,7 @@ class _$EmptyImpl implements _Empty {
 
   @override
   String toString() {
-    return 'ModelViewerSelectionState.empty(models: $models)';
+    return 'ModelViewerSelectionState.empty(materialsTable: $materialsTable, models: $models)';
   }
 
   @override
@@ -158,12 +193,14 @@ class _$EmptyImpl implements _Empty {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$EmptyImpl &&
+            (identical(other.materialsTable, materialsTable) ||
+                other.materialsTable == materialsTable) &&
             const DeepCollectionEquality().equals(other._models, _models));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_models));
+  int get hashCode => Object.hash(runtimeType, materialsTable,
+      const DeepCollectionEquality().hash(_models));
 
   @JsonKey(ignore: true)
   @override
@@ -174,36 +211,56 @@ class _$EmptyImpl implements _Empty {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<ModelSettings> models) empty,
-    required TResult Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)
+    required TResult Function(
+            MaterialsTable materialsTable, List<ModelSettings> models)
+        empty,
+    required TResult Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)
         withModel,
   }) {
-    return empty(models);
+    return empty(materialsTable, models);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<ModelSettings> models)? empty,
-    TResult? Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)?
+    TResult? Function(
+            MaterialsTable materialsTable, List<ModelSettings> models)?
+        empty,
+    TResult? Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)?
         withModel,
   }) {
-    return empty?.call(models);
+    return empty?.call(materialsTable, models);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<ModelSettings> models)? empty,
-    TResult Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)?
+    TResult Function(MaterialsTable materialsTable, List<ModelSettings> models)?
+        empty,
+    TResult Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)?
         withModel,
     required TResult orElse(),
   }) {
     if (empty != null) {
-      return empty(models);
+      return empty(materialsTable, models);
     }
     return orElse();
   }
@@ -242,8 +299,12 @@ class _$EmptyImpl implements _Empty {
 }
 
 abstract class _Empty implements ModelViewerSelectionState {
-  const factory _Empty(final List<ModelSettings> models) = _$EmptyImpl;
+  const factory _Empty(
+      {required final MaterialsTable materialsTable,
+      required final List<ModelSettings> models}) = _$EmptyImpl;
 
+  @override
+  MaterialsTable get materialsTable;
   @override
   List<ModelSettings> get models;
   @override
@@ -265,7 +326,9 @@ abstract class _$$ModelViewerSelectionStateWithModelImplCopyWith<$Res>
       {List<ModelSettings> models,
       ModelSettings model,
       ChunkAttributes filter,
-      dynamic showCloth});
+      MaterialsTable materialsTable,
+      dynamic showCloth,
+      dynamic showNormals});
 }
 
 /// @nodoc
@@ -284,7 +347,9 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
     Object? models = null,
     Object? model = null,
     Object? filter = null,
+    Object? materialsTable = null,
     Object? showCloth = freezed,
+    Object? showNormals = freezed,
   }) {
     return _then(_$ModelViewerSelectionStateWithModelImpl(
       models: null == models
@@ -299,7 +364,12 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
           ? _value.filter
           : filter // ignore: cast_nullable_to_non_nullable
               as ChunkAttributes,
+      materialsTable: null == materialsTable
+          ? _value.materialsTable
+          : materialsTable // ignore: cast_nullable_to_non_nullable
+              as MaterialsTable,
       showCloth: freezed == showCloth ? _value.showCloth! : showCloth,
+      showNormals: freezed == showNormals ? _value.showNormals! : showNormals,
     ));
   }
 }
@@ -312,7 +382,9 @@ class _$ModelViewerSelectionStateWithModelImpl
       {required final List<ModelSettings> models,
       required this.model,
       required this.filter,
-      this.showCloth = false})
+      required this.materialsTable,
+      this.showCloth = true,
+      this.showNormals = false})
       : _models = models;
 
   final List<ModelSettings> _models;
@@ -328,12 +400,17 @@ class _$ModelViewerSelectionStateWithModelImpl
   @override
   final ChunkAttributes filter;
   @override
+  final MaterialsTable materialsTable;
+  @override
   @JsonKey()
   final dynamic showCloth;
+  @override
+  @JsonKey()
+  final dynamic showNormals;
 
   @override
   String toString() {
-    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, showCloth: $showCloth)';
+    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals)';
   }
 
   @override
@@ -344,7 +421,11 @@ class _$ModelViewerSelectionStateWithModelImpl
             const DeepCollectionEquality().equals(other._models, _models) &&
             (identical(other.model, model) || other.model == model) &&
             (identical(other.filter, filter) || other.filter == filter) &&
-            const DeepCollectionEquality().equals(other.showCloth, showCloth));
+            (identical(other.materialsTable, materialsTable) ||
+                other.materialsTable == materialsTable) &&
+            const DeepCollectionEquality().equals(other.showCloth, showCloth) &&
+            const DeepCollectionEquality()
+                .equals(other.showNormals, showNormals));
   }
 
   @override
@@ -353,7 +434,9 @@ class _$ModelViewerSelectionStateWithModelImpl
       const DeepCollectionEquality().hash(_models),
       model,
       filter,
-      const DeepCollectionEquality().hash(showCloth));
+      materialsTable,
+      const DeepCollectionEquality().hash(showCloth),
+      const DeepCollectionEquality().hash(showNormals));
 
   @JsonKey(ignore: true)
   @override
@@ -366,36 +449,59 @@ class _$ModelViewerSelectionStateWithModelImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<ModelSettings> models) empty,
-    required TResult Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)
+    required TResult Function(
+            MaterialsTable materialsTable, List<ModelSettings> models)
+        empty,
+    required TResult Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)
         withModel,
   }) {
-    return withModel(models, model, filter, showCloth);
+    return withModel(
+        models, model, filter, materialsTable, showCloth, showNormals);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(List<ModelSettings> models)? empty,
-    TResult? Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)?
+    TResult? Function(
+            MaterialsTable materialsTable, List<ModelSettings> models)?
+        empty,
+    TResult? Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)?
         withModel,
   }) {
-    return withModel?.call(models, model, filter, showCloth);
+    return withModel?.call(
+        models, model, filter, materialsTable, showCloth, showNormals);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<ModelSettings> models)? empty,
-    TResult Function(List<ModelSettings> models, ModelSettings model,
-            ChunkAttributes filter, dynamic showCloth)?
+    TResult Function(MaterialsTable materialsTable, List<ModelSettings> models)?
+        empty,
+    TResult Function(
+            List<ModelSettings> models,
+            ModelSettings model,
+            ChunkAttributes filter,
+            MaterialsTable materialsTable,
+            dynamic showCloth,
+            dynamic showNormals)?
         withModel,
     required TResult orElse(),
   }) {
     if (withModel != null) {
-      return withModel(models, model, filter, showCloth);
+      return withModel(
+          models, model, filter, materialsTable, showCloth, showNormals);
     }
     return orElse();
   }
@@ -439,13 +545,18 @@ abstract class ModelViewerSelectionStateWithModel
       {required final List<ModelSettings> models,
       required final ModelSettings model,
       required final ChunkAttributes filter,
-      final dynamic showCloth}) = _$ModelViewerSelectionStateWithModelImpl;
+      required final MaterialsTable materialsTable,
+      final dynamic showCloth,
+      final dynamic showNormals}) = _$ModelViewerSelectionStateWithModelImpl;
 
   @override
   List<ModelSettings> get models;
   ModelSettings get model;
   ChunkAttributes get filter;
+  @override
+  MaterialsTable get materialsTable;
   dynamic get showCloth;
+  dynamic get showNormals;
   @override
   @JsonKey(ignore: true)
   _$$ModelViewerSelectionStateWithModelImplCopyWith<

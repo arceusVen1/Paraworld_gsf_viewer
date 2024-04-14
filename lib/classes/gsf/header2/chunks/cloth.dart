@@ -35,6 +35,7 @@ class ClothChunk extends Chunk with MeshToModelInterface {
   late final Standard4BytesData<int> submeshMaterialsCount;
   @override
   late final List<Submesh> submeshes;
+  @override
   late final List<DoubleByteData<int>> materialIndices;
 
   @override

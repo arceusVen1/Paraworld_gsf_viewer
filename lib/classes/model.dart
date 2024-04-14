@@ -77,7 +77,7 @@ class Model {
     Canvas canvas,
     Color meshColor,
     ChunkAttributes attributesFilter, {
-    ModelTexture? texture,
+    ModelTexture? forcedTexture,
     bool showNormals = false,
     bool showCloths = false,
   }) {
@@ -86,37 +86,39 @@ class Model {
       if (!mesh.canBeViewed(attributesFilter)) {
         continue;
       }
-      final data = mesh.getDrawingData(
-        rotation,
-        size,
-        projectionData: projectionData,
-        texture: texture,
-      );
-      if (showNormals) {
-        canvas.drawRawPoints(
-          PointMode.lines,
-          data.normals,
-          _paint..color = Colors.red,
+      for (final submesh in mesh.submeshes) {
+        final data = submesh.getDrawingData(
+          rotation,
+          size,
+          projectionData: projectionData,
         );
-      }
+        if (showNormals) {
+          canvas.drawRawPoints(
+            PointMode.lines,
+            data.normals,
+            _paint..color = Colors.red,
+          );
+        }
+        if (forcedTexture != null || data.texture == null) {
+          drawTrianglesOutside(canvas, data.triangleIndices, data.positions,
+              _paint..color = meshColor);
+        }
 
-      if (texture == null) {
-        drawTrianglesOutside(canvas, data.triangleIndices, data.positions,
-            _paint..color = meshColor);
+        canvas.drawVertices(
+            Vertices.raw(
+              VertexMode.triangles,
+              data.positions,
+              indices: data.triangleIndices,
+              // colors: Int32List.fromList(List.filled(
+              //     (data.positions.length / 2).round(),
+              //     meshColor.withOpacity(0.3).value)),
+              textureCoordinates: data.textureCoordinates,
+            ),
+            BlendMode.srcOver,
+            forcedTexture?.painter ??
+                data.texture?.painter ??
+                (_paint..color = meshColor.withOpacity(0.3)));
       }
-
-      canvas.drawVertices(
-          Vertices.raw(
-            VertexMode.triangles,
-            data.positions,
-            indices: data.triangleIndices,
-            // colors: Int32List.fromList(List.filled(
-            //     (data.positions.length / 2).round(),
-            //     meshColor.withOpacity(0.3).value)),
-            textureCoordinates: data.textureCoordinates,
-          ),
-          BlendMode.srcOver,
-          texture?.painter ?? (_paint..color = meshColor.withOpacity(0.3)));
     }
   }
 }

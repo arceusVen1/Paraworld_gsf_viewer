@@ -6,7 +6,7 @@ class ModelTexture {
   ModelTexture(
     this.image,
   ) {
-     painter.shader = ImageShader(
+    painter.shader = ImageShader(
       image,
       TileMode.decal,
       TileMode.decal,
@@ -15,5 +15,7 @@ class ModelTexture {
   }
 
   final Image image;
-  final Paint painter = Paint()..blendMode = BlendMode.srcOver;
+  final Paint painter = Paint()
+    ..blendMode = BlendMode.srcOver
+    ..color = Color(0xFFFFFFFF).withOpacity(0.8);
 }

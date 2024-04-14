@@ -145,12 +145,13 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
       ...getChunkWidgetByType(
         state.selectedChunkState!,
         state.modelSettings.fallbackTable,
-        state.header2.materialsTable.materials,
+        state.header2.materialsTable,
       )
     else
       Flexible(
-        child: Viewer(
-          model: state.modelSettings.toModel(),
+        child: ModelViewerLoader(
+          model: state.modelSettings,
+          materialsTable: state.header2.materialsTable,
           attributesFilter:
               ChunkAttributes.defaultValue(state.modelSettings.type),
         ),
@@ -164,15 +165,18 @@ List<Widget> withMaterial(Header2StateWithMaterial state) {
   ];
 }
 
-List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
-    FallbackTable? fallbackTable, List<MaterialData> materials) {
+List<Widget> getChunkWidgetByType(
+  SelectedChunkState chunkState,
+  FallbackTable? fallbackTable,
+  MaterialsTable materialsTable,
+) {
   final List<Widget> widgets = () {
     return chunkState.maybeMap(
       withMesh: (data) => [
         MeshChunkDisplay(
           mesh: data.mesh,
           fallbackTable: fallbackTable,
-          materials: materials,
+          materials: materialsTable.materials,
         ),
         data.submesh != null
             ? SubmeshDisplay(
@@ -180,12 +184,9 @@ List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
                 boundingBox: data.mesh.boundingBox,
               )
             : Flexible(
-                child: Viewer(
-                  model: data.mesh.toModel(),
-                  attributesFilter: ChunkAttributes(
-                    value: data.mesh.attributes.value,
-                    typeOfModel: ModelType.unknown,
-                  ),
+                child: ChunkViewerLoader(
+                  chunk: data.mesh,
+                  materialsTable: materialsTable,
                 ),
               ),
         if (data.material != null) MaterialDisplay(material: data.material!),
@@ -194,7 +195,7 @@ List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
         ClothChunkDisplay(
           cloth: data.cloth,
           fallbackTable: fallbackTable,
-          materials: materials,
+          materials: materialsTable.materials,
         ),
         data.submesh != null
             ? SubmeshDisplay(
@@ -202,12 +203,9 @@ List<Widget> getChunkWidgetByType(SelectedChunkState chunkState,
                 boundingBox: data.cloth.boundingBox,
               )
             : Flexible(
-                child: Viewer(
-                  model: data.cloth.toModel(),
-                  attributesFilter: ChunkAttributes(
-                    value: data.cloth.attributes.value,
-                    typeOfModel: ModelType.unknown,
-                  ),
+                child: ChunkViewerLoader(
+                  chunk: data.cloth,
+                  materialsTable: materialsTable,
                 ),
               ),
         if (data.material != null) MaterialDisplay(material: data.material!),

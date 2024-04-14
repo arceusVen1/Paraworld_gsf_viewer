@@ -51,6 +51,7 @@ class Menu extends ConsumerWidget {
             allowedExtensions: const ["jpg", "jpeg", "png", "dds"],
             filePathStateProvider: texturePathStateProvider,
           ),
+          const _PwFolderLink(),
           ListTile(
             title: const Label.medium("Show normals"),
             trailing: Switch.adaptive(
@@ -66,6 +67,64 @@ class Menu extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PwFolderLink extends ConsumerWidget {
+  const _PwFolderLink({super.key});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final theme = Theme.of(context);
+    final path = ref.watch(pwFolderPathStateProvider);
+    final isLoadingTable = ref.watch(detailTableStateProvider).isLoading;
+    final scaffold = ScaffoldMessenger.of(context);
+    ref.listen(detailTableStateProvider, (_, next) {
+      if (next.asError != null) {
+        scaffold.clearSnackBars();
+        scaffold.showSnackBar(
+          SnackBar(
+            content: Label.regular(
+              "Parsing detail table failed with err: ${next.error}",
+              isBold: true,
+              color: theme.colorScheme.error,
+            ),
+            backgroundColor: theme.colorScheme.errorContainer,
+          ),
+        );
+      }
+    });
+    return ListTile(
+      title: Button.secondary(
+        disabled: isLoadingTable,
+        onPressed: () async {
+          String? result = await FilePicker.platform.getDirectoryPath(
+            dialogTitle: "select your ParaWorld folder",
+          );
+          if (result != null) {
+            ref.read(pwFolderPathStateProvider.notifier).state = result;
+          }
+        },
+        child: isLoadingTable
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Label.small(
+                path ?? "Link a ParaWorld foler",
+              ),
+      ),
+      trailing: path != null
+          ? IconButton(
+              onPressed: () {
+                ref.read(pwFolderPathStateProvider.notifier).state =
+                    path + ''; // force update
+              },
+              icon: Icon(
+                Icons.refresh,
+                color: Theme.of(context).colorScheme.secondary,
+              ))
+          : null,
     );
   }
 }
