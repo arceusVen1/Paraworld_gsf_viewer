@@ -45,6 +45,7 @@ class ModelSubMesh {
     Rotation rotation,
     Size size, {
     required ProjectionData projectionData,
+    ModelTexture? overrideTexture,
   }) {
     final verticesLength = vertices.length;
     final Float32List positions =
@@ -63,13 +64,14 @@ class ModelSubMesh {
           if (positions[vertexIndice * 2] != 0) continue;
 
           if (shouldShow) {
-            if (texture != null) {
+            if (texture != null || overrideTexture != null) {
+              final textureToUse = overrideTexture ?? texture;
               textureCoordinates[vertexIndice * 2] =
                   (triangle.points[j].textureCoordinates!.x) *
-                      texture!.image.width;
+                      textureToUse!.image.width;
               textureCoordinates[vertexIndice * 2 + 1] =
                   (1 - triangle.points[j].textureCoordinates!.y) *
-                      texture!.image.height;
+                      textureToUse!.image.height;
             }
 
             final projected = triangle.points[j].project(

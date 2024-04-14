@@ -172,7 +172,7 @@ class ModelDrawer extends CustomPainter {
       canvas,
       meshColor,
       attributesFilter,
-      forcedTexture: texture,
+      overrideTexture: texture,
       showNormals: showNormals,
       showCloths: showCloth,
     );

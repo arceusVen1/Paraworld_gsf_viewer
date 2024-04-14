@@ -77,7 +77,7 @@ class Model {
     Canvas canvas,
     Color meshColor,
     ChunkAttributes attributesFilter, {
-    ModelTexture? forcedTexture,
+    ModelTexture? overrideTexture,
     bool showNormals = false,
     bool showCloths = false,
   }) {
@@ -91,6 +91,7 @@ class Model {
           rotation,
           size,
           projectionData: projectionData,
+          overrideTexture: overrideTexture,
         );
         if (showNormals) {
           canvas.drawRawPoints(
@@ -99,7 +100,7 @@ class Model {
             _paint..color = Colors.red,
           );
         }
-        if (forcedTexture == null || data.texture == null) {
+        if (overrideTexture == null && data.texture == null) {
           drawTrianglesOutside(canvas, data.triangleIndices, data.positions,
               _paint..color = meshColor);
         }
@@ -115,7 +116,7 @@ class Model {
               textureCoordinates: data.textureCoordinates,
             ),
             BlendMode.srcOver,
-            forcedTexture?.painter ??
+            overrideTexture?.painter ??
                 data.texture?.painter ??
                 (_paint..color = meshColor.withOpacity(0.3)));
       }
