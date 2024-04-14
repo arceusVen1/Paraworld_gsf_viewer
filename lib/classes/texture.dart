@@ -15,7 +15,5 @@ class ModelTexture {
   }
 
   final Image image;
-  final Paint painter = Paint()
-    ..blendMode = BlendMode.srcOver
-    ..color = Color(0xFFFFFFFF).withOpacity(0.8);
+  final Paint painter = Paint()..blendMode = BlendMode.srcOver;
 }
