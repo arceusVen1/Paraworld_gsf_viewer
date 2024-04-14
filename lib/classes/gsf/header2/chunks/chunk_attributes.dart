@@ -575,13 +575,14 @@ class VehiAttributes extends ChunkAttributes {
   bool get unknown => bits[unknownIndice];
 
   @override
-  List<int> get visibilityFlags => [];
+  List<int> get visibilityFlags => [
+        ramHighIndice,
+        ramLowIndice,
+      ];
 
   @override
   List<int> get usedIndices => super.usedIndices
     ..addAll([
-      ramHighIndice,
-      ramLowIndice,
       unknownIndice,
     ]);
 }
@@ -810,7 +811,10 @@ class ShipAttributes extends ChunkAttributes {
   bool get unknown => bits[unknownIndice];
 
   @override
-  List<int> get visibilityFlags => [];
+  List<int> get visibilityFlags => [
+        ramHighIndice,
+        ramLowIndice,
+      ];
 
   @override
   bool isCompatible(ChunkAttributes filter) {

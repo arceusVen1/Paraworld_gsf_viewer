@@ -83,18 +83,6 @@ class MiscFlagsDisplay extends StatelessWidget {
         case ModelType.vehi:
           return [
             FlagBox(
-              label: "ram_high",
-              attributes: chunkAttributes,
-              indice: VehiAttributes.ramHighIndice,
-              onPress: onPress,
-            ),
-            FlagBox(
-              label: "ram_low",
-              attributes: chunkAttributes,
-              indice: VehiAttributes.ramLowIndice,
-              onPress: onPress,
-            ),
-            FlagBox(
               label: "Unknown (light collision?)",
               attributes: chunkAttributes,
               indice: VehiAttributes.unknownIndice,
@@ -112,18 +100,6 @@ class MiscFlagsDisplay extends StatelessWidget {
           ];
         case ModelType.ship:
           return [
-            FlagBox(
-              label: "ram_high",
-              attributes: chunkAttributes,
-              indice: ShipAttributes.ramHighIndice,
-              onPress: onPress,
-            ),
-            FlagBox(
-              label: "ram_low",
-              attributes: chunkAttributes,
-              indice: ShipAttributes.ramLowIndice,
-              onPress: onPress,
-            ),
             FlagBox(
               label: "Use construction flags",
               attributes: chunkAttributes,

@@ -192,6 +192,36 @@ class VisibilityFlagsDisplay extends StatelessWidget {
               onPress: onPress,
             ),
           ];
+        case ModelType.vehi:
+          return [
+            FlagBox(
+              label: "ram_high",
+              attributes: chunkAttributes,
+              indice: VehiAttributes.ramHighIndice,
+              onPress: onPress,
+            ),
+            FlagBox(
+              label: "ram_low",
+              attributes: chunkAttributes,
+              indice: VehiAttributes.ramLowIndice,
+              onPress: onPress,
+            ),
+          ];
+        case ModelType.ship:
+          return [
+            FlagBox(
+              label: "ram_high",
+              attributes: chunkAttributes,
+              indice: ShipAttributes.ramHighIndice,
+              onPress: onPress,
+            ),
+            FlagBox(
+              label: "ram_low",
+              attributes: chunkAttributes,
+              indice: ShipAttributes.ramLowIndice,
+              onPress: onPress,
+            ),
+          ];
         case ModelType.misc:
           return [
             FlagBox(
