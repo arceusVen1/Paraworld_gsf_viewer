@@ -151,7 +151,8 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
       Flexible(
         child: Viewer(
           model: state.modelSettings.toModel(),
-          attributesFilter: ChunkAttributes.fromValue(state.modelSettings.type, ChunkAttributes.defaultLoD),
+          attributesFilter:
+              ChunkAttributes.defaultValue(state.modelSettings.type),
         ),
       ),
   ];

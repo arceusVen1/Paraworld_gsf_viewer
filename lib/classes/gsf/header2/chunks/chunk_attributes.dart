@@ -39,6 +39,8 @@ class ChunkAttributes {
         return ToweAttributes.defaultValue();
       case ModelType.anim:
         return AnimAttributes.defaultValue();
+      case ModelType.ship:
+        return ShipAttributes.defaultValue();
       default:
         return ChunkAttributes(value: defaultLoD, typeOfModel: typeOfModel);
     }
@@ -263,12 +265,7 @@ class RessAttributes extends ChunkAttributes {
       : super(
           bits: List<bool>.filled(32, false)
             ..[ChunkAttributes.lod0Indice] = true
-            ..[res6Indice] = true
-            ..[res5Indice] = true
-            ..[res4Indice] = true
-            ..[res3Indice] = true
-            ..[res2Indice] = true
-            ..[res1Indice] = true,
+            ..[res6Indice] = true,
           typeOfModel: ModelType.ress,
         );
 
@@ -354,6 +351,7 @@ class BuildingAttributes extends ChunkAttributes {
 
   static List<bool> defaultValue = List<bool>.filled(32, false)
     ..[ChunkAttributes.lod0Indice] = true
+    ..[dest1Indice] = true
     ..[con4Indice] = true;
 
   @override
@@ -480,7 +478,7 @@ class WallAttributes extends BuildingAttributes {
   WallAttributes.defaultValue()
       : super(
           0,
-          ModelType.bldg,
+          ModelType.wall,
           BuildingAttributes.defaultValue,
         );
 
@@ -503,7 +501,7 @@ class FielAttributes extends BuildingAttributes {
   FielAttributes.defaultValue()
       : super(
           0,
-          ModelType.bldg,
+          ModelType.fiel,
           BuildingAttributes.defaultValue,
         );
 
@@ -661,7 +659,7 @@ class ToweAttributes extends ChunkAttributes {
             ..[zinnen3Indice] = true
             ..[zinnen2Indice] = true
             ..[zinnen1Indice] = true,
-          typeOfModel: ModelType.ress,
+          typeOfModel: ModelType.towe,
         );
 
   // zinnen are unknow and unused attr
@@ -785,6 +783,14 @@ class ShipAttributes extends ChunkAttributes {
           value: value,
           typeOfModel: ModelType.ship,
           bits: bits,
+        );
+
+  ShipAttributes.defaultValue()
+      : super(
+          bits: List<bool>.filled(32, false)
+            ..[ChunkAttributes.lod0Indice] = true
+            ..[isDest1Indice] = true,
+          typeOfModel: ModelType.ship,
         );
 
   static const int ramHighIndice = 1;
