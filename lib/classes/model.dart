@@ -86,7 +86,8 @@ class Model {
       if (!mesh.canBeViewed(attributesFilter)) {
         continue;
       }
-      for (final submesh in mesh.submeshes) {
+      // reversing submesh seems to help with rendering order
+      for (final submesh in mesh.submeshes.reversed) {
         final data = submesh.getDrawingData(
           rotation,
           size,
