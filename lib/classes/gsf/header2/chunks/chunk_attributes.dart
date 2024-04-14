@@ -375,6 +375,9 @@ class BuildingAttributes extends ChunkAttributes {
   }
 
   @override
+  List<int> get visibilityFlags => [];
+
+  @override
   List<int> get levelIndices => super.levelIndices
     ..addAll(
       [
@@ -419,6 +422,7 @@ class BldgAttributes extends BuildingAttributes {
   static const int isAge2Indice = 13;
   static const int isAge1Indice = 14;
   static const int isForNightIndice = 19;
+  static const int isShadowModelIndice = 20;
   static const int isSelectionVolumeIndice = 21;
 
   bool get resinFieldFire => bits[resinFieldFireIndice];
@@ -433,6 +437,7 @@ class BldgAttributes extends BuildingAttributes {
   @override
   List<int> get visibilityFlags => [
         isForNightIndice,
+        isShadowModelIndice,
         isSelectionVolumeIndice,
       ];
 
@@ -461,9 +466,8 @@ class BldgAttributes extends BuildingAttributes {
   @override
   List<int> get usedIndices => super.usedIndices
     ..addAll([
+      ...visibilityFlags,
       resinFieldFireIndice,
-      isForNightIndice,
-      isSelectionVolumeIndice,
     ]);
 }
 
@@ -483,8 +487,6 @@ class WallAttributes extends BuildingAttributes {
         );
 
   static const int unknown2Indice = 21;
-
-  bool get unknown2 => bits[unknown2Indice];
 
   @override
   List<int> get usedIndices => super.usedIndices..addAll([unknown2Indice]);
@@ -507,14 +509,12 @@ class FielAttributes extends BuildingAttributes {
 
   static const int resinFieldFireIndice = 0;
   static const int huCornFieldIndice = 14;
+  static const int isShadowModelIndice = 20;
   static const int isSelectionVolumeIndice = 21;
-
-  bool get resinFieldFire => bits[resinFieldFireIndice];
-  bool get huCornField => bits[huCornFieldIndice];
-  bool get isSelectionVolume => bits[isSelectionVolumeIndice];
 
   @override
   List<int> get visibilityFlags => [
+        isShadowModelIndice,
         isSelectionVolumeIndice,
       ];
 
@@ -523,7 +523,7 @@ class FielAttributes extends BuildingAttributes {
     ..addAll([
       resinFieldFireIndice,
       huCornFieldIndice,
-      isSelectionVolumeIndice,
+      ...visibilityFlags,
     ]);
 }
 
@@ -537,25 +537,17 @@ class DekoAttributes extends ChunkAttributes {
 
   static const int isSequenceIndice = 2;
   static const int isForNightIndice = 19;
-  static const int unknownIndice = 20;
-
-  bool get isSequence => bits[isSequenceIndice];
-  bool get isForNight => bits[isForNightIndice];
-  bool get unknown => bits[unknownIndice];
+  static const int isShadowModelIndice = 20;
 
   @override
   List<int> get visibilityFlags => [
         isForNightIndice,
+        isShadowModelIndice,
         isSequenceIndice,
       ];
 
   @override
-  List<int> get usedIndices => super.usedIndices
-    ..addAll([
-      isSequenceIndice,
-      isForNightIndice,
-      unknownIndice,
-    ]);
+  List<int> get usedIndices => super.usedIndices..addAll(visibilityFlags);
 }
 
 class VehiAttributes extends ChunkAttributes {
@@ -568,23 +560,17 @@ class VehiAttributes extends ChunkAttributes {
 
   static const int ramHighIndice = 1;
   static const int ramLowIndice = 2;
-  static const int unknownIndice = 20;
-
-  bool get ramHigh => bits[ramHighIndice];
-  bool get ramLow => bits[ramLowIndice];
-  bool get unknown => bits[unknownIndice];
+  static const int isShadowModelIndice = 20;
 
   @override
   List<int> get visibilityFlags => [
         ramHighIndice,
+        isShadowModelIndice,
         ramLowIndice,
       ];
 
   @override
-  List<int> get usedIndices => super.usedIndices
-    ..addAll([
-      unknownIndice,
-    ]);
+  List<int> get usedIndices => super.usedIndices..addAll(visibilityFlags);
 }
 
 class MiscAttributes extends ChunkAttributes {
@@ -598,17 +584,17 @@ class MiscAttributes extends ChunkAttributes {
   static const int isStep2Indice = 0;
   static const int isStep1Indice = 1;
   static const int isStep0Indice = 2;
-  static const int unknownIndice = 20;
+  static const int isShadowModelIndice = 20;
   static const int isSelectionVolumeIndice = 21;
 
   bool get isStep2 => bits[isStep2Indice];
   bool get isStep1 => bits[isStep1Indice];
   bool get isStep0 => bits[isStep0Indice];
-  bool get unknown => bits[unknownIndice];
   bool get isSelectionVolume => bits[isSelectionVolumeIndice];
 
   @override
   List<int> get visibilityFlags => [
+        isShadowModelIndice,
         isSelectionVolumeIndice,
       ];
 
@@ -632,11 +618,7 @@ class MiscAttributes extends ChunkAttributes {
       isStep0Indice,
     ]);
   @override
-  List<int> get usedIndices => super.usedIndices
-    ..addAll([
-      unknownIndice,
-      isSelectionVolumeIndice,
-    ]);
+  List<int> get usedIndices => super.usedIndices..addAll(visibilityFlags);
 }
 
 class ToweAttributes extends ChunkAttributes {
@@ -796,11 +778,11 @@ class ShipAttributes extends ChunkAttributes {
 
   static const int ramHighIndice = 1;
   static const int ramLowIndice = 2;
+  static const int isShadowModelIndice = 20;
   static const int isDest2Indice = 27;
   static const int isDest1Indice = 28;
   static const int useConFlagsIndice = 29;
   static const int isCon4Indice = 30;
-  static const int unknownIndice = 20;
 
   bool get ramHigh => bits[ramHighIndice];
   bool get ramLow => bits[ramLowIndice];
@@ -808,12 +790,12 @@ class ShipAttributes extends ChunkAttributes {
   bool get isDest1 => bits[isDest1Indice];
   bool get useConFlags => bits[useConFlagsIndice];
   bool get isCon4 => bits[isCon4Indice];
-  bool get unknown => bits[unknownIndice];
 
   @override
   List<int> get visibilityFlags => [
         ramHighIndice,
         ramLowIndice,
+        isShadowModelIndice,
       ];
 
   @override
@@ -836,10 +818,8 @@ class ShipAttributes extends ChunkAttributes {
   @override
   List<int> get usedIndices => super.usedIndices
     ..addAll([
-      unknownIndice,
+      ...visibilityFlags,
       useConFlagsIndice,
-      ramHighIndice,
-      ramLowIndice,
     ]);
 }
 

@@ -63,6 +63,12 @@ class VisibilityFlagsDisplay extends StatelessWidget {
               onPress: onPress,
             ),
             FlagBox(
+              label: "shadow model",
+              attributes: chunkAttributes,
+              indice: ShipAttributes.isShadowModelIndice,
+              onPress: onPress,
+            ),
+            FlagBox(
               label: "Is selection volume",
               attributes: chunkAttributes,
               indice: BldgAttributes.isSelectionVolumeIndice,
@@ -71,6 +77,12 @@ class VisibilityFlagsDisplay extends StatelessWidget {
           ];
         case ModelType.fiel:
           return [
+            FlagBox(
+              label: "shadow model",
+              attributes: chunkAttributes,
+              indice: ShipAttributes.isShadowModelIndice,
+              onPress: onPress,
+            ),
             FlagBox(
               label: "Is selection volume",
               attributes: chunkAttributes,
@@ -191,9 +203,21 @@ class VisibilityFlagsDisplay extends StatelessWidget {
               indice: DekoAttributes.isForNightIndice,
               onPress: onPress,
             ),
+            FlagBox(
+              label: "shadow model",
+              attributes: chunkAttributes,
+              indice: ShipAttributes.isShadowModelIndice,
+              onPress: onPress,
+            ),
           ];
         case ModelType.vehi:
           return [
+            FlagBox(
+              label: "shadow model",
+              attributes: chunkAttributes,
+              indice: ShipAttributes.isShadowModelIndice,
+              onPress: onPress,
+            ),
             FlagBox(
               label: "ram_high",
               attributes: chunkAttributes,
@@ -210,6 +234,12 @@ class VisibilityFlagsDisplay extends StatelessWidget {
         case ModelType.ship:
           return [
             FlagBox(
+              label: "shadow model",
+              attributes: chunkAttributes,
+              indice: ShipAttributes.isShadowModelIndice,
+              onPress: onPress,
+            ),
+            FlagBox(
               label: "ram_high",
               attributes: chunkAttributes,
               indice: ShipAttributes.ramHighIndice,
@@ -224,6 +254,12 @@ class VisibilityFlagsDisplay extends StatelessWidget {
           ];
         case ModelType.misc:
           return [
+            FlagBox(
+              label: "shadow model",
+              attributes: chunkAttributes,
+              indice: ShipAttributes.isShadowModelIndice,
+              onPress: onPress,
+            ),
             FlagBox(
               label: "Is selection volume",
               attributes: chunkAttributes,
