@@ -71,45 +71,13 @@ class MiscFlagsDisplay extends StatelessWidget {
               ),
             ],
           ];
-        case ModelType.deko:
-          return [
-            FlagBox(
-              label: "Unknown",
-              attributes: chunkAttributes,
-              indice: DekoAttributes.unknownIndice,
-              onPress: onPress,
-            ),
-          ];
-        case ModelType.vehi:
-          return [
-            FlagBox(
-              label: "Unknown (light collision?)",
-              attributes: chunkAttributes,
-              indice: VehiAttributes.unknownIndice,
-              onPress: onPress,
-            ),
-          ];
-        case ModelType.misc:
-          return [
-            FlagBox(
-              label: "Unknown (light collision?)",
-              attributes: chunkAttributes,
-              indice: MiscAttributes.unknownIndice,
-              onPress: onPress,
-            ),
-          ];
+        
         case ModelType.ship:
           return [
             FlagBox(
               label: "Use construction flags",
               attributes: chunkAttributes,
               indice: ShipAttributes.useConFlagsIndice,
-              onPress: onPress,
-            ),
-            FlagBox(
-              label: "Unknown (light collision?)",
-              attributes: chunkAttributes,
-              indice: ShipAttributes.unknownIndice,
               onPress: onPress,
             ),
           ];
