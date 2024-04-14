@@ -99,7 +99,7 @@ class Model {
             _paint..color = Colors.red,
           );
         }
-        if (forcedTexture != null || data.texture == null) {
+        if (forcedTexture == null || data.texture == null) {
           drawTrianglesOutside(canvas, data.triangleIndices, data.positions,
               _paint..color = meshColor);
         }
