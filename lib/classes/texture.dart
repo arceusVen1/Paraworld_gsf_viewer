@@ -62,7 +62,7 @@ class ModelTexture {
     if (attribute.useHardAlpha) {
       for (final frame in imageToProcess.frames) {
         for (final p in frame) {
-          p.a = p.a > 0 ? 255 : 0;
+          p.a = p.a < 127 ? 0 : p.a;
         }
       }
     }
