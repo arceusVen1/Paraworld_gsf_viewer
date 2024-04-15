@@ -2,7 +2,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
-import 'package:paraworld_gsf_viewer/providers/normals.dart';
 import 'package:paraworld_gsf_viewer/providers/texture.dart';
 import 'package:paraworld_gsf_viewer/theme.dart';
 import 'package:paraworld_gsf_viewer/widgets/header/providers.dart';
@@ -14,7 +13,6 @@ class Menu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final showNormals = ref.watch(showNormalsProvider);
     final theme = Theme.of(context);
     return Drawer(
       child: ListView(
@@ -39,6 +37,7 @@ class Menu extends ConsumerWidget {
               ],
             ),
           ),
+          const _PwFolderLink(),
           _FileLoaderTile(
             title: "Select a .gsf",
             allowedExtensions: const ["gsf"],
@@ -50,20 +49,6 @@ class Menu extends ConsumerWidget {
             title: "Select a texture",
             allowedExtensions: const ["jpg", "jpeg", "png", "dds"],
             filePathStateProvider: texturePathStateProvider,
-          ),
-          const _PwFolderLink(),
-          ListTile(
-            title: const Label.medium("Show normals"),
-            trailing: Switch.adaptive(
-              // This bool value toggles the switch.
-              value: showNormals,
-              inactiveTrackColor: theme.colorScheme.tertiary,
-              activeColor: theme.colorScheme.surfaceVariant,
-              onChanged: (bool value) {
-                // This is called when the user toggles the switch.
-                ref.read(showNormalsProvider.notifier).state = value;
-              },
-            ),
           ),
         ],
       ),
@@ -96,23 +81,26 @@ class _PwFolderLink extends ConsumerWidget {
       }
     });
     return ListTile(
-      title: Button.secondary(
-        disabled: isLoadingTable,
-        onPressed: () async {
-          String? result = await FilePicker.platform.getDirectoryPath(
-            dialogTitle: "select your ParaWorld folder",
-          );
-          if (result != null) {
-            ref.read(pwFolderPathStateProvider.notifier).state = result;
-          }
-        },
-        child: isLoadingTable
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Label.small(
-                path ?? "Link a ParaWorld foler",
-              ),
+      title: Tooltip(
+        message: path ?? "Must be your Paraworld game folder",
+        child: Button.secondary(
+          disabled: isLoadingTable,
+          onPressed: () async {
+            String? result = await FilePicker.platform.getDirectoryPath(
+              dialogTitle: "select your ParaWorld folder",
+            );
+            if (result != null) {
+              ref.read(pwFolderPathStateProvider.notifier).state = result;
+            }
+          },
+          child: isLoadingTable
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Label.small(
+                  path != null ? "PW Folder linked" : "Link a ParaWorld folder",
+                ),
+        ),
       ),
       trailing: path != null
           ? IconButton(

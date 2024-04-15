@@ -1,24 +1,20 @@
-import 'dart:async';
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/material_attribute.dart';
+import 'package:paraworld_gsf_viewer/classes/texture.dart';
 
-final textureFutureProvider = FutureProvider<ui.Image?>(
+final textureFutureProvider = FutureProvider<ModelTexture?>(
   (ref) async {
     final file = ref.watch(texturePathStateProvider);
     if (file == null) {
       return null;
     }
-    final completer = Completer<ui.Image>();
-    if (file.bytes != null) {
-      ui.decodeImageFromList(file.bytes!, completer.complete);
-    } else if (file.path != null) {
-      final data = File(file.path!);
-      final bytes = await data.readAsBytes();
-      ui.decodeImageFromList(bytes, completer.complete);
-    }
-    return completer.future;
+    final texture =
+        ModelTexture(attribute: MaterialAttribute.zero(), path: file.path!);
+    await texture.loadImage(Colors.black, null);
+    return texture;
   },
 );
 

@@ -39,6 +39,16 @@ class Model {
     ..strokeWidth = 1
     ..strokeCap = StrokeCap.round;
 
+  Future<void> loadTextures(Color fillingColor, Color? partyColor) async {
+    for (final mesh in meshes + cloth) {
+      for (final submesh in mesh.submeshes) {
+        if (submesh.texture != null) {
+          await submesh.texture!.loadImage(fillingColor, partyColor);
+        }
+      }
+    }
+  }
+
   ProjectionData getProjectionData(Size size) {
     final widthOffset = size.width / 2;
     final heightOffset = size.height / 2;
@@ -80,6 +90,7 @@ class Model {
     ModelTexture? overrideTexture,
     bool showNormals = false,
     bool showCloths = false,
+    bool showTexture = false,
   }) {
     final projectionData = getProjectionData(size);
     for (final mesh in (showCloths ? meshes + cloth : meshes)) {
@@ -101,10 +112,14 @@ class Model {
             _paint..color = Colors.red,
           );
         }
-        if (overrideTexture == null && data.texture == null) {
+        if (!showTexture || (overrideTexture == null && data.texture == null)) {
           drawTrianglesOutside(canvas, data.triangleIndices, data.positions,
               _paint..color = meshColor);
         }
+
+        final texturePainter = showTexture
+            ? overrideTexture?.painter ?? data.texture?.painter
+            : null;
 
         canvas.drawVertices(
             Vertices.raw(
@@ -117,9 +132,7 @@ class Model {
               textureCoordinates: data.textureCoordinates,
             ),
             BlendMode.srcOver,
-            overrideTexture?.painter ??
-                data.texture?.painter ??
-                (_paint..color = meshColor.withOpacity(0.3)));
+            texturePainter ?? (_paint..color = meshColor.withOpacity(0.3)));
       }
     }
   }

@@ -230,18 +230,18 @@ class ModelSettings extends GsfPart {
     );
   }
 
-  Future<Model> toModel(
+  Model toModel(
     MaterialsTable materialsTable,
     String? pwFolder,
     DetailTable? detailTable,
-  ) async {
+  ) {
     final List<ModelMesh> meshes = [];
     final List<ModelMesh> cloths = [];
     final List<int> materialIndices =
         fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
     for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
       if (chunk.type.isMeshLike()) {
-        meshes.add(await (chunk as MeshChunk).toModelMesh(
+        meshes.add((chunk as MeshChunk).toModelMesh(
           ChunkAttributes.fromValue(type, chunk.attributes.value),
           materialIndices,
           materialsTable.materials,
@@ -249,7 +249,7 @@ class ModelSettings extends GsfPart {
           detailTable,
         ));
       } else if (chunk.type.isClothLike()) {
-        cloths.add(await (chunk as ClothChunk).toModelMesh(
+        cloths.add((chunk as ClothChunk).toModelMesh(
           ChunkAttributes.fromValue(type, chunk.attributes.value),
           materialIndices,
           materialsTable.materials,

@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class MaterialData extends GsfPart {
-  late final Standard4BytesData<UnknowData> bitsetAttribute1;
-  late final Standard4BytesData<UnknowData> bitsetAttribute2;
+  late final Standard4BytesData<int> bitsetAttribute1;
+  late final Standard4BytesData<int> bitsetAttribute2;
   late final Standard4BytesData<int> textureNameOffset;
   late final Standard4BytesData<int> nmNameOffset;
   late final Standard4BytesData<int> envNameOffset;

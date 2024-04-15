@@ -18,8 +18,9 @@ class ModelDrawer extends CustomPainter {
   ModelDrawer({
     required this.mousePosition,
     required this.model,
-    required this.texture,
+    required this.overridingTexture,
     required this.showNormals,
+    required this.showTexture,
     required this.meshColor,
     required this.attributesFilter,
     required this.showCloth,
@@ -27,8 +28,9 @@ class ModelDrawer extends CustomPainter {
 
   final ValueNotifier<MousePositionDrag> mousePosition;
   final Model model;
-  final ModelTexture? texture;
+  final ModelTexture? overridingTexture;
   final bool showNormals;
+  final bool showTexture;
   final Color meshColor;
   final ChunkAttributes attributesFilter;
   final bool showCloth;
@@ -172,9 +174,10 @@ class ModelDrawer extends CustomPainter {
       canvas,
       meshColor,
       attributesFilter,
-      overrideTexture: texture,
+      overrideTexture: overridingTexture,
       showNormals: showNormals,
       showCloths: showCloth,
+      showTexture: showTexture,
     );
 
     drawAxis(size, canvas);

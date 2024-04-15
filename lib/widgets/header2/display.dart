@@ -150,7 +150,7 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
     else
       Flexible(
         child: ModelViewerLoader(
-          model: state.modelSettings,
+          selectedModelData: state.modelSettings,
           materialsTable: state.header2.materialsTable,
           attributesFilter:
               ChunkAttributes.defaultValue(state.modelSettings.type),

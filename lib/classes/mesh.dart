@@ -62,14 +62,14 @@ class ModelSubMesh {
         if (positions[vertexIndice * 2] != 0) continue;
 
         if (shouldShow) {
-          if (texture != null || overrideTexture != null) {
+          if (texture?.image != null || overrideTexture?.image != null) {
             final textureToUse = overrideTexture ?? texture!;
             textureCoordinates[vertexIndice * 2] =
                 (triangle.points[j].textureCoordinates!.x) *
-                    textureToUse.image.width;
+                    textureToUse.image!.width;
             textureCoordinates[vertexIndice * 2 + 1] =
                 (1 - triangle.points[j].textureCoordinates!.y) *
-                    textureToUse.image.height;
+                    textureToUse.image!.height;
           }
 
           final projected = triangle.points[j].project(

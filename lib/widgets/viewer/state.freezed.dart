@@ -29,7 +29,9 @@ mixin _$ModelViewerSelectionState {
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)
         withModel,
   }) =>
       throw _privateConstructorUsedError;
@@ -44,7 +46,9 @@ mixin _$ModelViewerSelectionState {
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)?
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)?
         withModel,
   }) =>
       throw _privateConstructorUsedError;
@@ -58,7 +62,9 @@ mixin _$ModelViewerSelectionState {
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)?
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)?
         withModel,
     required TResult orElse(),
   }) =>
@@ -220,7 +226,9 @@ class _$EmptyImpl implements _Empty {
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)
         withModel,
   }) {
     return empty(materialsTable, models);
@@ -238,7 +246,9 @@ class _$EmptyImpl implements _Empty {
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)?
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)?
         withModel,
   }) {
     return empty?.call(materialsTable, models);
@@ -255,7 +265,9 @@ class _$EmptyImpl implements _Empty {
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)?
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)?
         withModel,
     required TResult orElse(),
   }) {
@@ -328,7 +340,9 @@ abstract class _$$ModelViewerSelectionStateWithModelImplCopyWith<$Res>
       ChunkAttributes filter,
       MaterialsTable materialsTable,
       dynamic showCloth,
-      dynamic showNormals});
+      dynamic showNormals,
+      dynamic showTexture,
+      dynamic showPartyColor});
 }
 
 /// @nodoc
@@ -350,6 +364,8 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
     Object? materialsTable = null,
     Object? showCloth = freezed,
     Object? showNormals = freezed,
+    Object? showTexture = freezed,
+    Object? showPartyColor = freezed,
   }) {
     return _then(_$ModelViewerSelectionStateWithModelImpl(
       models: null == models
@@ -370,6 +386,9 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
               as MaterialsTable,
       showCloth: freezed == showCloth ? _value.showCloth! : showCloth,
       showNormals: freezed == showNormals ? _value.showNormals! : showNormals,
+      showTexture: freezed == showTexture ? _value.showTexture! : showTexture,
+      showPartyColor:
+          freezed == showPartyColor ? _value.showPartyColor! : showPartyColor,
     ));
   }
 }
@@ -384,7 +403,9 @@ class _$ModelViewerSelectionStateWithModelImpl
       required this.filter,
       required this.materialsTable,
       this.showCloth = true,
-      this.showNormals = false})
+      this.showNormals = false,
+      this.showTexture = true,
+      this.showPartyColor = false})
       : _models = models;
 
   final List<ModelSettings> _models;
@@ -407,10 +428,16 @@ class _$ModelViewerSelectionStateWithModelImpl
   @override
   @JsonKey()
   final dynamic showNormals;
+  @override
+  @JsonKey()
+  final dynamic showTexture;
+  @override
+  @JsonKey()
+  final dynamic showPartyColor;
 
   @override
   String toString() {
-    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals)';
+    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals, showTexture: $showTexture, showPartyColor: $showPartyColor)';
   }
 
   @override
@@ -425,7 +452,11 @@ class _$ModelViewerSelectionStateWithModelImpl
                 other.materialsTable == materialsTable) &&
             const DeepCollectionEquality().equals(other.showCloth, showCloth) &&
             const DeepCollectionEquality()
-                .equals(other.showNormals, showNormals));
+                .equals(other.showNormals, showNormals) &&
+            const DeepCollectionEquality()
+                .equals(other.showTexture, showTexture) &&
+            const DeepCollectionEquality()
+                .equals(other.showPartyColor, showPartyColor));
   }
 
   @override
@@ -436,7 +467,9 @@ class _$ModelViewerSelectionStateWithModelImpl
       filter,
       materialsTable,
       const DeepCollectionEquality().hash(showCloth),
-      const DeepCollectionEquality().hash(showNormals));
+      const DeepCollectionEquality().hash(showNormals),
+      const DeepCollectionEquality().hash(showTexture),
+      const DeepCollectionEquality().hash(showPartyColor));
 
   @JsonKey(ignore: true)
   @override
@@ -458,11 +491,13 @@ class _$ModelViewerSelectionStateWithModelImpl
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)
         withModel,
   }) {
-    return withModel(
-        models, model, filter, materialsTable, showCloth, showNormals);
+    return withModel(models, model, filter, materialsTable, showCloth,
+        showNormals, showTexture, showPartyColor);
   }
 
   @override
@@ -477,11 +512,13 @@ class _$ModelViewerSelectionStateWithModelImpl
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)?
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)?
         withModel,
   }) {
-    return withModel?.call(
-        models, model, filter, materialsTable, showCloth, showNormals);
+    return withModel?.call(models, model, filter, materialsTable, showCloth,
+        showNormals, showTexture, showPartyColor);
   }
 
   @override
@@ -495,13 +532,15 @@ class _$ModelViewerSelectionStateWithModelImpl
             ChunkAttributes filter,
             MaterialsTable materialsTable,
             dynamic showCloth,
-            dynamic showNormals)?
+            dynamic showNormals,
+            dynamic showTexture,
+            dynamic showPartyColor)?
         withModel,
     required TResult orElse(),
   }) {
     if (withModel != null) {
-      return withModel(
-          models, model, filter, materialsTable, showCloth, showNormals);
+      return withModel(models, model, filter, materialsTable, showCloth,
+          showNormals, showTexture, showPartyColor);
     }
     return orElse();
   }
@@ -547,7 +586,9 @@ abstract class ModelViewerSelectionStateWithModel
       required final ChunkAttributes filter,
       required final MaterialsTable materialsTable,
       final dynamic showCloth,
-      final dynamic showNormals}) = _$ModelViewerSelectionStateWithModelImpl;
+      final dynamic showNormals,
+      final dynamic showTexture,
+      final dynamic showPartyColor}) = _$ModelViewerSelectionStateWithModelImpl;
 
   @override
   List<ModelSettings> get models;
@@ -557,6 +598,8 @@ abstract class ModelViewerSelectionStateWithModel
   MaterialsTable get materialsTable;
   dynamic get showCloth;
   dynamic get showNormals;
+  dynamic get showTexture;
+  dynamic get showPartyColor;
   @override
   @JsonKey(ignore: true)
   _$$ModelViewerSelectionStateWithModelImplCopyWith<

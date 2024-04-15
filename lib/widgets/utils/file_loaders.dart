@@ -16,8 +16,7 @@ class ImageTextureLoader extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final textureState = ref.watch(textureFutureProvider);
     return textureState.map(
-      data: (data) =>
-          textureBuilder(data.value != null ? ModelTexture(data.value!) : null),
+      data: (data) => textureBuilder(data.value),
       loading: (loading) => const CircularProgressIndicator(),
       error: (_) => textureBuilder(null),
     );

@@ -19,5 +19,7 @@ class ModelViewerSelectionState with _$ModelViewerSelectionState {
     required MaterialsTable materialsTable,
     @Default(true) showCloth,
     @Default(false) showNormals,
+    @Default(true) showTexture,
+    @Default(false) showPartyColor,
   }) = ModelViewerSelectionStateWithModel;
 }

@@ -62,10 +62,26 @@ class ModelSelectionStateNotifier extends Notifier<ModelViewerSelectionState> {
         orElse: () => null);
   }
 
-  void updateShow(bool showCloth) {
+  void updateShowTexture(bool showTexture) {
     state.maybeMap(
         withModel: (withModel) {
-          state = withModel.copyWith(showCloth: showCloth);
+          state = withModel.copyWith(showTexture: showTexture);
+        },
+        orElse: () => null);
+  }
+
+  void updateShowNormal(bool showNormal) {
+    state.maybeMap(
+        withModel: (withModel) {
+          state = withModel.copyWith(showNormals: showNormal);
+        },
+        orElse: () => null);
+  }
+
+  void updateShowPartyColor(bool showPartyColor) {
+    state.maybeMap(
+        withModel: (withModel) {
+          state = withModel.copyWith(showPartyColor: showPartyColor);
         },
         orElse: () => null);
   }

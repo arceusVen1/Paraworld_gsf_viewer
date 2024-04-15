@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
@@ -10,7 +8,6 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
-import 'package:paraworld_gsf_viewer/providers/normals.dart';
 import 'package:paraworld_gsf_viewer/providers/texture.dart';
 import 'package:paraworld_gsf_viewer/widgets/convert_to_obj_cta.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
@@ -34,17 +31,55 @@ class ModelViewerPageLayout extends ConsumerWidget {
               withModel: (withModel) => withModel.model,
             )));
 
+    final showPartyColor = ref
+        .watch(modelSelectionStateNotifierProvider.select((state) => state.map(
+              empty: (_) => false,
+              withModel: (withModel) => withModel.showPartyColor,
+            )));
+
     return Row(
       children: [
         const _ViewerControls(),
         Flexible(
           flex: 3,
           child: ModelViewerLoader(
-            model: currentModel,
+            selectedModelData: currentModel,
             materialsTable: materialTable,
+            showPartyColor: showPartyColor,
             //attributesFilter: currentFilter,
             //showCloth: showCloth,
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ViewerSwitchsControl extends StatelessWidget {
+  const _ViewerSwitchsControl({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String title;
+  final bool value;
+  final Function(bool) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Switch.adaptive(
+          value: value,
+          onChanged: onChanged,
+        ),
+        Gap(8),
+        Label.medium(
+          title,
+          isBold: true,
         ),
       ],
     );
@@ -65,27 +100,55 @@ class _ViewerControls extends ConsumerWidget {
       empty: (_) => null,
       withModel: (withModel) => withModel.filter,
     );
-    final showCloth = state.map(
-      empty: (_) => false,
-      withModel: (withModel) => withModel.showCloth,
-    );
     return DataDecorator(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Switch.adaptive(
-              value: showCloth,
-              onChanged: (value) => ref
-                  .read(modelSelectionStateNotifierProvider.notifier)
-                  .updateShowCloth(value),
-            ),
-            Gap(8),
-            Label.medium(
-              "show cloth",
-              isBold: true,
-            ),
-          ],
+        _ViewerSwitchsControl(
+          title: "Show Texture",
+          value: state.map(
+            empty: (_) => false,
+            withModel: (withModel) => withModel.showTexture,
+          ),
+          onChanged: (value) {
+            ref
+                .read(modelSelectionStateNotifierProvider.notifier)
+                .updateShowTexture(value);
+          },
+        ),
+        _ViewerSwitchsControl(
+          title: "Show Cloth",
+          value: state.map(
+            empty: (_) => false,
+            withModel: (withModel) => withModel.showCloth,
+          ),
+          onChanged: (value) {
+            ref
+                .read(modelSelectionStateNotifierProvider.notifier)
+                .updateShowCloth(value);
+          },
+        ),
+        _ViewerSwitchsControl(
+          title: "Show Normals",
+          value: state.map(
+            empty: (_) => false,
+            withModel: (withModel) => withModel.showNormals,
+          ),
+          onChanged: (value) {
+            ref
+                .read(modelSelectionStateNotifierProvider.notifier)
+                .updateShowNormal(value);
+          },
+        ),
+        _ViewerSwitchsControl(
+          title: "Show Party Color",
+          value: state.map(
+            empty: (_) => false,
+            withModel: (withModel) => withModel.showPartyColor,
+          ),
+          onChanged: (value) {
+            ref
+                .read(modelSelectionStateNotifierProvider.notifier)
+                .updateShowPartyColor(value);
+          },
         ),
         PartSelector(
             value: currentModel,
@@ -126,21 +189,24 @@ class ChunkViewerLoader extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final pwfolder = ref.watch(pwFolderPathStateProvider);
     final detailTable = ref.watch(detailTableStateProvider).asData?.value;
-    Future<Model>? future;
+    Model? model;
     if (chunk.type.isClothLike()) {
-      future = (chunk as ClothChunk).toModel();
+      model = (chunk as ClothChunk).toModel();
     } else if (chunk.type.isMeshLike()) {
-      future = (chunk as MeshChunk).toModel();
+      model = (chunk as MeshChunk).toModel();
     } else {
       return const SizedBox.shrink();
     }
 
     return FutureBuilder(
-      future: future,
+      future: model.loadTextures(
+        Theme.of(context).colorScheme.onBackground,
+        null,
+      ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Viewer(
-            model: snapshot.data,
+            model: model,
             attributesFilter: ChunkAttributes(
               value: chunk.attributes.value,
               typeOfModel: ModelType.unknown,
@@ -159,30 +225,35 @@ class ChunkViewerLoader extends ConsumerWidget {
 class ModelViewerLoader extends ConsumerWidget {
   const ModelViewerLoader({
     super.key,
-    required this.model,
+    required this.selectedModelData,
     required this.materialsTable,
     this.attributesFilter,
+    this.showPartyColor = false,
   });
 
-  final ModelSettings? model;
+  final ModelSettings? selectedModelData;
   final MaterialsTable materialsTable;
   final ChunkAttributes? attributesFilter;
+  final bool showPartyColor;
 
   @override
   Widget build(BuildContext context, ref) {
     final pwfolder = ref.watch(pwFolderPathStateProvider);
     final detailTable = ref.watch(detailTableStateProvider).asData?.value;
-    if (model == null) {
+    if (selectedModelData == null) {
       return const Center(
         child: Label.extraLarge("No model to show"),
       );
     }
+    final model =
+        selectedModelData!.toModel(materialsTable, pwfolder, detailTable);
     return FutureBuilder(
-      future: model?.toModel(materialsTable, pwfolder, detailTable),
+      future: model.loadTextures(Theme.of(context).colorScheme.onBackground,
+          showPartyColor ? Colors.cyan : null),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Viewer(
-            model: snapshot.data,
+            model: model,
             attributesFilter: attributesFilter,
             pwfolder: pwfolder,
             detailTable: detailTable,
@@ -230,23 +301,28 @@ class Viewer extends StatelessWidget {
             mouseListener: (mouseNotifier) => GSFLoader(
               builder: (gsf) => ImageTextureLoader(
                 textureBuilder: (texture) {
-                  return ShowNormalWrapper(
-                    builder: (showNormals) => ViewerControlWrapper(
-                      overridingAttributes: attributesFilter,
-                      builder: (showCloth, controlAttributes) => CustomPaint(
-                        painter: ModelDrawer(
-                          meshColor: theme.colorScheme.onBackground,
-                          mousePosition: mouseNotifier,
-                          model: model!,
-                          texture: texture,
-                          showNormals: showNormals,
-                          attributesFilter: controlAttributes ??
-                              attributesFilter ??
-                              defaultAttributes,
-                          showCloth: showCloth,
-                        ),
-                        child: const SizedBox.expand(),
+                  return ViewerControlWrapper(
+                    overridingAttributes: attributesFilter,
+                    builder: (
+                      showCloth,
+                      showNormals,
+                      showTexture,
+                      controlAttributes,
+                    ) =>
+                        CustomPaint(
+                      painter: ModelDrawer(
+                        meshColor: theme.colorScheme.onBackground,
+                        mousePosition: mouseNotifier,
+                        model: model!,
+                        overridingTexture: texture,
+                        showNormals: showNormals,
+                        attributesFilter: controlAttributes ??
+                            attributesFilter ??
+                            defaultAttributes,
+                        showCloth: showCloth,
+                        showTexture: showTexture,
                       ),
+                      child: const SizedBox.expand(),
                     ),
                   );
                 },
@@ -256,7 +332,8 @@ class Viewer extends StatelessWidget {
         ),
         ViewerControlWrapper(
           overridingAttributes: attributesFilter,
-          builder: (_, attributes) => ConvertToObjCta(
+          builder: (showCloth, showNomrals, showTexture, attributes) =>
+              ConvertToObjCta(
             model: model!,
             attributesFilter: attributes ?? defaultAttributes,
           ),
@@ -266,7 +343,8 @@ class Viewer extends StatelessWidget {
   }
 }
 
-typedef viewerControlBuilder = Widget Function(bool, ChunkAttributes?);
+typedef viewerControlBuilder = Widget Function(
+    bool showCloth, bool showNormals, bool showTexture, ChunkAttributes?);
 
 class ViewerControlWrapper extends ConsumerWidget {
   const ViewerControlWrapper({
@@ -280,30 +358,26 @@ class ViewerControlWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     if (overridingAttributes != null) {
-      return builder(false, overridingAttributes);
+      return builder(false, false, false, overridingAttributes);
     }
+    final state = ref.watch(modelSelectionStateNotifierProvider);
     return builder(
-      ref.watch(modelSelectionStateNotifierProvider).map(
-            empty: (_) => false,
-            withModel: (withModel) => withModel.showCloth,
-          ),
-      ref.watch(modelSelectionStateNotifierProvider).map(
-            empty: (_) => null,
-            withModel: (withModel) => withModel.filter,
-          ),
+      state.map(
+        empty: (_) => false,
+        withModel: (withModel) => withModel.showCloth,
+      ),
+      state.map(
+        empty: (_) => false,
+        withModel: (withModel) => withModel.showNormals,
+      ),
+      state.map(
+        empty: (_) => false,
+        withModel: (withModel) => withModel.showTexture,
+      ),
+      state.map(
+        empty: (_) => null,
+        withModel: (withModel) => withModel.filter,
+      ),
     );
-  }
-}
-
-typedef ShowNormalsBuilder = Widget Function(bool);
-
-class ShowNormalWrapper extends ConsumerWidget {
-  const ShowNormalWrapper({super.key, required this.builder});
-
-  final ShowNormalsBuilder builder;
-
-  @override
-  Widget build(BuildContext context, ref) {
-    return builder(ref.watch(showNormalsProvider));
   }
 }
