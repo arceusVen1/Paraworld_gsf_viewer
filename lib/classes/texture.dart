@@ -59,40 +59,20 @@ class ModelTexture {
 
   void applyAttributesToTexture(
       img.Image imageToProcess, Color fillingColor, Color? partyColor) {
-    if (attribute.useHardAlpha) {
-      for (final frame in imageToProcess.frames) {
-        for (final p in frame) {
-          p.a = p.a < 127 ? 0 : p.a;
-        }
-      }
-    }
-    if (!attribute.useSoftAlpha && !attribute.useHardAlpha) {
-      for (final frame in imageToProcess.frames) {
-        for (final p in frame) {
-          if (p.r == 0 && p.g == 0 && p.b == 0) {
-            p.setRgba(
-              fillingColor.red,
-              fillingColor.green,
-              fillingColor.blue,
-              fillingColor.alpha,
-            );
-          } else {
-            p.a = p.a > 0 ? 255 : 0;
-          }
-        }
-      }
-    }
 
-    if (attribute.usePlayerColor && partyColor != null) {
-      for (final frame in imageToProcess.frames) {
-        for (final p in frame) {
-          if (p.r == 0 && p.g == 0 && p.b == 0) {
-            continue;
-          }
+    for (final frame in imageToProcess.frames) {
+      for (final p in frame) {
+        if (attribute.useHardAlpha) {
+           p.a = p.a <= 126 ? 0 : 255;
+        }
+        if (!attribute.useSoftAlpha && !attribute.useHardAlpha) {
+           p.a = 255;
+        }
+		
+        if (attribute.usePlayerColor && partyColor != null) {
           p.r = partyColor.red;
           p.g = partyColor.green;
           p.b = partyColor.blue;
-          p.a = partyColor.alpha;
         }
       }
     }
