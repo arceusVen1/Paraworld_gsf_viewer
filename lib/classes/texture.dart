@@ -69,7 +69,7 @@ class ModelTexture {
            p.a = 255;
         }
 		
-        if (attribute.usePlayerColor && partyColor != null) {
+        if (attribute.usePlayerColor && partyColor != null && p.a != 0) {
           p.r = partyColor.red;
           p.g = partyColor.green;
           p.b = partyColor.blue;
