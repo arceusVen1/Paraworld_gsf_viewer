@@ -19,7 +19,6 @@ class ModelTexture {
   img.Image? imageData;
   File? _textureFile;
 
-
   ModelTexture.fromMaterialAttribute(
     this.attribute,
     String name,
@@ -56,16 +55,15 @@ class ModelTexture {
 
   void applyAttributesToTexture(
       img.Image imageToProcess, Color fillingColor, Color? partyColor) {
-
     for (final frame in imageToProcess.frames) {
       for (final p in frame) {
         if (attribute.useHardAlpha) {
-           p.a = p.a <= 126 ? 0 : 255;
+          p.a = p.a <= 126 ? 0 : 255;
         }
         if (!attribute.useSoftAlpha && !attribute.useHardAlpha) {
-           p.a = 255;
+          p.a = 255;
         }
-		
+
         if (attribute.usePlayerColor && partyColor != null && p.a != 0) {
           p.r = partyColor.red;
           p.g = partyColor.green;
