@@ -54,30 +54,25 @@ class ModelTexture {
     return texture;
   }
 
-  img.Image applyAttributesToTexture(
+  void applyAttributesToTexture(
       img.Image imageToProcess, Color fillingColor, Color? partyColor) {
+
     for (final frame in imageToProcess.frames) {
       for (final p in frame) {
-        //p.setRgba(p.r, p.g, p.b, 0);
         if (attribute.useHardAlpha) {
-          p.a = p.a < 127 ? 0 : 255;
-          p.r = p.r * p.a / 255;
-          p.g = p.g * p.a / 255;
-          p.b = p.b * p.a / 255;
+           p.a = p.a <= 126 ? 0 : 255;
         }
         if (!attribute.useSoftAlpha && !attribute.useHardAlpha) {
-          p.a = 255;
+           p.a = 255;
         }
-        if (attribute.usePlayerColor && partyColor != null) {
-          if (p.r != 0 || p.g != 0 || p.b != 0) {
-            p.r = partyColor.red;
-            p.g = partyColor.green;
-            p.b = partyColor.blue;
-          }
+		
+        if (attribute.usePlayerColor && partyColor != null && p.a != 0) {
+          p.r = partyColor.red;
+          p.g = partyColor.green;
+          p.b = partyColor.blue;
         }
       }
     }
-    return imageToProcess;
   }
 
   Future<img.Image?> loadImage(Color fillingColor, Color? partyColor) async {
