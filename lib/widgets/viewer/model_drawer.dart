@@ -1,12 +1,11 @@
 import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/rotation.dart';
-import 'package:paraworld_gsf_viewer/classes/texture.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:paraworld_gsf_viewer/theme.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/mouse_movement_notifier.dart';
@@ -28,7 +27,7 @@ class ModelDrawer extends CustomPainter {
 
   final ValueNotifier<MousePositionDrag> mousePosition;
   final Model model;
-  final ModelTexture? overridingTexture;
+  final ui.Image? overridingTexture;
   final bool showNormals;
   final bool showTexture;
   final Color meshColor;
@@ -120,7 +119,7 @@ class ModelDrawer extends CustomPainter {
         .pointProjection;
 
     canvas.drawRawPoints(
-      PointMode.lines,
+      ui.PointMode.lines,
       Float32List.fromList([
         originData.x,
         originData.y,
@@ -131,7 +130,7 @@ class ModelDrawer extends CustomPainter {
     );
 
     canvas.drawRawPoints(
-      PointMode.lines,
+      ui.PointMode.lines,
       Float32List.fromList([
         originData.x,
         originData.y,
@@ -142,7 +141,7 @@ class ModelDrawer extends CustomPainter {
     );
 
     canvas.drawRawPoints(
-      PointMode.lines,
+      ui.PointMode.lines,
       Float32List.fromList([
         originData.x,
         originData.y,

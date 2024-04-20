@@ -1,14 +1,18 @@
 import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/material_attribute.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/rotation.dart';
 import 'package:paraworld_gsf_viewer/classes/texture.dart';
 import 'dart:math' as math;
+import 'package:image/image.dart' as img;
+import 'package:paraworld_gsf_viewer/classes/triangle.dart';
+import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 
 typedef ProjectionData = ({
   double widthOffset,
@@ -32,21 +36,63 @@ class Model {
   final BoundingBoxModel boundingBox;
   // todo skeleton
   // todo position links
-  //final Vector3 scale;
 
   final Paint _paint = Paint()
     ..color = Colors.black
     ..strokeWidth = 1
     ..strokeCap = StrokeCap.round;
 
+  final Map<ModelTexture, (int, img.Image)> _texturesOffsets = {};
+  ui.Image? _composedModelImage;
+
+  /// When loading a model, we need to load all the textures and compose them into a single image
+  /// so it allow for a single canvas paint call for z buffering with single image shader
+  /// Images are being added to the composed image from left to right.
+  /// the highest image makes the height of the composed image
   Future<void> loadTextures(Color fillingColor, Color? partyColor) async {
+    int widthOffset = 0;
+    int height = 0;
     for (final mesh in meshes + cloth) {
       for (final submesh in mesh.submeshes) {
-        if (submesh.texture != null) {
-          await submesh.texture!.loadImage(fillingColor, partyColor);
+        if (submesh.texture != null &&
+            _texturesOffsets[submesh.texture!] == null) {
+          final image =
+              await submesh.texture!.loadImage(fillingColor, partyColor);
+          if (image != null) {
+            _texturesOffsets[submesh.texture!] = (widthOffset, image);
+            widthOffset += image.width;
+            if (image.height > height) {
+              height = image.height;
+            }
+          }
+        } else {
+          submesh.texture?.imageData = _texturesOffsets[submesh.texture]?.$2;
         }
       }
     }
+    if (height == 0) {
+      return;
+    }
+    img.Image fullTexture =
+        img.Image(width: widthOffset, height: height, numChannels: 4);
+
+    for (final p in fullTexture) {
+      for (var data in _texturesOffsets.entries) {
+        final textureImage = data.key.imageData;
+        final textureOffset = data.value.$1;
+        if (textureImage!.height > p.y &&
+            (p.x - textureOffset) > 0 &&
+            textureImage.width > (p.x - textureOffset)) {
+          final pixel = textureImage.getPixel(p.x - textureOffset, p.y);
+          p.setRgba(pixel.r, pixel.g, pixel.b, pixel.a);
+        }
+      }
+    }
+
+    _composedModelImage =
+        await (ModelTexture(attribute: MaterialAttribute.zero(), path: "")
+              ..imageData = fullTexture)
+            .convertToUiImage();
   }
 
   ProjectionData getProjectionData(Size size) {
@@ -83,17 +129,23 @@ class Model {
 
   void draw(
     Rotation rotation,
-    Size size,
-    Canvas canvas,
+    ui.Size size,
+    ui.Canvas canvas,
     Color meshColor,
     ChunkAttributes attributesFilter, {
-    ModelTexture? overrideTexture,
+    ui.Image? overrideTexture,
     bool showNormals = false,
     bool showCloths = false,
     bool showTexture = false,
   }) {
     final projectionData = getProjectionData(size);
-    for (final mesh in (showCloths ? meshes + cloth : meshes)) {
+    final listOfMesh = showCloths ? meshes + cloth : meshes;
+
+    final List<double> verticesPositions = [];
+    final List<double> textureCoordinates = [];
+    List<ModelTriangle> triangles = [];
+
+    for (final mesh in listOfMesh) {
       if (!mesh.canBeViewed(attributesFilter)) {
         continue;
       }
@@ -104,36 +156,73 @@ class Model {
           size,
           projectionData: projectionData,
           overrideTexture: overrideTexture,
+          textureWidthOffset: overrideTexture == null
+              ? _texturesOffsets[submesh.texture]?.$1 ?? 0
+              : 0,
+          verticesOffset: verticesPositions.length ~/ 2,
         );
+        triangles.addAll(data.triangleToShow);
+        verticesPositions.addAll(data.positions);
+        textureCoordinates.addAll(data.textureCoordinates);
+
         if (showNormals) {
           canvas.drawRawPoints(
-            PointMode.lines,
+            ui.PointMode.lines,
             data.normals,
             _paint..color = Colors.red,
           );
         }
-        if (!showTexture || (overrideTexture == null && data.texture == null)) {
-          drawTrianglesOutside(canvas, data.triangleIndices, data.positions,
-              _paint..color = meshColor);
-        }
-
-        final texturePainter = showTexture
-            ? overrideTexture?.painter ?? data.texture?.painter
-            : null;
-
-        canvas.drawVertices(
-            Vertices.raw(
-              VertexMode.triangles,
-              data.positions,
-              indices: data.triangleIndices,
-              // colors: Int32List.fromList(List.filled(
-              //     (data.positions.length / 2).round(),
-              //     meshColor.withOpacity(0.3).value)),
-              textureCoordinates: data.textureCoordinates,
-            ),
-            BlendMode.srcOver,
-            texturePainter ?? (_paint..color = meshColor.withOpacity(0.3)));
       }
     }
+    // trying to push deeper triangles to the back
+    triangles.sort((a, b) {
+      cmpFnct(double previousValue, ModelVertex element) {
+        return previousValue + element.transform(rotation).z;
+      }
+
+      final double aWeight = a.points.fold(0.0, cmpFnct);
+      final double bWeight = b.points.fold(0.0, cmpFnct);
+      return bWeight.compareTo(aWeight);
+    });
+    final List<int> trianglesIndices = [];
+    for (final triangle in triangles) {
+      trianglesIndices.addAll(triangle.indices);
+    }
+
+    final verticesTypedPositions = Float32List.fromList(verticesPositions);
+    final trianglesTypedindices = Uint16List.fromList(trianglesIndices);
+
+    if (!showTexture ||
+        (overrideTexture == null && _composedModelImage == null)) {
+      drawTrianglesOutside(canvas, trianglesTypedindices,
+          verticesTypedPositions, _paint..color = meshColor);
+    }
+
+    final texturePainter = ui.Paint()
+      ..blendMode = BlendMode.srcOver
+      ..shader = overrideTexture != null || _composedModelImage != null
+          ? ui.ImageShader(
+              overrideTexture ?? _composedModelImage!,
+              TileMode.decal,
+              TileMode.decal,
+              Matrix4.identity().storage,
+            )
+          : null;
+
+    canvas.drawVertices(
+      ui.Vertices.raw(
+        VertexMode.triangles,
+        verticesTypedPositions,
+        indices: trianglesTypedindices,
+        // colors: Int32List.fromList(List.filled(
+        //     (data.positions.length / 2).round(),
+        //     meshColor.withOpacity(0.3).value)),
+        textureCoordinates: Float32List.fromList(textureCoordinates),
+      ),
+      BlendMode.srcOver,
+      showTexture
+          ? texturePainter
+          : (_paint..color = meshColor.withOpacity(0.3)),
+    );
   }
 }

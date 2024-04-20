@@ -30,4 +30,27 @@ class MaterialAttribute {
   String toString() {
     return "useHardAlpha: $useHardAlpha, useSoftAlpha: $useSoftAlpha, useNm: $useNm, useShininessShader: $useShininessShader, usePlayerColor: $usePlayerColor, useWaterShader: $useWaterShader";
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is MaterialAttribute) {
+      return useHardAlpha == other.useHardAlpha &&
+          useSoftAlpha == other.useSoftAlpha &&
+          useNm == other.useNm &&
+          useShininessShader == other.useShininessShader &&
+          usePlayerColor == other.usePlayerColor &&
+          useWaterShader == other.useWaterShader;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode {
+    return useHardAlpha.hashCode ^
+        useSoftAlpha.hashCode ^
+        useNm.hashCode ^
+        useShininessShader.hashCode ^
+        usePlayerColor.hashCode ^
+        useWaterShader.hashCode;
+  }
 }

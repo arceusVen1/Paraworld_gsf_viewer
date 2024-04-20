@@ -27,6 +27,13 @@ class ModelTriangle {
     return "f ${indices[0] + 1 + offset}/${indices[0] + 1 + offset}/${indices[0] + 1 + offset} ${indices[1] + 1 + offset}/${indices[1] + 1 + offset}/${indices[1] + 1 + offset} ${indices[2] + 1 + offset}/${indices[2] + 1 + offset}/${indices[2] + 1 + offset}\n";
   }
 
+  ModelTriangle copy(int indicesOdffset) {
+    return ModelTriangle(
+      points: List<ModelVertex>.from(points),
+      indices: indices.map((e) => e + indicesOdffset).toList(),
+    );
+  }
+
   @override
   String toString() {
     return indices.toString();

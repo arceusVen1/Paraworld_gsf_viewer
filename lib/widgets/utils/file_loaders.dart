@@ -1,11 +1,11 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
-import 'package:paraworld_gsf_viewer/classes/texture.dart';
 import 'package:paraworld_gsf_viewer/providers/gsf.dart';
 import 'package:paraworld_gsf_viewer/providers/texture.dart';
 
-typedef TextureBuilder = Widget Function(ModelTexture? texture);
+typedef TextureBuilder = Widget Function(ui.Image? texture);
 
 class ImageTextureLoader extends ConsumerWidget {
   const ImageTextureLoader({super.key, required this.textureBuilder});

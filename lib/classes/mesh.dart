@@ -34,14 +34,15 @@ class ModelSubMesh {
   ({
     Float32List positions,
     Float32List textureCoordinates,
-    Uint16List triangleIndices,
+    List<ModelTriangle> triangleToShow,
     Float32List normals,
-    ModelTexture? texture,
   }) getDrawingData(
     Rotation rotation,
     Size size, {
     required ProjectionData projectionData,
-    ModelTexture? overrideTexture,
+    Image? overrideTexture,
+    required int textureWidthOffset,
+    required int verticesOffset,
   }) {
     final verticesLength = vertices.length;
     final Float32List positions =
@@ -53,7 +54,7 @@ class ModelSubMesh {
     final List<ModelTriangle> trianglesToShow = [];
     for (final triangle in triangles) {
       final shouldShow = triangle.shouldShowTriangle(rotation);
-      if (shouldShow) trianglesToShow.add(triangle);
+      if (shouldShow) trianglesToShow.add(triangle.copy(verticesOffset));
 
       for (int j = 0; j < triangle.points.length; j++) {
         final vertexIndice = triangle.indices[j];
@@ -62,14 +63,16 @@ class ModelSubMesh {
         if (positions[vertexIndice * 2] != 0) continue;
 
         if (shouldShow) {
-          if (texture?.image != null || overrideTexture?.image != null) {
-            final textureToUse = overrideTexture ?? texture!;
-            textureCoordinates[vertexIndice * 2] =
-                (triangle.points[j].textureCoordinates!.x) *
-                    textureToUse.image!.width;
+          if (texture?.imageData != null ||
+              overrideTexture != null) {
+            final height = overrideTexture?.height ?? texture!.imageData!.height;
+            final width = overrideTexture?.width ?? texture!.imageData!.width;
+            textureCoordinates[vertexIndice * 2] = textureWidthOffset +
+                (triangle.points[j].textureCoordinates!.x *
+                    width);
             textureCoordinates[vertexIndice * 2 + 1] =
                 (1 - triangle.points[j].textureCoordinates!.y) *
-                    textureToUse.image!.height;
+                    height;
           }
 
           final projected = triangle.points[j].project(
@@ -94,29 +97,12 @@ class ModelSubMesh {
         }
       }
     }
-    // trying to push deeper triangles to the back
-    trianglesToShow.sort((a, b) {
-      final double aWeight = a.points.fold(
-          0.0,
-          (double previousValue, ModelVertex element) =>
-              previousValue + element.transform(rotation).z);
-      final double bWeight = b.points.fold(
-          0.0,
-          (double previousValue, ModelVertex element) =>
-              previousValue + element.transform(rotation).z);
-      return bWeight.compareTo(aWeight);
-    });
-    final indices = trianglesToShow
-        .map((triangle) => triangle.indices)
-        .expand((element) => element)
-        .toList();
 
     return (
       positions: positions,
       textureCoordinates: textureCoordinates,
-      triangleIndices: Uint16List.fromList(indices),
+      triangleToShow: trianglesToShow,
       normals: Float32List.fromList(normals),
-      texture: texture,
     );
   }
 }
