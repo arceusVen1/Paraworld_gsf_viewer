@@ -81,7 +81,7 @@ class ModelTexture {
       return null;
     }
     final bytes = await _textureFile!.readAsBytes();
-    if (_textureFile!.path.endsWith(".tag")) {
+    if (_textureFile!.path.endsWith(".tga")) {
       imageData = img.decodeTga(bytes);
     } else {
       final completer = Completer<Image>();
