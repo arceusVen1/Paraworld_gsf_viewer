@@ -38,10 +38,11 @@ class Menu extends ConsumerWidget {
             ),
           ),
           const _PwFolderLink(),
+          const _SelectableGsfFiles(),
           _FileLoaderTile(
             title: "Select a .gsf",
             allowedExtensions: const ["gsf"],
-            filePathStateProvider: gsfPathStateProvider,
+            filePathStateProvider: overridingGsfPathStateProvider,
             onDelete: () =>
                 ref.read(headerStateNotifierProvider.notifier).reset(),
           ),
@@ -168,6 +169,55 @@ class _FileLoaderTile extends ConsumerWidget {
         // Update the state of the app.
         // ...
       },
+    );
+  }
+}
+
+class _SelectableGsfFiles extends ConsumerWidget {
+  const _SelectableGsfFiles({super.key});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final gsfs = ref.watch(gsfFilesListProvider);
+    final selected = ref.watch(gsfSelectedFileInPwFolderProvider);
+    final entries = gsfs.whenOrNull(
+          data: (gsfs) => gsfs
+              .map(
+                (gsf) => DropdownMenuItem(
+                  value: gsf,
+                  child: Label.regular(
+                    gsf.split("/").last,
+                    isBold: selected == gsf,
+                  ),
+                ),
+              )
+              .toList(),
+        ) ??
+        [];
+    entries.insert(
+      0,
+      DropdownMenuItem(
+        value: "",
+        child: Label.regular(
+          gsfs.asData?.value.isNotEmpty ?? false
+              ? "Select a .gsf"
+              : "Link to PW folder to use GSF",
+        ),
+      ),
+    );
+    return ListTile(
+      title: DropdownButton<String?>(
+        focusColor: Theme.of(context).colorScheme.surface,
+        isExpanded: true,
+        value: selected ?? "",
+        items: entries,
+        onChanged: gsfs.asData?.value.isNotEmpty ?? false
+            ? (value) {
+                ref.read(gsfSelectedFileInPwFolderProvider.notifier).state =
+                    value != null && value.isNotEmpty ? value : null;
+              }
+            : null,
+      ),
     );
   }
 }
