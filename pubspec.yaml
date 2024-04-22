@@ -42,8 +42,10 @@ dependencies:
   flutter_riverpod: ^2.4.10
   freezed_annotation: ^2.4.1
   gap: ^3.0.1
-  image: ^4.1.7
-
+  image:
+    git:
+      url: http://github.com/arceusVen1/image-with-dds
+      ref: 9fb1ca17
 dev_dependencies:
   flutter_test:
     sdk: flutter

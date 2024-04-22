@@ -73,8 +73,11 @@ class Model {
     if (height == 0) {
       return;
     }
-    img.Image fullTexture =
-        img.Image(width: widthOffset, height: height, numChannels: 4);
+    img.Image fullTexture = img.Image(
+      width: widthOffset,
+      height: height,
+      numChannels: 4,
+    );
 
     for (final p in fullTexture) {
       for (var data in _texturesOffsets.entries) {

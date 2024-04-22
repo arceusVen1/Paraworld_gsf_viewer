@@ -54,8 +54,13 @@ class ModelTexture {
   }
 
   void applyAttributesToTexture(
-      img.Image imageToProcess, Color fillingColor, Color? partyColor) {
-    for (final frame in imageToProcess.frames) {
+    Color fillingColor,
+    Color? partyColor,
+  ) {
+    if (imageData == null) {
+      return;
+    }
+    for (final frame in imageData!.frames) {
       for (final p in frame) {
         if (attribute.useHardAlpha) {
           p.a = p.a <= 126 ? 0 : 255;
@@ -84,25 +89,10 @@ class ModelTexture {
     if (_textureFile!.path.endsWith(".tga")) {
       imageData = img.decodeTga(bytes);
     } else {
-      final completer = Completer<Image>();
-      decodeImageFromList(bytes, completer.complete);
-      final test = await completer.future;
-      final uiBytes = await test.toByteData();
-
-      if (uiBytes == null) {
-        return null;
-      }
-
-      imageData = img.Image.fromBytes(
-        width: test.width,
-        height: test.height,
-        bytes: uiBytes.buffer,
-        numChannels: 4,
-        order: img.ChannelOrder.rgba,
-      );
+      imageData = img.decodeNamedImage(path, bytes);
     }
     if (imageData != null) {
-      applyAttributesToTexture(imageData!, fillingColor, partyColor);
+      applyAttributesToTexture(fillingColor, partyColor);
     }
     return imageData;
   }
