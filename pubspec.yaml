@@ -45,7 +45,7 @@ dependencies:
   image:
     git:
       url: http://github.com/arceusVen1/image-with-dds
-      ref: 9fb1ca17
+      ref: efef5ae3
 dev_dependencies:
   flutter_test:
     sdk: flutter

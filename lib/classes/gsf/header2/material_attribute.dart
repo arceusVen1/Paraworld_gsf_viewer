@@ -36,10 +36,10 @@ class MaterialAttribute {
     if (other is MaterialAttribute) {
       return useHardAlpha == other.useHardAlpha &&
           useSoftAlpha == other.useSoftAlpha &&
-          useNm == other.useNm &&
-          useShininessShader == other.useShininessShader &&
-          usePlayerColor == other.usePlayerColor &&
-          useWaterShader == other.useWaterShader;
+          //useNm == other.useNm &&
+          //useShininessShader == other.useShininessShader &&
+          usePlayerColor == other.usePlayerColor;
+      //useWaterShader == other.useWaterShader;
     }
     return false;
   }
@@ -48,9 +48,9 @@ class MaterialAttribute {
   int get hashCode {
     return useHardAlpha.hashCode ^
         useSoftAlpha.hashCode ^
-        useNm.hashCode ^
-        useShininessShader.hashCode ^
-        usePlayerColor.hashCode ^
-        useWaterShader.hashCode;
+        //useNm.hashCode ^
+        //useShininessShader.hashCode ^
+        usePlayerColor.hashCode;
+    //useWaterShader.hashCode;
   }
 }

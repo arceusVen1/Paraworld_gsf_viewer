@@ -348,8 +348,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "9fb1ca17"
-      resolved-ref: "9fb1ca1757d98acc125d1809a2787b19f2a617a5"
+      ref: efef5ae3
+      resolved-ref: efef5ae3357a9d851f33282ff4a63dae6b096534
       url: "http://github.com/arceusVen1/image-with-dds"
     source: git
     version: "4.1.8"

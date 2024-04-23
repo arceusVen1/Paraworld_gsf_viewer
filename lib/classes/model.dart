@@ -1,3 +1,4 @@
+import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -79,19 +80,25 @@ class Model {
       numChannels: 4,
     );
 
-    for (final p in fullTexture) {
-      for (var data in _texturesOffsets.entries) {
-        final textureImage = data.key.imageData;
-        final textureOffset = data.value.$1;
-        if (textureImage!.height > p.y &&
-            (p.x - textureOffset) > 0 &&
-            textureImage.width > (p.x - textureOffset)) {
-          final pixel = textureImage.getPixel(p.x - textureOffset, p.y);
-          p.setRgba(pixel.r, pixel.g, pixel.b, pixel.a);
+    img.Image createFullTexture(
+        img.Image image, Map<ModelTexture, (int, img.Image)> offsets) {
+      for (final p in image) {
+        for (var data in offsets.entries) {
+          final textureImage = data.key.imageData;
+          final textureOffset = data.value.$1;
+          if (textureImage!.height > p.y &&
+              (p.x - textureOffset) > 0 &&
+              textureImage.width > (p.x - textureOffset)) {
+            final pixel = textureImage.getPixel(p.x - textureOffset, p.y);
+            p.setRgba(pixel.r, pixel.g, pixel.b, pixel.a);
+          }
         }
       }
+      return image;
     }
-
+    // to avoid blocking UI this is executed in separate isolate
+    fullTexture = await Isolate.run(
+        () => createFullTexture(fullTexture, _texturesOffsets));
     _composedModelImage =
         await (ModelTexture(attribute: MaterialAttribute.zero(), path: "")
               ..imageData = fullTexture)
