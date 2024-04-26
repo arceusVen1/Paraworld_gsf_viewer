@@ -64,8 +64,7 @@ class ModelTexture {
       for (final p in frame) {
         if (attribute.useHardAlpha) {
           p.a = p.a <= 126 ? 0 : 255;
-        }
-        if (!attribute.useSoftAlpha && !attribute.useHardAlpha) {
+        } else if (!attribute.useSoftAlpha && !attribute.useHardAlpha) {
           p.a = 255;
         }
 
@@ -73,6 +72,11 @@ class ModelTexture {
           p.r = partyColor.red;
           p.g = partyColor.green;
           p.b = partyColor.blue;
+        }
+        if (p.a == 0) {
+          p.r = 0;
+          p.g = 0;
+          p.b = 0;
         }
       }
     }
