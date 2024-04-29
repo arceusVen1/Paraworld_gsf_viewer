@@ -256,7 +256,7 @@ class Model {
 
           points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
           final pos = Float32List.fromList(points);
-          canvas.drawRawPoints(ui.PointMode.polygon, pos, skeletonPaint);
+          //canvas.drawRawPoints(ui.PointMode.polygon, pos, skeletonPaint);
           canvas.drawRawPoints(
               ui.PointMode.points,
               pos,
