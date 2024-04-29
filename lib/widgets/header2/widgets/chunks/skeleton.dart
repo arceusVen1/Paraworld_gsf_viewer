@@ -1,5 +1,6 @@
 import 'package:animated_tree_view/animated_tree_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
@@ -89,9 +90,10 @@ class BoneTreeDisplay extends ConsumerStatefulWidget {
 }
 
 class _BoneTreeDisplayState extends ConsumerState<BoneTreeDisplay> {
-  late final TreeNode<Bone> _computedBoneTree = TreeNode.root(
+  late TreeNode<Bone> _computedBoneTree = TreeNode.root(
     data: widget.bones.first,
   );
+  TreeViewController? _controller;
 
   createBranchFromBone(Bone bone, TreeNode<Bone> node) {
     final children = widget.boneTree[bone.guid.value]!.children;
@@ -113,6 +115,22 @@ class _BoneTreeDisplayState extends ConsumerState<BoneTreeDisplay> {
   }
 
   @override
+  void didUpdateWidget(BoneTreeDisplay oldWidget) {
+    if (oldWidget.bones != widget.bones) {
+      _computedBoneTree = TreeNode.root(
+        data: widget.bones.first,
+      );
+      createBranchFromBone(widget.bones.first, _computedBoneTree);
+    }
+    if (_controller != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _controller!.expandAllChildren(_computedBoneTree);
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final selectedBone = ref.watch(header2StateNotifierProvider).mapOrNull(
@@ -127,7 +145,8 @@ class _BoneTreeDisplayState extends ConsumerState<BoneTreeDisplay> {
         child: TreeView.simpleTyped<Bone, TreeNode<Bone>>(
           shrinkWrap: true,
           onTreeReady: (controller) {
-            controller.expandAllChildren(_computedBoneTree);
+            _controller = controller;
+            _controller!.expandAllChildren(_computedBoneTree);
           },
           builder: (context, node) {
             return ListTile(
