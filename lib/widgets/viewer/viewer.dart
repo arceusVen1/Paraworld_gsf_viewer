@@ -127,7 +127,7 @@ class _ViewerControls extends ConsumerWidget {
           },
         ),
         _ViewerSwitchsControl(
-          title: "Show Skeleton (broken)",
+          title: "Show Skeleton",
           value: state.map(
             empty: (_) => false,
             withModel: (withModel) => withModel.showSkeleton,

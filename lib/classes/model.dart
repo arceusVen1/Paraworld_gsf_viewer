@@ -241,7 +241,7 @@ class Model {
     if (showSkeleton && skeletons.isNotEmpty) {
       final skeletonPaint = Paint()
         ..color = meshColor
-        ..strokeWidth = 3
+        ..strokeWidth = 2
         ..strokeCap = StrokeCap.round;
       for (final skeleton in skeletons) {
         for (final branch in skeleton) {
@@ -264,7 +264,7 @@ class Model {
             pos,
             Paint()
               ..color = Colors.pink
-              ..strokeWidth = 6,
+              ..strokeWidth = 4,
           );
         }
       }
