@@ -5,6 +5,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
@@ -12,6 +13,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
+import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:paraworld_gsf_viewer/providers/texture.dart';
 
 enum ModelType {
@@ -237,10 +239,13 @@ class ModelSettings extends GsfPart {
   ) {
     final List<ModelMesh> meshes = [];
     final List<ModelMesh> cloths = [];
+    List<List<ModelVertex>> skeleton = [];
     final List<int> materialIndices =
         fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
     for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
-      if (chunk.type.isMeshLike()) {
+      if (chunk.type == ChunkType.skeleton) {
+        skeleton = (chunk as SkeletonChunk).toModelVertices();
+      } else if (chunk.type.isMeshLike()) {
         meshes.add((chunk as MeshChunk).toModelMesh(
           ChunkAttributes.fromValue(type, chunk.attributes.value),
           materialIndices,
@@ -264,6 +269,7 @@ class ModelSettings extends GsfPart {
       meshes: meshes,
       cloth: cloths,
       boundingBox: boundingBox.toModelBox(),
+      skeleton: skeleton,
     );
   }
 

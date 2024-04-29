@@ -86,6 +86,14 @@ class ModelSelectionStateNotifier extends Notifier<ModelViewerSelectionState> {
         orElse: () => null);
   }
 
+  void updateShowSkeleton(bool showSkeleton) {
+    state.maybeMap(
+        withModel: (withModel) {
+          state = withModel.copyWith(showSkeleton: showSkeleton);
+        },
+        orElse: () => null);
+  }
+
   void updateFilterAttribute(int indice) {
     state.maybeMap(
         withModel: (withModel) {

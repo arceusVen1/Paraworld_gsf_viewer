@@ -4,6 +4,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bind_pose.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/affine_transformation.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 
@@ -25,21 +26,6 @@ class SkeletonDisplay extends ConsumerWidget {
           attributesValue: skeleton.attributes.value),
       GsfDataTile(label: "Guid", data: skeleton.guid),
       GsfDataTile(label: "Index", data: skeleton.index),
-      GsfDataTile(label: "Guid 2", data: skeleton.id),
-      GsfDataTile(label: "Pos X", data: skeleton.positionX),
-      GsfDataTile(label: "Pos Y", data: skeleton.positionY),
-      GsfDataTile(label: "Pos Z", data: skeleton.positionZ),
-      GsfDataTile(label: "Scale X", data: skeleton.scaleX),
-      GsfDataTile(label: "Scale Y", data: skeleton.scaleY),
-      GsfDataTile(label: "Scale Z", data: skeleton.scaleZ),
-      GsfDataTile(label: "Quat X", data: skeleton.quaternionL),
-      GsfDataTile(label: "Quat Y", data: skeleton.quaternionI),
-      GsfDataTile(label: "Quat Z", data: skeleton.quaternionJ),
-      GsfDataTile(label: "Quat W", data: skeleton.quaternionK),
-      GsfDataTile(label: "Child bones count", data: skeleton.childBonesCount),
-      GsfDataTile(label: "Bones offset", data: skeleton.bonesOffset),
-      GsfDataTile(
-          label: "Child bones count 2", data: skeleton.childBonesCount2),
       GsfDataTile(label: "Bind pose offset", data: skeleton.bindPoseOffset),
       GsfDataTile(label: "All bones count", data: skeleton.allBonesCount),
       GsfDataTile(label: "All bones count 2", data: skeleton.allBones2),
@@ -52,7 +38,6 @@ class SkeletonDisplay extends ConsumerWidget {
           ref.read(header2StateNotifierProvider.notifier).setBone(bone as Bone);
         },
       ),
-      _BindPoseDisplay(bindPose: skeleton.bindPose),
     ]);
   }
 }
@@ -70,19 +55,20 @@ class BoneDisplay extends StatelessWidget {
     return DataDecorator(children: [
       GsfDataTile(label: "Guid", data: bone.guid),
       GsfDataTile(label: "Flags", data: bone.flags),
-      GsfDataTile(label: "Anim pos X", data: bone.animPositionX),
-      GsfDataTile(label: "Anim pos Y", data: bone.animPositionY),
-      GsfDataTile(label: "Anim pos Z", data: bone.animPositionZ),
+      GsfDataTile(label: "Anim pos X", data: bone.posX),
+      GsfDataTile(label: "Anim pos Y", data: bone.posY),
+      GsfDataTile(label: "Anim pos Z", data: bone.posZ),
       GsfDataTile(label: "Scale X", data: bone.scaleX),
       GsfDataTile(label: "Scale Y", data: bone.scaleY),
       GsfDataTile(label: "Scale Z", data: bone.scaleZ),
-      GsfDataTile(label: "Quat X", data: bone.quaternionL),
-      GsfDataTile(label: "Quat Y", data: bone.quaternionI),
-      GsfDataTile(label: "Quat Z", data: bone.quaternionJ),
-      GsfDataTile(label: "Quat W", data: bone.quaternionK),
-      GsfDataTile(label: "Child bones count", data: bone.bonesCount),
-      GsfDataTile(label: "Child bone offset", data: bone.nextBoneOffset),
-      GsfDataTile(label: "Child bones count 2", data: bone.bonesCount2),
+      GsfDataTile(label: "Quat X", data: bone.quaternionX),
+      GsfDataTile(label: "Quat Y", data: bone.quaternionY),
+      GsfDataTile(label: "Quat Z", data: bone.quaternionZ),
+      GsfDataTile(label: "Quat W", data: bone.quaternionW),
+      GsfDataTile(label: "Child bones count", data: bone.childrenCount),
+      GsfDataTile(label: "Child bone offset", data: bone.nextChildOffset),
+      GsfDataTile(label: "Child bones count 2", data: bone.childrenCount2),
+      AffineTransformationDisplay(transformation: bone.bindPose!),
     ]);
   }
 }

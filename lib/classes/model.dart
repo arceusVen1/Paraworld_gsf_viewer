@@ -28,6 +28,7 @@ class Model {
     required this.meshes,
     required this.cloth,
     required this.boundingBox,
+    required this.skeleton,
   });
 
   final ModelType type;
@@ -35,6 +36,7 @@ class Model {
   final List<ModelMesh> meshes;
   final List<ModelMesh> cloth;
   final BoundingBoxModel boundingBox;
+  final List<List<ModelVertex>> skeleton;
   // todo skeleton
   // todo position links
 
@@ -96,6 +98,7 @@ class Model {
       }
       return image;
     }
+
     // to avoid blocking UI this is executed in separate isolate
     fullTexture = await Isolate.run(
         () => createFullTexture(fullTexture, _texturesOffsets));
@@ -147,6 +150,7 @@ class Model {
     bool showNormals = false,
     bool showCloths = false,
     bool showTexture = false,
+    bool showSkeleton = false,
   }) {
     final projectionData = getProjectionData(size);
     final listOfMesh = showCloths ? meshes + cloth : meshes;
@@ -163,7 +167,6 @@ class Model {
       for (final submesh in mesh.submeshes.reversed) {
         final data = submesh.getDrawingData(
           rotation,
-          size,
           projectionData: projectionData,
           overrideTexture: overrideTexture,
           textureWidthOffset: overrideTexture == null
@@ -234,5 +237,34 @@ class Model {
           ? texturePainter
           : (_paint..color = meshColor.withOpacity(0.3)),
     );
+
+    if (showSkeleton && skeleton.isNotEmpty) {
+      final List<double> points = [];
+      final skeletonPaint = Paint()
+        ..color = meshColor
+        ..strokeWidth = 5
+        ..strokeCap = StrokeCap.round;
+      for (final branch in skeleton) {
+        for (final joint in branch) {
+          final coords = joint.project(
+            widthOffset: projectionData.widthOffset,
+            heightOffset: projectionData.heightOffset,
+            maxWidth: projectionData.maxFactor,
+            maxHeight: projectionData.maxFactor,
+            rotation: rotation,
+          );
+
+          points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
+        }
+        final pos = Float32List.fromList(points);
+        canvas.drawRawPoints(ui.PointMode.polygon, pos, skeletonPaint);
+        canvas.drawRawPoints(
+            ui.PointMode.points,
+            pos,
+            Paint()
+              ..color = Colors.pink
+              ..strokeWidth = 8);
+      }
+    }
   }
 }

@@ -38,7 +38,7 @@ class ModelSubMesh {
     Float32List normals,
   }) getDrawingData(
     Rotation rotation,
-    Size size, {
+    {
     required ProjectionData projectionData,
     Image? overrideTexture,
     required int textureWidthOffset,

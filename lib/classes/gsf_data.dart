@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -85,6 +86,11 @@ typedef NegativeOffset = SignedInt;
 class GsfData<T> {
   GsfData();
 
+  double _roundAtDecimal(double val, int decimal) {
+    num mod = pow(10.0, decimal);
+    return ((val * mod).round().toDouble() / mod);
+  }
+
   _init({required int relativePos, required int length, required int offset}) {
     this.relativePos = relativePos;
     this.length = length;
@@ -132,7 +138,7 @@ class GsfData<T> {
       case SignedInt:
         value = SignedInt(getAsSignedInt(bytes)) as T;
       case double:
-        value = getAsFloat(bytes) as T;
+        value = _roundAtDecimal(getAsFloat(bytes), 10) as T;
       case String:
         value = getAsAsciiString(bytes, true) as T;
       case StringNoZero:

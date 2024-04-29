@@ -20,7 +20,7 @@ class ModelVertex {
 
   late Vector3 positions;
   late final Vector3 positionOffset;
-  (Vector3, Matrix3)? lastTransformation;
+  (Vector3, Quaternion)? lastTransformation;
   late final BoundingBoxModel box;
   Vector2? textureCoordinates;
   ModelVertex? normal;
@@ -68,16 +68,16 @@ class ModelVertex {
 
   Vector3 transform(Rotation rotation) {
     if (lastTransformation != null &&
-        lastTransformation!.$2 == rotation.matrix) {
+        lastTransformation!.$2 == rotation.quaternion) {
       return lastTransformation!.$1;
     }
-    Vector3 copy = Vector3.copy(positions);
+    Vector3 copy = positions.clone();
     // converting to paraworld coordinate system
     copy.y = copy.z;
     copy.z = -positions.y;
     // centering on window
     copy -= positionOffset;
-    copy.applyMatrix3(rotation.matrix);
+    rotation.quaternion.rotate(copy);
     return copy;
   }
 
@@ -90,7 +90,7 @@ class ModelVertex {
     required Rotation rotation,
   }) {
     final transformedPoint = transform(rotation);
-    lastTransformation = (transformedPoint, rotation.matrix);
+    lastTransformation = (transformedPoint, rotation.quaternion);
 
     double perpectiveFactor = 1.0;
 

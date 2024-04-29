@@ -1,29 +1,27 @@
 import 'package:vector_math/vector_math.dart';
 
 class Rotation {
-  Rotation(): matrix = Matrix3.zero();
+  Rotation() : quaternion = Quaternion.identity();
 
-  Matrix3 matrix;
+  Quaternion quaternion;
 
-  void setMatrix(
+  void setQuaternion(
     double xRotation,
     double yRotation,
     double zRotation,
   ) {
-    matrix = Matrix3.rotationZ(xRotation) *
-        Matrix3.rotationY(yRotation) *
-        Matrix3.rotationZ(zRotation);
+    quaternion = Quaternion.euler(zRotation, xRotation, yRotation);
   }
 
   @override
   String toString() {
-    return matrix.toString();
+    return quaternion.toString();
   }
 
   @override
   bool operator ==(Object other) =>
-      other is Rotation && other.matrix == matrix;
-  
+      other is Rotation && other.quaternion == quaternion;
+
   @override
-  int get hashCode => matrix.hashCode;
+  int get hashCode => quaternion.hashCode;
 }

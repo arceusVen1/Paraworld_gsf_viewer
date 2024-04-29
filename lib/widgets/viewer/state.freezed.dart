@@ -31,7 +31,8 @@ mixin _$ModelViewerSelectionState {
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)
+            dynamic showPartyColor,
+            dynamic showSkeleton)
         withModel,
   }) =>
       throw _privateConstructorUsedError;
@@ -48,7 +49,8 @@ mixin _$ModelViewerSelectionState {
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)?
+            dynamic showPartyColor,
+            dynamic showSkeleton)?
         withModel,
   }) =>
       throw _privateConstructorUsedError;
@@ -64,7 +66,8 @@ mixin _$ModelViewerSelectionState {
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)?
+            dynamic showPartyColor,
+            dynamic showSkeleton)?
         withModel,
     required TResult orElse(),
   }) =>
@@ -228,7 +231,8 @@ class _$EmptyImpl implements _Empty {
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)
+            dynamic showPartyColor,
+            dynamic showSkeleton)
         withModel,
   }) {
     return empty(materialsTable, models);
@@ -248,7 +252,8 @@ class _$EmptyImpl implements _Empty {
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)?
+            dynamic showPartyColor,
+            dynamic showSkeleton)?
         withModel,
   }) {
     return empty?.call(materialsTable, models);
@@ -267,7 +272,8 @@ class _$EmptyImpl implements _Empty {
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)?
+            dynamic showPartyColor,
+            dynamic showSkeleton)?
         withModel,
     required TResult orElse(),
   }) {
@@ -342,7 +348,8 @@ abstract class _$$ModelViewerSelectionStateWithModelImplCopyWith<$Res>
       dynamic showCloth,
       dynamic showNormals,
       dynamic showTexture,
-      dynamic showPartyColor});
+      dynamic showPartyColor,
+      dynamic showSkeleton});
 }
 
 /// @nodoc
@@ -366,6 +373,7 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
     Object? showNormals = freezed,
     Object? showTexture = freezed,
     Object? showPartyColor = freezed,
+    Object? showSkeleton = freezed,
   }) {
     return _then(_$ModelViewerSelectionStateWithModelImpl(
       models: null == models
@@ -389,6 +397,8 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
       showTexture: freezed == showTexture ? _value.showTexture! : showTexture,
       showPartyColor:
           freezed == showPartyColor ? _value.showPartyColor! : showPartyColor,
+      showSkeleton:
+          freezed == showSkeleton ? _value.showSkeleton! : showSkeleton,
     ));
   }
 }
@@ -405,7 +415,8 @@ class _$ModelViewerSelectionStateWithModelImpl
       this.showCloth = true,
       this.showNormals = false,
       this.showTexture = true,
-      this.showPartyColor = false})
+      this.showPartyColor = false,
+      this.showSkeleton = false})
       : _models = models;
 
   final List<ModelSettings> _models;
@@ -434,10 +445,13 @@ class _$ModelViewerSelectionStateWithModelImpl
   @override
   @JsonKey()
   final dynamic showPartyColor;
+  @override
+  @JsonKey()
+  final dynamic showSkeleton;
 
   @override
   String toString() {
-    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals, showTexture: $showTexture, showPartyColor: $showPartyColor)';
+    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals, showTexture: $showTexture, showPartyColor: $showPartyColor, showSkeleton: $showSkeleton)';
   }
 
   @override
@@ -456,7 +470,9 @@ class _$ModelViewerSelectionStateWithModelImpl
             const DeepCollectionEquality()
                 .equals(other.showTexture, showTexture) &&
             const DeepCollectionEquality()
-                .equals(other.showPartyColor, showPartyColor));
+                .equals(other.showPartyColor, showPartyColor) &&
+            const DeepCollectionEquality()
+                .equals(other.showSkeleton, showSkeleton));
   }
 
   @override
@@ -469,7 +485,8 @@ class _$ModelViewerSelectionStateWithModelImpl
       const DeepCollectionEquality().hash(showCloth),
       const DeepCollectionEquality().hash(showNormals),
       const DeepCollectionEquality().hash(showTexture),
-      const DeepCollectionEquality().hash(showPartyColor));
+      const DeepCollectionEquality().hash(showPartyColor),
+      const DeepCollectionEquality().hash(showSkeleton));
 
   @JsonKey(ignore: true)
   @override
@@ -493,11 +510,12 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)
+            dynamic showPartyColor,
+            dynamic showSkeleton)
         withModel,
   }) {
     return withModel(models, model, filter, materialsTable, showCloth,
-        showNormals, showTexture, showPartyColor);
+        showNormals, showTexture, showPartyColor, showSkeleton);
   }
 
   @override
@@ -514,11 +532,12 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)?
+            dynamic showPartyColor,
+            dynamic showSkeleton)?
         withModel,
   }) {
     return withModel?.call(models, model, filter, materialsTable, showCloth,
-        showNormals, showTexture, showPartyColor);
+        showNormals, showTexture, showPartyColor, showSkeleton);
   }
 
   @override
@@ -534,13 +553,14 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showCloth,
             dynamic showNormals,
             dynamic showTexture,
-            dynamic showPartyColor)?
+            dynamic showPartyColor,
+            dynamic showSkeleton)?
         withModel,
     required TResult orElse(),
   }) {
     if (withModel != null) {
       return withModel(models, model, filter, materialsTable, showCloth,
-          showNormals, showTexture, showPartyColor);
+          showNormals, showTexture, showPartyColor, showSkeleton);
     }
     return orElse();
   }
@@ -588,7 +608,8 @@ abstract class ModelViewerSelectionStateWithModel
       final dynamic showCloth,
       final dynamic showNormals,
       final dynamic showTexture,
-      final dynamic showPartyColor}) = _$ModelViewerSelectionStateWithModelImpl;
+      final dynamic showPartyColor,
+      final dynamic showSkeleton}) = _$ModelViewerSelectionStateWithModelImpl;
 
   @override
   List<ModelSettings> get models;
@@ -600,6 +621,7 @@ abstract class ModelViewerSelectionStateWithModel
   dynamic get showNormals;
   dynamic get showTexture;
   dynamic get showPartyColor;
+  dynamic get showSkeleton;
   @override
   @JsonKey(ignore: true)
   _$$ModelViewerSelectionStateWithModelImplCopyWith<

@@ -23,6 +23,7 @@ class ModelDrawer extends CustomPainter {
     required this.meshColor,
     required this.attributesFilter,
     required this.showCloth,
+    required this.showSkeleton,
   }) : super(repaint: mousePosition);
 
   final ValueNotifier<MousePositionDrag> mousePosition;
@@ -33,6 +34,7 @@ class ModelDrawer extends CustomPainter {
   final Color meshColor;
   final ChunkAttributes attributesFilter;
   final bool showCloth;
+  final bool showSkeleton;
 
   final Rotation rotation = Rotation();
 
@@ -154,18 +156,18 @@ class ModelDrawer extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final yRotationAngle =
+    final zRotationAngle =
         (mousePosition.value.pos.dx + mousePosition.value.lastX) *
             2 *
             math.pi /
             size.width;
 
-    final zRotationAngle =
+    final xRotationAngle =
         (mousePosition.value.pos.dy + mousePosition.value.lastY) *
             2 *
             math.pi /
             size.height;
-    rotation.setMatrix(0, yRotationAngle, zRotationAngle);
+    rotation.setQuaternion(xRotationAngle, 0, zRotationAngle);
 
     model.draw(
       rotation,
@@ -177,6 +179,7 @@ class ModelDrawer extends CustomPainter {
       showNormals: showNormals,
       showCloths: showCloth,
       showTexture: showTexture,
+      showSkeleton: showSkeleton,
     );
 
     drawAxis(size, canvas);

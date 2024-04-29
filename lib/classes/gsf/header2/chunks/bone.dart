@@ -1,26 +1,31 @@
 import 'dart:typed_data';
 
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/affine_matrix.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class Bone extends GsfPart {
   late final Standard4BytesData<int> guid;
   late final Standard4BytesData<int> flags;
-  late final Standard4BytesData<double> animPositionX;
-  late final Standard4BytesData<double> animPositionY;
-  late final Standard4BytesData<double> animPositionZ;
+  late final Standard4BytesData<double> posX;
+  late final Standard4BytesData<double> posY;
+  late final Standard4BytesData<double> posZ;
   late final Standard4BytesData<double> scaleX;
   late final Standard4BytesData<double> scaleY;
   late final Standard4BytesData<double> scaleZ;
-  late final Standard4BytesData<double> quaternionL;
-  late final Standard4BytesData<double> quaternionI;
-  late final Standard4BytesData<double> quaternionJ;
-  late final Standard4BytesData<double> quaternionK;
-  late final Standard4BytesData<int> bonesCount;
-  late final Standard4BytesData<int> nextBoneOffset;
-  late final Standard4BytesData<int> bonesCount2;
+  late final Standard4BytesData<double> quaternionX;
+  late final Standard4BytesData<double> quaternionY;
+  late final Standard4BytesData<double> quaternionZ;
+  late final Standard4BytesData<double> quaternionW;
+  late final Standard4BytesData<int> childrenCount;
+  late final Standard4BytesData<int> nextChildOffset;
+  late final Standard4BytesData<int> childrenCount2;
+
+  AffineTransformation? bindPose;
 
   @override
   String get label => 'Bone 0x${guid.value.toRadixString(16)}';
+
+  static const int size = 15 * 4; // 15 4-byte values
 
   Bone.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
     guid = Standard4BytesData(
@@ -33,23 +38,23 @@ class Bone extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
-    animPositionX = Standard4BytesData(
+    posX = Standard4BytesData(
       position: flags.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    animPositionY = Standard4BytesData(
-      position: animPositionX.relativeEnd,
+    posY = Standard4BytesData(
+      position: posX.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    animPositionZ = Standard4BytesData(
-      position: animPositionY.relativeEnd,
+    posZ = Standard4BytesData(
+      position: posY.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
     scaleX = Standard4BytesData(
-      position: animPositionZ.relativeEnd,
+      position: posZ.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
@@ -63,45 +68,51 @@ class Bone extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
-    quaternionL = Standard4BytesData(
+    quaternionX = Standard4BytesData(
       position: scaleZ.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    quaternionI = Standard4BytesData(
-      position: quaternionL.relativeEnd,
+    quaternionY = Standard4BytesData(
+      position: quaternionX.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    quaternionJ = Standard4BytesData(
-      position: quaternionI.relativeEnd,
+    quaternionZ = Standard4BytesData(
+      position: quaternionY.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    quaternionK = Standard4BytesData(
-      position: quaternionJ.relativeEnd,
+    quaternionW = Standard4BytesData(
+      position: quaternionZ.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    bonesCount = Standard4BytesData(
-      position: quaternionK.relativeEnd,
+    childrenCount = Standard4BytesData(
+      position: quaternionW.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    nextBoneOffset = Standard4BytesData(
-      position: bonesCount.relativeEnd,
+    nextChildOffset = Standard4BytesData(
+      position: childrenCount.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    bonesCount2 = Standard4BytesData(
-      position: nextBoneOffset.relativeEnd,
+    childrenCount2 = Standard4BytesData(
+      position: nextChildOffset.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
   }
 
   @override
+  String toString() {
+    // TODO: implement toString
+    return 'Bone 0x${guid.value} with child: ${childrenCount.value}';
+  }
+
+  @override
   int getEndOffset() {
-    return bonesCount2.offsettedLength;
+    return childrenCount2.offsettedLength;
   }
 }

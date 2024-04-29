@@ -73,6 +73,7 @@ class ModelTexture {
           p.g = partyColor.green;
           p.b = partyColor.blue;
         }
+        // required because of bug in flutter whre alpha 0 with color isn't treated as fully trasnaprent
         if (p.a == 0) {
           p.r = 0;
           p.g = 0;
