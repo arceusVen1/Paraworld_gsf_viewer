@@ -138,7 +138,7 @@ class GsfData<T> {
       case SignedInt:
         value = SignedInt(getAsSignedInt(bytes)) as T;
       case double:
-        value = _roundAtDecimal(getAsFloat(bytes), 10) as T;
+        value = _roundAtDecimal(getAsFloat(bytes), 3) as T;
       case String:
         value = getAsAsciiString(bytes, true) as T;
       case StringNoZero:

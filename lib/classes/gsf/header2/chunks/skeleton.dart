@@ -180,17 +180,13 @@ class SkeletonChunk extends Chunk {
   _createJointsBranch(
     List<ModelVertex> jointVertices,
     List<int> boneIds,
-    Matrix4 parentWorldTransform,
   ) {
     for (final boneId in boneIds) {
       final data = boneTree[boneId]!;
       final bone = data.bone;
-      Matrix4 localTransform = bone.localTransform;
-      localTransform *= bone.bindPose!.matrix;
-      final Matrix4 worldTranform = parentWorldTransform * localTransform;
       jointVertices.add(
         ModelVertex(
-          worldTranform.getTranslation(),
+          (bone.bindPose!.matrix..invert()).getTranslation(),
           box: BoundingBoxModel.zero(),
           positionOffset: Vector3.zero(),
           //quat: boneQuat,
@@ -200,7 +196,6 @@ class SkeletonChunk extends Chunk {
       _createJointsBranch(
         jointVertices,
         data.children,
-        worldTranform,
       );
     }
   }
@@ -209,18 +204,17 @@ class SkeletonChunk extends Chunk {
     final List<ModelVertex> vertices = [];
     final rootBone = bones.first;
 
-    Matrix4 localTransform = rootBone.localTransform;
-    localTransform = localTransform * rootBone.bindPose!.matrix;
-
     vertices.add(
       ModelVertex(
-        localTransform.getTranslation(),
+        (rootBone.bindPose!.matrix..invert()).getTranslation(),
         box: BoundingBoxModel.zero(),
         positionOffset: Vector3.zero(),
       ),
     );
     _createJointsBranch(
-        vertices, boneTree[rootBone.guid.value]!.children, localTransform);
+      vertices,
+      boneTree[rootBone.guid.value]!.children,
+    );
     assert(vertices.length == allBonesCount.value,
         "There is more than one root bone in skeleton");
     return vertices;
