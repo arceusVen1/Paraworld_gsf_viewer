@@ -96,7 +96,6 @@ class SkeletonChunk extends Chunk {
       }
       _getChildOfBone(boneTree, bones, nextBone);
     }
-    print(boneTree);
     bindPoses = [];
     for (var i = 0; i < allBonesCount.value; i++) {
       final bindPose = AffineTransformation.fromBytes(
@@ -179,33 +178,17 @@ class SkeletonChunk extends Chunk {
   }
 
   _createJointsBranch(
-    List<ModelVertex> jointsBranch,
-    Map<int, bool> treatedBones,
+    List<ModelVertex> jointVertices,
     List<int> boneIds,
     Matrix4 parentWorldTransform,
   ) {
     for (final boneId in boneIds) {
       final data = boneTree[boneId]!;
       final bone = data.bone;
-      treatedBones[bone.guid.value] = true;
-      final translation = Vector3(
-        bone.posX.value,
-        bone.posY.value,
-        bone.posZ.value,
-      );
-
-      final Quaternion rotation = Quaternion(
-        bone.quaternionX.value,
-        bone.quaternionY.value,
-        bone.quaternionZ.value,
-        bone.quaternionW.value,
-      );
-      final scale =
-          Vector3(bone.scaleX.value, bone.scaleY.value, bone.scaleZ.value);
-      Matrix4 localTransform = Matrix4.compose(translation, rotation, scale);
+      Matrix4 localTransform = bone.localTransform;
       localTransform *= bone.bindPose!.matrix;
       final Matrix4 worldTranform = parentWorldTransform * localTransform;
-      jointsBranch.add(
+      jointVertices.add(
         ModelVertex(
           worldTranform.getTranslation(),
           box: BoundingBoxModel.zero(),
@@ -215,47 +198,31 @@ class SkeletonChunk extends Chunk {
       );
 
       _createJointsBranch(
-        jointsBranch,
-        treatedBones,
+        jointVertices,
         data.children,
         worldTranform,
       );
     }
   }
 
-  List<List<ModelVertex>> toModelVertices() {
-    final List<List<ModelVertex>> vertices = [];
-    final Map<int, bool> treatedBones = {};
-    for (final bone in bones) {
-      final branch = <ModelVertex>[];
-      if (treatedBones.containsKey(bone.guid.value)) {
-        continue;
-      }
-      treatedBones[bone.guid.value] = true;
-      var translation =
-          Vector3(bone.posX.value, bone.posY.value, bone.posZ.value);
-      final scale =
-          Vector3(bone.scaleX.value, bone.scaleY.value, bone.scaleZ.value);
-      final Quaternion rotation = Quaternion(
-        bone.quaternionX.value,
-        bone.quaternionY.value,
-        bone.quaternionZ.value,
-        bone.quaternionW.value,
-      );
-      Matrix4 localTransform = Matrix4.compose(translation, rotation, scale);
-      localTransform = localTransform * bone.bindPose!.matrix;
+  List<ModelVertex> toModelVertices() {
+    final List<ModelVertex> vertices = [];
+    final rootBone = bones.first;
 
-      branch.add(
-        ModelVertex(
-          localTransform.getTranslation(),
-          box: BoundingBoxModel.zero(),
-          positionOffset: Vector3.zero(),
-        ),
-      );
-      _createJointsBranch(branch, treatedBones, boneTree[bone.guid.value]!.children,
-          localTransform);
-      vertices.add(branch);
-    }
+    Matrix4 localTransform = rootBone.localTransform;
+    localTransform = localTransform * rootBone.bindPose!.matrix;
+
+    vertices.add(
+      ModelVertex(
+        localTransform.getTranslation(),
+        box: BoundingBoxModel.zero(),
+        positionOffset: Vector3.zero(),
+      ),
+    );
+    _createJointsBranch(
+        vertices, boneTree[rootBone.guid.value]!.children, localTransform);
+    assert(vertices.length == allBonesCount.value,
+        "There is more than one root bone in skeleton");
     return vertices;
   }
 }

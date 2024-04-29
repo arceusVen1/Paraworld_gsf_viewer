@@ -86,7 +86,7 @@ mixin MeshToModelInterface on Chunk {
       ],
       cloth: [],
       boundingBox: globalBB,
-      skeleton: [],
+      skeletons: [],
     );
   }
 }

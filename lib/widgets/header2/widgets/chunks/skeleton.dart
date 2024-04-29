@@ -1,12 +1,13 @@
+import 'package:animated_tree_view/animated_tree_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bind_pose.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/affine_transformation.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
+import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
 class SkeletonDisplay extends ConsumerWidget {
   const SkeletonDisplay({super.key, required this.skeleton});
@@ -73,37 +74,88 @@ class BoneDisplay extends StatelessWidget {
   }
 }
 
-class _BindPoseDisplay extends StatelessWidget {
-  const _BindPoseDisplay({
+class BoneTreeDisplay extends ConsumerStatefulWidget {
+  const BoneTreeDisplay({
     super.key,
-    required this.bindPose,
+    required this.boneTree,
+    required this.bones,
   });
 
-  final BindPose bindPose;
+  final BoneTree boneTree;
+  final List<Bone> bones;
+
+  @override
+  ConsumerState<BoneTreeDisplay> createState() => _BoneTreeDisplayState();
+}
+
+class _BoneTreeDisplayState extends ConsumerState<BoneTreeDisplay> {
+  late final TreeNode<Bone> _computedBoneTree = TreeNode.root(
+    data: widget.bones.first,
+  );
+
+  createBranchFromBone(Bone bone, TreeNode<Bone> node) {
+    final children = widget.boneTree[bone.guid.value]!.children;
+    for (final child in children) {
+      final chilBone = widget.boneTree[child]!.bone;
+      final childNode = TreeNode<Bone>(
+        key: child.toString(),
+        data: widget.boneTree[child]!.bone,
+      );
+      node.add(childNode);
+      createBranchFromBone(chilBone, childNode);
+    }
+  }
+
+  @override
+  void initState() {
+    createBranchFromBone(widget.bones.first, _computedBoneTree);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GsfDataTile(label: "a1_1", data: bindPose.float1To1),
-        GsfDataTile(label: "a1_2", data: bindPose.float1To2),
-        GsfDataTile(label: "a1_3", data: bindPose.float1To3),
-        GsfDataTile(label: "a1_4", data: bindPose.float1To4),
-        GsfDataTile(label: "a2_1", data: bindPose.float2To1),
-        GsfDataTile(label: "a2_2", data: bindPose.float2To2),
-        GsfDataTile(label: "a2_3", data: bindPose.float2To3),
-        GsfDataTile(label: "a2_4", data: bindPose.float2To4),
-        GsfDataTile(label: "a3_1", data: bindPose.float3To1),
-        GsfDataTile(label: "a3_2", data: bindPose.float3To2),
-        GsfDataTile(label: "a3_3", data: bindPose.float3To3),
-        GsfDataTile(label: "a3_4", data: bindPose.float3To4),
-        GsfDataTile(label: "a4_1", data: bindPose.float4To1),
-        GsfDataTile(label: "a4_2", data: bindPose.float4To2),
-        GsfDataTile(label: "a4_3", data: bindPose.float4To3),
-        GsfDataTile(label: "a4_4", data: bindPose.float4To4),
-      ],
+    final theme = Theme.of(context);
+    final selectedBone = ref.watch(header2StateNotifierProvider).mapOrNull(
+          withModelSettings: (state) => state.selectedChunkState?.mapOrNull(
+            withSkeleton: (skeleton) => skeleton.bone,
+          ),
+        );
+    return Flexible(
+      child: ListViewWrapper(
+        rightPadding: 0,
+        maxHeight: double.infinity,
+        child: TreeView.simpleTyped<Bone, TreeNode<Bone>>(
+          shrinkWrap: true,
+          onTreeReady: (controller) {
+            controller.expandAllChildren(_computedBoneTree);
+          },
+          builder: (context, node) {
+            return ListTile(
+              dense: true,
+              visualDensity: const VisualDensity(
+                horizontal: 0,
+                vertical: VisualDensity.minimumDensity,
+              ),
+              shape: Border(
+                top: BorderSide(color: theme.colorScheme.onBackground),
+                left: BorderSide(color: theme.colorScheme.onBackground),
+              ),
+              selected: selectedBone != null &&
+                  selectedBone.guid.value == node.data?.guid.value,
+              selectedTileColor: theme.colorScheme.secondary,
+              title: Label.regular(node.data?.label ?? ""),
+              onTap: () {
+                if (node.data != null) {
+                  ref
+                      .read(header2StateNotifierProvider.notifier)
+                      .setBone(node.data!);
+                }
+              },
+            );
+          },
+          tree: _computedBoneTree,
+        ),
+      ),
     );
   }
 }

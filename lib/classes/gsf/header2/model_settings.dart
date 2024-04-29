@@ -239,12 +239,12 @@ class ModelSettings extends GsfPart {
   ) {
     final List<ModelMesh> meshes = [];
     final List<ModelMesh> cloths = [];
-    List<List<ModelVertex>> skeleton = [];
+    List<List<ModelVertex>> skeletons = [];
     final List<int> materialIndices =
         fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
     for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
       if (chunk.type == ChunkType.skeleton) {
-        skeleton = (chunk as SkeletonChunk).toModelVertices();
+        skeletons.add((chunk as SkeletonChunk).toModelVertices());
       } else if (chunk.type.isMeshLike()) {
         meshes.add((chunk as MeshChunk).toModelMesh(
           ChunkAttributes.fromValue(type, chunk.attributes.value),
@@ -263,13 +263,17 @@ class ModelSettings extends GsfPart {
         ));
       }
     }
+    assert(
+      skeletons.length == skeletonChunksCount.value,
+      'Skeletons count does not match',
+    );
     return Model(
       name: objectName.label,
       type: type,
       meshes: meshes,
       cloth: cloths,
       boundingBox: boundingBox.toModelBox(),
-      skeleton: skeleton,
+      skeletons: skeletons,
     );
   }
 

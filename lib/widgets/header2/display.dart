@@ -212,7 +212,15 @@ List<Widget> getChunkWidgetByType(
       ],
       withSkeleton: (data) => [
         SkeletonDisplay(skeleton: data.skeleton),
-        if (data.bone != null) BoneDisplay(bone: data.bone!),
+        Flexible(
+          child: Column(
+            children: [
+              BoneTreeDisplay(
+                  boneTree: data.skeleton.boneTree, bones: data.skeleton.bones),
+              if (data.bone != null) BoneDisplay(bone: data.bone!)
+            ],
+          ),
+        ),
       ],
       withLink: (data) => [LinkDisplay(link: data.linkChunk)],
       orElse: () => [const SizedBox.shrink()],

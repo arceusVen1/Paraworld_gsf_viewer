@@ -28,7 +28,7 @@ class Model {
     required this.meshes,
     required this.cloth,
     required this.boundingBox,
-    required this.skeleton,
+    required this.skeletons,
   });
 
   final ModelType type;
@@ -36,7 +36,7 @@ class Model {
   final List<ModelMesh> meshes;
   final List<ModelMesh> cloth;
   final BoundingBoxModel boundingBox;
-  final List<List<ModelVertex>> skeleton;
+  final List<List<ModelVertex>> skeletons;
   // todo skeleton
   // todo position links
 
@@ -238,14 +238,14 @@ class Model {
           : (_paint..color = meshColor.withOpacity(0.3)),
     );
 
-    if (showSkeleton && skeleton.isNotEmpty) {
-      final List<double> points = [];
+    if (showSkeleton && skeletons.isNotEmpty) {
       final skeletonPaint = Paint()
         ..color = meshColor
         ..strokeWidth = 5
         ..strokeCap = StrokeCap.round;
-      for (final branch in skeleton) {
-        for (final joint in branch) {
+      for (final skeleton in skeletons) {
+        final List<double> points = [];
+        for (final joint in skeleton) {
           final coords = joint.project(
             widthOffset: projectionData.widthOffset,
             heightOffset: projectionData.heightOffset,
@@ -255,15 +255,15 @@ class Model {
           );
 
           points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
+          final pos = Float32List.fromList(points);
+          canvas.drawRawPoints(ui.PointMode.polygon, pos, skeletonPaint);
+          canvas.drawRawPoints(
+              ui.PointMode.points,
+              pos,
+              Paint()
+                ..color = Colors.pink
+                ..strokeWidth = 8);
         }
-        final pos = Float32List.fromList(points);
-        canvas.drawRawPoints(ui.PointMode.polygon, pos, skeletonPaint);
-        canvas.drawRawPoints(
-            ui.PointMode.points,
-            pos,
-            Paint()
-              ..color = Colors.pink
-              ..strokeWidth = 8);
       }
     }
   }

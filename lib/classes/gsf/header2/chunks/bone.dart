@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/affine_matrix.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:vector_math/vector_math.dart';
 
 class Bone extends GsfPart {
   late final Standard4BytesData<int> guid;
@@ -21,6 +22,17 @@ class Bone extends GsfPart {
   late final Standard4BytesData<int> childrenCount2;
 
   AffineTransformation? bindPose;
+
+  Vector3 get translation => Vector3(posX.value, posY.value, posZ.value);
+  Quaternion get rotation => Quaternion(
+        quaternionX.value,
+        quaternionY.value,
+        quaternionZ.value,
+        quaternionW.value,
+      );
+  Vector3 get scale => Vector3(scaleX.value, scaleY.value, scaleZ.value);
+
+  Matrix4 get localTransform => Matrix4.compose(translation, rotation, scale);
 
   @override
   String get label => 'Bone 0x${guid.value.toRadixString(16)}';
