@@ -36,7 +36,7 @@ class Model {
   final List<ModelMesh> meshes;
   final List<ModelMesh> cloth;
   final BoundingBoxModel boundingBox;
-  final List<List<ModelVertex>> skeletons;
+  final List<List<List<ModelVertex>>> skeletons;
   // todo skeleton
   // todo position links
 
@@ -241,28 +241,31 @@ class Model {
     if (showSkeleton && skeletons.isNotEmpty) {
       final skeletonPaint = Paint()
         ..color = meshColor
-        ..strokeWidth = 5
+        ..strokeWidth = 3
         ..strokeCap = StrokeCap.round;
       for (final skeleton in skeletons) {
-        final List<double> points = [];
-        for (final joint in skeleton) {
-          final coords = joint.project(
-            widthOffset: projectionData.widthOffset,
-            heightOffset: projectionData.heightOffset,
-            maxWidth: projectionData.maxFactor,
-            maxHeight: projectionData.maxFactor,
-            rotation: rotation,
-          );
+        for (final branch in skeleton) {
+          final List<double> points = [];
+          for (final joint in branch) {
+            final coords = joint.project(
+              widthOffset: projectionData.widthOffset,
+              heightOffset: projectionData.heightOffset,
+              maxWidth: projectionData.maxFactor,
+              maxHeight: projectionData.maxFactor,
+              rotation: rotation,
+            );
 
-          points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
+            points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
+          }
           final pos = Float32List.fromList(points);
-          //canvas.drawRawPoints(ui.PointMode.polygon, pos, skeletonPaint);
+          canvas.drawRawPoints(ui.PointMode.lines, pos, skeletonPaint);
           canvas.drawRawPoints(
-              ui.PointMode.points,
-              pos,
-              Paint()
-                ..color = Colors.pink
-                ..strokeWidth = 8);
+            ui.PointMode.points,
+            pos,
+            Paint()
+              ..color = Colors.pink
+              ..strokeWidth = 6,
+          );
         }
       }
     }

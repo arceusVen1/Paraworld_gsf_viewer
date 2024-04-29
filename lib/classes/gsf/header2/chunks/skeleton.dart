@@ -177,46 +177,42 @@ class SkeletonChunk extends Chunk {
         : unknownData.offsettedLength;
   }
 
-  _createJointsBranch(
-    List<ModelVertex> jointVertices,
+  List<List<ModelVertex>> _createJointsBranch(
+    ModelVertex parentVert,
     List<int> boneIds,
   ) {
+    final List<List<ModelVertex>> branches = [];
     for (final boneId in boneIds) {
+      final line = <ModelVertex>[parentVert];
       final data = boneTree[boneId]!;
       final bone = data.bone;
-      jointVertices.add(
-        ModelVertex(
-          (bone.bindPose!.matrix..invert()).getTranslation(),
-          box: BoundingBoxModel.zero(),
-          positionOffset: Vector3.zero(),
-          //quat: boneQuat,
-        ),
-      );
-
-      _createJointsBranch(
-        jointVertices,
-        data.children,
-      );
-    }
-  }
-
-  List<ModelVertex> toModelVertices() {
-    final List<ModelVertex> vertices = [];
-    final rootBone = bones.first;
-
-    vertices.add(
-      ModelVertex(
-        (rootBone.bindPose!.matrix..invert()).getTranslation(),
+      final boneVert = ModelVertex(
+        (bone.bindPose!.matrix..invert()).getTranslation(),
         box: BoundingBoxModel.zero(),
         positionOffset: Vector3.zero(),
-      ),
+      );
+      line.add(boneVert);
+      branches.add(line);
+      final childBranches = _createJointsBranch(
+        boneVert,
+        data.children,
+      );
+      branches.addAll(childBranches);
+    }
+    return branches;
+  }
+
+  List<List<ModelVertex>> toModelVertices() {
+    final rootBone = bones.first;
+    final rootVert = ModelVertex(
+      (rootBone.bindPose!.matrix..invert()).getTranslation(),
+      box: BoundingBoxModel.zero(),
+      positionOffset: Vector3.zero(),
     );
-    _createJointsBranch(
-      vertices,
+    final vertices = _createJointsBranch(
+      rootVert,
       boneTree[rootBone.guid.value]!.children,
     );
-    assert(vertices.length == allBonesCount.value,
-        "There is more than one root bone in skeleton");
     return vertices;
   }
 }
