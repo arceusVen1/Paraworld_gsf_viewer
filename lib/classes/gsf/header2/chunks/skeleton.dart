@@ -45,6 +45,7 @@ class SkeletonChunk extends Chunk {
       offset: offset,
     );
     final firstBone = Bone.fromBytes(
+      0,
       bytes,
       index.offsettedLength,
     );
@@ -79,6 +80,7 @@ class SkeletonChunk extends Chunk {
 
     for (var i = 0; i < allBonesCount.value - 1; i++) {
       final nextBone = Bone.fromBytes(
+        i+1,
         bytes,
         bones.length > 1
             ? bones.last.getEndOffset()
@@ -118,7 +120,7 @@ class SkeletonChunk extends Chunk {
       return null;
     }
     final next = bones[currentIndex];
-    if (!boneTree.containsKey(next.guid.value)) {
+    if (!boneTree.containsKey(currentIndex)) {
       return next;
     }
     return _getNextBoneToTreat(
@@ -133,17 +135,16 @@ class SkeletonChunk extends Chunk {
     List<Bone> bones,
     Bone bone,
   ) {
-    boneTree[bone.guid.value] = (bone: bone, children: []);
+    boneTree[bone.index] = (bone: bone, children: []);
     if (bone.childrenCount.value == 0) {
       return;
     }
-    final currentIndex =
-        bones.indexWhere((element) => element.guid.value == bone.guid.value);
-    final firstChild =
-        bones[currentIndex + (bone.nextChildOffset.value / Bone.size).ceil()];
-    boneTree[bone.guid.value]!.children.add(firstChild.guid.value);
+    final firstChildIndex =
+        bone.index + (bone.nextChildOffset.value / Bone.size).ceil();
+    final firstChild = bones[firstChildIndex];
+    boneTree[bone.index]!.children.add(firstChildIndex);
 
-    if (!boneTree.containsKey(firstChild.guid.value)) {
+    if (!boneTree.containsKey(firstChildIndex)) {
       _getChildOfBone(
         boneTree,
         bones,
@@ -155,12 +156,12 @@ class SkeletonChunk extends Chunk {
       final nextBone = _getNextBoneToTreat(
         boneTree,
         bones,
-        currentIndex + 1,
+        bone.index + 1,
       );
       if (nextBone == null) {
-        throw ("Missing ${bone.childrenCount.value - boneTree[bone.guid.value]!.children.length} children for bone $bone");
+        throw ("Missing ${bone.childrenCount.value - boneTree[bone.index]!.children.length} children for bone $bone");
       }
-      boneTree[bone.guid.value]!.children.add(nextBone.guid.value);
+      boneTree[bone.index]!.children.add(nextBone.index);
       _getChildOfBone(
         boneTree,
         bones,
@@ -177,13 +178,14 @@ class SkeletonChunk extends Chunk {
         : unknownData.offsettedLength;
   }
 
-  List<List<ModelVertex>> _createJointsBranch(
+  List<List<(int, ModelVertex)>> _createJointsBranch(
+    int parentIndex,
     ModelVertex parentVert,
     List<int> boneIds,
   ) {
-    final List<List<ModelVertex>> branches = [];
+    final List<List<(int, ModelVertex)>> branches = [];
     for (final boneId in boneIds) {
-      final line = <ModelVertex>[parentVert];
+      final line = <(int, ModelVertex)>[(parentIndex, parentVert)];
       final data = boneTree[boneId]!;
       final bone = data.bone;
       final boneVert = ModelVertex(
@@ -191,9 +193,10 @@ class SkeletonChunk extends Chunk {
         box: BoundingBoxModel.zero(),
         positionOffset: Vector3.zero(),
       );
-      line.add(boneVert);
+      line.add((boneId, boneVert));
       branches.add(line);
       final childBranches = _createJointsBranch(
+        boneId,
         boneVert,
         data.children,
       );
@@ -202,7 +205,7 @@ class SkeletonChunk extends Chunk {
     return branches;
   }
 
-  List<List<ModelVertex>> toModelVertices() {
+  List<List<(int, ModelVertex)>> toModelVertices() {
     final rootBone = bones.first;
     final rootVert = ModelVertex(
       (rootBone.bindPose!.matrix..invert()).getTranslation(),
@@ -210,8 +213,9 @@ class SkeletonChunk extends Chunk {
       positionOffset: Vector3.zero(),
     );
     final vertices = _createJointsBranch(
+      0,
       rootVert,
-      boneTree[rootBone.guid.value]!.children,
+      boneTree[0]!.children,
     );
     return vertices;
   }

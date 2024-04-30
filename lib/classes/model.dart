@@ -3,6 +3,9 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material_attribute.dart';
@@ -36,13 +39,24 @@ class Model {
   final List<ModelMesh> meshes;
   final List<ModelMesh> cloth;
   final BoundingBoxModel boundingBox;
-  final List<List<List<ModelVertex>>> skeletons;
+  final List<List<List<(int, ModelVertex)>>> skeletons;
   // todo skeleton
   // todo position links
 
   final Paint _paint = Paint()
     ..color = Colors.black
     ..strokeWidth = 1
+    ..strokeCap = StrokeCap.round;
+
+  final textStyle = const TextStyle(
+    color: Colors.pink,
+    fontSize: 12,
+  );
+  final jointPaint = Paint()
+    ..color = Colors.pink
+    ..strokeWidth = 3;
+  final skeletonPaint = Paint()
+    ..strokeWidth = 2
     ..strokeCap = StrokeCap.round;
 
   final Map<ModelTexture, (int, img.Image)> _texturesOffsets = {};
@@ -239,22 +253,35 @@ class Model {
     );
 
     if (showSkeleton && skeletons.isNotEmpty) {
-      final skeletonPaint = Paint()
-        ..color = meshColor
-        ..strokeWidth = 2
-        ..strokeCap = StrokeCap.round;
+      skeletonPaint.color = meshColor;
       for (final skeleton in skeletons) {
         for (final branch in skeleton) {
           final List<double> points = [];
           for (final joint in branch) {
-            final coords = joint.project(
+            final coords = joint.$2.project(
               widthOffset: projectionData.widthOffset,
               heightOffset: projectionData.heightOffset,
               maxWidth: projectionData.maxFactor,
               maxHeight: projectionData.maxFactor,
               rotation: rotation,
             );
-
+            final idPainter = TextPainter(
+              text: TextSpan(
+                text: joint.$1.toString(),
+                style: textStyle,
+              ),
+              textDirection: TextDirection.ltr,
+            )..layout(
+                minWidth: 0,
+                maxWidth: size.width,
+              );
+            idPainter.paint(
+              canvas,
+              Offset(
+                coords.pointProjection.x,
+                coords.pointProjection.y,
+              ),
+            );
             points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
           }
           final pos = Float32List.fromList(points);
@@ -262,9 +289,7 @@ class Model {
           canvas.drawRawPoints(
             ui.PointMode.points,
             pos,
-            Paint()
-              ..color = Colors.pink
-              ..strokeWidth = 4,
+            jointPaint,
           );
         }
       }

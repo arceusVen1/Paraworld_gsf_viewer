@@ -95,7 +95,7 @@ class _BoneTreeDisplayState extends ConsumerState<BoneTreeDisplay> {
   TreeViewController? _controller;
 
   createBranchFromBone(Bone bone, TreeNode<Bone> node) {
-    final children = widget.boneTree[bone.guid.value]!.children;
+    final children = widget.boneTree[bone.index]!.children;
     for (final child in children) {
       final chilBone = widget.boneTree[child]!.bone;
       final childNode = TreeNode<Bone>(

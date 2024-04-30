@@ -5,6 +5,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:vector_math/vector_math.dart';
 
 class Bone extends GsfPart {
+  final int index;
   late final Standard4BytesData<int> guid;
   late final Standard4BytesData<int> flags;
   late final Standard4BytesData<double> posX;
@@ -35,11 +36,12 @@ class Bone extends GsfPart {
   Matrix4 get localTransform => Matrix4.compose(translation, rotation, scale);
 
   @override
-  String get label => 'Bone 0x${guid.value.toRadixString(16)}';
+  String get label => 'Bone $index (0x${guid.value.toRadixString(16)})';
 
   static const int size = 15 * 4; // 15 4-byte values
 
-  Bone.fromBytes(Uint8List bytes, int offset) : super(offset: offset) {
+  Bone.fromBytes(this.index, Uint8List bytes, int offset)
+      : super(offset: offset) {
     guid = Standard4BytesData(
       position: 0,
       bytes: bytes,

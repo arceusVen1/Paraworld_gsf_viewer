@@ -239,7 +239,7 @@ class ModelSettings extends GsfPart {
   ) {
     final List<ModelMesh> meshes = [];
     final List<ModelMesh> cloths = [];
-    List<List<List<ModelVertex>>> skeletons = [];
+    List<List<List<(int, ModelVertex)>>> skeletons = [];
     final List<int> materialIndices =
         fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
     for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
