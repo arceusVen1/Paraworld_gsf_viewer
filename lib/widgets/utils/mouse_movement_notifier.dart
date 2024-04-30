@@ -63,7 +63,6 @@ class MouseMovementNotifier extends StatelessWidget {
       },
       onPointerSignal: (event) {
         if (event is PointerScrollEvent) {
-          print(event.scrollDelta.dy);
           final delta =
               event.scrollDelta.dy / MediaQuery.of(context).size.height;
           mousePosNotifier.value = (

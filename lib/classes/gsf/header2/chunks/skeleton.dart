@@ -80,7 +80,7 @@ class SkeletonChunk extends Chunk {
 
     for (var i = 0; i < allBonesCount.value - 1; i++) {
       final nextBone = Bone.fromBytes(
-        i+1,
+        i + 1,
         bytes,
         bones.length > 1
             ? bones.last.getEndOffset()
@@ -89,14 +89,6 @@ class SkeletonChunk extends Chunk {
       bones.add(
         nextBone,
       );
-    }
-    // fill bone tree
-    while (boneTree.length < allBonesCount.value) {
-      final nextBone = _getNextBoneToTreat(boneTree, bones, 0);
-      if (nextBone == null) {
-        break;
-      }
-      _getChildOfBone(boneTree, bones, nextBone);
     }
     bindPoses = [];
     for (var i = 0; i < allBonesCount.value; i++) {
@@ -107,26 +99,42 @@ class SkeletonChunk extends Chunk {
             : bindPoses.last.getEndOffset(),
       );
       bindPoses.add(bindPose);
-      bones[i].bindPose = bindPose;
+      //bones[i].bindPose = bindPose;
+    }
+    // unfortunately bind poses are linked to bones recursively so we need to
+    // fill the bone tree to link them using a sor of stack pointer on the bind poses
+    final List<AffineTransformation> bindPosesCopy = List.from(bindPoses);
+
+    // fill bone tree
+    while (boneTree.length < allBonesCount.value) {
+      final nextBone = _getNextBoneInTree(boneTree, bones, 0, bindPosesCopy);
+      if (nextBone == null) {
+        break;
+      }
+      _getChildOfBone(boneTree, bones, nextBone, bindPosesCopy);
     }
   }
 
-  Bone? _getNextBoneToTreat(
+  Bone? _getNextBoneInTree(
     BoneTree boneTree,
     List<Bone> bones,
     int currentIndex,
+    List<AffineTransformation> bindPoses,
   ) {
     if (currentIndex >= bones.length) {
       return null;
     }
     final next = bones[currentIndex];
     if (!boneTree.containsKey(currentIndex)) {
+      next.bindPose = bindPoses[0];
+      bindPoses.removeAt(0);
       return next;
     }
-    return _getNextBoneToTreat(
+    return _getNextBoneInTree(
       boneTree,
       bones,
       currentIndex + 1,
+      bindPoses,
     );
   }
 
@@ -134,6 +142,7 @@ class SkeletonChunk extends Chunk {
     BoneTree boneTree,
     List<Bone> bones,
     Bone bone,
+    List<AffineTransformation> bindPoses,
   ) {
     boneTree[bone.index] = (bone: bone, children: []);
     if (bone.childrenCount.value == 0) {
@@ -145,18 +154,22 @@ class SkeletonChunk extends Chunk {
     boneTree[bone.index]!.children.add(firstChildIndex);
 
     if (!boneTree.containsKey(firstChildIndex)) {
+      firstChild.bindPose = bindPoses[0];
+      bindPoses.removeAt(0);
       _getChildOfBone(
         boneTree,
         bones,
         firstChild,
+        bindPoses,
       );
     }
     int treatedCount = 1;
     while (treatedCount < bone.childrenCount.value) {
-      final nextBone = _getNextBoneToTreat(
+      final nextBone = _getNextBoneInTree(
         boneTree,
         bones,
         bone.index + 1,
+        bindPoses,
       );
       if (nextBone == null) {
         throw ("Missing ${bone.childrenCount.value - boneTree[bone.index]!.children.length} children for bone $bone");
@@ -166,6 +179,7 @@ class SkeletonChunk extends Chunk {
         boneTree,
         bones,
         nextBone,
+        bindPoses,
       );
       treatedCount++;
     }
