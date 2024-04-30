@@ -103,15 +103,14 @@ class SkeletonChunk extends Chunk {
     }
     // unfortunately bind poses are linked to bones recursively so we need to
     // fill the bone tree to link them using a sor of stack pointer on the bind poses
-    final List<AffineTransformation> bindPosesCopy = List.from(bindPoses);
 
     // fill bone tree
     while (boneTree.length < allBonesCount.value) {
-      final nextBone = _getNextBoneInTree(boneTree, bones, 0, bindPosesCopy);
+      final nextBone = _getNextBoneInTree(boneTree, bones, 0);
       if (nextBone == null) {
         break;
       }
-      _getChildOfBone(boneTree, bones, nextBone, bindPosesCopy);
+      _getChildOfBone(boneTree, bones, nextBone);
     }
   }
 
@@ -119,22 +118,18 @@ class SkeletonChunk extends Chunk {
     BoneTree boneTree,
     List<Bone> bones,
     int currentIndex,
-    List<AffineTransformation> bindPoses,
   ) {
     if (currentIndex >= bones.length) {
       return null;
     }
     final next = bones[currentIndex];
     if (!boneTree.containsKey(currentIndex)) {
-      next.bindPose = bindPoses[0];
-      bindPoses.removeAt(0);
       return next;
     }
     return _getNextBoneInTree(
       boneTree,
       bones,
       currentIndex + 1,
-      bindPoses,
     );
   }
 
@@ -142,7 +137,6 @@ class SkeletonChunk extends Chunk {
     BoneTree boneTree,
     List<Bone> bones,
     Bone bone,
-    List<AffineTransformation> bindPoses,
   ) {
     boneTree[bone.index] = (bone: bone, children: []);
     if (bone.childrenCount.value == 0) {
@@ -154,13 +148,10 @@ class SkeletonChunk extends Chunk {
     boneTree[bone.index]!.children.add(firstChildIndex);
 
     if (!boneTree.containsKey(firstChildIndex)) {
-      firstChild.bindPose = bindPoses[0];
-      bindPoses.removeAt(0);
       _getChildOfBone(
         boneTree,
         bones,
         firstChild,
-        bindPoses,
       );
     }
     int treatedCount = 1;
@@ -169,7 +160,6 @@ class SkeletonChunk extends Chunk {
         boneTree,
         bones,
         bone.index + 1,
-        bindPoses,
       );
       if (nextBone == null) {
         throw ("Missing ${bone.childrenCount.value - boneTree[bone.index]!.children.length} children for bone $bone");
@@ -179,7 +169,6 @@ class SkeletonChunk extends Chunk {
         boneTree,
         bones,
         nextBone,
-        bindPoses,
       );
       treatedCount++;
     }
@@ -192,16 +181,39 @@ class SkeletonChunk extends Chunk {
         : unknownData.offsettedLength;
   }
 
-  List<List<(int, ModelVertex)>> _createJointsBranch(
-    int parentIndex,
+  (List<List<(int?, ModelVertex)>>, int) _createJointsBranch(
+    Bone parentBone,
+    Matrix4 parentMatrix,
     ModelVertex parentVert,
     List<int> boneIds,
+    int bindPosePointer,
   ) {
-    final List<List<(int, ModelVertex)>> branches = [];
-    for (final boneId in boneIds) {
-      final line = <(int, ModelVertex)>[(parentIndex, parentVert)];
+    final List<List<(int?, ModelVertex)>> branches = [];
+    if (boneIds.isEmpty) {
+      Vector3 endPos = parentVert.positions.clone();
+      endPos.applyMatrix4((parentBone.bindPose!.matrix..invert()) *
+          parentBone.localTransform *
+          parentBone.bindPose!.matrix);
+      return (
+        [
+          [
+            (parentBone.index, parentVert),
+            (
+              null,
+              ModelVertex(endPos,
+                  box: BoundingBoxModel.zero(), positionOffset: Vector3.zero())
+            )
+          ]
+        ],
+        bindPosePointer
+      );
+    }
+    for (final boneId in List.from(boneIds)) {
+      final line = <(int, ModelVertex)>[(parentBone.index, parentVert)];
       final data = boneTree[boneId]!;
       final bone = data.bone;
+      bone.bindPose = bindPoses[bindPosePointer];
+      bindPosePointer++;
       final boneVert = ModelVertex(
         (bone.bindPose!.matrix..invert()).getTranslation(),
         box: BoundingBoxModel.zero(),
@@ -210,27 +222,34 @@ class SkeletonChunk extends Chunk {
       line.add((boneId, boneVert));
       branches.add(line);
       final childBranches = _createJointsBranch(
-        boneId,
+        bone,
+        parentMatrix * bone.localTransform,
         boneVert,
         data.children,
+        bindPosePointer,
       );
-      branches.addAll(childBranches);
+      branches.addAll(childBranches.$1);
+      bindPosePointer = childBranches.$2;
     }
-    return branches;
+    return (branches, bindPosePointer);
   }
 
-  List<List<(int, ModelVertex)>> toModelVertices() {
+  List<List<(int?, ModelVertex)>> toModelVertices() {
     final rootBone = bones.first;
+    rootBone.bindPose = bindPoses.first;
     final rootVert = ModelVertex(
       (rootBone.bindPose!.matrix..invert()).getTranslation(),
       box: BoundingBoxModel.zero(),
       positionOffset: Vector3.zero(),
     );
     final vertices = _createJointsBranch(
-      0,
+      rootBone,
+      rootBone.localTransform,
       rootVert,
       boneTree[0]!.children,
+      1,
     );
-    return vertices;
+    assert(vertices.$2 == allBonesCount.value);
+    return vertices.$1;
   }
 }

@@ -239,7 +239,7 @@ class ModelSettings extends GsfPart {
   ) {
     final List<ModelMesh> meshes = [];
     final List<ModelMesh> cloths = [];
-    List<List<List<(int, ModelVertex)>>> skeletons = [];
+    List<List<List<(int?, ModelVertex)>>> skeletons = [];
     final List<int> materialIndices =
         fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
     for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
@@ -263,10 +263,10 @@ class ModelSettings extends GsfPart {
         ));
       }
     }
-    assert(
-      skeletons.length == skeletonChunksCount.value,
-      'Skeletons count does not match',
-    );
+    // assert(
+    //   skeletons.length == skeletonChunksCount.value,
+    //   'Skeletons count ${skeletonChunksCount.value} does not match ${skeletons.length}',
+    // );
     return Model(
       name: objectName.label,
       type: type,

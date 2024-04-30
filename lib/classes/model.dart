@@ -40,7 +40,7 @@ class Model {
   final List<ModelMesh> meshes;
   final List<ModelMesh> cloth;
   final BoundingBoxModel boundingBox;
-  final List<List<List<(int, ModelVertex)>>> skeletons;
+  final List<List<List<(int?, ModelVertex)>>> skeletons;
   // todo skeleton
   // todo position links
 
@@ -267,6 +267,11 @@ class Model {
               maxHeight: projectionData.maxFactor,
               transformation: transformation,
             );
+            points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
+
+            if (joint.$1 == null) {
+              continue;
+            }
             final idPainter = TextPainter(
               text: TextSpan(
                 text: joint.$1.toString(),
@@ -284,7 +289,6 @@ class Model {
                 coords.pointProjection.y,
               ),
             );
-            points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
           }
           final pos = Float32List.fromList(points);
           canvas.drawRawPoints(ui.PointMode.lines, pos, skeletonPaint);
