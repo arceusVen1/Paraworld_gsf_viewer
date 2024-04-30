@@ -36,7 +36,7 @@ class ModelDrawer extends CustomPainter {
   final bool showCloth;
   final bool showSkeleton;
 
-  final Rotation rotation = Rotation();
+  final Transformation transformation = Transformation();
 
   final Paint _paintHighlight = Paint()
     ..color = const Color.fromARGB(255, 30, 255, 0)
@@ -86,7 +86,7 @@ class ModelDrawer extends CustomPainter {
           heightOffset: projectionData.heightOffset,
           maxWidth: projectionData.maxFactor,
           maxHeight: projectionData.maxFactor,
-          rotation: rotation,
+          transformation: transformation,
         )
         .pointProjection;
 
@@ -96,7 +96,7 @@ class ModelDrawer extends CustomPainter {
           heightOffset: projectionData.heightOffset,
           maxWidth: projectionData.maxFactor,
           maxHeight: projectionData.maxFactor,
-          rotation: rotation,
+          transformation: transformation,
         )
         .pointProjection;
 
@@ -106,7 +106,7 @@ class ModelDrawer extends CustomPainter {
           heightOffset: projectionData.heightOffset,
           maxWidth: projectionData.maxFactor,
           maxHeight: projectionData.maxFactor,
-          rotation: rotation,
+          transformation: transformation,
         )
         .pointProjection;
 
@@ -116,7 +116,7 @@ class ModelDrawer extends CustomPainter {
           heightOffset: projectionData.heightOffset,
           maxWidth: projectionData.maxFactor,
           maxHeight: projectionData.maxFactor,
-          rotation: rotation,
+          transformation: transformation,
         )
         .pointProjection;
 
@@ -167,10 +167,12 @@ class ModelDrawer extends CustomPainter {
             2 *
             math.pi /
             size.height;
-    rotation.setQuaternion(xRotationAngle, 0, zRotationAngle);
+    transformation.setQuaternion(xRotationAngle, 0, zRotationAngle);
+    transformation.scaleFactor = mousePosition.value.zoom;
+    transformation.composeMatrix();
 
     model.draw(
-      rotation,
+      transformation,
       size,
       canvas,
       meshColor,

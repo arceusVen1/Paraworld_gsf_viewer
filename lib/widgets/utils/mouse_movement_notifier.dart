@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +14,7 @@ typedef MouseListener = Widget Function(
     ValueNotifier<MousePositionDrag> notifier);
 
 class MouseMovementNotifier extends StatelessWidget {
-  const MouseMovementNotifier(
-      {super.key, required this.mouseListener});
+  const MouseMovementNotifier({super.key, required this.mouseListener});
 
   final MouseListener mouseListener;
 
@@ -62,12 +63,16 @@ class MouseMovementNotifier extends StatelessWidget {
       },
       onPointerSignal: (event) {
         if (event is PointerScrollEvent) {
+          print(event.scrollDelta.dy);
+          final delta =
+              event.scrollDelta.dy / MediaQuery.of(context).size.height;
           mousePosNotifier.value = (
             pos: mousePosNotifier.value.pos,
             lastX: mousePosNotifier.value.lastX,
             lastY: mousePosNotifier.value.lastY,
-            zoom:
-                event.scrollDelta.dy.abs() / MediaQuery.of(context).size.height,
+            zoom: delta < 0
+                ? max(mousePosNotifier.value.zoom + delta, 1)
+                : mousePosNotifier.value.zoom + delta,
           );
         }
       },

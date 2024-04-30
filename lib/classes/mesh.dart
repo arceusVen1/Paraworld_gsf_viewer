@@ -37,8 +37,7 @@ class ModelSubMesh {
     List<ModelTriangle> triangleToShow,
     Float32List normals,
   }) getDrawingData(
-    Rotation rotation,
-    {
+    Transformation transformation, {
     required ProjectionData projectionData,
     Image? overrideTexture,
     required int textureWidthOffset,
@@ -53,7 +52,7 @@ class ModelSubMesh {
 
     final List<ModelTriangle> trianglesToShow = [];
     for (final triangle in triangles) {
-      final shouldShow = triangle.shouldShowTriangle(rotation);
+      final shouldShow = triangle.shouldShowTriangle(transformation);
       if (shouldShow) trianglesToShow.add(triangle.copy(verticesOffset));
 
       for (int j = 0; j < triangle.points.length; j++) {
@@ -63,16 +62,14 @@ class ModelSubMesh {
         if (positions[vertexIndice * 2] != 0) continue;
 
         if (shouldShow) {
-          if (texture?.imageData != null ||
-              overrideTexture != null) {
-            final height = overrideTexture?.height ?? texture!.imageData!.height;
+          if (texture?.imageData != null || overrideTexture != null) {
+            final height =
+                overrideTexture?.height ?? texture!.imageData!.height;
             final width = overrideTexture?.width ?? texture!.imageData!.width;
             textureCoordinates[vertexIndice * 2] = textureWidthOffset +
-                (triangle.points[j].textureCoordinates!.x *
-                    width);
+                (triangle.points[j].textureCoordinates!.x * width);
             textureCoordinates[vertexIndice * 2 + 1] =
-                (1 - triangle.points[j].textureCoordinates!.y) *
-                    height;
+                (1 - triangle.points[j].textureCoordinates!.y) * height;
           }
 
           final projected = triangle.points[j].project(
@@ -80,7 +77,7 @@ class ModelSubMesh {
             heightOffset: projectionData.heightOffset,
             maxWidth: projectionData.maxFactor,
             maxHeight: projectionData.maxFactor,
-            rotation: rotation,
+            transformation: transformation,
           );
           normals.addAll([
             projected.pointProjection.x,

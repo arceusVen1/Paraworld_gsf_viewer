@@ -13,10 +13,10 @@ class ModelTriangle {
   final List<ModelVertex> points;
   final List<int> indices;
 
-  bool shouldShowTriangle(Rotation rotation) {
-    final p0 = points[0].transform(rotation);
-    final p1 = points[1].transform(rotation);
-    final p2 = points[2].transform(rotation);
+  bool shouldShowTriangle(Transformation transformation) {
+    final p0 = points[0].transform(transformation);
+    final p1 = points[1].transform(transformation);
+    final p2 = points[2].transform(transformation);
     final normal = (p1 - p0).cross(p2 - p0);
 
     // we place our eye at center far from camera, hence -100 in z

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -48,13 +49,6 @@ class Model {
     ..strokeWidth = 1
     ..strokeCap = StrokeCap.round;
 
-  final textStyle = const TextStyle(
-    color: Colors.pink,
-    fontSize: 12,
-  );
-  final jointPaint = Paint()
-    ..color = Colors.pink
-    ..strokeWidth = 3;
   final skeletonPaint = Paint()
     ..strokeWidth = 2
     ..strokeCap = StrokeCap.round;
@@ -155,7 +149,7 @@ class Model {
   }
 
   void draw(
-    Rotation rotation,
+    Transformation transformation,
     ui.Size size,
     ui.Canvas canvas,
     Color meshColor,
@@ -180,7 +174,7 @@ class Model {
       // reversing submesh seems to help with rendering order
       for (final submesh in mesh.submeshes.reversed) {
         final data = submesh.getDrawingData(
-          rotation,
+          transformation,
           projectionData: projectionData,
           overrideTexture: overrideTexture,
           textureWidthOffset: overrideTexture == null
@@ -204,7 +198,7 @@ class Model {
     // trying to push deeper triangles to the back
     triangles.sort((a, b) {
       cmpFnct(double previousValue, ModelVertex element) {
-        return previousValue + element.transform(rotation).z;
+        return previousValue + element.transform(transformation).z;
       }
 
       final double aWeight = a.points.fold(0.0, cmpFnct);
@@ -254,6 +248,14 @@ class Model {
 
     if (showSkeleton && skeletons.isNotEmpty) {
       skeletonPaint.color = meshColor;
+      final textStyle = TextStyle(
+        color: Colors.pink,
+        fontSize: 12 + transformation.scaleFactor,
+        fontWeight: FontWeight.bold,
+      );
+      final jointPaint = Paint()
+        ..color = Colors.pink
+        ..strokeWidth = 3 + transformation.scaleFactor / 2;
       for (final skeleton in skeletons) {
         for (final branch in skeleton) {
           final List<double> points = [];
@@ -263,7 +265,7 @@ class Model {
               heightOffset: projectionData.heightOffset,
               maxWidth: projectionData.maxFactor,
               maxHeight: projectionData.maxFactor,
-              rotation: rotation,
+              transformation: transformation,
             );
             final idPainter = TextPainter(
               text: TextSpan(

@@ -20,7 +20,7 @@ class ModelVertex {
 
   late Vector3 positions;
   late final Vector3 positionOffset;
-  (Vector3, Quaternion)? lastTransformation;
+  (Vector3, Quaternion, double)? lastTransformation;
   late final BoundingBoxModel box;
   Vector2? textureCoordinates;
   ModelVertex? normal;
@@ -66,9 +66,10 @@ class ModelVertex {
         ((textureSequence >> 8) & 0xFF).toDouble() / 256);
   }
 
-  Vector3 transform(Rotation rotation) {
+  Vector3 transform(Transformation transformation) {
     if (lastTransformation != null &&
-        lastTransformation!.$2 == rotation.quaternion) {
+        lastTransformation!.$2 == transformation.quaternion &&
+        transformation.scaleFactor == lastTransformation!.$3) {
       return lastTransformation!.$1;
     }
     Vector3 copy = positions.clone();
@@ -77,7 +78,7 @@ class ModelVertex {
     copy.z = -positions.y;
     // centering on window
     copy -= positionOffset;
-    rotation.quaternion.rotate(copy);
+    copy.applyMatrix4(transformation.matrix);
     return copy;
   }
 
@@ -87,10 +88,14 @@ class ModelVertex {
     required double heightOffset,
     required double maxWidth,
     required double maxHeight,
-    required Rotation rotation,
+    required Transformation transformation,
   }) {
-    final transformedPoint = transform(rotation);
-    lastTransformation = (transformedPoint, rotation.quaternion);
+    final transformedPoint = transform(transformation);
+    lastTransformation = (
+      transformedPoint,
+      transformation.quaternion,
+      transformation.scaleFactor,
+    );
 
     double perpectiveFactor = 1.0;
 
@@ -105,7 +110,7 @@ class ModelVertex {
             heightOffset: heightOffset,
             maxWidth: maxWidth,
             maxHeight: maxHeight,
-            rotation: rotation,
+            transformation: transformation,
           )
           .pointProjection
     );
