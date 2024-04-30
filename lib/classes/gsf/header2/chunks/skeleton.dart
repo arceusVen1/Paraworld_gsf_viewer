@@ -159,7 +159,7 @@ class SkeletonChunk extends Chunk {
       final nextBone = _getNextBoneInTree(
         boneTree,
         bones,
-        bone.index + 1,
+        firstChildIndex + 1,
       );
       if (nextBone == null) {
         throw ("Missing ${bone.childrenCount.value - boneTree[bone.index]!.children.length} children for bone $bone");
