@@ -99,10 +99,7 @@ class SkeletonChunk extends Chunk {
             : bindPoses.last.getEndOffset(),
       );
       bindPoses.add(bindPose);
-      //bones[i].bindPose = bindPose;
     }
-    // unfortunately bind poses are linked to bones recursively so we need to
-    // fill the bone tree to link them using a sor of stack pointer on the bind poses
 
     // fill bone tree
     while (boneTree.length < allBonesCount.value) {
@@ -144,22 +141,11 @@ class SkeletonChunk extends Chunk {
     }
     final firstChildIndex =
         bone.index + (bone.nextChildOffset.value / Bone.size).ceil();
-    final firstChild = bones[firstChildIndex];
-    boneTree[bone.index]!.children.add(firstChildIndex);
-
-    if (!boneTree.containsKey(firstChildIndex)) {
-      _getChildOfBone(
-        boneTree,
-        bones,
-        firstChild,
-      );
-    }
-    int treatedCount = 1;
-    while (treatedCount < bone.childrenCount.value) {
+    while (boneTree[bone.index]!.children.length < bone.childrenCount.value) {
       final nextBone = _getNextBoneInTree(
         boneTree,
         bones,
-        firstChildIndex + 1,
+        firstChildIndex,
       );
       if (nextBone == null) {
         throw ("Missing ${bone.childrenCount.value - boneTree[bone.index]!.children.length} children for bone $bone");
@@ -170,7 +156,6 @@ class SkeletonChunk extends Chunk {
         bones,
         nextBone,
       );
-      treatedCount++;
     }
   }
 
@@ -235,6 +220,8 @@ class SkeletonChunk extends Chunk {
   }
 
   List<List<(int?, ModelVertex)>> toModelVertices() {
+    // unfortunately bind poses are linked to bones recursively so we need to
+    // fill the bone tree to link them using a sort of stack pointer on the bind poses
     final rootBone = bones.first;
     rootBone.bindPose = bindPoses.first;
     final rootVert = ModelVertex(

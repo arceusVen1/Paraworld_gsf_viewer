@@ -2,21 +2,28 @@ import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 class LinkChunk extends Chunk {
   late final Standard4BytesData<int> guid;
   late final Standard4BytesData<double> positionX;
   late final Standard4BytesData<double> positionY;
   late final Standard4BytesData<double> positionZ;
-  late final Standard4BytesData<double> quaternionL;
-  late final Standard4BytesData<double> quaternionI;
-  late final Standard4BytesData<double> quaternionJ;
-  late final Standard4BytesData<double> quaternionK;
+  late final Standard4BytesData<double> quaternionX;
+  late final Standard4BytesData<double> quaternionY;
+  late final Standard4BytesData<double> quaternionZ;
+  late final Standard4BytesData<double> quaternionW;
   late final Standard4BytesData<StringNoZero> fourccLink;
   // for bone only
   late final Standard4BytesData<int>? skeletonIndex;
   late final Standard4BytesData<UnknowData>? boneIds;
   late final Standard4BytesData<UnknowData>? boneWeights;
+
+  Vector3 get position =>
+      Vector3(positionX.value, positionY.value, positionZ.value);
+
+  Quaternion get quaternion => Quaternion(quaternionY.value, quaternionZ.value,
+      quaternionW.value, quaternionX.value);
 
   @override
   String get label => '${type.name} 0x${guid.value.toRadixString(16)}';
@@ -50,28 +57,28 @@ class LinkChunk extends Chunk {
       bytes: bytes,
       offset: offset,
     );
-    quaternionL = Standard4BytesData(
+    quaternionX = Standard4BytesData(
       position: positionZ.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    quaternionI = Standard4BytesData(
-      position: quaternionL.relativeEnd,
+    quaternionY = Standard4BytesData(
+      position: quaternionX.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    quaternionJ = Standard4BytesData(
-      position: quaternionI.relativeEnd,
+    quaternionZ = Standard4BytesData(
+      position: quaternionY.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
-    quaternionK = Standard4BytesData(
-      position: quaternionJ.relativeEnd,
+    quaternionW = Standard4BytesData(
+      position: quaternionZ.relativeEnd,
       bytes: bytes,
       offset: offset,
     );
     fourccLink = Standard4BytesData(
-      position: quaternionK.relativeEnd,
+      position: quaternionW.relativeEnd,
       bytes: bytes,
       offset: offset,
     );

@@ -148,6 +148,67 @@ class Model {
     }
   }
 
+  void drawSkeleton(
+    Transformation transformation,
+    ui.Size size,
+    ui.Canvas canvas,
+    Color meshColor,
+  ) {
+    final projectionData = getProjectionData(size);
+    skeletonPaint.color = meshColor;
+    final textStyle = TextStyle(
+      color: Colors.pink,
+      fontSize: 12 + transformation.scaleFactor,
+      fontWeight: FontWeight.bold,
+    );
+    final jointPaint = Paint()
+      ..color = Colors.pink
+      ..strokeWidth = 3 + transformation.scaleFactor / 2;
+    for (final skeleton in skeletons) {
+      for (final branch in skeleton) {
+        final List<double> points = [];
+        for (final joint in branch) {
+          final coords = joint.$2.project(
+            widthOffset: projectionData.widthOffset,
+            heightOffset: projectionData.heightOffset,
+            maxWidth: projectionData.maxFactor,
+            maxHeight: projectionData.maxFactor,
+            transformation: transformation,
+          );
+          points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
+
+          if (joint.$1 == null) {
+            continue;
+          }
+          final idPainter = TextPainter(
+            text: TextSpan(
+              text: joint.$1.toString(),
+              style: textStyle,
+            ),
+            textDirection: TextDirection.ltr,
+          )..layout(
+              minWidth: 0,
+              maxWidth: size.width,
+            );
+          idPainter.paint(
+            canvas,
+            Offset(
+              coords.pointProjection.x,
+              coords.pointProjection.y,
+            ),
+          );
+        }
+        final pos = Float32List.fromList(points);
+        canvas.drawRawPoints(ui.PointMode.lines, pos, skeletonPaint);
+        canvas.drawRawPoints(
+          ui.PointMode.points,
+          pos,
+          jointPaint,
+        );
+      }
+    }
+  }
+
   void draw(
     Transformation transformation,
     ui.Size size,
@@ -158,7 +219,6 @@ class Model {
     bool showNormals = false,
     bool showCloths = false,
     bool showTexture = false,
-    bool showSkeleton = false,
   }) {
     final projectionData = getProjectionData(size);
     final listOfMesh = showCloths ? meshes + cloth : meshes;
@@ -245,60 +305,5 @@ class Model {
           ? texturePainter
           : (_paint..color = meshColor.withOpacity(0.3)),
     );
-
-    if (showSkeleton && skeletons.isNotEmpty) {
-      skeletonPaint.color = meshColor;
-      final textStyle = TextStyle(
-        color: Colors.pink,
-        fontSize: 12 + transformation.scaleFactor,
-        fontWeight: FontWeight.bold,
-      );
-      final jointPaint = Paint()
-        ..color = Colors.pink
-        ..strokeWidth = 3 + transformation.scaleFactor / 2;
-      for (final skeleton in skeletons) {
-        for (final branch in skeleton) {
-          final List<double> points = [];
-          for (final joint in branch) {
-            final coords = joint.$2.project(
-              widthOffset: projectionData.widthOffset,
-              heightOffset: projectionData.heightOffset,
-              maxWidth: projectionData.maxFactor,
-              maxHeight: projectionData.maxFactor,
-              transformation: transformation,
-            );
-            points.addAll([coords.pointProjection.x, coords.pointProjection.y]);
-
-            if (joint.$1 == null) {
-              continue;
-            }
-            final idPainter = TextPainter(
-              text: TextSpan(
-                text: joint.$1.toString(),
-                style: textStyle,
-              ),
-              textDirection: TextDirection.ltr,
-            )..layout(
-                minWidth: 0,
-                maxWidth: size.width,
-              );
-            idPainter.paint(
-              canvas,
-              Offset(
-                coords.pointProjection.x,
-                coords.pointProjection.y,
-              ),
-            );
-          }
-          final pos = Float32List.fromList(points);
-          canvas.drawRawPoints(ui.PointMode.lines, pos, skeletonPaint);
-          canvas.drawRawPoints(
-            ui.PointMode.points,
-            pos,
-            jointPaint,
-          );
-        }
-      }
-    }
   }
 }
