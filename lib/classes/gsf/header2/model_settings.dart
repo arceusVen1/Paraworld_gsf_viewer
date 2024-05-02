@@ -244,7 +244,7 @@ class ModelSettings extends GsfPart {
         fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
     for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
       if (chunk.type == ChunkType.skeleton) {
-        skeletons.add((chunk as SkeletonChunk).toModelVertices());
+        skeletons.add((chunk as SkeletonChunk).toModel());
       } else if (chunk.type.isMeshLike()) {
         meshes.add((chunk as MeshChunk).toModelMesh(
           ChunkAttributes.fromValue(type, chunk.attributes.value),

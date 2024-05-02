@@ -3,12 +3,9 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material_attribute.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/mesh.dart';
@@ -40,7 +37,7 @@ class Model {
   final List<ModelMesh> meshes;
   final List<ModelMesh> cloth;
   final BoundingBoxModel boundingBox;
-  final List<List<List<(int?, ModelVertex)>>> skeletons;
+  final List<SkeletonModel> skeletons;
   // todo skeleton
   // todo position links
 

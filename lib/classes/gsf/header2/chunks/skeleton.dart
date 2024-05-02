@@ -9,6 +9,9 @@ import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:vector_math/vector_math.dart';
 
 typedef BoneTree = Map<int, ({Bone bone, List<int> children})>;
+typedef JointModel = (int?, ModelVertex);
+typedef BoneModel = List<JointModel>;
+typedef SkeletonModel = List<BoneModel>;
 
 /// WARNING: This class the first bone is included in skeleton chunk
 class SkeletonChunk extends Chunk {
@@ -166,15 +169,15 @@ class SkeletonChunk extends Chunk {
         : unknownData.offsettedLength;
   }
 
-  (List<List<(int?, ModelVertex)>>, int) _createJointsBranch(
+  (SkeletonModel, int) _createJointsBranch(
     Bone parentBone,
     Matrix4 parentMatrix,
     ModelVertex parentVert,
-    List<int> boneIds,
+    List<int> childIds,
     int bindPosePointer,
   ) {
-    final List<List<(int?, ModelVertex)>> branches = [];
-    if (boneIds.isEmpty) {
+    final SkeletonModel branches = [];
+    if (childIds.isEmpty) {
       Vector3 endPos = parentVert.positions.clone();
       endPos.applyMatrix4((parentBone.bindPose!.matrix..invert()) *
           parentBone.localTransform *
@@ -193,8 +196,8 @@ class SkeletonChunk extends Chunk {
         bindPosePointer
       );
     }
-    for (final boneId in List.from(boneIds)) {
-      final line = <(int, ModelVertex)>[(parentBone.index, parentVert)];
+    for (final boneId in List.from(childIds)) {
+      final BoneModel boneLine = [(parentBone.index, parentVert)];
       final data = boneTree[boneId]!;
       final bone = data.bone;
       bone.bindPose = bindPoses[bindPosePointer];
@@ -204,8 +207,8 @@ class SkeletonChunk extends Chunk {
         box: BoundingBoxModel.zero(),
         positionOffset: Vector3.zero(),
       );
-      line.add((boneId, boneVert));
-      branches.add(line);
+      boneLine.add((boneId, boneVert));
+      branches.add(boneLine);
       final childBranches = _createJointsBranch(
         bone,
         parentMatrix * bone.localTransform,
@@ -219,7 +222,7 @@ class SkeletonChunk extends Chunk {
     return (branches, bindPosePointer);
   }
 
-  List<List<(int?, ModelVertex)>> toModelVertices() {
+  SkeletonModel toModel() {
     // unfortunately bind poses are linked to bones recursively so we need to
     // fill the bone tree to link them using a sort of stack pointer on the bind poses
     final rootBone = bones.first;
