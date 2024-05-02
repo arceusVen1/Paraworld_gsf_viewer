@@ -211,6 +211,7 @@ class ModelDrawer extends CustomPainter {
         canvas,
       );
     }
+    drawAxis(size, canvas);
   }
 
   @override
