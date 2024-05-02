@@ -3,9 +3,14 @@ import 'package:vector_math/vector_math.dart';
 class Transformation {
   Transformation();
 
+  Vector3 translation = Vector3.zero();
   Quaternion quaternion = Quaternion.identity();
   double scaleFactor = 1;
   Matrix4 matrix = Matrix4.identity();
+
+  void setTranslation(double x, double y) {
+    translation = Vector3(x, y, 0);
+  }
 
   void setQuaternion(
     double xRotation,
@@ -18,7 +23,7 @@ class Transformation {
   }
 
   void composeMatrix() {
-    matrix = Matrix4.compose(Vector3.zero(), quaternion, Vector3.all(scaleFactor));
+    matrix = Matrix4.compose(translation, quaternion, Vector3.all(scaleFactor));
   }
 
   @override
@@ -28,7 +33,9 @@ class Transformation {
 
   @override
   bool operator ==(Object other) =>
-      other is Transformation && other.quaternion == quaternion && other.scaleFactor == scaleFactor;
+      other is Transformation &&
+      other.quaternion == quaternion &&
+      other.scaleFactor == scaleFactor;
 
   @override
   int get hashCode => quaternion.hashCode;

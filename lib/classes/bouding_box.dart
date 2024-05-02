@@ -9,11 +9,14 @@ class BoundingBoxModel {
     required this.x,
     required this.y,
     required this.z,
-  });
+  }) {
+    _maxOfCoordinates = maxOfCoordinates;
+  }
 
   late BoxCoordinate x;
   late BoxCoordinate y;
   late BoxCoordinate z;
+  double? _maxOfCoordinates;
 
   BoundingBoxModel.zero() {
     x = (min: 0, max: 1);
@@ -22,6 +25,9 @@ class BoundingBoxModel {
   }
 
   double get maxOfCoordinates {
+    if (_maxOfCoordinates != null) {
+      return _maxOfCoordinates!;
+    }
     final xMax = math.max(x.max.abs(), x.min.abs());
     final yMax = math.max(y.max.abs(), y.min.abs());
     final zMax = math.max(z.max.abs(), z.min.abs());

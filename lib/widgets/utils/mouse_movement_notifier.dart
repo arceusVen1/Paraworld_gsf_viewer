@@ -2,80 +2,162 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:paraworld_gsf_viewer/widgets/utils/buttons.dart';
+import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
 typedef MousePositionDrag = ({
   Offset pos,
   double lastX,
   double lastY,
-  double zoom
 });
 
-typedef MouseListener = Widget Function(
-    ValueNotifier<MousePositionDrag> notifier);
+typedef MouseEventData = ({
+  MousePositionDrag mousePositionPrimary,
+  MousePositionDrag mousePositionSecondary,
+  double zoom,
+});
 
-class MouseMovementNotifier extends StatelessWidget {
+typedef MouseListener = Widget Function(ValueNotifier<MouseEventData> notifier);
+
+class MouseMovementNotifier extends StatefulWidget {
   const MouseMovementNotifier({super.key, required this.mouseListener});
 
   final MouseListener mouseListener;
 
   @override
+  State<MouseMovementNotifier> createState() => _MouseMovementNotifierState();
+}
+
+class _MouseMovementNotifierState extends State<MouseMovementNotifier> {
+  (double, double) _lastXs = (0, 0);
+  (double, double) _lastYs = (0, 0);
+  double _refX = 0;
+  double _refY = 0;
+  bool _isPrimary = false;
+
+  final MousePositionDrag defaultPos =
+      (pos: const Offset(0, 0), lastX: 0, lastY: 0);
+  late ValueNotifier<MouseEventData> mousePosNotifier;
+
+  @override
+  void initState() {
+    mousePosNotifier = ValueNotifier<MouseEventData>((
+      mousePositionPrimary: defaultPos,
+      mousePositionSecondary: defaultPos,
+      zoom: 1.0,
+    ));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    double lastX = 0;
-    double lastY = 0;
-    double refX = 0;
-    double refY = 0;
-
-    final mousePosNotifier = ValueNotifier<MousePositionDrag>(
-        (pos: const Offset(0, 0), lastX: 0, lastY: 0, zoom: 1));
-
+    final colorScheme = Theme.of(context).colorScheme;
     return Listener(
       onPointerUp: (event) {
-        mousePosNotifier.value = (
-          pos: Offset(event.position.dx - refX, event.position.dy - refY),
-          lastX: lastX,
-          lastY: lastY,
-          zoom: mousePosNotifier.value.zoom
+        final currentLastX = _isPrimary ? _lastXs.$1 : _lastXs.$2;
+        final currentLastY = _isPrimary ? _lastYs.$1 : _lastYs.$2;
+        final MousePositionDrag newPosData = (
+          pos: Offset(event.position.dx - _refX, event.position.dy - _refY),
+          lastX: currentLastX,
+          lastY: currentLastY,
         );
-        lastX = event.position.dx - refX + lastX;
-        lastY = event.position.dy - refY + lastY;
+        mousePosNotifier.value = (
+          mousePositionPrimary: _isPrimary
+              ? newPosData
+              : mousePosNotifier.value.mousePositionPrimary,
+          mousePositionSecondary: _isPrimary
+              ? mousePosNotifier.value.mousePositionSecondary
+              : newPosData,
+          zoom: mousePosNotifier.value.zoom,
+        );
+        final newLastX = event.position.dx - _refX + currentLastX;
+        final newLastY = event.position.dy - _refY + currentLastY;
+        _lastXs = _isPrimary ? (newLastX, _lastXs.$2) : (_lastXs.$1, newLastX);
+        _lastYs = _isPrimary ? (newLastY, _lastYs.$2) : (_lastYs.$1, newLastY);
       },
       onPointerDown: (event) {
-        if (event.buttons == kPrimaryMouseButton) {
-          refX = event.position.dx;
-          refY = event.position.dy;
-          mousePosNotifier.value = (
-            pos: const Offset(0, 0),
-            lastX: lastX,
-            lastY: lastY,
-            zoom: mousePosNotifier.value.zoom
-          );
-        }
+        _refX = event.position.dx;
+        _refY = event.position.dy;
+        _isPrimary = event.buttons == kPrimaryMouseButton;
+        final MousePositionDrag newPosData = (
+          pos: const Offset(0, 0),
+          lastX: _isPrimary ? _lastXs.$1 : _lastXs.$2,
+          lastY: _isPrimary ? _lastYs.$1 : _lastYs.$2,
+        );
+        mousePosNotifier.value = (
+          mousePositionPrimary: _isPrimary
+              ? newPosData
+              : mousePosNotifier.value.mousePositionPrimary,
+          mousePositionSecondary: _isPrimary
+              ? mousePosNotifier.value.mousePositionSecondary
+              : newPosData,
+          zoom: mousePosNotifier.value.zoom,
+        );
       },
       onPointerMove: (event) {
-        if (event.buttons == kPrimaryMouseButton) {
-          mousePosNotifier.value = (
-            pos: Offset(event.position.dx - refX, event.position.dy - refY),
-            lastX: lastX,
-            lastY: lastY,
-            zoom: mousePosNotifier.value.zoom
-          );
-        }
+        final MousePositionDrag newPosData = (
+          pos: Offset(event.position.dx - _refX, event.position.dy - _refY),
+          lastX: _isPrimary ? _lastXs.$1 : _lastXs.$2,
+          lastY: _isPrimary ? _lastYs.$1 : _lastYs.$2,
+        );
+        mousePosNotifier.value = (
+          mousePositionPrimary: _isPrimary
+              ? newPosData
+              : mousePosNotifier.value.mousePositionPrimary,
+          mousePositionSecondary: _isPrimary
+              ? mousePosNotifier.value.mousePositionSecondary
+              : newPosData,
+          zoom: mousePosNotifier.value.zoom,
+        );
       },
       onPointerSignal: (event) {
         if (event is PointerScrollEvent) {
           final delta =
               event.scrollDelta.dy / MediaQuery.of(context).size.height;
           mousePosNotifier.value = (
-            pos: mousePosNotifier.value.pos,
-            lastX: mousePosNotifier.value.lastX,
-            lastY: mousePosNotifier.value.lastY,
+            mousePositionPrimary: mousePosNotifier.value.mousePositionPrimary,
+            mousePositionSecondary:
+                mousePosNotifier.value.mousePositionSecondary,
             zoom: delta < 0
                 ? max(mousePosNotifier.value.zoom + delta, 1)
                 : mousePosNotifier.value.zoom + delta,
           );
         }
       },
-      child: mouseListener(mousePosNotifier),
+      child: Column(
+        children: [
+          Expanded(child: widget.mouseListener(mousePosNotifier)),
+          Button.outlinedPrimary(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Label.regular(
+                  "Reset transformations",
+                  isBold: true,
+                  color: colorScheme.onBackground,
+                ),
+                Icon(
+                  Icons.refresh,
+                  color: colorScheme.onBackground,
+                )
+              ],
+            ),
+            onPressed: () {
+              _lastXs = (0, 0);
+              _lastYs = (0, 0);
+              _refX = 0;
+              _refY = 0;
+              mousePosNotifier.value = (
+                mousePositionPrimary: defaultPos,
+                mousePositionSecondary: defaultPos,
+                zoom: 1.0,
+              );
+            },
+          ),
+          const Gap(8.0),
+        ],
+      ),
     );
   }
 }

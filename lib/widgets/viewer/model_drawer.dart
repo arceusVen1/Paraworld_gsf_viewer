@@ -26,7 +26,7 @@ class ModelDrawer extends CustomPainter {
     required this.showSkeleton,
   }) : super(repaint: mousePosition);
 
-  final ValueNotifier<MousePositionDrag> mousePosition;
+  final ValueNotifier<MouseEventData> mousePosition;
   final Model model;
   final ui.Image? overridingTexture;
   final bool showNormals;
@@ -156,17 +156,29 @@ class ModelDrawer extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    final rotationMouseData = mousePosition.value.mousePositionPrimary;
     final zRotationAngle =
-        (mousePosition.value.pos.dx + mousePosition.value.lastX) *
+        (rotationMouseData.pos.dx + rotationMouseData.lastX) *
             2 *
             math.pi /
             size.width;
 
     final xRotationAngle =
-        (mousePosition.value.pos.dy + mousePosition.value.lastY) *
+        (rotationMouseData.pos.dy + rotationMouseData.lastY) *
             2 *
             math.pi /
             size.height;
+    final boxMax = model.boundingBox.maxOfCoordinates;
+    final translationMouseData = mousePosition.value.mousePositionSecondary;
+    final xTranslation =
+        (translationMouseData.pos.dx + translationMouseData.lastX) /
+            size.width *
+            boxMax;
+    final zTranslation =
+        -(translationMouseData.pos.dy + translationMouseData.lastY) /
+            size.height *
+            boxMax;
+    transformation.setTranslation(xTranslation, zTranslation);
     transformation.setQuaternion(xRotationAngle, 0, zRotationAngle);
     transformation.scaleFactor = mousePosition.value.zoom;
     transformation.composeMatrix();
@@ -181,8 +193,15 @@ class ModelDrawer extends CustomPainter {
       showNormals: showNormals,
       showCloths: showCloth,
       showTexture: showTexture,
-      showSkeleton: showSkeleton,
     );
+    if (showSkeleton) {
+      model.drawSkeleton(
+        transformation,
+        size,
+        canvas,
+        meshColor,
+      );
+    }
 
     drawAxis(size, canvas);
   }

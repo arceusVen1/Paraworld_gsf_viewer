@@ -358,7 +358,7 @@ class Viewer extends StatelessWidget {
   }
 }
 
-typedef viewerControlBuilder = Widget Function(bool showCloth, bool showNormals,
+typedef ViewerControlBuilder = Widget Function(bool showCloth, bool showNormals,
     bool showTexture, bool showSkeleton, ChunkAttributes?);
 
 class ViewerControlWrapper extends ConsumerWidget {
@@ -368,7 +368,7 @@ class ViewerControlWrapper extends ConsumerWidget {
     required this.overridingAttributes,
   });
 
-  final viewerControlBuilder builder;
+  final ViewerControlBuilder builder;
   final ChunkAttributes? overridingAttributes;
   @override
   Widget build(BuildContext context, ref) {
