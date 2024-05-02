@@ -24,6 +24,7 @@ class ModelDrawer extends CustomPainter {
     required this.attributesFilter,
     required this.showCloth,
     required this.showSkeleton,
+    required this.showLinks,
   }) : super(repaint: mousePosition);
 
   final ValueNotifier<MouseEventData> mousePosition;
@@ -35,6 +36,7 @@ class ModelDrawer extends CustomPainter {
   final ChunkAttributes attributesFilter;
   final bool showCloth;
   final bool showSkeleton;
+  final bool showLinks;
 
   final Transformation transformation = Transformation();
 
@@ -202,8 +204,13 @@ class ModelDrawer extends CustomPainter {
         meshColor,
       );
     }
-
-    drawAxis(size, canvas);
+    if (showLinks) {
+      model.drawPositionLinks(
+        transformation,
+        size,
+        canvas,
+      );
+    }
   }
 
   @override

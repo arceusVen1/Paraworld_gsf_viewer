@@ -44,6 +44,7 @@ class SubmeshDisplay extends StatelessWidget {
       cloth: [],
       boundingBox: modelData.box,
       skeletons: [],
+      links: [],
     );
     return Flexible(
       child: Column(

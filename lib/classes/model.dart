@@ -3,8 +3,10 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/link.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material_attribute.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
@@ -30,6 +32,7 @@ class Model {
     required this.cloth,
     required this.boundingBox,
     required this.skeletons,
+    required this.links,
   });
 
   final ModelType type;
@@ -38,6 +41,7 @@ class Model {
   final List<ModelMesh> cloth;
   final BoundingBoxModel boundingBox;
   final List<SkeletonModel> skeletons;
+  final List<LinkModel> links;
   // todo skeleton
   // todo position links
 
@@ -50,8 +54,21 @@ class Model {
     ..strokeWidth = 2
     ..strokeCap = StrokeCap.round;
 
+  final positionLinkPaint = Paint()
+    ..color = Colors.blue
+    ..strokeWidth = 8
+    ..strokeCap = StrokeCap.round;
+
   final Map<ModelTexture, (int, img.Image)> _texturesOffsets = {};
   ui.Image? _composedModelImage;
+
+  TextStyle _getTextStyle(double scaleFactor, Color color) {
+    return TextStyle(
+      color: color,
+      fontSize: 12 + scaleFactor,
+      fontWeight: FontWeight.bold,
+    );
+  }
 
   /// When loading a model, we need to load all the textures and compose them into a single image
   /// so it allow for a single canvas paint call for z buffering with single image shader
@@ -145,6 +162,48 @@ class Model {
     }
   }
 
+  void drawPositionLinks(
+    Transformation transformation,
+    ui.Size size,
+    ui.Canvas canvas,
+  ) {
+    final projectionData = getProjectionData(size);
+    final pos = <double>[];
+    final textStyle = _getTextStyle(transformation.scaleFactor, Colors.blue);
+    for (final link in links) {
+      final coords = link.vertex.project(
+        widthOffset: projectionData.widthOffset,
+        heightOffset: projectionData.heightOffset,
+        maxWidth: projectionData.maxFactor,
+        maxHeight: projectionData.maxFactor,
+        transformation: transformation,
+      );
+      pos.addAll([coords.pointProjection.x, coords.pointProjection.y]);
+      final namePainter = TextPainter(
+        text: TextSpan(
+          text: link.fourCC.toString(),
+          style: textStyle,
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout(
+          minWidth: 0,
+          maxWidth: size.width,
+        );
+      namePainter.paint(
+        canvas,
+        Offset(
+          coords.pointProjection.x,
+          coords.pointProjection.y,
+        ),
+      );
+    }
+    canvas.drawRawPoints(
+      ui.PointMode.points,
+      Float32List.fromList(pos),
+      positionLinkPaint,
+    );
+  }
+
   void drawSkeleton(
     Transformation transformation,
     ui.Size size,
@@ -153,11 +212,7 @@ class Model {
   ) {
     final projectionData = getProjectionData(size);
     skeletonPaint.color = meshColor;
-    final textStyle = TextStyle(
-      color: Colors.pink,
-      fontSize: 12 + transformation.scaleFactor,
-      fontWeight: FontWeight.bold,
-    );
+    final textStyle = _getTextStyle(transformation.scaleFactor, Colors.pink);
     final jointPaint = Paint()
       ..color = Colors.pink
       ..strokeWidth = 3 + transformation.scaleFactor / 2;

@@ -139,6 +139,18 @@ class _ViewerControls extends ConsumerWidget {
           },
         ),
         _ViewerSwitchsControl(
+          title: "Show Links",
+          value: state.map(
+            empty: (_) => false,
+            withModel: (withModel) => withModel.showLinks,
+          ),
+          onChanged: (value) {
+            ref
+                .read(modelSelectionStateNotifierProvider.notifier)
+                .updateShowLinks(value);
+          },
+        ),
+        _ViewerSwitchsControl(
           title: "Show Normals",
           value: state.map(
             empty: (_) => false,
@@ -320,6 +332,7 @@ class Viewer extends StatelessWidget {
                       showNormals,
                       showTexture,
                       showSkeleton,
+                      showLinks,
                       controlAttributes,
                     ) =>
                         CustomPaint(
@@ -335,6 +348,7 @@ class Viewer extends StatelessWidget {
                         showCloth: showCloth,
                         showTexture: showTexture,
                         showSkeleton: showSkeleton,
+                        showLinks: showLinks,
                       ),
                       child: const SizedBox.expand(),
                     ),
@@ -346,9 +360,9 @@ class Viewer extends StatelessWidget {
         ),
         ViewerControlWrapper(
           overridingAttributes: attributesFilter,
-          builder:
-              (showCloth, showNomrals, showTexture, showSkeleton, attributes) =>
-                  ConvertToObjCta(
+          builder: (showCloth, showNomrals, showTexture, showSkeleton,
+                  showLinks, attributes) =>
+              ConvertToObjCta(
             model: model!,
             attributesFilter: attributes ?? defaultAttributes,
           ),
@@ -359,7 +373,7 @@ class Viewer extends StatelessWidget {
 }
 
 typedef ViewerControlBuilder = Widget Function(bool showCloth, bool showNormals,
-    bool showTexture, bool showSkeleton, ChunkAttributes?);
+    bool showTexture, bool showSkeleton, bool showLinks, ChunkAttributes?);
 
 class ViewerControlWrapper extends ConsumerWidget {
   const ViewerControlWrapper({
@@ -373,7 +387,7 @@ class ViewerControlWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     if (overridingAttributes != null) {
-      return builder(false, false, false, false, overridingAttributes);
+      return builder(false, false, true, false, false, overridingAttributes);
     }
     final state = ref.watch(modelSelectionStateNotifierProvider);
     return builder(
@@ -392,6 +406,10 @@ class ViewerControlWrapper extends ConsumerWidget {
       state.map(
         empty: (_) => false,
         withModel: (withModel) => withModel.showSkeleton,
+      ),
+      state.map(
+        empty: (_) => false,
+        withModel: (withModel) => withModel.showLinks,
       ),
       state.map(
         empty: (_) => null,

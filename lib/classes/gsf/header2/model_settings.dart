@@ -4,6 +4,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bounding_box.dar
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/link.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
@@ -239,12 +240,15 @@ class ModelSettings extends GsfPart {
   ) {
     final List<ModelMesh> meshes = [];
     final List<ModelMesh> cloths = [];
-    List<List<List<(int?, ModelVertex)>>> skeletons = [];
+    final List<SkeletonModel> skeletons = [];
+    final List<LinkModel> links = [];
     final List<int> materialIndices =
         fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
     for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
       if (chunk.type == ChunkType.skeleton) {
         skeletons.add((chunk as SkeletonChunk).toModel());
+      } else if (chunk.type.isLinkLike()) {
+        links.add((chunk as LinkChunk).toModelVertex());
       } else if (chunk.type.isMeshLike()) {
         meshes.add((chunk as MeshChunk).toModelMesh(
           ChunkAttributes.fromValue(type, chunk.attributes.value),
@@ -274,6 +278,7 @@ class ModelSettings extends GsfPart {
       cloth: cloths,
       boundingBox: boundingBox.toModelBox(),
       skeletons: skeletons,
+      links: links,
     );
   }
 

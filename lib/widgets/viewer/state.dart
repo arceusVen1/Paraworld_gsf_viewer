@@ -22,5 +22,6 @@ class ModelViewerSelectionState with _$ModelViewerSelectionState {
     @Default(true) showTexture,
     @Default(false) showPartyColor,
     @Default(false) showSkeleton,
+    @Default(true) showLinks,
   }) = ModelViewerSelectionStateWithModel;
 }

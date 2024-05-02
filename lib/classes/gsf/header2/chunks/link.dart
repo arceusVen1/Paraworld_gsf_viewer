@@ -1,8 +1,12 @@
 import 'dart:typed_data';
 
+import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
-import 'package:vector_math/vector_math_64.dart';
+import 'package:paraworld_gsf_viewer/classes/vertex.dart';
+import 'package:vector_math/vector_math.dart';
+
+typedef LinkModel = ({String fourCC, ModelVertex vertex});
 
 class LinkChunk extends Chunk {
   late final Standard4BytesData<int> guid;
@@ -103,6 +107,17 @@ class LinkChunk extends Chunk {
       boneIds = null;
       boneWeights = null;
     }
+  }
+
+  LinkModel toModelVertex() {
+    return (
+      fourCC: fourccLink.value.value,
+      vertex: ModelVertex(
+        position,
+        box: BoundingBoxModel.zero(),
+        positionOffset: Vector3.zero(),
+      ),
+    );
   }
 
   @override
