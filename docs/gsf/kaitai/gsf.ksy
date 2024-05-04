@@ -253,7 +253,7 @@ types:
     seq:
       - id: model_info_index
         type: u4
-      - id: unk_bytes
+      - id: model_anim_index
         type: u2
       - id: dusttrail_name_num_chars
         type: u4
@@ -261,7 +261,7 @@ types:
         type: str
         size: dusttrail_name_num_chars
         encoding: ASCII
-      - id: unk_bytes_bone_index
+      - id: start_frame
         type: u4
       - id: num_entries
         type: u4
@@ -527,7 +527,7 @@ types:
           cases:
             mesh_chunk_type::mesh: mesh_chunk(_io.pos)
             mesh_chunk_type::billboard: billboard_chunk(_io.pos)
-            #mesh_chunk_type::particle: particle_chunk
+            mesh_chunk_type::particle: particle_chunk
             mesh_chunk_type::skeleton: skeleton_chunk(_io.pos)
             mesh_chunk_type::unk_type: unk_type_chunk
             mesh_chunk_type::cloth: cloth_chunk(_io.pos)
@@ -695,19 +695,19 @@ types:
         type: f4
       - id: scale_z
         type: f4
-      - id: guat_1
+      - id: guat_x
         type: f4
-      - id: guat_i
+      - id: guat_y
         type: f4
-      - id: guat_j
+      - id: guat_z
         type: f4
-      - id: guat_k
+      - id: guat_w
         type: f4
-      - id: bones_count1
+      - id: num_child_bones1
         type: u4
-      - id: next_bone_offset
+      - id: child_bone_offset
         type: u4
-      - id: bones_count2
+      - id: num_child_bones2
         type: u4
       - id: bind_pose_offset
         type: u4
@@ -718,29 +718,32 @@ types:
       - id: num_unk2
         type: u4
       - id: bone
-        type: bone_chunk
+        type: bone(_io.pos)
         repeat: expr
-        repeat-expr: num_all_bones - 1
+        repeat-expr: num_child_bones1
+        if: child_bone_offset != 0x80000000
     instances:
-      bind_pose_chunk:
+      bind_pose:
         io: _root._io
-        #pos: _parent.anim_chunks_table_header_offset - 88 + _parent.pos + pos + anim_chunks_table_offset + i*12
         pos: pos + bind_pose_offset + 72
-        type: bind_pose_chunk
+        type: bind_pose
         repeat: expr
         repeat-expr: num_all_bones
         if: bind_pose_offset != 0x80000000
-  bone_chunk:
+  bone:
+    params:
+      - id: pos
+        type: s4
     seq:
       - id: guid
         type: u4
       - id: flags
         type: u4
-      - id: anim_pos_x
+      - id: pos_x
         type: f4
-      - id: anim_pos_y
+      - id: pos_y
         type: f4
-      - id: anim_pos_z
+      - id: pos_z
         type: f4
       - id: scale_x
         type: f4
@@ -748,21 +751,29 @@ types:
         type: f4
       - id: scale_z
         type: f4
-      - id: guat_1
+      - id: guat_x
         type: f4
-      - id: guat_i
+      - id: guat_y
         type: f4
-      - id: guat_j
+      - id: guat_z
         type: f4
-      - id: guat_k
+      - id: guat_w
         type: f4
-      - id: bones_count1
+      - id: num_child_bones1
         type: u4
-      - id: next_bone_offset
+      - id: child_bone_offset
         type: u4
-      - id: bones_count2
+      - id: num_child_bones2
         type: u4
-  bind_pose_chunk:
+    instances:
+      bone:
+        io: _root._io
+        pos: pos + child_bone_offset + 52
+        type: bone(_io.pos)
+        repeat: expr
+        repeat-expr: num_child_bones1
+        if: child_bone_offset != 0x80000000
+  bind_pose:
     seq:
       - id: float1_1
         type: f4
@@ -1456,33 +1467,119 @@ types:
       - id: guid
         type: u4
       - id: unk
-        size: 8
+        type: u4
       - id: unk_float
         type: f4
-      - id: unk2
-        size: 16
+      - id: unk_float1
+        type: f4
       - id: unk_float2
         type: f4
       - id: unk_float3
         type: f4
       - id: unk_float4
         type: f4
-      - id: spread
-        type: f4
-      - id: num_unk
-        type: u4
       - id: unk_float5
         type: f4
-      - id: num_unk2
+      - id: unk_float6
+        type: f4
+      - id: unk_float7
+        type: f4
+      - id: unk_float8
+        type: f4
+      - id: spread
+        type: f4
+      - id: max_parts
         type: u4
-      - id: num_unk3
-        type: u4
-      - id: num_unk4
+      - id: unk_float10
+        type: f4
+      - id: particle_name_offset
         type: u4
       - id: num_unk5
         type: u4
       - id: num_unk6
         type: u4
+      - id: num_unk7
+        type: u4
+      - id: num_unk8
+        type: u4
+      - id: particle_name
+        type: particle_name
+        if: particle_name_offset != 0x80000000
+      - id: unk1
+        size: 9
+      - id: size
+        type: f4
+      - id: life_time
+        type: f4
+      - id: rotate
+        type: f4
+      - id: gravitation
+        type: f4
+      - id: size_var
+        type: f4
+      - id: drag
+        type: f4
+      - id: unk3
+        size: 4
+      - id: col_alp_fadein
+        type: f4
+      - id: col_alp_fadeout
+        type: f4
+      - id: tile_anim_speed
+        type: f4
+      - id: lifetime_var
+        type: f4
+      - id: size_increase
+        type: f4
+      - id: color_var_r
+        type: u4
+      - id: color_var_g
+        type: u4
+      - id: color_var_b
+        type: u4
+      - id: emit_timer
+        type: f4
+      - id: speed_var
+        type: f4
+        if: particle_name_offset != 0x80000000
+      - id: emit_timer_var
+        type: f4
+        if: particle_name_offset != 0x80000000
+      - id: color_r
+        type: u4
+        if: particle_name_offset != 0x80000000
+      - id: color_g
+        type: u4
+        if: particle_name_offset != 0x80000000
+      - id: color_b
+        type: u4
+        if: particle_name_offset != 0x80000000
+      - id: emit_rot_inc
+        type: f4
+        if: particle_name_offset != 0x80000000
+      - id: src_rot_speed
+        type: f4
+        if: particle_name_offset != 0x80000000
+      - id: center_suck
+        type: f4
+        if: particle_name_offset != 0x80000000
+      - id: suck_vel
+        type: f4
+        if: particle_name_offset != 0x80000000
+      - id: rotation_var
+        type: f4
+        if: particle_name_offset != 0x80000000
+      - id: alpha
+        type: u4
+        if: particle_name_offset != 0x80000000
+      - id: emit_per_meter
+        type: f4
+        if: particle_name_offset != 0x80000000
+      - id: size_inc_exp
+        type: f4
+        if: particle_name_offset != 0x80000000
+  particle_name:
+    seq:
       - id: num_strings
         type: u4
       - id: num_max_chars
@@ -1493,58 +1590,6 @@ types:
         type: str
         size: num_max_chars
         encoding: ASCII
-      - id: unk_atlas_stuff
-        size: 4
-      - id: unk5
-        size: 5
-      - id: particle_size
-        type: f4
-      - id: particle_speed
-        type: f4
-      - id: unk_float6
-        type: f4
-      - id: unk_float7
-        type: f4
-      - id: unk_float8
-        type: f4
-      - id: unk_float9
-        type: f4
-      - id: unk6
-        size: 4
-      - id: color_fade_out_speed
-        type: f4
-      - id: color_fade_in_speed
-        type: f4
-      - id: emitter_speed
-        type: f4
-      - id: scale
-        type: f4
-      - id: particle_scale
-        type: f4
-      - id: red_rnd_mul
-        type: u4
-      - id: green_rnd_mul
-        type: u4
-      - id: blue_rnd_mul
-        type: u4
-      - id: red_mul
-        type: f4
-      - id: green_mul
-        type: f4
-      - id: blue_mul
-        type: f4
-      - id: red_strength
-        type: u4
-      - id: green_strength
-        type: u4
-      - id: blue_strength
-        type: u4
-      - id: unk7
-        size: 12
-      - id: unk_float10
-        type: f4
-      - id: unk9
-        size: 16
   particle_skinned_chunk:
     seq:
       - id: unk
