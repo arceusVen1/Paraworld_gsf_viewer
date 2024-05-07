@@ -8,7 +8,9 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
-import 'package:paraworld_gsf_viewer/providers/texture.dart';
+import 'package:paraworld_gsf_viewer/providers/gsf.dart';
+import 'package:paraworld_gsf_viewer/providers/notifiers.dart';
+import 'package:paraworld_gsf_viewer/providers/state.dart';
 import 'package:paraworld_gsf_viewer/widgets/convert_to_obj_cta.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
@@ -211,8 +213,9 @@ class ChunkViewerLoader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final pwfolder = ref.watch(pwFolderPathStateProvider);
-    final detailTable = ref.watch(detailTableStateProvider).asData?.value;
+    final detailTable = ref
+        .watch(pwLinkStateNotifierProvider)
+        .mapOrNull(success: (success) => success.detailTable);
     Model? model;
     if (chunk.type.isClothLike()) {
       model = (chunk as ClothChunk).toModel();
@@ -235,7 +238,6 @@ class ChunkViewerLoader extends ConsumerWidget {
               value: chunk.attributes.value,
               typeOfModel: ModelType.unknown,
             ),
-            pwfolder: pwfolder,
             detailTable: detailTable,
           );
         } else {
@@ -262,15 +264,25 @@ class ModelViewerLoader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final pwfolder = ref.watch(pwFolderPathStateProvider);
-    final detailTable = ref.watch(detailTableStateProvider).asData?.value;
     if (selectedModelData == null) {
       return const Center(
         child: Label.extraLarge("No model to show"),
       );
     }
-    final model =
-        selectedModelData!.toModel(materialsTable, pwfolder, detailTable);
+    final pwLinkState = ref.watch(pwLinkStateNotifierProvider);
+    String? pwFolder;
+    DetailTable? detailTable;
+    PathGetter? getTexturePathFnct;
+    pwLinkState.mapOrNull(
+      success: (withLink) {
+        pwFolder = withLink.pwFolderPath;
+        detailTable = withLink.detailTable;
+        getTexturePathFnct =
+            ref.read(pwLinkStateNotifierProvider.notifier).getModdedPathForFile;
+      },
+    );
+    final model = selectedModelData!
+        .toModel(materialsTable, pwFolder, detailTable, getTexturePathFnct);
     return FutureBuilder(
       future: model.loadTextures(Theme.of(context).colorScheme.onBackground,
           showPartyColor ? Colors.cyan : null),
@@ -279,7 +291,6 @@ class ModelViewerLoader extends ConsumerWidget {
           return Viewer(
             model: model,
             attributesFilter: attributesFilter,
-            pwfolder: pwfolder,
             detailTable: detailTable,
           );
         } else {
@@ -295,13 +306,11 @@ class Viewer extends StatelessWidget {
     super.key,
     required this.model,
     required this.attributesFilter,
-    this.pwfolder,
     this.detailTable,
   });
 
   final Model? model;
   final ChunkAttributes? attributesFilter;
-  final String? pwfolder;
   final DetailTable? detailTable;
 
   @override
