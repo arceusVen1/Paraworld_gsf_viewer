@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/link.dart';
@@ -80,7 +79,7 @@ class Model {
     for (final mesh in meshes + cloth) {
       for (final submesh in mesh.submeshes) {
         if (submesh.texture != null &&
-            _texturesOffsets[submesh.texture!] == null) {
+            !_texturesOffsets.containsKey(submesh.texture!)) {
           final image =
               await submesh.texture!.loadImage(fillingColor, partyColor);
           if (image != null) {
@@ -124,6 +123,8 @@ class Model {
     // to avoid blocking UI this is executed in separate isolate
     fullTexture = await Isolate.run(
         () => createFullTexture(fullTexture, _texturesOffsets));
+    // useful for debugging
+    //await File("test_texture.png").writeAsBytes(img.encodePng(fullTexture)!);
     _composedModelImage =
         await (ModelTexture(attribute: MaterialAttribute.zero(), path: "")
               ..imageData = fullTexture)
