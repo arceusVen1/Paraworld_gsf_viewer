@@ -12,23 +12,40 @@ typedef PathGetter = String? Function(String);
 class PwLinkFolderNotifier extends Notifier<PwLinkState> {
   @override
   PwLinkState build() {
-      return const PwLinkState.notLinked();
+    return const PwLinkState.notLinked();
   }
 
-  void link(String folderPath) {
+  void link(String folderPath, String? selectedGsf) {
     state = PwLinkState.loading(pwFolderPath: folderPath);
     try {
       final ModPrioritiesPerPath modPrioritiesPerPath =
-           _initModPrioritiesPerPath(folderPath);
-      state =  PwLinkState.success(
+          _initModPrioritiesPerPath(folderPath);
+      state = PwLinkState.success(
         pwFolderPath: folderPath,
         modPrioritiesPerPath: modPrioritiesPerPath,
         detailTable: _initDetailTable(folderPath, modPrioritiesPerPath),
         gsfs: _initGsfFilesList(folderPath, modPrioritiesPerPath),
+        selectedGsf: selectedGsf,
       );
     } catch (e) {
       state = PwLinkState.failed(error: e, pwFolderPath: folderPath);
     }
+  }
+
+  void setSelectedGsf(String? gsfName) {
+    state = state.maybeMap(
+      success: (linked) => linked.copyWith(selectedGsf: gsfName),
+      orElse: () => state,
+    );
+  }
+
+  void refresh() {
+    state.mapOrNull(
+      success: (success) {
+        link(success.pwFolderPath, success.selectedGsf);
+      },
+      failed: (failed) => link(failed.pwFolderPath, null),
+    );
   }
 
   List<String> _initGsfFilesList(

@@ -18,7 +18,7 @@ final gsfSelectedFileInPwFolderProvider = StateProvider<String?>((ref) => null);
 final gsfProvider = FutureProvider<GSF?>(
   (ref) async {
     final overridingGsf = ref.watch(overridingGsfPathStateProvider);
-    final selectedGsf = ref.watch(gsfSelectedFileInPwFolderProvider);
+    final selectedGsf = ref.watch(pwLinkStateNotifierProvider).mapOrNull(success: (data) => data.selectedGsf);
 
     if (overridingGsf == null && selectedGsf == null) {
       final testFile = await rootBundle.load('assets/test_objects.gsf');

@@ -81,6 +81,7 @@ class _PwFolderLink extends ConsumerWidget {
             scaffold.clearSnackBars();
             scaffold.showSnackBar(
               SnackBar(
+                duration: const Duration(seconds: 15),
                 content: Label.regular(
                   "Linking ${failed.pwFolderPath} failed with err: ${failed.error}",
                   isBold: true,
@@ -103,7 +104,7 @@ class _PwFolderLink extends ConsumerWidget {
               dialogTitle: "select your ParaWorld folder",
             );
             if (result != null) {
-              ref.read(pwLinkStateNotifierProvider.notifier).link(result);
+              ref.read(pwLinkStateNotifierProvider.notifier).link(result, null);
             }
           },
           child: isLoadingTable
@@ -120,7 +121,7 @@ class _PwFolderLink extends ConsumerWidget {
               onPressed: () {
                 ref
                     .read(pwLinkStateNotifierProvider.notifier)
-                    .link(path!); // force update
+                    .refresh(); // force update
               },
               icon: Icon(
                 Icons.refresh,
@@ -192,7 +193,6 @@ class _SelectableGsfFiles extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final pwLinkState = ref.watch(pwLinkStateNotifierProvider);
-    final selected = ref.watch(gsfSelectedFileInPwFolderProvider);
     final entries = pwLinkState.mapOrNull(
           success: (linked) => linked.gsfs
               .map(
@@ -200,7 +200,7 @@ class _SelectableGsfFiles extends ConsumerWidget {
                   value: gsf,
                   child: Label.regular(
                     gsf.split("/").last,
-                    isBold: selected == gsf,
+                    isBold: linked.selectedGsf == gsf,
                   ),
                 ),
               )
@@ -210,7 +210,7 @@ class _SelectableGsfFiles extends ConsumerWidget {
     entries.insert(
       0,
       DropdownMenuItem(
-        value: "",
+        value: null,
         child: Label.regular(
           entries.isNotEmpty ? "Select a .gsf" : "Link to PW folder to use GSF",
         ),
@@ -220,12 +220,15 @@ class _SelectableGsfFiles extends ConsumerWidget {
       title: DropdownButton<String?>(
         focusColor: Theme.of(context).colorScheme.surface,
         isExpanded: true,
-        value: selected ?? "",
+        value: pwLinkState.mapOrNull(
+          success: (linked) => linked.selectedGsf,
+        ),
         items: entries,
         onChanged: pwLinkState.mapOrNull(
             success: (_) => (value) {
-                  ref.read(gsfSelectedFileInPwFolderProvider.notifier).state =
-                      value != null && value.isNotEmpty ? value : null;
+                  ref
+                      .read(pwLinkStateNotifierProvider.notifier)
+                      .setSelectedGsf(value);
                 }),
       ),
     );

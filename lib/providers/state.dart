@@ -25,6 +25,7 @@ const factory PwLinkState.loading(
       required ModPrioritiesPerPath modPrioritiesPerPath,
       required DetailTable detailTable,
       required List<String> gsfs,
+      String? selectedGsf,
       }) = _PwLinkStateSuccess;
 
   const factory PwLinkState.failed(

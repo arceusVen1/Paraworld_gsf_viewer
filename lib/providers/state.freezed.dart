@@ -31,7 +31,8 @@ mixin _$PwLinkState {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)
+            List<String> gsfs,
+            String? selectedGsf)
         success,
     required TResult Function(String pwFolderPath, Object error) failed,
   }) =>
@@ -51,7 +52,8 @@ mixin _$PwLinkState {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult? Function(String pwFolderPath, Object error)? failed,
   }) =>
@@ -71,7 +73,8 @@ mixin _$PwLinkState {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult Function(String pwFolderPath, Object error)? failed,
     required TResult orElse(),
@@ -174,7 +177,8 @@ class _$PwLinkStateNotLinkedImpl implements _PwLinkStateNotLinked {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)
+            List<String> gsfs,
+            String? selectedGsf)
         success,
     required TResult Function(String pwFolderPath, Object error) failed,
   }) {
@@ -197,7 +201,8 @@ class _$PwLinkStateNotLinkedImpl implements _PwLinkStateNotLinked {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult? Function(String pwFolderPath, Object error)? failed,
   }) {
@@ -220,7 +225,8 @@ class _$PwLinkStateNotLinkedImpl implements _PwLinkStateNotLinked {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult Function(String pwFolderPath, Object error)? failed,
     required TResult orElse(),
@@ -352,7 +358,8 @@ class _$PwLinkStateLoadingImpl implements _PwLinkStateLoading {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)
+            List<String> gsfs,
+            String? selectedGsf)
         success,
     required TResult Function(String pwFolderPath, Object error) failed,
   }) {
@@ -375,7 +382,8 @@ class _$PwLinkStateLoadingImpl implements _PwLinkStateLoading {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult? Function(String pwFolderPath, Object error)? failed,
   }) {
@@ -398,7 +406,8 @@ class _$PwLinkStateLoadingImpl implements _PwLinkStateLoading {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult Function(String pwFolderPath, Object error)? failed,
     required TResult orElse(),
@@ -473,7 +482,8 @@ abstract class _$$PwLinkStateSuccessImplCopyWith<$Res> {
                 bool overrideNameWithResolution
               })>
           detailTable,
-      List<String> gsfs});
+      List<String> gsfs,
+      String? selectedGsf});
 }
 
 /// @nodoc
@@ -491,6 +501,7 @@ class __$$PwLinkStateSuccessImplCopyWithImpl<$Res>
     Object? modPrioritiesPerPath = null,
     Object? detailTable = null,
     Object? gsfs = null,
+    Object? selectedGsf = freezed,
   }) {
     return _then(_$PwLinkStateSuccessImpl(
       pwFolderPath: null == pwFolderPath
@@ -514,6 +525,10 @@ class __$$PwLinkStateSuccessImplCopyWithImpl<$Res>
           ? _value._gsfs
           : gsfs // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      selectedGsf: freezed == selectedGsf
+          ? _value.selectedGsf
+          : selectedGsf // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -532,7 +547,8 @@ class _$PwLinkStateSuccessImpl implements _PwLinkStateSuccess {
                 bool overrideNameWithResolution
               })>
           detailTable,
-      required final List<String> gsfs})
+      required final List<String> gsfs,
+      this.selectedGsf})
       : _modPrioritiesPerPath = modPrioritiesPerPath,
         _detailTable = detailTable,
         _gsfs = gsfs;
@@ -571,8 +587,11 @@ class _$PwLinkStateSuccessImpl implements _PwLinkStateSuccess {
   }
 
   @override
+  final String? selectedGsf;
+
+  @override
   String toString() {
-    return 'PwLinkState.success(pwFolderPath: $pwFolderPath, modPrioritiesPerPath: $modPrioritiesPerPath, detailTable: $detailTable, gsfs: $gsfs)';
+    return 'PwLinkState.success(pwFolderPath: $pwFolderPath, modPrioritiesPerPath: $modPrioritiesPerPath, detailTable: $detailTable, gsfs: $gsfs, selectedGsf: $selectedGsf)';
   }
 
   @override
@@ -586,7 +605,9 @@ class _$PwLinkStateSuccessImpl implements _PwLinkStateSuccess {
                 .equals(other._modPrioritiesPerPath, _modPrioritiesPerPath) &&
             const DeepCollectionEquality()
                 .equals(other._detailTable, _detailTable) &&
-            const DeepCollectionEquality().equals(other._gsfs, _gsfs));
+            const DeepCollectionEquality().equals(other._gsfs, _gsfs) &&
+            (identical(other.selectedGsf, selectedGsf) ||
+                other.selectedGsf == selectedGsf));
   }
 
   @override
@@ -595,7 +616,8 @@ class _$PwLinkStateSuccessImpl implements _PwLinkStateSuccess {
       pwFolderPath,
       const DeepCollectionEquality().hash(_modPrioritiesPerPath),
       const DeepCollectionEquality().hash(_detailTable),
-      const DeepCollectionEquality().hash(_gsfs));
+      const DeepCollectionEquality().hash(_gsfs),
+      selectedGsf);
 
   @JsonKey(ignore: true)
   @override
@@ -620,11 +642,13 @@ class _$PwLinkStateSuccessImpl implements _PwLinkStateSuccess {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)
+            List<String> gsfs,
+            String? selectedGsf)
         success,
     required TResult Function(String pwFolderPath, Object error) failed,
   }) {
-    return success(pwFolderPath, modPrioritiesPerPath, detailTable, gsfs);
+    return success(
+        pwFolderPath, modPrioritiesPerPath, detailTable, gsfs, selectedGsf);
   }
 
   @override
@@ -643,11 +667,13 @@ class _$PwLinkStateSuccessImpl implements _PwLinkStateSuccess {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult? Function(String pwFolderPath, Object error)? failed,
   }) {
-    return success?.call(pwFolderPath, modPrioritiesPerPath, detailTable, gsfs);
+    return success?.call(
+        pwFolderPath, modPrioritiesPerPath, detailTable, gsfs, selectedGsf);
   }
 
   @override
@@ -666,13 +692,15 @@ class _$PwLinkStateSuccessImpl implements _PwLinkStateSuccess {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult Function(String pwFolderPath, Object error)? failed,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(pwFolderPath, modPrioritiesPerPath, detailTable, gsfs);
+      return success(
+          pwFolderPath, modPrioritiesPerPath, detailTable, gsfs, selectedGsf);
     }
     return orElse();
   }
@@ -727,7 +755,8 @@ abstract class _PwLinkStateSuccess implements PwLinkState {
                 bool overrideNameWithResolution
               })>
           detailTable,
-      required final List<String> gsfs}) = _$PwLinkStateSuccessImpl;
+      required final List<String> gsfs,
+      final String? selectedGsf}) = _$PwLinkStateSuccessImpl;
 
   String get pwFolderPath;
   Map<String, List<({String override, int priority})>> get modPrioritiesPerPath;
@@ -735,6 +764,7 @@ abstract class _PwLinkStateSuccess implements PwLinkState {
           ({List<int> availableResolutions, bool overrideNameWithResolution})>
       get detailTable;
   List<String> get gsfs;
+  String? get selectedGsf;
   @JsonKey(ignore: true)
   _$$PwLinkStateSuccessImplCopyWith<_$PwLinkStateSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -826,7 +856,8 @@ class _$PwLinkStateFailedImpl implements _PwLinkStateFailed {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)
+            List<String> gsfs,
+            String? selectedGsf)
         success,
     required TResult Function(String pwFolderPath, Object error) failed,
   }) {
@@ -849,7 +880,8 @@ class _$PwLinkStateFailedImpl implements _PwLinkStateFailed {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult? Function(String pwFolderPath, Object error)? failed,
   }) {
@@ -872,7 +904,8 @@ class _$PwLinkStateFailedImpl implements _PwLinkStateFailed {
                       bool overrideNameWithResolution
                     })>
                 detailTable,
-            List<String> gsfs)?
+            List<String> gsfs,
+            String? selectedGsf)?
         success,
     TResult Function(String pwFolderPath, Object error)? failed,
     required TResult orElse(),
