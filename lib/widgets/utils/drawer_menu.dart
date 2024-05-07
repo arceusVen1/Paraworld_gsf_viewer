@@ -63,23 +63,35 @@ class _PwFolderLink extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final theme = Theme.of(context);
-    final path = ref.watch(pwFolderPathStateProvider);
-    final isLoadingTable = ref.watch(detailTableStateProvider).isLoading;
+    String? path;
+    bool isLoadingTable = false;
+    ref.watch(pwLinkStateNotifierProvider).maybeMap(
+        loading: (_) {
+          isLoadingTable = true;
+        },
+        success: (success) {
+          path = success.pwFolderPath;
+          isLoadingTable = false;
+        },
+        orElse: () => false);
     final scaffold = ScaffoldMessenger.of(context);
-    ref.listen(detailTableStateProvider, (_, next) {
-      if (next.asError != null) {
-        scaffold.clearSnackBars();
-        scaffold.showSnackBar(
-          SnackBar(
-            content: Label.regular(
-              "Parsing detail table failed with err: ${next.error}",
-              isBold: true,
-              color: theme.colorScheme.error,
-            ),
-            backgroundColor: theme.colorScheme.errorContainer,
-          ),
-        );
-      }
+    ref.listen(pwLinkStateNotifierProvider, (_, next) {
+      next.maybeMap(
+          failed: (failed) {
+            scaffold.clearSnackBars();
+            scaffold.showSnackBar(
+              SnackBar(
+                content: Label.regular(
+                  "Linking ${failed.pwFolderPath} failed with err: ${failed.error}",
+                  isBold: true,
+                  color: theme.colorScheme.error,
+                ),
+                backgroundColor: theme.colorScheme.errorContainer,
+              ),
+            );
+          },
+          orElse: () {});
+      {}
     });
     return ListTile(
       title: Tooltip(
@@ -91,7 +103,7 @@ class _PwFolderLink extends ConsumerWidget {
               dialogTitle: "select your ParaWorld folder",
             );
             if (result != null) {
-              ref.read(pwFolderPathStateProvider.notifier).state = result;
+              ref.read(pwLinkStateNotifierProvider.notifier).link(result);
             }
           },
           child: isLoadingTable
@@ -106,8 +118,9 @@ class _PwFolderLink extends ConsumerWidget {
       trailing: path != null
           ? IconButton(
               onPressed: () {
-                ref.read(pwFolderPathStateProvider.notifier).state =
-                    path + ''; // force update
+                ref
+                    .read(pwLinkStateNotifierProvider.notifier)
+                    .link(path!); // force update
               },
               icon: Icon(
                 Icons.refresh,
@@ -178,10 +191,10 @@ class _SelectableGsfFiles extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final gsfs = ref.watch(gsfFilesListProvider);
+    final pwLinkState = ref.watch(pwLinkStateNotifierProvider);
     final selected = ref.watch(gsfSelectedFileInPwFolderProvider);
-    final entries = gsfs.whenOrNull(
-          data: (gsfs) => gsfs
+    final entries = pwLinkState.mapOrNull(
+          success: (linked) => linked.gsfs
               .map(
                 (gsf) => DropdownMenuItem(
                   value: gsf,
@@ -199,9 +212,7 @@ class _SelectableGsfFiles extends ConsumerWidget {
       DropdownMenuItem(
         value: "",
         child: Label.regular(
-          gsfs.asData?.value.isNotEmpty ?? false
-              ? "Select a .gsf"
-              : "Link to PW folder to use GSF",
+          entries.isNotEmpty ? "Select a .gsf" : "Link to PW folder to use GSF",
         ),
       ),
     );
@@ -211,12 +222,11 @@ class _SelectableGsfFiles extends ConsumerWidget {
         isExpanded: true,
         value: selected ?? "",
         items: entries,
-        onChanged: gsfs.asData?.value.isNotEmpty ?? false
-            ? (value) {
-                ref.read(gsfSelectedFileInPwFolderProvider.notifier).state =
-                    value != null && value.isNotEmpty ? value : null;
-              }
-            : null,
+        onChanged: pwLinkState.mapOrNull(
+            success: (_) => (value) {
+                  ref.read(gsfSelectedFileInPwFolderProvider.notifier).state =
+                      value != null && value.isNotEmpty ? value : null;
+                }),
       ),
     );
   }

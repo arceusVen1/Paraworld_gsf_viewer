@@ -12,7 +12,8 @@ import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
 import 'package:paraworld_gsf_viewer/classes/texture.dart';
-import 'package:paraworld_gsf_viewer/providers/texture.dart';
+import 'package:paraworld_gsf_viewer/providers/notifiers.dart';
+import 'package:paraworld_gsf_viewer/providers/state.dart';
 import 'package:vector_math/vector_math.dart';
 
 mixin MeshToModelInterface on Chunk {
@@ -27,6 +28,7 @@ mixin MeshToModelInterface on Chunk {
     List<MaterialData> materialTable = const [],
     String? pwFolder,
     DetailTable? detailTable,
+    PathGetter? getModdedTexturePathFnct,
   ]) {
     final List<ModelSubMesh> meshes = [];
     for (var submeshIndice = 0;
@@ -41,6 +43,7 @@ mixin MeshToModelInterface on Chunk {
       ModelTexture? texture;
       if (pwFolder != null &&
           detailTable != null &&
+          getModdedTexturePathFnct != null &&
           materialIndices.length > submeshIndice &&
           fallbackMaterialIndices.length >
               materialIndices[submeshIndice].value) {
@@ -54,7 +57,7 @@ mixin MeshToModelInterface on Chunk {
 
         if (textureName != null && textureName.isNotEmpty) {
           texture = ModelTexture.fromMaterialAttribute(
-              attributes, textureName, pwFolder, detailTable);
+              attributes, textureName, pwFolder, detailTable, getModdedTexturePathFnct,);
         }
       }
       meshes.add(

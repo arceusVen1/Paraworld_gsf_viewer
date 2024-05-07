@@ -4,7 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/gsf.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:paraworld_gsf_viewer/providers/texture.dart';
+import 'package:paraworld_gsf_viewer/providers/notifiers.dart';
+import 'package:paraworld_gsf_viewer/providers/state.dart';
 
 /// Provider that holds the path of a specific gsf file from anywhere in the system
 final overridingGsfPathStateProvider =
@@ -43,18 +44,7 @@ final gsfProvider = FutureProvider<GSF?>(
   },
 );
 
-final gsfFilesListProvider = FutureProvider<List<String>>(
-  (ref) async {
-    final pwFolderPath = ref.watch(pwFolderPathStateProvider);
-    if (pwFolderPath == null) {
-      return [];
-    }
-    final directory = Directory('$pwFolderPath/Data/Base/GSF');
-    final gsfs = await directory
-        .list()
-        .where((file) => file.path.endsWith('.gsf'))
-        .map((gsf) => gsf.path)
-        .toList();
-    return gsfs..sort();
-  },
-);
+
+final pwLinkStateNotifierProvider =
+    NotifierProvider<PwLinkFolderNotifier, PwLinkState>(
+        PwLinkFolderNotifier.new);

@@ -14,8 +14,8 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/classes/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/model.dart';
-import 'package:paraworld_gsf_viewer/classes/vertex.dart';
-import 'package:paraworld_gsf_viewer/providers/texture.dart';
+import 'package:paraworld_gsf_viewer/providers/notifiers.dart';
+import 'package:paraworld_gsf_viewer/providers/state.dart';
 
 enum ModelType {
   char,
@@ -237,6 +237,7 @@ class ModelSettings extends GsfPart {
     MaterialsTable materialsTable,
     String? pwFolder,
     DetailTable? detailTable,
+    PathGetter? getTexturePathFnct,
   ) {
     final List<ModelMesh> meshes = [];
     final List<ModelMesh> cloths = [];
@@ -256,6 +257,7 @@ class ModelSettings extends GsfPart {
           materialsTable.materials,
           pwFolder,
           detailTable,
+          getTexturePathFnct,
         ));
       } else if (chunk.type.isClothLike()) {
         cloths.add((chunk as ClothChunk).toModelMesh(
@@ -264,6 +266,7 @@ class ModelSettings extends GsfPart {
           materialsTable.materials,
           pwFolder,
           detailTable,
+          getTexturePathFnct,
         ));
       }
     }

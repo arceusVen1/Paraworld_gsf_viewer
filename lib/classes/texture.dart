@@ -3,7 +3,8 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:image/image.dart' as img;
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material_attribute.dart';
-import 'package:paraworld_gsf_viewer/providers/texture.dart';
+import 'package:paraworld_gsf_viewer/providers/notifiers.dart';
+import 'package:paraworld_gsf_viewer/providers/state.dart';
 
 class ModelTexture {
   ModelTexture({
@@ -24,36 +25,63 @@ class ModelTexture {
     String name,
     String pwFolder,
     DetailTable detailTable,
+    PathGetter getModdedTexturePathFnct,
   ) {
-    _textureFile = _getImageFile(name, pwFolder, detailTable);
+    _textureFile =
+        _getImageFile(name, pwFolder, detailTable, getModdedTexturePathFnct);
     if (_textureFile == null) {
+      print("Texture file not found: $name");
       path = "";
     } else {
       path = _textureFile!.path;
     }
   }
 
-  File? _getImageFile(String name, String pwFolder, DetailTable detailTable) {
+  File? _getImageFile(
+    String name,
+    String pwFolder,
+    DetailTable detailTable,
+    PathGetter getModdedTexturePathFnct,
+  ) {
     String textureNameWithoutExtension = name.split("/").last.split(".").first;
-    String pathToTexture =
-        "$pwFolder/Data/Base/Texture/${name.replaceAll("/$textureNameWithoutExtension.tga", "")}";
     if (detailTable[textureNameWithoutExtension] == null) {
       return null;
     }
+    String pathToTexture =
+        "$pwFolder/Data/Base/Texture/${name.replaceAll("$textureNameWithoutExtension.tga", "")}";
+    if (pathToTexture.endsWith("/")) {
+      pathToTexture = pathToTexture.substring(0, pathToTexture.length - 1);
+    }
+
     File? texture;
     final int maxResolution =
         detailTable[textureNameWithoutExtension]!.availableResolutions.last;
-    texture = File(
-        '$pathToTexture/${"${textureNameWithoutExtension}_(${maxResolution > 1000 ? maxResolution : "0${maxResolution < 100 ? "0$maxResolution" : maxResolution}"}).dds"}');
-
-    if (!texture.existsSync()) {
-      texture = File('$pathToTexture/$textureNameWithoutExtension.tga');
+    final ddsPath =
+        '$pathToTexture/${"${textureNameWithoutExtension}_(${maxResolution > 1000 ? maxResolution : "0${maxResolution < 100 ? "0$maxResolution" : maxResolution}"}).dds"}';
+    texture = _getTextureFileFromPath(ddsPath, getModdedTexturePathFnct);
+    if (texture != null) {
+      return texture;
     }
-
-    return texture;
+    final tgaPath = '$pathToTexture/$textureNameWithoutExtension.tga';
+    return _getTextureFileFromPath(tgaPath, getModdedTexturePathFnct);
   }
 
-  void applyAttributesToTexture(
+  File? _getTextureFileFromPath(
+    String path,
+    PathGetter getModdedTexturePathFnct,
+  ) {
+    final moddedPath = getModdedTexturePathFnct(path);
+    if (moddedPath != null) {
+      return File(moddedPath);
+    }
+    final testFile = File(path);
+    if (testFile.existsSync()) {
+      return testFile;
+    }
+    return null;
+  }
+
+  void _applyAttributesToTexture(
     Color fillingColor,
     Color? partyColor,
   ) {
@@ -97,7 +125,7 @@ class ModelTexture {
       imageData = img.decodeNamedImage(path, bytes);
     }
     if (imageData != null) {
-      applyAttributesToTexture(fillingColor, partyColor);
+      _applyAttributesToTexture(fillingColor, partyColor);
     }
     return imageData;
   }
