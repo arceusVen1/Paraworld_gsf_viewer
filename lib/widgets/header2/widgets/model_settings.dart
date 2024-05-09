@@ -10,6 +10,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bounding_box.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/path_finder.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 
@@ -82,9 +83,11 @@ class ModelSettingsDisplay extends ConsumerWidget {
         data: modelSettings.speedlineChunksCount,
       ),
       GsfDataTile(label: 'Unused offset', data: modelSettings.unusedOffset),
-      GsfDataTile(
-          label: 'Path finder table offset',
-          data: modelSettings.pathFinderTableOffset),
+      PathFinderDisplay(
+        offset: modelSettings.pathFinderTableOffset,
+        count: modelSettings.pathFinderTableCount,
+        pathFinderTable: modelSettings.pathFinderTable,
+      ),
       BoundingBoxDisplay(
         boundingBox: modelSettings.boundingBox,
       ),
@@ -198,7 +201,6 @@ class _FallbackTableDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-  
     return SectionWrapper(
       label: "Fallback table",
       children: [

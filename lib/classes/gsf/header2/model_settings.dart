@@ -8,6 +8,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/link.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks_table.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/collision_struct.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
@@ -66,6 +67,7 @@ class ModelSettings extends GsfPart {
 
   late final ChunksTable? chunksTable;
   late final FallbackTable? fallbackTable;
+  late final PathFinderTable? pathFinderTable;
   @override
   String get label => "${fourCC.value} (${objectName.label})";
 
@@ -217,6 +219,16 @@ class ModelSettings extends GsfPart {
       bytes: bytes,
       offset: offset,
     );
+    pathFinderTable = pathFinderTableCount.value > 0
+        ? PathFinderTable.fromBytes(
+            bytes,
+            offset +
+                pathFinderTableOffset.relativePos +
+                pathFinderTableOffset.value,
+            pathFinderTableCount.value,
+          )
+        : null;
+
     boundingBox = BoundingBox.fromBytes(
       bytes,
       pathFinderTableCount.offsettedLength,
