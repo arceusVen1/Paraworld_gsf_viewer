@@ -285,7 +285,7 @@ class ModelViewerLoader extends ConsumerWidget {
         .toModel(materialsTable, pwFolder, detailTable, getTexturePathFnct);
     return FutureBuilder(
       future: model.loadTextures(Theme.of(context).colorScheme.onBackground,
-          showPartyColor ? Colors.cyan : null),
+          showPartyColor ? Color(0xffffab01) : null),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Viewer(
