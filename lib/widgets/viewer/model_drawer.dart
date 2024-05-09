@@ -199,7 +199,7 @@ class ModelDrawer extends CustomPainter {
       showTexture: showTexture,
     );
     if (showCollisionBoxes) {
-      model.drawCollisions(transformation, size, canvas, meshColor);
+      model.drawCollisions(transformation, size, canvas);
     }
     if (showSkeleton) {
       model.drawSkeleton(

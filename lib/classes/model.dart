@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
@@ -48,7 +50,9 @@ class Model {
   // todo skeleton
   // todo position links
 
-  final Paint _paint = Paint()
+  final Color collisionColor = const Color(0xff0aa208);
+
+  final Paint _uncoloredPainter = Paint()
     ..color = Colors.black
     ..strokeWidth = 1
     ..strokeCap = StrokeCap.round;
@@ -161,9 +165,9 @@ class Model {
       final p3 = Offset(
           positions[indices[i + 2] * 2], positions[indices[(i + 2)] * 2 + 1]);
       ;
-      canvas.drawLine(p1, p2, customPaint ?? _paint);
-      canvas.drawLine(p2, p3, customPaint ?? _paint);
-      canvas.drawLine(p3, p1, customPaint ?? _paint);
+      canvas.drawLine(p1, p2, customPaint ?? _uncoloredPainter);
+      canvas.drawLine(p2, p3, customPaint ?? _uncoloredPainter);
+      canvas.drawLine(p3, p1, customPaint ?? _uncoloredPainter);
     }
   }
 
@@ -266,40 +270,61 @@ class Model {
     }
   }
 
+  Float32List _getVerticesProjectedPositions(
+    Transformation transformation,
+    ProjectionData projectionData,
+    List<ModelVertex> vertices,
+  ) {
+    final verticesPositions = <double>[];
+    for (final vertex in vertices) {
+      final coords = vertex.project(
+        widthOffset: projectionData.widthOffset,
+        heightOffset: projectionData.heightOffset,
+        maxWidth: projectionData.maxFactor,
+        maxHeight: projectionData.maxFactor,
+        transformation: transformation,
+      );
+      verticesPositions
+          .addAll([coords.pointProjection.x, coords.pointProjection.y]);
+    }
+
+    final verticesTypedPositions = Float32List.fromList(verticesPositions);
+    return verticesTypedPositions;
+  }
+
   void drawCollisions(
     Transformation transformation,
     ui.Size size,
     ui.Canvas canvas,
-    Color meshColor,
   ) {
     final projectionData = getProjectionData(size);
     for (final collision in collisions) {
-      final vertices = collision.vertices;
-      final triangles = collision.triangles;
-      final verticesPositions = <double>[];
-      final trianglesIndices = <int>[];
-      for (final vertex in vertices) {
-        final coords = vertex.project(
-          widthOffset: projectionData.widthOffset,
-          heightOffset: projectionData.heightOffset,
-          maxWidth: projectionData.maxFactor,
-          maxHeight: projectionData.maxFactor,
-          transformation: transformation,
-        );
-        verticesPositions
-            .addAll([coords.pointProjection.x, coords.pointProjection.y]);
-      }
-      for (final triangle in triangles) {
-        trianglesIndices.addAll(triangle.indices);
-      }
-      final verticesTypedPositions = Float32List.fromList(verticesPositions);
-      final trianglesTypedindices = Uint16List.fromList(trianglesIndices);
-      canvas.drawVertices(
-        ui.Vertices.raw(ui.VertexMode.triangles, verticesTypedPositions,
-            indices: trianglesTypedindices),
-        BlendMode.srcOver,
-        _paint..color = meshColor.withOpacity(0.3),
+      final verticesPositions = _getVerticesProjectedPositions(
+        transformation,
+        projectionData,
+        collision.vertices,
       );
+      canvas.drawVertices(
+        ui.Vertices.raw(
+          ui.VertexMode.triangles,
+          verticesPositions,
+          indices: collision.triangles,
+        ),
+        BlendMode.srcOver,
+        _uncoloredPainter..color = collisionColor.withOpacity(0.3),
+      );
+      if (collision.markers != null) {
+        final markersPositions = _getVerticesProjectedPositions(
+          transformation,
+          projectionData,
+          collision.markers!,
+        );
+        canvas.drawRawPoints(
+          ui.PointMode.lines,
+          markersPositions,
+          _uncoloredPainter..color = collisionColor,
+        );
+      }
     }
   }
 
@@ -344,7 +369,7 @@ class Model {
           canvas.drawRawPoints(
             ui.PointMode.lines,
             data.normals,
-            _paint..color = Colors.red,
+            _uncoloredPainter..color = Colors.red,
           );
         }
       }
@@ -370,7 +395,7 @@ class Model {
     if (!showTexture ||
         (overrideTexture == null && _composedModelImage == null)) {
       drawTrianglesOutside(canvas, trianglesTypedindices,
-          verticesTypedPositions, _paint..color = meshColor);
+          verticesTypedPositions, _uncoloredPainter..color = meshColor);
     }
 
     final texturePainter = ui.Paint()
@@ -397,7 +422,7 @@ class Model {
       BlendMode.srcOver,
       showTexture
           ? texturePainter
-          : (_paint..color = meshColor.withOpacity(0.3)),
+          : (_uncoloredPainter..color = meshColor.withOpacity(0.3)),
     );
   }
 }
