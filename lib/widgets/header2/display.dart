@@ -254,7 +254,8 @@ List<Widget> getChunkWidgetByType(
             children: [
               BoneTreeDisplay(
                   boneTree: data.skeleton.boneTree, bones: data.skeleton.bones),
-              if (data.bone != null) BoneDisplay(bone: data.bone!)
+              if (data.bone != null) BoneDisplay(bone: data.bone!),
+              if (collisionStruct != null) getCollisionWidget(collisionStruct),
             ],
           ),
         ),

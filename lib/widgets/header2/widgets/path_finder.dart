@@ -27,6 +27,9 @@ class PathFinderDisplay extends ConsumerWidget {
       ),
       if (pathFinderTable != null)
         PartSelector(
+          value: ref
+              .watch(header2StateNotifierProvider)
+              .mapOrNull(withModelSettings: (value) => value.collisionStruct),
           label: "Path finder table",
           parts: pathFinderTable!.collisionStructs,
           onSelected: (collisionStruct) {
