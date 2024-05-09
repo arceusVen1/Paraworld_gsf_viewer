@@ -97,11 +97,12 @@ class ModelTexture {
         }
 
         if (attribute.usePlayerColor && partyColor != null && p.a != 0) {
-          p.r = partyColor.red;
-          p.g = partyColor.green;
-          p.b = partyColor.blue;
+          p.r = (p.r * partyColor.red)/255;
+          p.g = (p.g * partyColor.green)/255;
+          p.b = (p.b * partyColor.blue)/255;
         }
-        // required because of bug in flutter whre alpha 0 with color isn't treated as fully trasnaprent
+		
+        // required because of bug in flutter where alpha 0 with color isn't treated as fully transparent
         if (p.a == 0) {
           p.r = 0;
           p.g = 0;
