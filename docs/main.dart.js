@@ -38289,7 +38289,7 @@ $1$numChannels(a){return this.G(this,A.C("call","$1$numChannels",0,[a],["numChan
 $2$offset(a,b){return this.G(this,A.C("call","$2$offset",0,[a,b],["offset"],0))},
 $2$orElse$withModel(a,b){return this.G(this,A.C("call","$2$orElse$withModel",0,[a,b],["orElse","withModel"],0))},
 $1$filter(a){return this.G(this,A.C("call","$1$filter",0,[a],["filter"],0))},
-$1$showCollisionBoxes(a){return this.G(this,A.C("call","$1$showCollisionBoxes",0,[a],["showCollisionBoxes"],0))},
+$1$showCollisionVolumes(a){return this.G(this,A.C("call","$1$showCollisionVolumes",0,[a],["showCollisionVolumes"],0))},
 $1$showLinks(a){return this.G(this,A.C("call","$1$showLinks",0,[a],["showLinks"],0))},
 $1$showSkeleton(a){return this.G(this,A.C("call","$1$showSkeleton",0,[a],["showSkeleton"],0))},
 $1$showPartyColor(a){return this.G(this,A.C("call","$1$showPartyColor",0,[a],["showPartyColor"],0))},
@@ -90210,7 +90210,7 @@ q===$&&A.a()
 s=this.b
 r=s.c
 r===$&&A.a()
-return new A.ih(p,s,A.a0B(r),q,!0,!1,!0,!1,!1,!0,!1)},
+return new A.ih(p,s,A.a0B(r),q,!0,!1,!0,!0,!1,!0,!1)},
 $S:536}
 A.a8q.prototype={
 $1(a){var s,r=this.a,q=a.b.c
@@ -90321,7 +90321,7 @@ $ir2:1,
 R5(a,b){return this.gcg().$2$materialsTable$models(a,b)},
 gGE(){return this.a}}
 A.H9.prototype={
-$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(a,b,c,d,e,f,g,a0,a1,a2,a3){var s,r,q,p,o,n,m,l=this,k=d==null?l.a.a:t.Jo.a(d),j=c==null?l.a.b:t.Wn.a(c),i=a==null?l.a.c:t.K_.a(a),h=b==null?l.a.d:t.du.a(b)
+$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(a,b,c,d,e,f,g,a0,a1,a2,a3){var s,r,q,p,o,n,m,l=this,k=d==null?l.a.a:t.Jo.a(d),j=c==null?l.a.b:t.Wn.a(c),i=a==null?l.a.c:t.K_.a(a),h=b==null?l.a.d:t.du.a(b)
 if(B.h===e){s=l.a.e
 s.toString}else s=e
 if(B.h===a0){r=l.a.f
@@ -90338,30 +90338,30 @@ if(B.h===f){m=l.a.z
 m.toString}else m=f
 return l.b.$1(new A.ih(k,j,i,h,s,r,q,p,o,n,m))},
 $0(){var s=null
-return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,B.h,B.h,B.h,B.h)},
-$1$filter(a){return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(a,null,null,null,B.h,B.h,B.h,B.h,B.h,B.h,B.h)},
-$1$showCollisionBoxes(a){var s=null
-return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,a,B.h,B.h,B.h,B.h,B.h)},
+return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,B.h,B.h,B.h,B.h)},
+$1$filter(a){return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(a,null,null,null,B.h,B.h,B.h,B.h,B.h,B.h,B.h)},
+$1$showCollisionVolumes(a){var s=null
+return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,a,B.h,B.h,B.h,B.h,B.h)},
 $1$showLinks(a){var s=null
-return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,a,B.h,B.h,B.h,B.h)},
+return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,a,B.h,B.h,B.h,B.h)},
 $1$showSkeleton(a){var s=null
-return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,B.h,B.h,a,B.h)},
+return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,B.h,B.h,a,B.h)},
 $1$showPartyColor(a){var s=null
-return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,B.h,a,B.h,B.h)},
+return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,B.h,a,B.h,B.h)},
 $1$showNormals(a){var s=null
-return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,a,B.h,B.h,B.h)},
+return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,a,B.h,B.h,B.h)},
 $1$showTexture(a){var s=null
-return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,B.h,B.h,B.h,a)},
+return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,B.h,B.h,B.h,B.h,B.h,B.h,a)},
 $1$showCloth(a){var s=null
-return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,a,B.h,B.h,B.h,B.h,B.h,B.h)},
-$2$filter$model(a,b){return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(a,null,b,null,B.h,B.h,B.h,B.h,B.h,B.h,B.h)},
-$2$materialsTable$models(a,b){return this.$11$filter$materialsTable$model$models$showCloth$showCollisionBoxes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(null,a,null,b,B.h,B.h,B.h,B.h,B.h,B.h,B.h)}}
+return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(s,s,s,s,a,B.h,B.h,B.h,B.h,B.h,B.h)},
+$2$filter$model(a,b){return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(a,null,b,null,B.h,B.h,B.h,B.h,B.h,B.h,B.h)},
+$2$materialsTable$models(a,b){return this.$11$filter$materialsTable$model$models$showCloth$showCollisionVolumes$showLinks$showNormals$showPartyColor$showSkeleton$showTexture(null,a,null,b,B.h,B.h,B.h,B.h,B.h,B.h,B.h)}}
 A.ih.prototype={
 guQ(){var s=this.a
 if(s instanceof A.iC)return s
 return new A.iC(s,s,t.pN)},
 j(a){var s=this
-return"ModelViewerSelectionState.withModel(models: "+A.k(s.guQ())+", model: "+s.b.j(0)+", filter: "+s.c.j(0)+", materialsTable: "+s.d.j(0)+", showCloth: "+A.k(s.e)+", showNormals: "+A.k(s.f)+", showTexture: "+A.k(s.r)+", showPartyColor: "+A.k(s.w)+", showSkeleton: "+A.k(s.x)+", showLinks: "+A.k(s.y)+", showCollisionBoxes: "+A.k(s.z)+")"},
+return"ModelViewerSelectionState.withModel(models: "+A.k(s.guQ())+", model: "+s.b.j(0)+", filter: "+s.c.j(0)+", materialsTable: "+s.d.j(0)+", showCloth: "+A.k(s.e)+", showNormals: "+A.k(s.f)+", showTexture: "+A.k(s.r)+", showPartyColor: "+A.k(s.w)+", showSkeleton: "+A.k(s.x)+", showLinks: "+A.k(s.y)+", showCollisionVolumes: "+A.k(s.z)+")"},
 k(a,b){var s,r,q=this
 if(b==null)return!1
 if(q!==b)if(J.Z(b)===A.p(q))if(b instanceof A.ih)if(B.a_.cT(b.a,q.a)){s=b.b
@@ -90386,7 +90386,7 @@ lr(a,b){return this.GI(a,b,t.X)},
 $ieE:1,
 $ihj:1,
 aet(a){return this.gcg().$1$filter(a)},
-aeC(a){return this.gcg().$1$showCollisionBoxes(a)},
+aeC(a){return this.gcg().$1$showCollisionVolumes(a)},
 aeD(a){return this.gcg().$1$showLinks(a)},
 aeG(a){return this.gcg().$1$showSkeleton(a)},
 aeF(a){return this.gcg().$1$showPartyColor(a)},
@@ -90425,7 +90425,7 @@ K(a){var s=null
 return A.jT(A.b([A.aBx(s,s,this.e,this.d),A.az5(8),new A.c8(B.cl,this.c,s,!0,s)],t.D),B.a6,B.X,B.a7)}}
 A.Y_.prototype={
 cr(a,b){var s=null,r=b.cz($.ir(),t.Ca),q=r.ev(0,new A.apY(),new A.apZ()),p=r.ev(0,new A.aq_(),new A.aqa()),o=r.ev(0,new A.aqh(),new A.aqi()),n=r.ev(0,new A.aqj(),new A.aqk()),m=r.ev(0,new A.aql(),new A.aqm()),l=r.ev(0,new A.aqn(),new A.aq0()),k=r.ev(0,new A.aq1(),new A.aq2()),j=r.ev(0,new A.aq3(),new A.aq4()),i=r.ev(0,new A.aq5(),new A.aq6()),h=r.guQ(),g=p==null?new A.jU(0,0,s,s):new A.y0(p,!1,new A.aq7(b),s)
-return new A.dA(A.b([new A.kr("Show Texture",o,new A.aq8(b),s),new A.kr("Show Cloth",n,new A.aq9(b),s),new A.kr("Show Skeleton",m,new A.aqb(b),s),new A.kr("Show Links",l,new A.aqc(b),s),new A.kr("Show Collision Boxes",k,new A.aqd(b),s),new A.kr("Show Normals",j,new A.aqe(b),s),new A.kr("Show Party Color",i,new A.aqf(b),s),new A.fl(h,new A.aqg(b),q,s),g],t.D),s)}}
+return new A.dA(A.b([new A.kr("Show Texture",o,new A.aq8(b),s),new A.kr("Show Cloth",n,new A.aq9(b),s),new A.kr("Show Skeleton",m,new A.aqb(b),s),new A.kr("Show Links",l,new A.aqc(b),s),new A.kr("Show Collision Volumes",k,new A.aqd(b),s),new A.kr("Show Normals",j,new A.aqe(b),s),new A.kr("Show Party Color",i,new A.aqf(b),s),new A.fl(h,new A.aqg(b),q,s),g],t.D),s)}}
 A.apY.prototype={
 $1(a){return null},
 $S:76}

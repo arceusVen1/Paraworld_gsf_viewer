@@ -25,7 +25,7 @@ class ModelDrawer extends CustomPainter {
     required this.showCloth,
     required this.showSkeleton,
     required this.showLinks,
-    required this.showCollisionBoxes,
+    required this.showCollisionVolumes,
   }) : super(repaint: mousePosition);
 
   final ValueNotifier<MouseEventData> mousePosition;
@@ -38,7 +38,7 @@ class ModelDrawer extends CustomPainter {
   final bool showCloth;
   final bool showSkeleton;
   final bool showLinks;
-  final bool showCollisionBoxes;
+  final bool showCollisionVolumes;
 
   final Transformation transformation = Transformation();
 
@@ -198,7 +198,7 @@ class ModelDrawer extends CustomPainter {
       showCloths: showCloth,
       showTexture: showTexture,
     );
-    if (showCollisionBoxes) {
+    if (showCollisionVolumes) {
       model.drawCollisions(transformation, size, canvas);
     }
     if (showSkeleton) {

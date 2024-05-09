@@ -20,9 +20,9 @@ class ModelViewerSelectionState with _$ModelViewerSelectionState {
     @Default(true) showCloth,
     @Default(false) showNormals,
     @Default(true) showTexture,
-    @Default(false) showPartyColor,
+    @Default(true) showPartyColor,
     @Default(false) showSkeleton,
     @Default(true) showLinks,
-    @Default(false) showCollisionBoxes,
+    @Default(false) showCollisionVolumes,
   }) = ModelViewerSelectionStateWithModel;
 }

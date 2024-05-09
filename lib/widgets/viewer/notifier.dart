@@ -102,10 +102,10 @@ class ModelSelectionStateNotifier extends Notifier<ModelViewerSelectionState> {
         orElse: () => null);
   }
 
-  void updateShowCollisionBoxes(bool showCollisionBoxes) {
+  void updateShowCollisionBoxes(bool showCollisionVolumes) {
     state.maybeMap(
         withModel: (withModel) {
-          state = withModel.copyWith(showCollisionBoxes: showCollisionBoxes);
+          state = withModel.copyWith(showCollisionVolumes: showCollisionVolumes);
         },
         orElse: () => null);
   }

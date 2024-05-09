@@ -153,10 +153,10 @@ class _ViewerControls extends ConsumerWidget {
           },
         ),
         _ViewerSwitchsControl(
-          title: "Show Collision Boxes",
+          title: "Show Collision Volumes",
           value: state.map(
             empty: (_) => false,
-            withModel: (withModel) => withModel.showCollisionBoxes,
+            withModel: (withModel) => withModel.showCollisionVolumes,
           ),
           onChanged: (value) {
             ref
@@ -371,7 +371,7 @@ class Viewer extends StatelessWidget {
                         showTexture: showTexture,
                         showSkeleton: showSkeleton,
                         showLinks: showLinks,
-                        showCollisionBoxes: showCollisionBoxes,
+                        showCollisionVolumes: showCollisionBoxes,
                       ),
                       child: const SizedBox.expand(),
                     ),
@@ -443,7 +443,7 @@ class ViewerControlWrapper extends ConsumerWidget {
       ),
       state.map(
         empty: (_) => false,
-        withModel: (withModel) => withModel.showCollisionBoxes,
+        withModel: (withModel) => withModel.showCollisionVolumes,
       ),
       state.map(
         empty: (_) => null,

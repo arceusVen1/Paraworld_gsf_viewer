@@ -34,7 +34,7 @@ mixin _$ModelViewerSelectionState {
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)
+            dynamic showCollisionVolumes)
         withModel,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,7 +54,7 @@ mixin _$ModelViewerSelectionState {
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)?
+            dynamic showCollisionVolumes)?
         withModel,
   }) =>
       throw _privateConstructorUsedError;
@@ -73,7 +73,7 @@ mixin _$ModelViewerSelectionState {
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)?
+            dynamic showCollisionVolumes)?
         withModel,
     required TResult orElse(),
   }) =>
@@ -240,7 +240,7 @@ class _$EmptyImpl implements _Empty {
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)
+            dynamic showCollisionVolumes)
         withModel,
   }) {
     return empty(materialsTable, models);
@@ -263,7 +263,7 @@ class _$EmptyImpl implements _Empty {
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)?
+            dynamic showCollisionVolumes)?
         withModel,
   }) {
     return empty?.call(materialsTable, models);
@@ -285,7 +285,7 @@ class _$EmptyImpl implements _Empty {
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)?
+            dynamic showCollisionVolumes)?
         withModel,
     required TResult orElse(),
   }) {
@@ -363,7 +363,7 @@ abstract class _$$ModelViewerSelectionStateWithModelImplCopyWith<$Res>
       dynamic showPartyColor,
       dynamic showSkeleton,
       dynamic showLinks,
-      dynamic showCollisionBoxes});
+      dynamic showCollisionVolumes});
 }
 
 /// @nodoc
@@ -389,7 +389,7 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
     Object? showPartyColor = freezed,
     Object? showSkeleton = freezed,
     Object? showLinks = freezed,
-    Object? showCollisionBoxes = freezed,
+    Object? showCollisionVolumes = freezed,
   }) {
     return _then(_$ModelViewerSelectionStateWithModelImpl(
       models: null == models
@@ -416,9 +416,9 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
       showSkeleton:
           freezed == showSkeleton ? _value.showSkeleton! : showSkeleton,
       showLinks: freezed == showLinks ? _value.showLinks! : showLinks,
-      showCollisionBoxes: freezed == showCollisionBoxes
-          ? _value.showCollisionBoxes!
-          : showCollisionBoxes,
+      showCollisionVolumes: freezed == showCollisionVolumes
+          ? _value.showCollisionVolumes!
+          : showCollisionVolumes,
     ));
   }
 }
@@ -435,10 +435,10 @@ class _$ModelViewerSelectionStateWithModelImpl
       this.showCloth = true,
       this.showNormals = false,
       this.showTexture = true,
-      this.showPartyColor = false,
+      this.showPartyColor = true,
       this.showSkeleton = false,
       this.showLinks = true,
-      this.showCollisionBoxes = false})
+      this.showCollisionVolumes = false})
       : _models = models;
 
   final List<ModelSettings> _models;
@@ -475,11 +475,11 @@ class _$ModelViewerSelectionStateWithModelImpl
   final dynamic showLinks;
   @override
   @JsonKey()
-  final dynamic showCollisionBoxes;
+  final dynamic showCollisionVolumes;
 
   @override
   String toString() {
-    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals, showTexture: $showTexture, showPartyColor: $showPartyColor, showSkeleton: $showSkeleton, showLinks: $showLinks, showCollisionBoxes: $showCollisionBoxes)';
+    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals, showTexture: $showTexture, showPartyColor: $showPartyColor, showSkeleton: $showSkeleton, showLinks: $showLinks, showCollisionVolumes: $showCollisionVolumes)';
   }
 
   @override
@@ -503,7 +503,7 @@ class _$ModelViewerSelectionStateWithModelImpl
                 .equals(other.showSkeleton, showSkeleton) &&
             const DeepCollectionEquality().equals(other.showLinks, showLinks) &&
             const DeepCollectionEquality()
-                .equals(other.showCollisionBoxes, showCollisionBoxes));
+                .equals(other.showCollisionVolumes, showCollisionVolumes));
   }
 
   @override
@@ -519,7 +519,7 @@ class _$ModelViewerSelectionStateWithModelImpl
       const DeepCollectionEquality().hash(showPartyColor),
       const DeepCollectionEquality().hash(showSkeleton),
       const DeepCollectionEquality().hash(showLinks),
-      const DeepCollectionEquality().hash(showCollisionBoxes));
+      const DeepCollectionEquality().hash(showCollisionVolumes));
 
   @JsonKey(ignore: true)
   @override
@@ -546,7 +546,7 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)
+            dynamic showCollisionVolumes)
         withModel,
   }) {
     return withModel(
@@ -560,7 +560,7 @@ class _$ModelViewerSelectionStateWithModelImpl
         showPartyColor,
         showSkeleton,
         showLinks,
-        showCollisionBoxes);
+        showCollisionVolumes);
   }
 
   @override
@@ -580,7 +580,7 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)?
+            dynamic showCollisionVolumes)?
         withModel,
   }) {
     return withModel?.call(
@@ -594,7 +594,7 @@ class _$ModelViewerSelectionStateWithModelImpl
         showPartyColor,
         showSkeleton,
         showLinks,
-        showCollisionBoxes);
+        showCollisionVolumes);
   }
 
   @override
@@ -613,7 +613,7 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showPartyColor,
             dynamic showSkeleton,
             dynamic showLinks,
-            dynamic showCollisionBoxes)?
+            dynamic showCollisionVolumes)?
         withModel,
     required TResult orElse(),
   }) {
@@ -629,7 +629,7 @@ class _$ModelViewerSelectionStateWithModelImpl
           showPartyColor,
           showSkeleton,
           showLinks,
-          showCollisionBoxes);
+          showCollisionVolumes);
     }
     return orElse();
   }
@@ -680,7 +680,7 @@ abstract class ModelViewerSelectionStateWithModel
           final dynamic showPartyColor,
           final dynamic showSkeleton,
           final dynamic showLinks,
-          final dynamic showCollisionBoxes}) =
+          final dynamic showCollisionVolumes}) =
       _$ModelViewerSelectionStateWithModelImpl;
 
   @override
@@ -695,7 +695,7 @@ abstract class ModelViewerSelectionStateWithModel
   dynamic get showPartyColor;
   dynamic get showSkeleton;
   dynamic get showLinks;
-  dynamic get showCollisionBoxes;
+  dynamic get showCollisionVolumes;
   @override
   @JsonKey(ignore: true)
   _$$ModelViewerSelectionStateWithModelImplCopyWith<
