@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
+import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
+import 'package:vector_math/vector_math.dart';
 
 enum CollisionStructType {
   hit,
@@ -70,6 +72,11 @@ class PathFinderTable extends GsfPart {
   }
 }
 
+typedef CollisionModel = ({
+  List<ModelVertex> vertices,
+  List<ModelTriangle> triangles
+});
+
 class CollisionStruct extends GsfPart {
   CollisionStruct({
     required this.type,
@@ -78,7 +85,7 @@ class CollisionStruct extends GsfPart {
 
   final CollisionStructType type;
 
-  List<ModelVertex> toVertices() {
+  CollisionModel toModel() {
     throw UnimplementedError();
   }
 }
@@ -140,9 +147,8 @@ class HitCollisionStruct extends CollisionStruct {
   }
 
   @override
-  List<ModelVertex> toVertices() {
-    return [
-    ];
+  CollisionModel toModel() {
+    return (triangles: [], vertices: []);
   }
 }
 
@@ -162,7 +168,7 @@ class BlockerCollisionStruct extends CollisionStruct {
 
   @override
   String get label =>
-      'Blocker at $positionX, $positionY, $positionZ with size $sizeX, $sizeY, $sizeZ';
+      'Blocker at $positionX, $positionY, $positionZ with size $sizeX, $sizeY, $sizeZ, unknownData: $unknownData';
 
   BlockerCollisionStruct.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset, type: CollisionStructType.blocker) {
@@ -209,8 +215,47 @@ class BlockerCollisionStruct extends CollisionStruct {
   }
 
   @override
-  List<ModelVertex> toVertices() {
-    return [
+  CollisionModel toModel() {
+    final center = Vector3(positionX.value, positionY.value, positionZ.value);
+    final distX = sizeX.value / 2;
+    final distY = sizeY.value / 2;
+    final distZ = sizeZ.value / 2;
+    final List<ModelVertex> vertices = [
+      ModelVertex(center + Vector3(distX, distY, distZ)), // front top right
+      ModelVertex(center + Vector3(distX, distY, -distZ)), // front bottom right
+      ModelVertex(center + Vector3(distX, -distY, distZ)), // back top right
+      ModelVertex(center + Vector3(distX, -distY, -distZ)), // back bottom right
+      ModelVertex(center + Vector3(-distX, distY, distZ)), // front top left
+      ModelVertex(center + Vector3(-distX, distY, -distZ)), // front bottom left
+      ModelVertex(center + Vector3(-distX, -distY, distZ)), // back top left
+      ModelVertex(center + Vector3(-distX, -distY, -distZ)), // back bottom left
     ];
+    final List<ModelTriangle> triangles = [
+      ModelTriangle(
+          points: [vertices[0], vertices[1], vertices[2]], indices: [0, 1, 2]),
+      ModelTriangle(
+          points: [vertices[1], vertices[2], vertices[3]], indices: [1, 2, 3]),
+      ModelTriangle(
+          points: [vertices[0], vertices[1], vertices[4]], indices: [0, 1, 4]),
+      ModelTriangle(
+          points: [vertices[1], vertices[4], vertices[5]], indices: [1, 4, 5]),
+      ModelTriangle(
+          points: [vertices[0], vertices[2], vertices[4]], indices: [0, 2, 4]),
+      ModelTriangle(
+          points: [vertices[2], vertices[4], vertices[6]], indices: [2, 4, 6]),
+      ModelTriangle(
+          points: [vertices[2], vertices[3], vertices[6]], indices: [2, 3, 6]),
+      ModelTriangle(
+          points: [vertices[3], vertices[6], vertices[7]], indices: [3, 6, 7]),
+      ModelTriangle(
+          points: [vertices[1], vertices[3], vertices[5]], indices: [1, 3, 5]),
+      ModelTriangle(
+          points: [vertices[3], vertices[5], vertices[7]], indices: [3, 5, 7]),
+      ModelTriangle(
+          points: [vertices[4], vertices[5], vertices[6]], indices: [4, 5, 6]),
+      ModelTriangle(
+          points: [vertices[5], vertices[6], vertices[7]], indices: [5, 6, 7]),
+    ];
+    return (vertices: vertices, triangles: triangles);
   }
 }
