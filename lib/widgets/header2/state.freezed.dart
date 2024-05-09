@@ -20,8 +20,12 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)
+    required TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -30,8 +34,12 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
+    TResult? Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) =>
@@ -39,8 +47,12 @@ mixin _$Header2State {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
+    TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
@@ -175,8 +187,12 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)
+    required TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -188,8 +204,12 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
+    TResult? Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
@@ -200,8 +220,12 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
+    TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
@@ -272,6 +296,7 @@ abstract class _$$Header2StateWithModelSettingsImplCopyWith<$Res>
       {Header2 header2,
       ModelSettings modelSettings,
       ObjectName? objectName,
+      CollisionStruct? collisionStruct,
       SelectedChunkState? selectedChunkState});
 
   $SelectedChunkStateCopyWith<$Res>? get selectedChunkState;
@@ -293,6 +318,7 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
     Object? header2 = null,
     Object? modelSettings = null,
     Object? objectName = freezed,
+    Object? collisionStruct = freezed,
     Object? selectedChunkState = freezed,
   }) {
     return _then(_$Header2StateWithModelSettingsImpl(
@@ -308,6 +334,10 @@ class __$$Header2StateWithModelSettingsImplCopyWithImpl<$Res>
           ? _value.objectName
           : objectName // ignore: cast_nullable_to_non_nullable
               as ObjectName?,
+      collisionStruct: freezed == collisionStruct
+          ? _value.collisionStruct
+          : collisionStruct // ignore: cast_nullable_to_non_nullable
+              as CollisionStruct?,
       selectedChunkState: freezed == selectedChunkState
           ? _value.selectedChunkState
           : selectedChunkState // ignore: cast_nullable_to_non_nullable
@@ -337,6 +367,7 @@ class _$Header2StateWithModelSettingsImpl
       {required this.header2,
       required this.modelSettings,
       this.objectName,
+      this.collisionStruct,
       this.selectedChunkState});
 
   @override
@@ -346,11 +377,13 @@ class _$Header2StateWithModelSettingsImpl
   @override
   final ObjectName? objectName;
   @override
+  final CollisionStruct? collisionStruct;
+  @override
   final SelectedChunkState? selectedChunkState;
 
   @override
   String toString() {
-    return 'Header2State.withModelSettings(header2: $header2, modelSettings: $modelSettings, objectName: $objectName, selectedChunkState: $selectedChunkState)';
+    return 'Header2State.withModelSettings(header2: $header2, modelSettings: $modelSettings, objectName: $objectName, collisionStruct: $collisionStruct, selectedChunkState: $selectedChunkState)';
   }
 
   @override
@@ -363,13 +396,15 @@ class _$Header2StateWithModelSettingsImpl
                 other.modelSettings == modelSettings) &&
             (identical(other.objectName, objectName) ||
                 other.objectName == objectName) &&
+            (identical(other.collisionStruct, collisionStruct) ||
+                other.collisionStruct == collisionStruct) &&
             (identical(other.selectedChunkState, selectedChunkState) ||
                 other.selectedChunkState == selectedChunkState));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, header2, modelSettings, objectName, selectedChunkState);
+  int get hashCode => Object.hash(runtimeType, header2, modelSettings,
+      objectName, collisionStruct, selectedChunkState);
 
   @JsonKey(ignore: true)
   @override
@@ -383,42 +418,54 @@ class _$Header2StateWithModelSettingsImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)
+    required TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
   }) {
-    return withModelSettings(
-        header2, modelSettings, objectName, selectedChunkState);
+    return withModelSettings(header2, modelSettings, objectName,
+        collisionStruct, selectedChunkState);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
+    TResult? Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
-    return withModelSettings?.call(
-        header2, modelSettings, objectName, selectedChunkState);
+    return withModelSettings?.call(header2, modelSettings, objectName,
+        collisionStruct, selectedChunkState);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
+    TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),
   }) {
     if (withModelSettings != null) {
-      return withModelSettings(
-          header2, modelSettings, objectName, selectedChunkState);
+      return withModelSettings(header2, modelSettings, objectName,
+          collisionStruct, selectedChunkState);
     }
     return orElse();
   }
@@ -464,6 +511,7 @@ abstract class Header2StateWithModelSettings implements Header2State {
           {required final Header2 header2,
           required final ModelSettings modelSettings,
           final ObjectName? objectName,
+          final CollisionStruct? collisionStruct,
           final SelectedChunkState? selectedChunkState}) =
       _$Header2StateWithModelSettingsImpl;
 
@@ -471,6 +519,7 @@ abstract class Header2StateWithModelSettings implements Header2State {
   Header2 get header2;
   ModelSettings get modelSettings;
   ObjectName? get objectName;
+  CollisionStruct? get collisionStruct;
   SelectedChunkState? get selectedChunkState;
   @override
   @JsonKey(ignore: true)
@@ -559,8 +608,12 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Header2? header2) empty,
-    required TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)
+    required TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)
         withModelSettings,
     required TResult Function(Header2 header2, MaterialData material)
         withMaterial,
@@ -572,8 +625,12 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Header2? header2)? empty,
-    TResult? Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
+    TResult? Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult? Function(Header2 header2, MaterialData material)? withMaterial,
   }) {
@@ -584,8 +641,12 @@ class _$Header2StateWithMaterialImpl implements Header2StateWithMaterial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Header2? header2)? empty,
-    TResult Function(Header2 header2, ModelSettings modelSettings,
-            ObjectName? objectName, SelectedChunkState? selectedChunkState)?
+    TResult Function(
+            Header2 header2,
+            ModelSettings modelSettings,
+            ObjectName? objectName,
+            CollisionStruct? collisionStruct,
+            SelectedChunkState? selectedChunkState)?
         withModelSettings,
     TResult Function(Header2 header2, MaterialData material)? withMaterial,
     required TResult orElse(),

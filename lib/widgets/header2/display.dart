@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/collision_struct.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/fallback_table.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/materials_table.dart';
@@ -14,6 +15,7 @@ import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/skeleton.dar
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/submesh.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/material.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/model_settings.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/path_finder.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
 import 'package:paraworld_gsf_viewer/widgets/viewer/viewer.dart';
@@ -146,8 +148,12 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
         state.selectedChunkState!,
         state.modelSettings.fallbackTable,
         state.header2.materialsTable,
+        state.collisionStruct,
       )
-    else
+    else ...[
+      if (state.collisionStruct != null) ...[
+        getCollisionWidget(state.collisionStruct!),
+      ],
       Flexible(
         child: ModelViewerLoader(
           selectedModelData: state.modelSettings,
@@ -156,6 +162,7 @@ List<Widget> withModelSettings(Header2StateWithModelSettings state) {
               ChunkAttributes.defaultValue(state.modelSettings.type),
         ),
       ),
+    ],
   ];
 }
 
@@ -165,10 +172,20 @@ List<Widget> withMaterial(Header2StateWithMaterial state) {
   ];
 }
 
+Widget getCollisionWidget(
+  CollisionStruct collisionStruct,
+) {
+  return collisionStruct.type == CollisionStructType.hit
+      ? HitDisplay(hitCollisionStruct: collisionStruct as HitCollisionStruct)
+      : BlockerDisplay(
+          blockerCollisionStruct: collisionStruct as BlockerCollisionStruct);
+}
+
 List<Widget> getChunkWidgetByType(
   SelectedChunkState chunkState,
   FallbackTable? fallbackTable,
   MaterialsTable materialsTable,
+  CollisionStruct? collisionStruct,
 ) {
   final List<Widget> widgets = () {
     return chunkState.maybeMap(
@@ -189,7 +206,17 @@ List<Widget> getChunkWidgetByType(
                   materialsTable: materialsTable,
                 ),
               ),
-        if (data.material != null) MaterialDisplay(material: data.material!),
+        if (data.material != null || collisionStruct != null)
+          Flexible(
+            child: Column(
+              children: [
+                if (data.material != null)
+                  MaterialDisplay(material: data.material!),
+                if (collisionStruct != null)
+                  getCollisionWidget(collisionStruct),
+              ],
+            ),
+          ),
       ],
       withCloth: (data) => [
         ClothChunkDisplay(
@@ -208,7 +235,17 @@ List<Widget> getChunkWidgetByType(
                   materialsTable: materialsTable,
                 ),
               ),
-        if (data.material != null) MaterialDisplay(material: data.material!),
+        if (data.material != null || collisionStruct != null)
+          Flexible(
+            child: Column(
+              children: [
+                if (data.material != null)
+                  MaterialDisplay(material: data.material!),
+                if (collisionStruct != null)
+                  getCollisionWidget(collisionStruct),
+              ],
+            ),
+          ),
       ],
       withSkeleton: (data) => [
         SkeletonDisplay(skeleton: data.skeleton),

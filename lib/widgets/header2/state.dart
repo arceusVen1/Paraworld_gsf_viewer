@@ -5,6 +5,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/collision_struct.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/header2.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
@@ -22,6 +23,7 @@ class Header2State with _$Header2State {
       {required Header2 header2,
       required ModelSettings modelSettings,
       ObjectName? objectName,
+      CollisionStruct? collisionStruct,
       SelectedChunkState? selectedChunkState}) = Header2StateWithModelSettings;
 
   const factory Header2State.withMaterial({

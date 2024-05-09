@@ -7,6 +7,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/cloth.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/mesh.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/submesh.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/collision_struct.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/object_name.dart';
@@ -92,6 +93,13 @@ class Header2StateNotifier extends Notifier<Header2State> {
           orElse: () => s.selectedChunkState,
         ),
       ),
+      orElse: () => state,
+    );
+  }
+
+  void setCollisionStruct(CollisionStruct collisionStruct) {
+    state = state.maybeMap(
+      withModelSettings: (s) => s.copyWith(collisionStruct: collisionStruct),
       orElse: () => state,
     );
   }
