@@ -255,6 +255,7 @@ class ModelSettings extends GsfPart {
     final List<ModelMesh> cloths = [];
     final List<SkeletonModel> skeletons = [];
     final List<LinkModel> links = [];
+    final List<CollisionModel> collisionModels = [];
     final List<int> materialIndices =
         fallbackTable?.usedMaterialIndexes.map((e) => e.value).toList() ?? [];
     for (final chunk in chunksTable?.chunks ?? <Chunk>[]) {
@@ -282,6 +283,9 @@ class ModelSettings extends GsfPart {
         ));
       }
     }
+    for (final collisionStruc in pathFinderTable?.collisionStructs ?? <CollisionStruct>[]) {
+      collisionModels.add(collisionStruc.toModel());
+    }
     // assert(
     //   skeletons.length == skeletonChunksCount.value,
     //   'Skeletons count ${skeletonChunksCount.value} does not match ${skeletons.length}',
@@ -294,6 +298,7 @@ class ModelSettings extends GsfPart {
       boundingBox: boundingBox.toModelBox(),
       skeletons: skeletons,
       links: links,
+      collisions: collisionModels,
     );
   }
 

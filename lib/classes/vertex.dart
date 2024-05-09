@@ -8,14 +8,17 @@ const _k13BytesRatioValue = 1 / 8191;
 class ModelVertex {
   ModelVertex(
     this.positions, {
-    required this.box,
-    required this.positionOffset,
+    BoundingBoxModel? box,
+    Vector3? positionOffset,
     this.normal,
     this.textureCoordinates,
   }) {
-    positions.x = positions.x * (box.x.max - box.x.min) + box.x.min;
-    positions.y = positions.y * (box.y.max - box.y.min) + box.y.min;
-    positions.z = positions.z * (box.z.max - box.z.min) + box.z.min;
+    this.box = box ?? BoundingBoxModel.zero();
+    this.positionOffset = positionOffset ?? Vector3.zero();
+
+    positions.x = positions.x * (this.box.x.max - this.box.x.min) + this.box.x.min;
+    positions.y = positions.y * (this.box.y.max - this.box.y.min) + this.box.y.min;
+    positions.z = positions.z * (this.box.z.max - this.box.z.min) + this.box.z.min;
   }
 
   late Vector3 positions;

@@ -91,6 +91,7 @@ mixin MeshToModelInterface on Chunk {
       boundingBox: globalBB,
       skeletons: [],
       links: [],
+      collisions: [],
     );
   }
 }

@@ -3,10 +3,12 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/link.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/collision_struct.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/material_attribute.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/model_settings.dart';
 import 'package:paraworld_gsf_viewer/classes/mesh.dart';
@@ -32,6 +34,7 @@ class Model {
     required this.boundingBox,
     required this.skeletons,
     required this.links,
+    required this.collisions,
   });
 
   final ModelType type;
@@ -41,6 +44,7 @@ class Model {
   final BoundingBoxModel boundingBox;
   final List<SkeletonModel> skeletons;
   final List<LinkModel> links;
+  final List<CollisionModel> collisions;
   // todo skeleton
   // todo position links
 
@@ -259,6 +263,43 @@ class Model {
           jointPaint,
         );
       }
+    }
+  }
+
+  void drawCollisions(
+    Transformation transformation,
+    ui.Size size,
+    ui.Canvas canvas,
+    Color meshColor,
+  ) {
+    final projectionData = getProjectionData(size);
+    for (final collision in collisions) {
+      final vertices = collision.vertices;
+      final triangles = collision.triangles;
+      final verticesPositions = <double>[];
+      final trianglesIndices = <int>[];
+      for (final vertex in vertices) {
+        final coords = vertex.project(
+          widthOffset: projectionData.widthOffset,
+          heightOffset: projectionData.heightOffset,
+          maxWidth: projectionData.maxFactor,
+          maxHeight: projectionData.maxFactor,
+          transformation: transformation,
+        );
+        verticesPositions
+            .addAll([coords.pointProjection.x, coords.pointProjection.y]);
+      }
+      for (final triangle in triangles) {
+        trianglesIndices.addAll(triangle.indices);
+      }
+      final verticesTypedPositions = Float32List.fromList(verticesPositions);
+      final trianglesTypedindices = Uint16List.fromList(trianglesIndices);
+      canvas.drawVertices(
+        ui.Vertices.raw(ui.VertexMode.triangles, verticesTypedPositions,
+            indices: trianglesTypedindices),
+        BlendMode.srcOver,
+        _paint..color = meshColor.withOpacity(0.3),
+      );
     }
   }
 
