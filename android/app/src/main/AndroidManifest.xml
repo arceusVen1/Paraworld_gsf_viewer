@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="paraworld_gsf_viewer"
+        android:label="ParaWorld GSF Viewer"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
