@@ -107,7 +107,7 @@ class HitCollisionStruct extends CollisionStruct {
 
   @override
   String get label =>
-      'Hit of radius $radius at $positionX, $positionY, $positionZ';
+      'Hit of radius $radius at $positionX, $positionY, $positionZ, unknownData: $unknownData';
 
   HitCollisionStruct.fromBytes(Uint8List bytes, int offset)
       : super(offset: offset, type: CollisionStructType.hit) {
