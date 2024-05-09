@@ -23,5 +23,6 @@ class ModelViewerSelectionState with _$ModelViewerSelectionState {
     @Default(false) showPartyColor,
     @Default(false) showSkeleton,
     @Default(true) showLinks,
+    @Default(false) showCollisionBoxes,
   }) = ModelViewerSelectionStateWithModel;
 }

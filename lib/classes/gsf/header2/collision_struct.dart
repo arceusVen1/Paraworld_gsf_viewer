@@ -216,19 +216,19 @@ class BlockerCollisionStruct extends CollisionStruct {
 
   @override
   CollisionModel toModel() {
-    final center = Vector3(positionX.value, positionY.value, positionZ.value);
-    final distX = sizeX.value / 2;
-    final distY = sizeY.value / 2;
-    final distZ = sizeZ.value / 2;
+    final basePoint = Vector3(positionX.value, positionY.value, positionZ.value); // back bottom left
+    final distX = sizeX.value;
+    final distY = sizeY.value;
+    final distZ = sizeZ.value;
     final List<ModelVertex> vertices = [
-      ModelVertex(center + Vector3(distX, distY, distZ)), // front top right
-      ModelVertex(center + Vector3(distX, distY, -distZ)), // front bottom right
-      ModelVertex(center + Vector3(distX, -distY, distZ)), // back top right
-      ModelVertex(center + Vector3(distX, -distY, -distZ)), // back bottom right
-      ModelVertex(center + Vector3(-distX, distY, distZ)), // front top left
-      ModelVertex(center + Vector3(-distX, distY, -distZ)), // front bottom left
-      ModelVertex(center + Vector3(-distX, -distY, distZ)), // back top left
-      ModelVertex(center + Vector3(-distX, -distY, -distZ)), // back bottom left
+      ModelVertex(basePoint + Vector3(distX, distY, distZ)), // front top right
+      ModelVertex(basePoint + Vector3(distX, distY, 0)), // front bottom right
+      ModelVertex(basePoint + Vector3(distX, 0, distZ)), // back top right
+      ModelVertex(basePoint + Vector3(distX, 0, 0)), // back bottom right
+      ModelVertex(basePoint + Vector3(0, distY, distZ)), // front top left
+      ModelVertex(basePoint + Vector3(0, distY, 0)), // front bottom left
+      ModelVertex(basePoint + Vector3(0, 0, distZ)), // back top left
+      ModelVertex(basePoint), // back bottom left
     ];
     final List<ModelTriangle> triangles = [
       ModelTriangle(

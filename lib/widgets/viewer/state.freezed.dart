@@ -33,7 +33,8 @@ mixin _$ModelViewerSelectionState {
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)
+            dynamic showLinks,
+            dynamic showCollisionBoxes)
         withModel,
   }) =>
       throw _privateConstructorUsedError;
@@ -52,7 +53,8 @@ mixin _$ModelViewerSelectionState {
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)?
+            dynamic showLinks,
+            dynamic showCollisionBoxes)?
         withModel,
   }) =>
       throw _privateConstructorUsedError;
@@ -70,7 +72,8 @@ mixin _$ModelViewerSelectionState {
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)?
+            dynamic showLinks,
+            dynamic showCollisionBoxes)?
         withModel,
     required TResult orElse(),
   }) =>
@@ -236,7 +239,8 @@ class _$EmptyImpl implements _Empty {
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)
+            dynamic showLinks,
+            dynamic showCollisionBoxes)
         withModel,
   }) {
     return empty(materialsTable, models);
@@ -258,7 +262,8 @@ class _$EmptyImpl implements _Empty {
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)?
+            dynamic showLinks,
+            dynamic showCollisionBoxes)?
         withModel,
   }) {
     return empty?.call(materialsTable, models);
@@ -279,7 +284,8 @@ class _$EmptyImpl implements _Empty {
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)?
+            dynamic showLinks,
+            dynamic showCollisionBoxes)?
         withModel,
     required TResult orElse(),
   }) {
@@ -356,7 +362,8 @@ abstract class _$$ModelViewerSelectionStateWithModelImplCopyWith<$Res>
       dynamic showTexture,
       dynamic showPartyColor,
       dynamic showSkeleton,
-      dynamic showLinks});
+      dynamic showLinks,
+      dynamic showCollisionBoxes});
 }
 
 /// @nodoc
@@ -382,6 +389,7 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
     Object? showPartyColor = freezed,
     Object? showSkeleton = freezed,
     Object? showLinks = freezed,
+    Object? showCollisionBoxes = freezed,
   }) {
     return _then(_$ModelViewerSelectionStateWithModelImpl(
       models: null == models
@@ -408,6 +416,9 @@ class __$$ModelViewerSelectionStateWithModelImplCopyWithImpl<$Res>
       showSkeleton:
           freezed == showSkeleton ? _value.showSkeleton! : showSkeleton,
       showLinks: freezed == showLinks ? _value.showLinks! : showLinks,
+      showCollisionBoxes: freezed == showCollisionBoxes
+          ? _value.showCollisionBoxes!
+          : showCollisionBoxes,
     ));
   }
 }
@@ -426,7 +437,8 @@ class _$ModelViewerSelectionStateWithModelImpl
       this.showTexture = true,
       this.showPartyColor = false,
       this.showSkeleton = false,
-      this.showLinks = true})
+      this.showLinks = true,
+      this.showCollisionBoxes = false})
       : _models = models;
 
   final List<ModelSettings> _models;
@@ -461,10 +473,13 @@ class _$ModelViewerSelectionStateWithModelImpl
   @override
   @JsonKey()
   final dynamic showLinks;
+  @override
+  @JsonKey()
+  final dynamic showCollisionBoxes;
 
   @override
   String toString() {
-    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals, showTexture: $showTexture, showPartyColor: $showPartyColor, showSkeleton: $showSkeleton, showLinks: $showLinks)';
+    return 'ModelViewerSelectionState.withModel(models: $models, model: $model, filter: $filter, materialsTable: $materialsTable, showCloth: $showCloth, showNormals: $showNormals, showTexture: $showTexture, showPartyColor: $showPartyColor, showSkeleton: $showSkeleton, showLinks: $showLinks, showCollisionBoxes: $showCollisionBoxes)';
   }
 
   @override
@@ -486,7 +501,9 @@ class _$ModelViewerSelectionStateWithModelImpl
                 .equals(other.showPartyColor, showPartyColor) &&
             const DeepCollectionEquality()
                 .equals(other.showSkeleton, showSkeleton) &&
-            const DeepCollectionEquality().equals(other.showLinks, showLinks));
+            const DeepCollectionEquality().equals(other.showLinks, showLinks) &&
+            const DeepCollectionEquality()
+                .equals(other.showCollisionBoxes, showCollisionBoxes));
   }
 
   @override
@@ -501,7 +518,8 @@ class _$ModelViewerSelectionStateWithModelImpl
       const DeepCollectionEquality().hash(showTexture),
       const DeepCollectionEquality().hash(showPartyColor),
       const DeepCollectionEquality().hash(showSkeleton),
-      const DeepCollectionEquality().hash(showLinks));
+      const DeepCollectionEquality().hash(showLinks),
+      const DeepCollectionEquality().hash(showCollisionBoxes));
 
   @JsonKey(ignore: true)
   @override
@@ -527,11 +545,22 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)
+            dynamic showLinks,
+            dynamic showCollisionBoxes)
         withModel,
   }) {
-    return withModel(models, model, filter, materialsTable, showCloth,
-        showNormals, showTexture, showPartyColor, showSkeleton, showLinks);
+    return withModel(
+        models,
+        model,
+        filter,
+        materialsTable,
+        showCloth,
+        showNormals,
+        showTexture,
+        showPartyColor,
+        showSkeleton,
+        showLinks,
+        showCollisionBoxes);
   }
 
   @override
@@ -550,11 +579,22 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)?
+            dynamic showLinks,
+            dynamic showCollisionBoxes)?
         withModel,
   }) {
-    return withModel?.call(models, model, filter, materialsTable, showCloth,
-        showNormals, showTexture, showPartyColor, showSkeleton, showLinks);
+    return withModel?.call(
+        models,
+        model,
+        filter,
+        materialsTable,
+        showCloth,
+        showNormals,
+        showTexture,
+        showPartyColor,
+        showSkeleton,
+        showLinks,
+        showCollisionBoxes);
   }
 
   @override
@@ -572,13 +612,24 @@ class _$ModelViewerSelectionStateWithModelImpl
             dynamic showTexture,
             dynamic showPartyColor,
             dynamic showSkeleton,
-            dynamic showLinks)?
+            dynamic showLinks,
+            dynamic showCollisionBoxes)?
         withModel,
     required TResult orElse(),
   }) {
     if (withModel != null) {
-      return withModel(models, model, filter, materialsTable, showCloth,
-          showNormals, showTexture, showPartyColor, showSkeleton, showLinks);
+      return withModel(
+          models,
+          model,
+          filter,
+          materialsTable,
+          showCloth,
+          showNormals,
+          showTexture,
+          showPartyColor,
+          showSkeleton,
+          showLinks,
+          showCollisionBoxes);
     }
     return orElse();
   }
@@ -619,16 +670,18 @@ class _$ModelViewerSelectionStateWithModelImpl
 abstract class ModelViewerSelectionStateWithModel
     implements ModelViewerSelectionState {
   const factory ModelViewerSelectionStateWithModel(
-      {required final List<ModelSettings> models,
-      required final ModelSettings model,
-      required final ChunkAttributes filter,
-      required final MaterialsTable materialsTable,
-      final dynamic showCloth,
-      final dynamic showNormals,
-      final dynamic showTexture,
-      final dynamic showPartyColor,
-      final dynamic showSkeleton,
-      final dynamic showLinks}) = _$ModelViewerSelectionStateWithModelImpl;
+          {required final List<ModelSettings> models,
+          required final ModelSettings model,
+          required final ChunkAttributes filter,
+          required final MaterialsTable materialsTable,
+          final dynamic showCloth,
+          final dynamic showNormals,
+          final dynamic showTexture,
+          final dynamic showPartyColor,
+          final dynamic showSkeleton,
+          final dynamic showLinks,
+          final dynamic showCollisionBoxes}) =
+      _$ModelViewerSelectionStateWithModelImpl;
 
   @override
   List<ModelSettings> get models;
@@ -642,6 +695,7 @@ abstract class ModelViewerSelectionStateWithModel
   dynamic get showPartyColor;
   dynamic get showSkeleton;
   dynamic get showLinks;
+  dynamic get showCollisionBoxes;
   @override
   @JsonKey(ignore: true)
   _$$ModelViewerSelectionStateWithModelImplCopyWith<
