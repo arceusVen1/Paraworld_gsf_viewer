@@ -1,9 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
-import 'package:paraworld_gsf_viewer/classes/triangle.dart';
 import 'package:paraworld_gsf_viewer/classes/vertex.dart';
 import 'package:vector_math/vector_math.dart';
+import 'package:vector_math/vector_math_geometry.dart';
+import 'package:vector_math/vector_math_lists.dart';
 
 enum CollisionStructType {
   hit,
@@ -74,7 +75,8 @@ class PathFinderTable extends GsfPart {
 
 typedef CollisionModel = ({
   List<ModelVertex> vertices,
-  List<ModelTriangle> triangles
+  Uint16List triangles,
+  List<ModelVertex>? markers
 });
 
 class CollisionStruct extends GsfPart {
@@ -148,7 +150,31 @@ class HitCollisionStruct extends CollisionStruct {
 
   @override
   CollisionModel toModel() {
-    return (triangles: [], vertices: []);
+    final center = Vector3(positionX.value, positionY.value, positionZ.value);
+    // defining
+    final sphere = SphereGenerator()
+      ..createSphere(radius.value, latSegments: 16, lonSegments: 16);
+    Uint16List indices = Uint16List(sphere.indexCount);
+    Vector3List sphereVertices = Vector3List(sphere.vertexCount);
+    sphere.generateIndices(indices);
+    sphere.generateVertexPositions(sphereVertices, indices);
+    final List<ModelVertex> vertices = [];
+    for (var i = 0; i < sphereVertices.length; i++) {
+      vertices.add(ModelVertex(sphereVertices[i] + center));
+    }
+    final markers = <ModelVertex>[
+      ModelVertex(center + Vector3(radius.value, 0, 0)),
+      ModelVertex(center + Vector3(-radius.value, 0, 0)),
+      ModelVertex(center + Vector3(0, radius.value, 0)),
+      ModelVertex(center + Vector3(0, -radius.value, 0)),
+      ModelVertex(center + Vector3(0, 0, radius.value)),
+      ModelVertex(center + Vector3(0, 0, -radius.value)),
+    ];
+    return (
+      vertices: vertices,
+      triangles: Uint16List.fromList(indices),
+      markers: markers
+    );
   }
 }
 
@@ -216,7 +242,8 @@ class BlockerCollisionStruct extends CollisionStruct {
 
   @override
   CollisionModel toModel() {
-    final basePoint = Vector3(positionX.value, positionY.value, positionZ.value); // back bottom left
+    final basePoint = Vector3(
+        positionX.value, positionY.value, positionZ.value); // back bottom left
     final distX = sizeX.value;
     final distY = sizeY.value;
     final distZ = sizeZ.value;
@@ -230,32 +257,44 @@ class BlockerCollisionStruct extends CollisionStruct {
       ModelVertex(basePoint + Vector3(0, 0, distZ)), // back top left
       ModelVertex(basePoint), // back bottom left
     ];
-    final List<ModelTriangle> triangles = [
-      ModelTriangle(
-          points: [vertices[0], vertices[1], vertices[2]], indices: [0, 1, 2]),
-      ModelTriangle(
-          points: [vertices[1], vertices[2], vertices[3]], indices: [1, 2, 3]),
-      ModelTriangle(
-          points: [vertices[0], vertices[1], vertices[4]], indices: [0, 1, 4]),
-      ModelTriangle(
-          points: [vertices[1], vertices[4], vertices[5]], indices: [1, 4, 5]),
-      ModelTriangle(
-          points: [vertices[0], vertices[2], vertices[4]], indices: [0, 2, 4]),
-      ModelTriangle(
-          points: [vertices[2], vertices[4], vertices[6]], indices: [2, 4, 6]),
-      ModelTriangle(
-          points: [vertices[2], vertices[3], vertices[6]], indices: [2, 3, 6]),
-      ModelTriangle(
-          points: [vertices[3], vertices[6], vertices[7]], indices: [3, 6, 7]),
-      ModelTriangle(
-          points: [vertices[1], vertices[3], vertices[5]], indices: [1, 3, 5]),
-      ModelTriangle(
-          points: [vertices[3], vertices[5], vertices[7]], indices: [3, 5, 7]),
-      ModelTriangle(
-          points: [vertices[4], vertices[5], vertices[6]], indices: [4, 5, 6]),
-      ModelTriangle(
-          points: [vertices[5], vertices[6], vertices[7]], indices: [5, 6, 7]),
-    ];
-    return (vertices: vertices, triangles: triangles);
+    final Uint16List triangles = Uint16List.fromList([
+      0,
+      1,
+      2,
+      1,
+      2,
+      3,
+      0,
+      1,
+      4,
+      1,
+      4,
+      5,
+      0,
+      2,
+      4,
+      2,
+      4,
+      6,
+      2,
+      3,
+      6,
+      3,
+      6,
+      7,
+      1,
+      3,
+      5,
+      3,
+      5,
+      7,
+      4,
+      5,
+      6,
+      5,
+      6,
+      7,
+    ]);
+    return (vertices: vertices, triangles: triangles, markers: null);
   }
 }
