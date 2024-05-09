@@ -1945,7 +1945,7 @@ types:
         io: _root._io
         pos: pos + anim_chunk_neg_offset
         type: anim_chunk
-        if: anim_chunk_neg_offset != 0x80000000
+        if: anim_chunk_neg_offset != -0x80000000
   anim_chunk:
     seq:
       - id: chunk_type_enum
@@ -1978,6 +1978,199 @@ types:
         type: f4
       - id: bbox_max_z
         type: f4
+      - id: unk
+        type: u4
+      - id: unk1
+        type: u4
+      - id: unk_offset
+        type: u4
+      - id: num_anim_frames
+        type: u4
+      - id: anim_frames_offset
+        type: u4
+      - id: num_anim_frames2
+        type: u4
+      - id: unk3
+        type: u4
+      - id: unk_offset1
+        type: u4
+      - id: num_unk1
+        type: u4
+      - id: unk_offset2
+        type: u4
+      - id: num_unk2
+        type: u4
+      - id: unk_mesh_offset
+        type: u4
+      - id: num_unk_mesh_maybe
+        type: u4
+      - id: unk8
+        type: u4
+    instances:
+      anim_frame:
+        io: _root._io
+        pos: pos + anim_frames_offset + 48
+        type: type_1_anim_frame
+        repeat: expr
+        repeat-expr: num_anim_frames
+        if: anim_frames_offset != 0x80000000
+      unk_data:
+        io: _root._io
+        pos: pos + unk_offset1 + 60
+        type: unk_data
+        repeat: expr
+        repeat-expr: num_unk1
+        if: unk_offset1 != 0x80000000
+      unk_data1:
+        io: _root._io
+        pos: pos + unk_offset2 + 68
+        type: unk_data1
+        repeat: expr
+        repeat-expr: num_unk2
+        if: unk_offset2 != 0x80000000
+      unk_mesh_data:
+        io: _root._io
+        pos: pos + unk_mesh_offset + 76
+        type: unk_mesh_data(_io.pos)
+        repeat: expr
+        repeat-expr: num_unk_mesh_maybe
+        if: unk_mesh_offset != 0x80000000
+  unk_data:
+    seq:
+      - id: pos_x
+        type: f4
+      - id: pos_y
+        type: f4
+      - id: pos_z
+        type: f4
+      - id: quat_x
+        type: f4
+      - id: quat_y
+        type: f4
+      - id: quat_z
+        type: f4
+      - id: quat_w
+        type: f4
+  unk_data1:
+    seq:
+      - id: unk
+        size: 2
+  unk_mesh_data:
+    params:
+      - id: pos
+        type: s4
+    seq:
+      - id: global_bbox_min_x
+        type: f4
+      - id: global_bbox_min_y
+        type: f4
+      - id: global_bbox_min_z
+        type: f4
+      - id: global_bbox_max_x
+        type: f4
+      - id: global_bbox_max_y
+        type: f4
+      - id: global_bbox_max_z
+        type: f4
+      - id: mesh_chunk_unk
+        type: u4
+      - id: global_bbox_offset
+        type: u4
+      - id: mesh_chunk_unk1
+        type: u4
+      - id: unk_data_offset
+        type: u4
+      - id: num_unk_data_maybe
+        type: u4
+      - id: bbox_min_x
+        type: f4
+      - id: bbox_min_y
+        type: f4
+      - id: bbox_min_z
+        type: f4
+      - id: bbox_max_x
+        type: f4
+      - id: bbox_max_y
+        type: f4
+      - id: bbox_max_z
+        type: f4
+      - id: num_vertices
+        type: u4
+      - id: num_triangles
+        type: u4
+      - id: vertices_offset
+        type: u4
+      - id: triangles_offset
+        type: u4
+      - id: num_triangles2
+        type: u4
+      - id: vertex_type
+        type: u4
+      - id: light_data_offset
+        type: u4
+      - id: num_light_data
+        type: u4
+    instances:
+      unk_data:
+        io: _root._io
+        pos: pos + unk_data_offset + 36
+        size: 6
+        repeat: expr
+        repeat-expr: num_unk_data_maybe
+        if: unk_data_offset != 0x80000000
+      vertices_data:
+        io: _root._io
+        pos: pos + vertices_offset + 76
+        size: vertex_type
+        repeat: expr
+        repeat-expr: num_vertices
+        if: vertices_offset != 0x80000000
+      triangles_data:
+        io: _root._io
+        pos: pos + triangles_offset + 80
+        size: num_triangles * 6
+        if: triangles_offset != 0x80000000
+      light_data:
+        io: _root._io
+        pos: pos + light_data_offset + 96
+        size: 6
+        repeat: expr
+        repeat-expr: num_light_data
+        if: light_data_offset != 0x80000000
+  type_1_anim_frame:
+    seq:
+      - id: float1_1
+        type: f4
+      - id: float1_2
+        type: f4
+      - id: float1_3
+        type: f4
+      - id: float1_4
+        type: f4
+      - id: float2_1
+        type: f4
+      - id: float2_2
+        type: f4
+      - id: float2_3
+        type: f4
+      - id: float2_4
+        type: f4
+      - id: float3_1
+        type: f4
+      - id: float3_2
+        type: f4
+      - id: float3_3
+        type: f4
+      - id: float3_4
+        type: f4
+      - id: float4_1
+        type: f4
+      - id: float4_2
+        type: f4
+      - id: float4_3
+        type: f4
+      - id: float4_4
+        type: f4
   anim_chunk_type_2:
     params:
       - id: pos
@@ -1987,16 +2180,20 @@ types:
         type: u4
       - id: guid
         type: u4
-      - id: unk
+      - id: anim_chunk_unk
         type: u4
       - id: loop_start_frame
         type: u2
       - id: loop_end_frame
         type: u2
-      - id: unk_float
+      - id: anim_chunk_unk_float
         type: f4
-      - id: unk1
-        type: u4
+      - id: anim_chunk_unk1
+        type: u1
+      - id: anim_chunk_unk2
+        type: u1
+      - id: num_anim_splitter_maybe
+        type: u2
       - id: anim_global_pos_offset
         type: u4
       - id: anim_splitter_offset
@@ -2045,7 +2242,7 @@ types:
       anim_frames:
         io: _root._io
         pos: pos + next_anim_data_offset + 4
-        type: anim_frame
+        type: type_2_anim_frame
         repeat: expr
         repeat-expr: num_anim_frames
         if: next_anim_data_offset != 0x80000000
@@ -2078,7 +2275,7 @@ types:
         type: f4
       - id: scale_z
         type: f4
-  anim_frame:
+  type_2_anim_frame:
     seq:
       - id: guat_x
         type: f4
