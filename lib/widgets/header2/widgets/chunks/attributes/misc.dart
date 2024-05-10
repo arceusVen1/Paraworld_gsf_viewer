@@ -24,7 +24,7 @@ class MiscFlagsDisplay extends StatelessWidget {
           return [
             if (chunkAttributes.typeOfModel == ModelType.bldg) ...[
               FlagBox(
-                label: "Unknown (resin_field_fire?)",
+                label: "Unknown (resin_field_fire)",
                 attributes: chunkAttributes,
                 indice: BldgAttributes.resinFieldFireIndice,
                 onPress: onPress,
@@ -32,7 +32,7 @@ class MiscFlagsDisplay extends StatelessWidget {
             ],
             if (chunkAttributes.typeOfModel == ModelType.fiel) ...[
               FlagBox(
-                label: "Unknown (resin_field_fire?)",
+                label: "Unknown (resin_field_fire)",
                 attributes: chunkAttributes,
                 indice: FielAttributes.resinFieldFireIndice,
                 onPress: onPress,
@@ -51,13 +51,13 @@ class MiscFlagsDisplay extends StatelessWidget {
               onPress: onPress,
             ),
             FlagBox(
-              label: "Unknown (light collision?)",
+              label: "Light collision",
               attributes: chunkAttributes,
               indice: BuildingAttributes.unknownIndice,
               onPress: onPress,
             ),
             FlagBox(
-              label: "Use construction flags (useConFlags)",
+              label: "Use construction flags",
               attributes: chunkAttributes,
               indice: BuildingAttributes.useConFlagsIndice,
               onPress: onPress,
