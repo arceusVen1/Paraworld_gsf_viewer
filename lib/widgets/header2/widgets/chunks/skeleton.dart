@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/providers.dart';
-import 'package:paraworld_gsf_viewer/widgets/header2/widgets/affine_transformation.dart';
+import 'package:paraworld_gsf_viewer/widgets/header2/widgets/bind_pose.dart';
 import 'package:paraworld_gsf_viewer/widgets/header2/widgets/chunks/attributes/chunk_attributes.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/data_display.dart';
 import 'package:paraworld_gsf_viewer/widgets/utils/label.dart';
@@ -69,7 +69,7 @@ class BoneDisplay extends StatelessWidget {
       GsfDataTile(label: "Child bones count", data: bone.childrenCount),
       GsfDataTile(label: "Child bone offset", data: bone.nextChildOffset),
       GsfDataTile(label: "Child bones count 2", data: bone.childrenCount2),
-      AffineTransformationDisplay(transformation: bone.bindPose!),
+      BindPoseDisplay(bindPose: bone.bindPose!),
     ]);
   }
 }

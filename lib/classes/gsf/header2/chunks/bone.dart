@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/affine_matrix.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/bind_pose_matrix.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 import 'package:vector_math/vector_math.dart';
 
@@ -22,7 +22,7 @@ class Bone extends GsfPart {
   late final Standard4BytesData<int> nextChildOffset;
   late final Standard4BytesData<int> childrenCount2;
 
-  AffineTransformation? bindPose;
+  BindPose? bindPose;
 
   Vector3 get translation => Vector3(posX.value, posY.value, posZ.value);
   Quaternion get rotation => Quaternion(

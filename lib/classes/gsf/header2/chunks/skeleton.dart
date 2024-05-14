@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:paraworld_gsf_viewer/classes/bouding_box.dart';
-import 'package:paraworld_gsf_viewer/classes/gsf/header2/affine_matrix.dart';
+import 'package:paraworld_gsf_viewer/classes/gsf/header2/bind_pose_matrix.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/bone.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/chunk.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
@@ -23,7 +23,7 @@ class SkeletonChunk extends Chunk {
   late final Standard4BytesData<UnknowData> unknownData;
 
   late final List<Bone> bones;
-  late final List<AffineTransformation> bindPoses;
+  late final List<BindPose> bindPoses;
 
   final BoneTree boneTree = {};
 
@@ -95,7 +95,7 @@ class SkeletonChunk extends Chunk {
     }
     bindPoses = [];
     for (var i = 0; i < allBonesCount.value; i++) {
-      final bindPose = AffineTransformation.fromBytes(
+      final bindPose = BindPose.fromBytes(
         bytes,
         bindPoses.isEmpty
             ? bindPoseOffset.offsettedPos + bindPoseOffset.value
