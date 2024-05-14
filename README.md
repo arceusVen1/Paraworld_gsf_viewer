@@ -26,16 +26,20 @@ You can easily build for web with the included script
 ```
 Now simply push the new version on github for auto deploy
 
-For windows use ```flutter build windows```
+For windows use
+```sh
+flutter build windows
+```
 
 ### Features
 
 - dark and light theme
 - contents table parser/viewer (header1)
 - header2 parser/viewer (mesh viewer)
-- model viewer with normals, skeletons, links and party color display
-- full support for all static meshes
+- mesh/submesh viewer
 - mesh attributes handler (LoD, vis flags, misc flags)
+- model viewer with normals, skeletons, links, collision volumes and party color display
+- full support for all static meshes
 - auto texture mapping and loading (with dds support)
 - copy to clipboard feature (raw value (hex), parsed value and value pos in file)
 - .obj mesh conversion (as single model or as chunks)
@@ -51,8 +55,11 @@ For windows use ```flutter build windows```
 
 ### GSF format
 ![gsfFormat](./docs/gsf/gsf_graph.svg)
+
 Use ```kaitai-struct-compiler.bat gsf.ksy -t graphviz``` to build a .dot file
+
 And ```dot -Tsvg > output.svg gsf.dot``` for the graph
+
 Kaitai compiler and Graphviz required
 
 | Mesh attributes                 |
@@ -61,7 +68,6 @@ Kaitai compiler and Graphviz required
 
 ### TO DO
 
-- pathfinder chunks support
 - bone weights support
 - billboards support
 - animation (might never be possible)
