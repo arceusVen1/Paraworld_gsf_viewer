@@ -19,29 +19,31 @@ class PathFinderDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    if (pathFinderTable == null) {
+      return const SizedBox.shrink();
+    }
     return SectionWrapper(label: "Path Finder Table", children: [
       GsfDataTile(label: 'Offset', data: offset),
       GsfDataTile(
         label: 'Count',
         data: count,
       ),
-      if (pathFinderTable != null)
-        PartSelector(
-          value: ref
-              .watch(header2StateNotifierProvider)
-              .mapOrNull(withModelSettings: (value) => value.collisionStruct),
-          label: "Path finder table",
-          parts: pathFinderTable!.collisionStructs,
-          onSelected: (collisionStruct) {
-            if (collisionStruct != null) {
-              ref
-                  .read(header2StateNotifierProvider.notifier)
-                  .setCollisionStruct(
-                    collisionStruct as CollisionStruct,
-                  );
-            }
-          },
-        ),
+      PartSelector(
+        value: ref
+            .watch(header2StateNotifierProvider)
+            .mapOrNull(withModelSettings: (value) => value.collisionStruct),
+        label: "Path finder table",
+        parts: pathFinderTable!.collisionStructs,
+        onSelected: (collisionStruct) {
+          if (collisionStruct != null) {
+            ref
+                .read(header2StateNotifierProvider.notifier)
+                .setCollisionStruct(
+                  collisionStruct as CollisionStruct,
+                );
+          }
+        },
+      ),
     ]);
   }
 }

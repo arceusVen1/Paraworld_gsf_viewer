@@ -115,7 +115,7 @@ class NameStruct extends GsfPart {
   late final GsfData<Uint8List> padding;
 
   @override
-  String get label => "${type.name} ${trueName.value}";
+  String get label => "${trueName.value}";
 
   @override
   String toString() => trueName.value.value;

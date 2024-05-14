@@ -58,10 +58,9 @@ class SectionWrapper extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+          padding: EdgeInsets.fromLTRB(0, defaultPadding, 30, defaultPadding),
           child: Container(
-            padding: EdgeInsets.fromLTRB(defaultPadding, defaultPadding,
-                defaultPadding, max(defaultPadding - spacing, 0)),
+            padding: EdgeInsets.fromLTRB(defaultPadding, defaultPadding, defaultPadding, 2),
             width: double.infinity,
             decoration: BoxDecoration(
               border: Border.all(color: theme.colorScheme.onBackground, width: 1),
@@ -315,9 +314,10 @@ class PartSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const int labelSize = 36;
     return ListViewWrapper(
-      rightPadding: 40,
-      maxHeight: 300,
+      rightPadding: 30,
+      maxHeight: labelSize * 8,
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: parts.length,
@@ -371,12 +371,13 @@ class _DataSelectorState extends State<DataSelector> {
 
   @override
   Widget build(BuildContext context) {
+	const int labelSize = 36;
     if (widget.datas.isEmpty) {
       return const SizedBox.shrink();
     }
     return ListViewWrapper(
-      rightPadding: 10,
-      maxHeight: 200,
+      rightPadding: 30,
+      maxHeight: labelSize * 6,
       child: ListView.builder(
           shrinkWrap: true,
           itemCount: widget.datas.length,
