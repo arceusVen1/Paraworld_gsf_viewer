@@ -207,7 +207,7 @@ class _FallbackTableDisplay extends ConsumerWidget {
         GsfDataTile(
             label: "Header 2 offset", data: fallbackTable.header2Offset),
         GsfDataTile(
-            label: "Model settings offset",
+            label: "Model infos offset",
             data: fallbackTable.modelSettingsOffset),
         GsfDataTile(label: "Unknown count", data: fallbackTable.unknownInt),
         GsfDataTile(

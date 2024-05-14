@@ -23,9 +23,9 @@ class PathFinderDisplay extends ConsumerWidget {
       return const SizedBox.shrink();
     }
     return SectionWrapper(label: "Path Finder Table", children: [
-      GsfDataTile(label: 'Offset', data: offset),
+      GsfDataTile(label: 'Table offset', data: offset),
       GsfDataTile(
-        label: 'Count',
+        label: 'Chunks count',
         data: count,
       ),
       PartSelector(

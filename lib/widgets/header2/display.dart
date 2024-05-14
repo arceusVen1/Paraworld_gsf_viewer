@@ -65,14 +65,14 @@ class _Data extends ConsumerWidget {
         GsfDataTile(label: 'Models count', data: header2.modelsCount),
         GsfDataTile(label: 'Anim count', data: header2.animCount),
         GsfDataTile(
-            label: 'Model settings offset', data: header2.modelSettingsOffset),
+            label: 'Model infos offset', data: header2.modelSettingsOffset),
         GsfDataTile(
-            label: 'Model settings count', data: header2.modelsSettingCount),
+            label: 'Model infos count', data: header2.modelsSettingCount),
         PartSelector(
             value: state.mapOrNull(
               withModelSettings: (data) => data.modelSettings,
             ),
-            label: 'Model settings',
+            label: 'Model infos',
             parts: header2.modelSettings,
             onSelected: (part) {
               ref
@@ -80,9 +80,9 @@ class _Data extends ConsumerWidget {
                   .setModelSettings(part as ModelSettings);
             }),
         GsfDataTile(
-            label: 'Anim settings offset', data: header2.animSettingsOffset),
+            label: 'Anim infos offset', data: header2.animSettingsOffset),
         GsfDataTile(
-            label: 'Anim settings count', data: header2.animSettingsCount),
+            label: 'Anim infos count', data: header2.animSettingsCount),
         SectionWrapper(
           label: "Materials table",
           children: [
