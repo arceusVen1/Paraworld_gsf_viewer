@@ -8,7 +8,7 @@ import 'package:paraworld_gsf_viewer/classes/gsf/header2/chunks/skeleton.dart';
 import 'package:paraworld_gsf_viewer/classes/gsf_data.dart';
 
 class ChunksTable extends GsfPart {
-  final int count; // read from model settings
+  final int count; // read from model infos
   final List<Standard4BytesData<SignedInt>> chunksOffsets = [];
   final List<Chunk> chunks = [];
 
