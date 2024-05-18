@@ -441,9 +441,9 @@ types:
         contents: [0x00]
       - id: unused_offset
         contents: [0x00, 0x00, 0x00, 0x80]
-      - id: pathfinder_table_offset
+      - id: pathfinder_chunks_offset
         type: u4
-      - id: num_pathfinder_tables
+      - id: num_pathfinder_chunks
         type: u4
       - id: bbox_min_x
         type: f4
@@ -479,13 +479,13 @@ types:
         pos: pos + fallback_table_offset - 68
         type: fallback_table
         if: fallback_table_offset != 0x80000000
-      pathfinder_table:
+      pathfinder_chunk:
         io: _root._io
-        pos: pos + pathfinder_table_offset - 40
-        type: pathfinder_table
+        pos: pos + pathfinder_chunks_offset - 40
+        type: pathfinder_chunk
         repeat: expr
-        repeat-expr: num_pathfinder_tables
-        if: pathfinder_table_offset != 0x80000000
+        repeat-expr: num_pathfinder_chunks
+        if: pathfinder_chunks_offset != 0x80000000
       anim_attr_table:
         io: _root._io
         pos: pos + anim_chunks_table_header_offset - 8
@@ -1870,7 +1870,7 @@ types:
         type: u4
         repeat: expr
         repeat-expr: num_used_materials
-  pathfinder_table:
+  pathfinder_chunk:
     seq:
       - id: pathfinder_enum
         type: u4
