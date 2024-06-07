@@ -241,8 +241,14 @@ types:
         type: u4
       - id: speed
         type: f4
-      - id: unk_bytes
-        size: 16
+      - id: unk_float
+        contents: [0x00, 0x00, 0x00, 0x00]
+      - id: min_fade_distance
+        type: f4
+      - id: max_fade_distance
+        type: f4
+      - id: max_hearing_distance
+        type: f4
       - id: num_snd_group_chars
         type: u4
       - id: snd_group_name
@@ -416,7 +422,7 @@ types:
         type: u2
       - id: num_link_chunks
         type: u2
-        #misc chunks - selection_volume,particle and maybe more
+        #misc chunks - unk_sphere,particle and maybe more
       - id: bool_misc_mesh_chunks_exists
         type: u1
       - id: num_skeleton_chunks
@@ -425,9 +431,9 @@ types:
         type: u1
       - id: num_cloth_chunks
         type: u1
-      - id: first_selection_volume_chunk_index
+      - id: first_unk_sphere_chunk_index
         type: u1
-      - id: num_selection_volume_chunks
+      - id: num_unk_sphere_chunks
         type: u1
       - id: num_speedline_chunks
         type: u1
@@ -435,9 +441,9 @@ types:
         contents: [0x00]
       - id: unused_offset
         contents: [0x00, 0x00, 0x00, 0x80]
-      - id: pathfinder_table_offset
+      - id: pathfinder_chunks_offset
         type: u4
-      - id: num_pathfinder_tables
+      - id: num_pathfinder_chunks
         type: u4
       - id: bbox_min_x
         type: f4
@@ -473,13 +479,13 @@ types:
         pos: pos + fallback_table_offset - 68
         type: fallback_table
         if: fallback_table_offset != 0x80000000
-      pathfinder_table:
+      pathfinder_chunk:
         io: _root._io
-        pos: pos + pathfinder_table_offset - 40
-        type: pathfinder_table
+        pos: pos + pathfinder_chunks_offset - 40
+        type: pathfinder_chunk
         repeat: expr
-        repeat-expr: num_pathfinder_tables
-        if: pathfinder_table_offset != 0x80000000
+        repeat-expr: num_pathfinder_chunks
+        if: pathfinder_chunks_offset != 0x80000000
       anim_attr_table:
         io: _root._io
         pos: pos + anim_chunks_table_header_offset - 8
@@ -533,7 +539,7 @@ types:
             mesh_chunk_type::cloth: cloth_chunk(_io.pos)
             mesh_chunk_type::phys_coll: phys_coll_chunk
             mesh_chunk_type::pos_link: pos_link_chunk
-            mesh_chunk_type::selection_volume: selection_volume_chunk
+            mesh_chunk_type::unk_sphere: unk_sphere_chunk
             mesh_chunk_type::speedline: speedline_chunk
             #Skinned chunks:
             mesh_chunk_type::mesh_skinned: mesh_skinned_chunk(_io.pos)
@@ -544,7 +550,7 @@ types:
             mesh_chunk_type::cloth_skinned_simple: cloth_skinned_simple_chunk(_io.pos)
             mesh_chunk_type::phys_coll_skinned: phys_coll_skinned_chunk
             mesh_chunk_type::bone_link: bone_link_chunk
-            mesh_chunk_type::selection_volume_skinned: selection_volume_skinned_chunk
+            mesh_chunk_type::unk_sphere_skinned: unk_sphere_skinned_chunk
             mesh_chunk_type::speedline_skinned: speedline_skinned_chunk	
   unk_type_chunk:
     seq:
@@ -568,7 +574,7 @@ types:
         type: f4
       - id: unk_float7
         type: f4
-  selection_volume_chunk:
+  unk_sphere_chunk:
     seq:
       - id: attributes
         type: u4
@@ -588,7 +594,7 @@ types:
         type: f4
       - id: scale_z
         type: f4
-  selection_volume_skinned_chunk:
+  unk_sphere_skinned_chunk:
     seq:
       - id: attributes
         type: u4
@@ -1864,7 +1870,7 @@ types:
         type: u4
         repeat: expr
         repeat-expr: num_used_materials
-  pathfinder_table:
+  pathfinder_chunk:
     seq:
       - id: pathfinder_enum
         type: u4
@@ -1889,7 +1895,7 @@ types:
         type: f4
       - id: zero
         contents: [0x00, 0x00, 0x00, 0x00]
-      - id: unk
+      - id: attributes
         type: u4
   path_blocker_struct:
     seq:
@@ -1905,7 +1911,7 @@ types:
         type: f4
       - id: size_z
         type: f4
-      - id: unk
+      - id: attributes
         type: u4
   anim_chunks_table_header:
     params:
@@ -2386,7 +2392,7 @@ enums:
     0x00000009: cloth
     0x0000000A: phys_coll
     0x0000000B: pos_link
-    0x0000000D: selection_volume
+    0x0000000D: unk_sphere
     0x0000000E: speedline
     #skinned meshes
     0x80000000: mesh_skinned
@@ -2397,7 +2403,7 @@ enums:
     0x80000009: cloth_skinned
     0x8000000A: phys_coll_skinned
     0x8000000B: bone_link
-    0x8000000D: selection_volume_skinned
+    0x8000000D: unk_sphere_skinned
     0x8000000E: speedline_skinned
   anim_chunk_type:
     0x40000003: anim_type_1

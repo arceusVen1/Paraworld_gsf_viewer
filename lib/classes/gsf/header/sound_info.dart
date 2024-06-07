@@ -8,10 +8,10 @@ class SoundInfo extends GsfPart {
   late final Standard4BytesData<int> startFrame;
   late final Standard4BytesData<int> volume;
   late final Standard4BytesData<double> speed;
-  late final Standard4BytesData<double> unknownData1; // 16 unknown bytes
-  late final Standard4BytesData<double> unknownData2; // 16 unknown bytes
-  late final Standard4BytesData<double> unknownData3; // 16 unknown bytes
-  late final Standard4BytesData<double> unknownData4; // 16 unknown bytes
+  late final Standard4BytesData<double> unknownData1; // 4 unknown bytes
+  late final Standard4BytesData<double> minFadeDistance;
+  late final Standard4BytesData<double> maxFadeDistance;
+  late final Standard4BytesData<double> maxHearingDistance;
   late final Standard4BytesData<int> soundGroupNameLength;
   late final GsfData<String> soundGroupName;
 
@@ -37,15 +37,15 @@ class SoundInfo extends GsfPart {
         position: volume.relativeEnd, bytes: bytes, offset: offset);
     unknownData1 = Standard4BytesData(
         position: speed.relativeEnd, bytes: bytes, offset: offset);
-    unknownData2 = Standard4BytesData(
+    minFadeDistance = Standard4BytesData(
         position: unknownData1.relativeEnd, bytes: bytes, offset: offset);
-    unknownData3 = Standard4BytesData(
-        position: unknownData2.relativeEnd, bytes: bytes, offset: offset);
-    unknownData4 = Standard4BytesData(
-        position: unknownData3.relativeEnd, bytes: bytes, offset: offset);
+    maxFadeDistance = Standard4BytesData(
+        position: minFadeDistance.relativeEnd, bytes: bytes, offset: offset);
+    maxHearingDistance = Standard4BytesData(
+        position: maxFadeDistance.relativeEnd, bytes: bytes, offset: offset);
 
     soundGroupNameLength = Standard4BytesData(
-        position: unknownData4.relativeEnd, bytes: bytes, offset: offset);
+        position: maxHearingDistance.relativeEnd, bytes: bytes, offset: offset);
 
     soundGroupName = GsfData.fromPosition(
       relativePos: soundGroupNameLength.relativeEnd,
